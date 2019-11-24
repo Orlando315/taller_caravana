@@ -1,0 +1,135 @@
+.modal-header{
+  border-bottom: 1px solid rgba(0,0,0,.125) !important;
+}
+
+.modal .modal-content .modal-header{
+  padding: 15px;
+}
+
+.sidebar .nav .nav-item-fixed-bottom{
+  position: absolute;
+  width: 100%;
+  bottom: 10px;
+}
+
+@media(max-width: 991px){
+  .sidebar .nav .nav-item-fixed-bottom{
+    position: relative !important;
+  }
+}
+
+.card .card-loading{
+  position: absolute;
+  background-color: rgba(255, 255, 255, .7);
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+}
+
+.card-dropdown-tabs .show .dropdown-menu{
+  opacity: 0;
+  filter: alpha(opacity=0);
+  visibility: hidden;
+}
+.card-dropdown-tabs .show.dropdown-menu{
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Select 2 */
+.select2-container .select2-selection--single,
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 40px !important;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+  padding: 8px 12px;
+}
+
+.table-responsive{
+  transition: all .2s ease-out;
+  -moz-transition: all .2s ease-out;
+  -webkit-transition: all .2s ease-out;
+}
+
+.menu-notifications .dropdown-item{
+  line-height: 1em;
+}
+
+.fa{
+  width: auto;
+}
+
+/* Fix light-bootstrap-dashboard */
+button:hover{
+  cursor: pointer;
+}
+
+.card .table tbody td:last-child,
+.card .table thead th:last-child {
+  padding-right: 15px;
+  display: table-cell;
+}
+
+.btn-danger.btn-link,
+.btn-success.btn-link,
+.btn-info.btn-link,
+.btn-primary.btn-link,
+.btn-warning.btn-link{
+  border-color: transparent !important;
+  background-color: transparent !important;
+}
+
+h1, h2, h3, h4, h5{
+  margin: 15px 0;
+}
+
+.alert button.close{
+  color: #000;
+}
+
+.modal .modal-content .modal-header h4{
+  margin: 0 !important;
+}
+.navbar .navbar-nav .nav-item .nav-link [class^="fa"]{
+  line-height: 1;
+}
+
+.tooltip.in{
+  filter: alpha(opacity=90);
+  opacity: .9;
+}
+
+.btn-primary.disabled, .btn-primary:disabled{
+    border-color: #3472F7;
+    color:  #3472F7;
+}
+button:disabled:hover{
+  cursor: default;
+}
+
+/* Check en modal de editar expiracion */
+#expirationModal .form-check .form-check-sign::before, .form-check .form-check-sign::after {
+  margin-top: 0;
+}
+#expirationModal .form-check .form-check-label {
+  padding-left: 0;
+}
+
+/* checkbox */
+.form-check .form-check-sign::before, .form-check .form-check-sign::after{
+  color: #888888;
+  margin-left: -23px;
+  font-size: 18px;
+  margin-top: 0;
+}
+.form-check .form-check-sign::after{
+  color: #23CCEF;
+}
+.form-check input[type="checkbox"]:checked + .form-check-sign::before {
+  opacity: 0;
+}
+.table-sm td, .table-sm th{
+  padding: .3rem !important;
+}
