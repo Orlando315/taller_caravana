@@ -10,7 +10,9 @@
   <div class="row">
     <div class="col-12">
       <a class="btn btn-default" href="{{ route('tipos.index') }}"><i class="fa fa-reply" aria-hidden="true"></i> Volver</a>
-      <a class="btn btn-success" href="{{ route('tipos.edit', ['tipo' => $tipo->id]) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</a>
+      @if(Auth::user()->role != 'user')
+        <a class="btn btn-success" href="{{ route('tipos.edit', ['tipo' => $tipo->id]) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</a>
+      @endif
       @if(Auth::user()->isAdmin())
         <button class="btn btn-fill btn-danger" data-toggle="modal" data-target="#delModal"><i class="fa fa-times" aria-hidden="true"></i> Eliminar</button>
       @endif

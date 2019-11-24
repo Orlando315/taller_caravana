@@ -97,7 +97,7 @@
               <ul class="navbar-nav ml-auto">
                 @if(Auth::user()->isAdmin())
                   <li class="nav-item">
-                    <a href="{{ route('admin.users.create', ['role' => '']) }}" class="nav-link" rel="tooltip" title="Enviar invitación">
+                    <a href="{{ route('admin.users.create') }}" class="nav-link" rel="tooltip" title="Agregar usuario">
                       <i class="fa fa-user-plus" aria-hidden="true"></i> Agregar usuario
                     </a>
                   </li>

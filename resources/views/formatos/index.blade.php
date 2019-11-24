@@ -15,9 +15,11 @@
       <div class="card">
         <div class="card-header">
           <h4 class="card-title">Formatos ({{ $formatos->count() }})</h4>
-          <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('formatos.create') }}">
-            <i class="fa fa-plus"></i> Agregar Formato
-          </a>
+          @if(Auth::user()->role != 'user')
+            <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('formatos.create') }}">
+              <i class="fa fa-plus"></i> Agregar Formato
+            </a>
+          @endif
         </div>
         <div class="card-body">
           <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">

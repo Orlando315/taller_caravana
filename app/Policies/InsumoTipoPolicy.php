@@ -18,7 +18,7 @@ class InsumoTipoPolicy
      */
     public function index(User $user)
     {
-      return $user->role != 'user';
+      return true;
     }
 
     /**
@@ -30,7 +30,7 @@ class InsumoTipoPolicy
      */
     public function view(User $user, InsumoTipo $model)
     {
-      return $user->role != 'user';
+      return true;
     }
 
     /**
