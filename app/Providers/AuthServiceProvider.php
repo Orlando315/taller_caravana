@@ -6,12 +6,12 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Policies\UserPolicy;
 use App\User;
-use App\Policies\SeccionPolicy;
-use App\Seccion;
-use App\Policies\FormularioPolicy;
-use App\Formulario;
-use App\Policies\ArchivoPolicy;
-use App\Archivo;
+use App\Policies\InsumoTipoPolicy;
+use App\InsumoTipo;
+use App\Policies\InsumoFormatoPolicy;
+use App\InsumoFormato;
+use App\Policies\InsumoPolicy;
+use App\Insumo;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -22,6 +22,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         User::class => UserPolicy::class,
+        InsumoTipo::class => InsumoTipoPolicy::class,
+        InsumoFormato::class => InsumoFormatoPolicy::class,
+        Insumo::class => InsumoPolicy::class,
     ];
 
     /**

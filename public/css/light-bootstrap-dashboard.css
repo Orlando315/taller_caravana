@@ -480,13 +480,13 @@ body>.navbar-collapse .nav li .nav-link i {
     vertical-align: middle;
     float: left;
 }
-
+/*
 .sidebar .nav li:hover .nav-link,
 body>.navbar-collapse .nav li:hover .nav-link {
     background: rgba(255, 255, 255, 0.13);
     opacity: 1;
 }
-
+*/
 .sidebar .nav li.active .nav-link,
 body>.navbar-collapse .nav li.active .nav-link {
     color: #FFFFFF;

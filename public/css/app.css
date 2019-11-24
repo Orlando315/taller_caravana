@@ -42,11 +42,14 @@
 .select2-container--default .select2-selection--single .select2-selection__arrow {
   height: 40px !important;
 }
-
+.select2-container--default .select2-selection--single{
+  border: 1px solid #E3E3E3 !important;
+}
 .select2-container .select2-selection--single .select2-selection__rendered {
   padding: 8px 12px;
 }
 
+.card-stats:hover .card-hover-danger,
 .table-responsive{
   transition: all .2s ease-out;
   -moz-transition: all .2s ease-out;
@@ -59,6 +62,16 @@
 
 .fa{
   width: auto;
+}
+
+.modal.show .modal-dialog.dialog-top{
+  -webkit-transform: translate(0, 5%);
+  -o-transform: translate(0, 5%);
+  transform: translate(0, 5%);
+}
+
+.card-stats:hover .card-hover-danger{
+  color: #FF4A55 !important
 }
 
 /* Fix light-bootstrap-dashboard */
@@ -132,4 +145,78 @@ button:disabled:hover{
 }
 .table-sm td, .table-sm th{
   padding: .3rem !important;
+}
+.sidebar .nav .nav-item .nav-link{
+  margin: 5px 15px 0px 10px;
+  padding: 10px 15px;
+  white-space: nowrap;
+}
+.sidebar .caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  vertical-align: middle;
+  border-top: 4px dashed;
+  border-top: 4px solid\9;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  margin-top: 13px;
+  position: absolute;
+  right: 0;
+  -webkit-transition: all 150ms ease-in;
+  -moz-transition: all 150ms ease-in;
+  -o-transition: all 150ms ease-in;
+  -ms-transition: all 150ms ease-in;
+  transition: all 150ms ease-in;
+}
+.sidebar .nav, body > .navbar-collapse .nav {
+  margin-top: 0;
+}
+.sidebar .sidebar-wrapper .nav .nav-item [data-toggle="collapse"] ~ div .nav .nav-item .nav-link {
+  background: transparent;
+  padding-left: 55px;
+  text-transform: capitalize;
+  padding: 5px 15px 5px 15px;
+  font-weight: 400;
+  font-size: 14px;
+}
+.sidebar .sidebar-wrapper .nav [data-toggle="collapse"] ~ div > ul > li > a .sidebar-mini,
+.sidebar .sidebar-wrapper .user .info [data-toggle="collapse"] ~ div > ul > li > a .sidebar-mini {
+  text-transform: uppercase;
+  float: left;
+  width: 30px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+.sidebar .nav .nav-item .nav-link .sidebar-mini {
+  padding-left: 5px !important;
+  opacity: .86 !important;
+}
+.sidebar .sidebar-wrapper .nav .nav-item [data-toggle="collapse"] ~ div .nav .sidebar-normal {
+  left: 15px;
+}
+.sidebar .sidebar-wrapper > .nav [data-toggle="collapse"] ~ div > ul > li > a .sidebar-normal,
+.sidebar .sidebar-wrapper .user .info [data-toggle="collapse"] ~ div > ul > li > a .sidebar-normal,
+.off-canvas-sidebar .sidebar-wrapper > .nav [data-toggle="collapse"] ~ div > ul > li > a .sidebar-normal,
+.off-canvas-sidebar .sidebar-wrapper .user .info [data-toggle="collapse"] ~ div > ul > li > a .sidebar-normal {
+  margin: 0;
+  position: relative;
+  transform: translateX(0px);
+  opacity: 1;
+  white-space: nowrap;
+  display: inline-block;
+  line-height: 23px;
+}
+.sidebar .sidebar-wrapper .nav .nav-item [data-toggle="collapse"] ~ div .nav .nav-item:hover .nav-link,
+.sidebar .sidebar-wrapper .nav .nav-item [data-toggle="collapse"] ~ div .nav .nav-item:focus .nav-link,
+.sidebar .sidebar-wrapper .nav .nav-item [data-toggle="collapse"] ~ div .nav .nav-item.active .nav-link {
+  background: rgba(255, 255, 255, 0.13);
+}
+.sidebar a[data-toggle="collapse"][aria-expanded="true"] .caret,
+.sidebar .btn[data-toggle="collapse"][aria-expanded="true"] .caret,
+.sidebar a.dropdown-toggle[aria-expanded="true"] .caret {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
 }

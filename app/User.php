@@ -121,4 +121,20 @@ class User extends Authenticatable
     {
       return $this->users()->where('role', 'user');
     }
+
+    /**
+     * InsumoTipo que pertecenen al User
+     */
+    public function tipos()
+    {
+      return $this->hasMany('App\InsumoTipo');
+    }
+
+    /**
+     * InsumoFormato que pertecenen al User
+     */
+    public function formatos()
+    {
+      return $this->hasMany('App\InsumoFormato');
+    }
 }

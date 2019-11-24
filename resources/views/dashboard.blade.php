@@ -18,7 +18,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-5">
-                  <div class="icon-big text-center text-muted">
+                  <div class="icon-big text-center text-muted card-hover-danger">
                     <i class="fa fa-users"></i>
                   </div>
                 </div>
@@ -34,5 +34,27 @@
         </a>
       </div>
     @endif
+
+    <div class="col-lg-3 col-sm-6">
+      <a href="{{ route('insumos.index') }}">
+        <div class="card card-stats">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-5">
+                <div class="icon-big text-center text-muted card-hover-danger">
+                  <i class="fa fa-th-large"></i>
+                </div>
+              </div>
+              <div class="col-7">
+                <div class="numbers">
+                  <p class="card-category">Insumos</p>
+                  <h4 class="card-title">{{ $insumos }}</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
   </div>
 @endsection

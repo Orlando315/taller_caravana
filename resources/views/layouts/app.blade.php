@@ -31,7 +31,7 @@
             </a>
           </div>
           <ul class="nav">
-            <li class="nav-item">
+            <li class="nav-item{{ $currentRoute == 'dashboard' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('dashboard') }}">
                 <i class="fa fa-home"></i>
                 <p>Inicio</p>
@@ -39,13 +39,42 @@
             </li>
 
             @if(Auth::user()->isAdmin())
-            <li class="nav-item">
+            <li class="nav-item{{ $currentRoute == 'admin' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('admin.users.index') }}">
                 <i class="fa fa-users"></i>
                 <p>Usuarios</p>
               </a>
             </li>
             @endif
+
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#menu-insumos" aria-expanded="true">
+                <i class="fa fa-th-large"></i>
+                <p>Insumos <b class="caret"></b></p>
+              </a>
+              <div id="menu-insumos" class="collapse{{ in_array($currentRoute, ['insumos', 'tipos', 'formatos']) ? ' show' : '' }}">
+                <ul class="nav">
+                  <li class="nav-item{{ $currentRoute == 'insumos' ? ' active' : '' }}">
+                    <a class="nav-link" href="{{ route('insumos.index') }}">
+                      <span class="sidebar-mini">I</span>
+                      <span class="sidebar-normal">Insumos</span>
+                    </a>
+                  </li>
+                  <li class="nav-item{{ $currentRoute == 'tipos' ? ' active' : '' }}">
+                    <a class="nav-link" href="{{ route('tipos.index') }}">
+                      <span class="sidebar-mini">T</span>
+                      <span class="sidebar-normal">Tipos</span>
+                    </a>
+                  </li>
+                  <li class="nav-item{{ $currentRoute == 'formatos' ? ' active' : '' }}">
+                    <a class="nav-link" href="{{ route('formatos.index') }}">
+                      <span class="sidebar-mini">F</span>
+                      <span class="sidebar-normal">Formatos</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
 
           </ul>
         </div>

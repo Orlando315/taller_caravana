@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Insumo;
 
 class HomeController extends Controller
 {
@@ -14,9 +15,10 @@ class HomeController extends Controller
      */
     public function dashboard()
     {
-      $users = Auth::user()->users->count();
+      $users   = Auth::user()->users->count();
+      $insumos = Insumo::count();
 
-      return view('dashboard', compact('users'));
+      return view('dashboard', compact('users', 'insumos'));
     }
 
     /**

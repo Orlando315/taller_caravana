@@ -26,6 +26,13 @@ Route::group(['middleware' => 'auth'], function (){
   Route::patch('perfil', 'HomeController@update')->name('perfil.update');
   Route::patch('perfil/password', 'HomeController@password')->name('perfil.password');
 
+  /* --- Insumos --- */
+  Route::resource('insumos', 'InsumosControllers');
+  /* --- Insumos Tipos --- */
+  Route::resource('tipos', 'InsumosTiposControllers');
+  /* --- Insumos Formatos --- */
+  Route::resource('formatos', 'InsumosFormatosControllers');
+
   /* --- Admin --- */
   Route::prefix('/admin')->name('admin.')->namespace('Admin')->middleware('role:admin')->group(function(){
     /* --- Users --- */
