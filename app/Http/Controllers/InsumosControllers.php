@@ -74,6 +74,8 @@ class InsumosControllers extends Controller
       $insumo->formato_id = $formato->id;
 
       if($insumo->save()){
+        $insumo->stock()->create([]);
+
         $directory = $insumo->user_id.'/'.$insumo->id;
         if(!Storage::exists($directory)){
           Storage::makeDirectory($directory);
@@ -106,6 +108,11 @@ class InsumosControllers extends Controller
       $this->authorize('view', $insumo);
 
       $insumos = $insumo->insumos;
+
+      if(!$insumo->stock){
+        $insumo->stock()->create([]);
+        $insumo->load('stock');
+      }
 
       return view('insumos.show', compact('insumo', 'insumos'));
     }
@@ -159,6 +166,10 @@ class InsumosControllers extends Controller
       $insumo->formato_id = $formato->id;
 
       if($insumo->save()){
+        if(!$insumo->stock){
+          $insumo->stock()->create([]);
+        }
+
         $directory = $insumo->user_id.'/'.$insumo->id;
         if(!Storage::exists($directory)){
           Storage::makeDirectory($directory);

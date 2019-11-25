@@ -93,4 +93,12 @@ class Insumo extends Model
     {
       return number_format($this->venta, 0, ',', '.');
     }
+
+    /**
+     * Stock del Insumo
+     */
+    public function stock()
+    {
+      return $this->hasOne('App\Stock');
+    }
 }

@@ -28,6 +28,7 @@
                 <th scope="col" class="text-center">#</th>
                 <th scope="col" class="text-center">Foto</th>
                 <th scope="col" class="text-center">Nombre</th>
+                <th scope="col" class="text-center">Stock</th>
                 <th scope="col" class="text-center">Grado</th>
                 <th scope="col" class="text-center">Tipo</th>
               </tr>
@@ -46,6 +47,7 @@
                       {{ $insumo->nombre }}
                     </a>
                   </td>
+                  <td class="text-right">{{ $insumo->stock ? $insumo->stock->stock: '0' }}</td>
                   <td>{{ $insumo->grado }}</td>
                   <td>{{ $insumo->tipo->tipo }}</td>
                 </tr>

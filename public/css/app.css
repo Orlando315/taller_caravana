@@ -73,6 +73,11 @@
 .card-stats:hover .card-hover-danger{
   color: #FF4A55 !important
 }
+.nav-mobile-menu .menu-notifications a{
+  color: rgba(255, 255, 255, .7) !important;
+  padding: 8px !important;
+  margin: 5px 0 0 0 !important; 
+}
 
 /* Fix light-bootstrap-dashboard */
 button:hover{

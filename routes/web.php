@@ -28,6 +28,8 @@ Route::group(['middleware' => 'auth'], function (){
 
   /* --- Insumos --- */
   Route::resource('insumos', 'InsumosControllers');
+  /* --- Stock --- */
+  Route::resource('stocks', 'StocksControllers')->only(['edit', 'update']);
   /* --- Insumos Tipos --- */
   Route::resource('tipos', 'InsumosTiposControllers');
   /* --- Insumos Formatos --- */

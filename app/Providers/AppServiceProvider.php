@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Stock;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,8 +30,9 @@ class AppServiceProvider extends ServiceProvider
     {
       view()->composer('*', function ($view){
         $currentRoute = explode('.', Route::currentRouteName())[0];
+        $lowStocks = Schema::hasTable('stocks') && Auth::check() ? Stock::whereColumn('stock', '<=', 'minimo')->get() : [];
 
-        $view->with(compact('currentRoute'));
+        $view->with(compact('currentRoute', 'lowStocks'));
       });
       setlocale(LC_TIME, config('app.locale'));
     }

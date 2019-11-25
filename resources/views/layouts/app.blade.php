@@ -103,6 +103,27 @@
                   </li>
                 @endif
 
+                <li class="dropdown nav-item">
+                  <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="true" rel="tooltip" title="Stock mínimo">
+                    <i class="fa fa-th-large"></i>
+                    @if(count($lowStocks) > 0)
+                      <span class="notification">{{ count($lowStocks) }}</span>
+                    @endif
+                    <span class="d-lg-none">Stock</span>
+                  </a>
+                  <ul class="dropdown-menu menu-notifications">
+                    @forelse($lowStocks as $lowStock)
+                      <a class="dropdown-item" href="{{ route('insumos.show', ['insumo' => $lowStock->insumo->id]) }}">
+                        {{ $lowStock->insumo->nombre }}
+                        </br>
+                        <small class="text-muted">Stock: {{ $lowStock->stock }}</small>
+                      </a>
+                    @empty
+                      <a class="dropdown-item disabled text-muted" href="#" tabindex="-1" aria-disabled="true">Stock mínimo</a>
+                    @endforelse
+                  </ul>
+                </li>
+
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{ Auth::user()->email }}
