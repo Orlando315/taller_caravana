@@ -95,6 +95,12 @@
               <ul class="nav navbar-nav mr-auto">
               </ul>
               <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                  <a href="{{ Auth::user()->isAdmin() ? route('admin.configurations.edit') : '#' }}" class="nav-link text-success" rel="tooltip">
+                    <i class="fa fa-dollar" aria-hidden="true"></i> {{ Auth::user()->getDollar() }}
+                  </a>
+                </li>
+
                 @if(Auth::user()->isAdmin())
                   <li class="nav-item">
                     <a href="{{ route('admin.users.create') }}" class="nav-link" rel="tooltip" title="Agregar usuario">

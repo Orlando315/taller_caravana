@@ -6,10 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\ResetPassword;
-use App\Notifications\Invites;
-use Illuminate\Support\Facades\Auth;
-use App\Seccion;
-use App\Archivo;
+use App\Configuration;
 
 class User extends Authenticatable
 {
@@ -136,5 +133,21 @@ class User extends Authenticatable
     public function formatos()
     {
       return $this->hasMany('App\InsumoFormato');
+    }
+
+    /**
+     * Configuration que pertecenen al User
+     */
+    public function configuration()
+    {
+      return $this->hasOne('App\Configuration');
+    }
+
+    /**
+     * Optener valor del campo Dollar
+     */
+    public function getDollar()
+    {
+      return optional(Configuration::first())->dollar() ?? '-';
     }
 }

@@ -12,6 +12,8 @@ use App\Policies\InsumoFormatoPolicy;
 use App\InsumoFormato;
 use App\Policies\InsumoPolicy;
 use App\Insumo;
+use App\Policies\ConfigurationPolicy;
+use App\Configuration;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,7 @@ class AuthServiceProvider extends ServiceProvider
         InsumoTipo::class => InsumoTipoPolicy::class,
         InsumoFormato::class => InsumoFormatoPolicy::class,
         Insumo::class => InsumoPolicy::class,
+        Configuration::class => ConfigurationPolicy::class,
     ];
 
     /**

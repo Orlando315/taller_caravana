@@ -41,5 +41,9 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('users/create/{role?}', 'UsersControllers@create')->name('users.create');
     Route::resource('users', 'UsersControllers')->except(['create']);
     Route::patch('users/{user}/password', 'UsersControllers@password')->name('users.password');
+
+    /* --- Configurations --- */
+    Route::get('configurations', 'ConfigurationsControllers@edit')->name('configurations.edit');
+    Route::patch('configurations', 'ConfigurationsControllers@update')->name('configurations.update');
   });
 });
