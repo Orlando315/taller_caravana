@@ -158,4 +158,36 @@ class User extends Authenticatable
     {
       return $this->hasMany('App\Cliente', 'taller');
     }
+
+    /**
+     * Obtener las marcas
+     */
+    public function marcas()
+    {
+      return $this->hasMany('App\VehiculosMarca', 'taller');
+    }
+
+    /**
+     * Obtener los anios
+     */
+    public function anios()
+    {
+      return $this->hasMany('App\VehiculosAnio', 'taller');
+    }
+
+    /**
+     * Obtener los modelos
+     */
+    public function modelos()
+    {
+      return $this->hasMany('App\VehiculosModelo', 'taller');
+    }
+
+    /**
+     * Obtener los vehiculos
+     */
+    public function vehiculos()
+    {
+      return $this->hasMany('App\Vehiculo', 'taller');
+    }
 }

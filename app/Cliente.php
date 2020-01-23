@@ -35,4 +35,12 @@ class Cliente extends Model
     {
       return $this->nombres.' '.$this->apellidos;
     }
+
+    /**
+     * Obtener los vehiculos
+     */
+    public function vehiculos()
+    {
+      return $this->hasMany('App\Vehiculo');
+    }
 }

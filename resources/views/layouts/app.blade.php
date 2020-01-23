@@ -15,6 +15,8 @@
     <link href="{{ asset('css/light-bootstrap-dashboard.css?v=2.0.0') }}" rel="stylesheet"/>
     <!-- Datatabes -->
     <link href="{{ asset('js/plugins/datatables/datatables.min.css') }}" rel="stylesheet"/>
+    <!-- Select2 -->
+    <link href="{{ asset('js/plugins/select2/select2.min.css') }}" rel="stylesheet"/>
     <!-- App -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"/>
 
@@ -39,17 +41,24 @@
             </li>
 
             @if(Auth::user()->isAdmin())
-            <li class="nav-item{{ $currentRoute == 'admin' ? ' active' : '' }}">
+            <li class="nav-item{{ $currentRoute == 'admin.users' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('admin.users.index') }}">
                 <i class="fa fa-users"></i>
                 <p>Usuarios</p>
               </a>
             </li>
 
-            <li class="nav-item{{ $currentRoute == 'cliente' ? ' active' : '' }}">
+            <li class="nav-item{{ $currentRoute == 'admin.cliente' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('admin.cliente.index') }}">
                 <i class="fa fa-address-book"></i>
                 <p>Clientes</p>
+              </a>
+            </li>
+
+            <li class="nav-item{{ $currentRoute == 'admin.vehiculo' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('admin.vehiculo.index') }}">
+                <i class="fa fa-car"></i>
+                <p>Vehiculos</p>
               </a>
             </li>
             @endif
@@ -183,9 +192,11 @@
     <!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->
     <script src="{{ asset('js/light-bootstrap-dashboard.js?v=2.0.0') }}" type="text/javascript"></script>
     <!--  Notifications Plugin    -->
-    <script src="{{ asset('js/plugins/bootstrap-notify.js') }}"></script>
+    <script src="{{ asset('js/plugins/bootstrap-notify.js') }}" type="text/javascript"></script>
     <!-- Data-table -->
     <script src="{{ asset('js/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
+    <!-- Data-table -->
+    <script src="{{ asset('js/plugins/select2/select2.min.js') }}" type="text/javascript"></script>
 
     <script type="text/javascript">
       $(document).ready(function(){

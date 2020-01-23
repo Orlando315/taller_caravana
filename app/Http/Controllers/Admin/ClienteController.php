@@ -72,7 +72,9 @@ class ClienteController extends Controller
      */
     public function show(Cliente $cliente)
     {
-      return view('admin.cliente.show', compact('cliente'));
+      $vehiculos = $cliente->vehiculos()->with(['marca', 'modelo'])->get();
+
+      return view('admin.cliente.show', compact('cliente', 'vehiculos'));
     }
 
     /**
@@ -128,6 +130,14 @@ class ClienteController extends Controller
      */
     public function destroy(Cliente $cliente)
     {
+      if($cliente->vehiculos()->count() > 0){
+        return redirect()->route('admin.cliente.show', ['cliente' => $cliente->id])->with([
+              'flash_class'     => 'alert-danger',
+              'flash_message'   => 'Este Cliente tiene Vehiculos agregados.',
+              'flash_important' => true
+            ]);
+      }
+
       if($cliente->delete()){
         return redirect()->route('admin.cliente.index')->with([
                 'flash_class'   => 'alert-success',

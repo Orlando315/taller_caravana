@@ -45,6 +45,21 @@ Route::group(['middleware' => 'auth'], function (){
     /* --- Clientes --- */
     Route::resource('cliente', 'ClienteController');
 
+    /* --- Vehiculo --- */
+    Route::get('vehiculo/create/{cliente?}', 'VehiculosController@create')->name('vehiculo.create');
+    Route::resource('vehiculo', 'VehiculosController')
+          ->except(['create']);
+
+    /* --- Vehiculo Anio --- */
+    Route::resource('vehiculo/anio', 'VehiculosAnioController', ['names' => 'vehiculo.anio']);
+
+    /* --- Vehiculo Marca --- */
+    Route::post('vehiculo/marca/{marca}/modelos', 'VehiculosMarcaController@modelos');
+    Route::resource('vehiculo/marca', 'VehiculosMarcaController', ['names' => 'vehiculo.marca']);
+
+    /* --- Vehiculo Modelo --- */
+    Route::resource('vehiculo/modelo', 'VehiculosModeloController', ['names' => 'vehiculo.modelo']);
+
     /* --- Configurations --- */
     Route::get('configurations', 'ConfigurationsControllers@edit')->name('configurations.edit');
     Route::patch('configurations', 'ConfigurationsControllers@update')->name('configurations.update');
