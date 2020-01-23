@@ -45,6 +45,13 @@
                 <p>Usuarios</p>
               </a>
             </li>
+
+            <li class="nav-item{{ $currentRoute == 'cliente' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('admin.cliente.index') }}">
+                <i class="fa fa-address-book"></i>
+                <p>Clientes</p>
+              </a>
+            </li>
             @endif
 
             <li class="nav-item">

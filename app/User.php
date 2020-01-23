@@ -150,4 +150,12 @@ class User extends Authenticatable
     {
       return optional(Configuration::first())->dollar() ?? '-';
     }
+
+    /**
+     * Obtener los Clientes
+     */
+    public function clientes()
+    {
+      return $this->hasMany('App\Cliente', 'taller');
+    }
 }
