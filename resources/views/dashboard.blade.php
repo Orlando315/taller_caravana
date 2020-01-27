@@ -33,6 +33,50 @@
           </div>
         </a>
       </div>
+
+      <div class="col-lg-3 col-sm-6">
+        <a href="{{ route('admin.cliente.index') }}">
+          <div class="card card-stats">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon-big text-center text-muted card-hover-danger">
+                    <i class="fa fa-address-book"></i>
+                  </div>
+                </div>
+                <div class="col-7">
+                  <div class="numbers">
+                    <p class="card-category">Clientes</p>
+                    <h4 class="card-title">{{ $clientes }}</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-lg-3 col-sm-6">
+        <a href="{{ route('admin.vehiculo.index') }}">
+          <div class="card card-stats">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon-big text-center text-muted card-hover-danger">
+                    <i class="fa fa-car"></i>
+                  </div>
+                </div>
+                <div class="col-7">
+                  <div class="numbers">
+                    <p class="card-category">Vehículos</p>
+                    <h4 class="card-title">{{ $vehiculos }}</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
     @endif
 
     <div class="col-lg-3 col-sm-6">

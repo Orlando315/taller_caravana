@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Insumo;
+use App\Cliente;
+use App\Vehiculo;
 
 class HomeController extends Controller
 {
@@ -17,8 +19,10 @@ class HomeController extends Controller
     {
       $users   = Auth::user()->users->count();
       $insumos = Insumo::count();
+      $clientes = Cliente::count();
+      $vehiculos = Vehiculo::count();
 
-      return view('dashboard', compact('users', 'insumos'));
+      return view('dashboard', compact('users', 'insumos', 'clientes', 'vehiculos'));
     }
 
     /**
