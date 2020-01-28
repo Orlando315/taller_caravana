@@ -60,6 +60,12 @@ Route::group(['middleware' => 'auth'], function (){
     /* --- Vehiculo Modelo --- */
     Route::resource('vehiculo/modelo', 'VehiculosModeloController', ['names' => 'vehiculo.modelo']);
 
+    /* --- Proveedores vehiculos --- */
+    Route::resource('proveedor', 'ProveedorController');
+
+    /* --- Proveedores vehiculos --- */
+    Route::resource('proveedor/vehiculo', 'ProveedorVehiculoController', ['names' => 'proveedor.vehiculo']);
+
     /* --- Configurations --- */
     Route::get('configurations', 'ConfigurationsControllers@edit')->name('configurations.edit');
     Route::patch('configurations', 'ConfigurationsControllers@update')->name('configurations.update');
