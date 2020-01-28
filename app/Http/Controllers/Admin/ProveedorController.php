@@ -16,7 +16,7 @@ class ProveedorController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.proveedores.index',['proveedores' => Proveedor::all() ]);
     }
 
     /**
@@ -26,7 +26,7 @@ class ProveedorController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.proveedores.create');
     }
 
     /**
@@ -37,7 +37,34 @@ class ProveedorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+
+        //dd($request->all());
+      $this->validate($request, [
+        'tienda' => 'required',
+        'vendedor' => 'required',
+        'direccion' => 'required',
+        'email' => 'required|email|unique:proveedores,email',
+        'telefono_local' => 'required|max:15',
+        'telefono_celular' => 'required|max:15',
+      ]);
+
+      $proveedor = new Proveedor();
+      $proveedor->fill($request->all());
+      
+
+      if($proveedor->save()){
+        return redirect()->route('admin.proveedor.show',['proveedor' => $proveedor->id])->with([
+                'flash_message' => 'Proveedor agregado exitosamente.',
+                'flash_class' => 'alert-success'
+              ]);
+      }else{
+        return redirect()->route('admin.proveedor.index')->withInput()->with([
+                'flash_message' => 'Ha ocurrido un error.',
+                'flash_class' => 'alert-danger',
+                'flash_important' => true
+              ]);
+      }
     }
 
     /**
@@ -48,7 +75,7 @@ class ProveedorController extends Controller
      */
     public function show(Proveedor $proveedor)
     {
-        //
+        return view('admin.proveedores.show',['proveedor' => $proveedor]);
     }
 
     /**
@@ -59,7 +86,7 @@ class ProveedorController extends Controller
      */
     public function edit(Proveedor $proveedor)
     {
-        //
+        return view('admin.proveedores.edit',['proveedor' => $proveedor]);
     }
 
     /**
@@ -71,7 +98,29 @@ class ProveedorController extends Controller
      */
     public function update(Request $request, Proveedor $proveedor)
     {
-        //
+      $this->validate($request, [
+         'tienda' => 'required',
+        'vendedor' => 'required',
+        'direccion' => 'required',
+        'telefono_local' => 'required|max:15',
+        'telefono_celular' => 'required|max:15',
+        'email' => 'required|email|unique:proveedores,email,' . $proveedor->id . ',id',
+      ]);
+
+      $proveedor->fill($request->all());
+
+      if($proveedor->save()){
+        return redirect()->route('admin.proveedor.show', ['proveedor' => $proveedor->id])->with([
+                'flash_message' => 'Proveedor modificado exitosamente.',
+                'flash_class' => 'alert-success'
+              ]);
+      }else{
+        return redirect()->route('admin.proveedor.edit', ['proveedor' => $proveedor->id])->withInput()->with([
+                'flash_message' => 'Ha ocurrido un error.',
+                'flash_class' => 'alert-danger',
+                'flash_important' => true
+              ]);
+      }
     }
 
     /**
@@ -82,6 +131,18 @@ class ProveedorController extends Controller
      */
     public function destroy(Proveedor $proveedor)
     {
-        //
+
+     if($proveedor->delete()){
+        return redirect()->route('admin.proveedor.index')->with([
+                'flash_class'   => 'alert-success',
+                'flash_message' => 'Proveedor eliminado exitosamente.'
+              ]);
+      }else{
+        return redirect()->route('admin.proveedor.show', ['proveedor' => $proveedor->id])->with([
+                'flash_class'     => 'alert-danger',
+                'flash_message'   => 'Ha ocurrido un error.',
+                'flash_important' => true
+              ]);
+      }
     }
 }

@@ -64,7 +64,9 @@ Route::group(['middleware' => 'auth'], function (){
     Route::resource('proveedor', 'ProveedorController');
 
     /* --- Proveedores vehiculos --- */
-    Route::resource('proveedor/vehiculo', 'ProveedorVehiculoController', ['names' => 'proveedor.vehiculo']);
+    Route::resource('proveedor/vehiculo', 'ProveedorVehiculoController', ['names' => 'proveedor.vehiculo'])->except(['create']);
+    Route::get('proveedor/vehiculo/create/{id}','ProveedorVehiculoController@create')->name('proveedor.vehiculo.create');
+    Route::post('proveedor/vehiculo/modelos','ProveedorVehiculoController@search_modelo')->name('proveedor.vehiculo.search.modelo');
 
     /* --- Configurations --- */
     Route::get('configurations', 'ConfigurationsControllers@edit')->name('configurations.edit');
