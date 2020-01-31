@@ -70,6 +70,13 @@
                 <p>Agendamientos</p>
               </a>
             </li>
+
+            <li class="nav-item{{ $currentRoute == 'admin.proveedor' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('admin.proveedor.index') }}">
+                <i class="fa fa-id-card"></i>
+                <p>Proveedores</p>
+              </a>
+            </li>
             @endif
 
             <li class="nav-item">
@@ -100,7 +107,6 @@
                 </ul>
               </div>
             </li>
-
           </ul>
         </div>
       </div>

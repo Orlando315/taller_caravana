@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 
 class Proveedor extends Model
 {
@@ -19,6 +21,7 @@ class Proveedor extends Model
      * @var array
      */
     protected $fillable = [
+      'taller',
       'tienda',
       'vendedor',
       'direccion',
@@ -58,6 +61,6 @@ class Proveedor extends Model
      */
     public function vehiculos()
     {
-      return $this->hasMany('App\ProveedorVehiculo');
+      return $this->hasMany('App\ProveedorVehiculo','proveedor_id');
     }
 }
