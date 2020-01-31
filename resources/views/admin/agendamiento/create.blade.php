@@ -15,34 +15,13 @@
       <div class="col-md-10">
         <div class="card">
           <div class="card-body">
-            <form action="{{ route('admin.agendamiento.store') }}" method="POST">
+            <form action="{{ route('admin.agendamiento.store', ['proceso' => $proceso->id]) }}" method="POST">
               @csrf
 
               <h4>Generar Agendamiento</h4>
               
               <div class="row justify-content-center">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="control-label" for="cliente">Cliente: *</label>
-                    <select id="cliente" class="form-control" name="cliente" required>
-                      <option value="">Seleccione...</option>
-                      @foreach($clientes as $d)
-                        <option value="{{ $d->id }}" {{ old('cliente') == $d->id ? 'selected' : ($cliente && $d->id == $cliente->id ? 'selected' : '') }}>
-                          {{ $d->nombre() }} ({{ $d->email }})
-                        </option>
-                      @endforeach
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="control-label" for="vehiculo">Vehículo: *</label>
-                    <select id="vehiculo" class="form-control" name="vehiculo" required disabled>
-                      <option value="">Seleccione...</option>
-                    </select>
-                  </div>
-                </div>
+                <h5 class="text-center">{{ $proceso->cliente->nombre().' | '.$proceso->vehiculo->vehiculo() }}</h5>
               </div>
 
               <div class="row justify-content-center">
@@ -87,7 +66,7 @@
               @endif
 
               <div class="form-group text-right">
-                <a class="btn btn-default" href="{{ route('admin.agendamiento.index') }}"><i class="fa fa-reply"></i> Atras</a>
+                <a class="btn btn-default" href="{{ route('admin.proceso.show', ['proceso' => $proceso->id]) }}"><i class="fa fa-reply"></i> Atras</a>
                 <button class="btn btn-primary" type="submit"><i class="fa fa-send"></i> Guardar</button>
               </div>
             </form>
@@ -103,40 +82,6 @@
     let agendamientos = @json(Auth::user()->calendarAgendamientos());
 
     $(document).ready(function(){
-      $('#cliente, #vehiculo').select2({
-        placeholder: 'Seleccione...',
-      });
-
-      $('#cliente').on('change',function () {
-        let cliente = $(this).val()
-
-        if(!cliente){ return false }
-
-        $.ajax({
-          type: 'POST',
-          url: `{{ route("admin.cliente.index") }}/${cliente}/vehiculos`,
-          data: {
-            _token: '{{ csrf_token() }}'
-          },
-          cache: false,
-          dataType: 'json',
-        })
-        .done(function (vehiculos) {
-          $('#vehiculo').html('<option value="">Seleccione...</option>');
-          $.each(vehiculos, function(k, vehiculo){
-            let selected = (@json(old('vehiculo')) == vehiculo.id || @json($vehiculo ? $vehiculo->id : null) == vehiculo.id) ? 'selected' : ''
-            $('#vehiculo').append(`<option value="${vehiculo.id}" ${selected}>${vehiculo.marca.marca} - ${vehiculo.modelo.modelo } (${vehiculo.anio.anio })</option>`)
-          })
-
-          $('#vehiculo').prop('disabled', false)
-        })
-        .fail(function () {
-          $('#vehiculo').prop('disabled', true)
-        })
-      })
-
-      $('#cliente').change()
-
       $('#calendar').fullCalendar({
         defaultView: 'agendaWeek',
         themeSystem: 'bootstrap4',

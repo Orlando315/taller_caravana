@@ -63,7 +63,7 @@ class VehiculosController extends Controller
 
       $modelo = VehiculosModelo::findOrFail($request->modelo);
 
-      $vehiculo = new Vehiculo($request->only(['patentes', 'km', 'vin']));
+      $vehiculo = new Vehiculo($request->only(['patentes', 'color', 'km', 'vin']));
       $vehiculo->cliente_id = $request->cliente;
       $vehiculo->vehiculo_marca_id = $modelo->vehiculo_marca_id;
       $vehiculo->vehiculo_modelo_id = $modelo->id;

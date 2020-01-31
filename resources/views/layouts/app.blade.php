@@ -50,6 +50,13 @@
               </a>
             </li>
 
+            <li class="nav-item{{ $currentRoute == 'admin.procesos' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('admin.proceso.index') }}">
+                <i class="fa fa-tasks"></i>
+                <p>Procesos</p>
+              </a>
+            </li>
+
             <li class="nav-item{{ $currentRoute == 'admin.cliente' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('admin.cliente.index') }}">
                 <i class="fa fa-address-book"></i>

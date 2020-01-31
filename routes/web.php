@@ -72,9 +72,13 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('proveedor/vehiculo/modelos','ProveedorVehiculoController@search_modelo')->name('proveedor.vehiculo.search.modelo');
 
     /* --- Agendamientos --- */
-    Route::get('agendamiento/create/{vehiculo?}', 'AgendamientoController@create')->name('agendamiento.create');
+    Route::get('agendamiento/create/{proceso}', 'AgendamientoController@create')->name('agendamiento.create');
+    Route::post('agendamiento/create/{proceso}', 'AgendamientoController@store')->name('agendamiento.store');
     Route::resource('agendamiento', 'AgendamientoController')
-          ->except('create');
+          ->except(['create', 'store', 'show']);
+
+    /* --- Procesos --- */
+    Route::resource('proceso', 'ProcesoController');
 
     /* --- Configurations --- */
     Route::get('configurations', 'ConfigurationsControllers@edit')->name('configurations.edit');

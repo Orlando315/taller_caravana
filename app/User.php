@@ -206,13 +206,13 @@ class User extends Authenticatable
     {
       $agendamientos = [];
 
-      foreach ($this->agendamientos()->with(['vehiculo.marca', 'vehiculo.anio', 'vehiculo.modelo', 'vehiculo.cliente'])->get() as $agendamiento) {
+      foreach ($this->agendamientos()->get() as $agendamiento) {
         $agendamientos[] = [
           'id' => $agendamiento->id,
           'title' => $agendamiento->vehiculo->marca->marca.' - '.$agendamiento->vehiculo->modelo->modelo.'('.$agendamiento->vehiculo->anio->anio.') | '.$agendamiento->vehiculo->cliente->nombre(),
           'start' => $agendamiento->fecha->format('Y-m-d H:i:s'),
           'cliente' => $agendamiento->vehiculo->cliente->nombre(),
-          'url' => route('admin.agendamiento.show', ['agendamiento' => $agendamiento->id]),
+          'url' => route('admin.proceso.show', ['proceso' => $agendamiento->proceso_id]),
         ];
       }
 
@@ -225,5 +225,13 @@ class User extends Authenticatable
     public function proveedores()
     {
       return $this->hasMany('App\Proveedor', 'taller');
+    }
+
+    /**
+     * Obtener los Procesos
+     */
+    public function procesos()
+    {
+      return $this->hasMany('App\Proceso', 'taller');
     }
 }

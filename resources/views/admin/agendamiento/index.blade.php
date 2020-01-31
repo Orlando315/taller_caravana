@@ -15,11 +15,6 @@
       <div class="card">
         <div class="card-header">
           <h4 class="card-title">Agendamientos ({{ $agendamientos->count() }})</h4>
-          @if(Auth::user()->role != 'user')
-            <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('admin.agendamiento.create') }}">
-              <i class="fa fa-plus"></i> Agregar Agendamiento
-            </a>
-          @endif
         </div>
         <div class="card-body">
           <div id="calendar" class="border-top border-secondary pt-2 calendar-small"></div>

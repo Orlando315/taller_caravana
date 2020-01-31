@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\{Agendamiento, Vehiculo, Cliente};
+use App\{Agendamiento, Proceso};
 
 class AgendamientoController extends Controller
 {
@@ -24,48 +24,51 @@ class AgendamientoController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \App\Proceso  $proceso
      * @return \Illuminate\Http\Response
      */
-    public function create(Cliente $cliente = null, Vehiculo $vehiculo = null)
+    public function create(Proceso $proceso)
     {
-      $clientes = Cliente::all();
-      $vehiculos = Vehiculo::all();
-
-      return view('admin.agendamiento.create', compact('clientes', 'vehiculos', 'cliente', 'vehiculo'));
+      return view('admin.agendamiento.create', compact('proceso'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Proceso  $proceso
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Proceso $proceso)
     {
-      $this->validate($request, [
-        'vehiculo' => 'required',
-      ]);
-
       if(!$request->atender){
         $this->validate($request, [
         'fecha' => 'required|date',
         ]);
       }
 
+      if(!$request->atender && !$request->fecha){
+        return redirect()->route('admin.agendamiento.create', ['proceso' => $proceso->id])->withInput()->with([
+              'flash_message' => 'Debe seleccionar una fecha, o "Atender inmediatamente".',
+              'flash_class' => 'alert-danger',
+              'flash_important' => true
+            ]);
+      }
+
       $agendamiento = new Agendamiento([
-                        'vehiculo_id' => $request->vehiculo,
+                        'taller' => Auth::id(),
                         'atender' => isset($request->atender),
                         'fecha' => $request->atender ? date('Y-m-d H:i:s') : $request->fecha,
                       ]);
 
-      if(Auth::user()->agendamientos()->save($agendamiento)){
-        return redirect()->route('admin.agendamiento.index')->with([
+      if($proceso->agendamiento()->save($agendamiento)){
+        return redirect()->route('admin.proceso.show', ['proceso' => $proceso->id])->with([
                 'flash_message' => 'Agendamiento agregado exitosamente.',
                 'flash_class' => 'alert-success'
               ]);
       }
 
-      return redirect()->route('admin.agendamiento.create')->withInput()->with([
+      return redirect()->route('admin.agendamiento.create', ['proceso' => $proceso->id])->withInput()->with([
               'flash_message' => 'Ha ocurrido un error.',
               'flash_class' => 'alert-danger',
               'flash_important' => true
@@ -80,7 +83,7 @@ class AgendamientoController extends Controller
      */
     public function show(Agendamiento $agendamiento)
     {
-      return view('admin.agendamiento.show', compact('agendamiento'));
+        //
     }
 
     /**
@@ -110,13 +113,13 @@ class AgendamientoController extends Controller
       $agendamiento->fecha = $request->fecha ?? $agendamiento->fecha;
 
       if($agendamiento->save()){
-        return redirect()->route('admin.agendamiento.show', ['agendamiento' => $agendamiento->id])->with([
+        return redirect()->route('admin.proceso.show', ['proceso' => $agendamiento->proceso_id])->with([
                 'flash_message' => 'Agendamiento modificado exitosamente.',
                 'flash_class' => 'alert-success'
               ]);
       }
 
-      return redirect()->route('admin.agendamiento.create')->withInput()->with([
+      return redirect()->route('admin.agendamiento.edit', ['agendamiento' => $agendamiento->id])->withInput()->with([
               'flash_message' => 'Ha ocurrido un error.',
               'flash_class' => 'alert-danger',
               'flash_important' => true
@@ -132,7 +135,7 @@ class AgendamientoController extends Controller
     public function destroy(Agendamiento $agendamiento)
     {
       if($agendamiento->delete()){
-        return redirect()->route('admin.agendamiento.index')->with([
+        return redirect()->route('admin.proceso.show', ['proceso' => $agendamiento->proceso_id])->with([
                 'flash_class'   => 'alert-success',
                 'flash_message' => 'Agendamiento eliminado exitosamente.'
               ]);

@@ -94,4 +94,12 @@ class Vehiculo extends Model
     {
       return number_format($this->km, 2, ',', '.');
     }
+
+    /**
+     * Obtener todos los datos basicos del Vehiculo
+     */
+    public function vehiculo()
+    {
+      return $this->marca->marca.' - '.$this->modelo->modelo.' ('.$this->anio->anio.')';
+    }
 }

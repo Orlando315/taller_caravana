@@ -2,17 +2,17 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\{Model, Builder};
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\{Model, Builder};
 
-class Agendamiento extends Model
+class Proceso extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'agendamientos';
+    protected $table = 'procesos';
 
     /**
      * The attributes that are mass assignable.
@@ -20,11 +20,8 @@ class Agendamiento extends Model
      * @var array
      */
     protected $fillable = [
-      'taller',
-      'proceso_id',
-      'inmediatamente',
-      'fecha',
-      'status',
+      'cliente_id',
+      'vehiculo_id',
     ];
 
     /**
@@ -34,16 +31,6 @@ class Agendamiento extends Model
      */
     protected $casts = [
       'status' => 'boolean',
-      'inmediatamente' => 'boolean',
-    ];
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
-      'fecha',
     ];
 
     /**
@@ -63,26 +50,26 @@ class Agendamiento extends Model
     }
 
     /**
+     * Obtener el Cliente
+     */
+    public function cliente()
+    {
+      return $this->belongsTo('App\Cliente');
+    }
+
+    /**
      * Obtener el Vehiculo
      */
     public function vehiculo()
     {
-      return $this->proceso->vehiculo();
+      return $this->belongsTo('App\Vehiculo');
     }
 
     /**
-     * Obtener el Proceso al que pertenece
+     * Obtener el Agendamiento
      */
-    public function proceso()
+    public function agendamiento()
     {
-      return $this->belongsTo('App\Proceso');
-    }
-
-    /**
-     * Obtener la fecha formateada
-     */
-    public function fecha()
-    {
-      return $this->fecha->format('d-m-Y H:i:s');
+      return $this->hasOne('App\Agendamiento');
     }
 }
