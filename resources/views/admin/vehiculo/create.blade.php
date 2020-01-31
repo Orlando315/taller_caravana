@@ -43,22 +43,17 @@
               </div>
 
               <div class="form-group">
-                <label class="control-label" for="marca">Marca: *</label>
-                <select id="marca" class="form-control" name="marca" required>
-                  <option value="">Seleccione...</option>
+                <label class="control-label" for="modelo">Modelos: *</label>
+                <select id="modelo" class="form-control" name="modelo" required>
+                  <option>Selecciona...</option>
                   @foreach($marcas as $marca)
-                    <option value="{{ $marca->id }}" {{ old('marca') == $marca->id ? 'selected' : '' }}>{{ $marca->marca }}</option>
+                    <optgroup label="{{ $marca->marca }}">
+                      @foreach($marca->modelos as $modelo)
+                        <option value="{{ $modelo->id }}" {{ old('modelo') == $modelo->id ? 'selected' : '' }}>{{ $modelo->modelo }}</option>
+                      @endforeach
+                    </optgroup>
                   @endforeach
                 </select>
-                <small><a class="text-muted" href="{{ route('admin.vehiculo.marca.create') }}">Agregar marca</a></small>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="modelo">Modelo: *</label>
-                <select id="modelo" class="form-control" name="modelo" disabled required>
-                  <option value="">Seleccione...</option>
-                </select>
-                <small><a class="text-muted" href="{{ route('admin.vehiculo.marca.create') }}">Agregar modelo</a></small>
               </div>
 
               <div class="form-group">
@@ -107,38 +102,9 @@
 @section('scripts')
   <script type="text/javascript">
     $(document).ready(function(){
-      $('#cliente, #marca, #modelo, #año').select2({
+      $('#cliente, #modelo, #año').select2({
         placeholder: 'Seleccione...',
       });
-
-      $('#marca').on('change',function () {
-        let marca = $(this).val()
-
-        if(!marca){ return false }
-
-        $.ajax({
-          type: 'POST',
-          url: `{{ route("admin.vehiculo.marca.index") }}/${marca}/modelos`,
-          data: {
-            _token: '{{ csrf_token() }}'
-          },
-          cache: false,
-          dataType: 'json',
-        })
-        .done(function (modelos) {
-          $('#modelo').html('<option value="">Seleccione...</option>');
-          $.each(modelos, function(k, modelo){
-            $('#modelo').append(`<option value="${modelo.id}">${modelo.modelo}</option>`)
-          })
-
-          $('#modelo').prop('disabled', false)
-        })
-        .fail(function () {
-          $('#modelo').prop('disabled', true)
-        })
-      })
-
-      $('#marca').change()
     })
   </script>
 @endsection

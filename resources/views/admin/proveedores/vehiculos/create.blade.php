@@ -3,7 +3,7 @@
 @section('title', 'Vehiculo Proveedor - '.config('app.name'))
 
 @section('brand')
-  <a class="navbar-brand" href="{{ route('admin.proveedor.index') }}"> Proveedor </a>
+  <a class="navbar-brand" href="{{ route('admin.proveedor.index') }}"> Proveedor - Vehículo </a>
 @endsection
 
 @section('content')
@@ -15,40 +15,35 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-body">
-            <form action="{{ route('admin.proveedor.vehiculo.store') }}" method="POST">
+            <form action="{{ route('admin.proveedor.vehiculo.store', ['proveedor' => $proveedor->id]) }}" method="POST">
               @csrf
-              <input type="hidden" name="taller" value="{{ Auth::user()->id }}">
-              <input type="hidden" name="proveedor_id" value="{{ $proveedor->id }}">
-              <h4>Agregar Proveedor</h4>
+              <h4>Agregar Vehículo</h4>
 
               <div class="form-group">
                 <label class="control-label" for="proveedor">Proveedor: *</label>
-                <input  class="form-control" readonly="" type="text" value="{{ $proveedor->email }}">
+                <input  class="form-control" type="text" value="{{ $proveedor->email }}" readonly>
               </div>
 
               <div class="form-group">
-                <label class="control-label" for="marca">Marca: *</label>
-                <select name="vehiculo_marca_id" class="form-control select" required id="marca">
+                <label class="control-label" for="año">Año: *</label>
+                <select name="año" class="form-control" id="año" required>
                   <option>Selecciona...</option>
-                  @foreach($marca as $m)
-                    <option value="{{ $m->id }}">{{ $m->marca }}</option>
+                  @foreach($anios as $anio)
+                    <option value="{{ $anio->id }}" {{ old('año') == $anio->id ? 'selected' : '' }}>{{ $anio->anio }}</option>
                   @endforeach
                 </select>
               </div>
 
               <div class="form-group">
-                <label class="control-label" for="modelos">Modelos:</label>
-                <select class="form-control" id="modelos" name="vehiculo_modelo_id">
-                  
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="vehiculo_anio_id">Año: *</label>
-                <select name="vehiculo_anio_id" class="form-control select" required id="vehiculo_anio_id">
+                <label class="control-label" for="modelos">Modelos: *</label>
+                <select id="modelos" class="form-control" name="modelos[]" multiple="multiple" required>
                   <option>Selecciona...</option>
-                  @foreach($anio as $m)
-                    <option value="{{ $m->id }}">{{ $m->anio }}</option>
+                  @foreach($marcas as $marca)
+                    <optgroup label="{{ $marca->marca }}">
+                      @foreach($marca->modelos as $modelo)
+                        <option value="{{ $modelo->id }}" {{ old('modelo') == $modelo->id ? 'selected' : '' }}>{{ $modelo->modelo }}</option>
+                      @endforeach
+                    </optgroup>
                   @endforeach
                 </select>
               </div>
@@ -64,7 +59,7 @@
               @endif
 
               <div class="form-group text-right">
-                <a class="btn btn-default" href="{{ route('admin.users.index') }}"><i class="fa fa-reply"></i> Atras</a>
+                <a class="btn btn-default" href="{{ route('admin.proveedor.show', ['proveedor' => $proveedor->id]) }}"><i class="fa fa-reply"></i> Atras</a>
                 <button class="btn btn-primary" type="submit"><i class="fa fa-send"></i> Guardar</button>
               </div>
             </form>
@@ -79,34 +74,9 @@
 @section('scripts')
   <script type="text/javascript">
     $(document).ready(function(){
-      $('.select').select2({
+      $('#año, #modelos').select2({
         placeholder: 'Seleccione...',
       });
     })
-
-    $("#marca").change(function(event) {
-      event.preventDefault();
-      $.ajax({
-        url: '{{ route("admin.proveedor.vehiculo.search.modelo")}}',
-        type: 'POST',
-        dataType: 'json',
-        data: {_token: '{{ csrf_token() }}' , id: $(this).val()},
-      })
-      .done(function(data) {
-        var modelos = '<option value="">Seleccione...</option>';
-        $.each(data.modelos, function(index, val) {
-           modelos += '<option value="'+val.id+'">'+val.modelo+'</option>';
-        });
-
-        $("#modelos").html(modelos);
-      })
-      .fail(function() {
-        console.log("error");
-      })
-      .always(function() {
-        console.log("complete");
-      });
-      
-    });
   </script>
 @endsection

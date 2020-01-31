@@ -64,8 +64,6 @@
           <p class="text-muted">
             {{ $proveedor->descuento_convenio }}
           </p>
-          <hr>
-
         </div>
         <div class="card-footer text-center">
           <hr>
@@ -76,12 +74,12 @@
       </div><!-- .card -->
     </div>
 
-    <div class="col-md-7">
+    <div class="col-md-8">
       <div class="card">
         <div class="card-header">
           <h4 class="card-title">Vehículos</h4>
-          <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('admin.proveedor.vehiculo.create',['id' => $proveedor->id]) }}">
-            <i class="fa fa-plus"></i> Agregar vehículo
+          <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('admin.proveedor.vehiculo.create', ['proveedor' => $proveedor->id]) }}">
+            <i class="fa fa-plus"></i> Agregar vehículos
           </a>
         </div>
         <div class="card-body">
@@ -99,9 +97,9 @@
             @foreach($proveedor->vehiculos as $v)
               <tr>
                 <td scope="row" class="text-center">{{ $loop->index + 1 }}</td>
-                <td scope="col" class="text-center">{{ $v->marca->marca}}</td>
-                <td scope="col" class="text-center">{{ $v->modelo->modelo}}</td>
-                <td scope="col" class="text-center">{{ $v->anio_vehiculo->anio}}</td>
+                <td scope="col" class="text-center">{{ $v->marca->marca }}</td>
+                <td scope="col" class="text-center">{{ $v->modelo->modelo }}</td>
+                <td scope="col" class="text-center">{{ $v->anio_vehiculo->anio }}</td>
                 <td scope="col" class="text-center">
                   <button type="button" data-url="{{ route('admin.proveedor.vehiculo.destroy',['id' => $v->id]) }}" class="btn btn-sm btn-fill btn-danger del_vehiculo">X</button>
                 </td>
@@ -146,7 +144,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="delModalVehiculoLabel">Eliminar Proveedor</h4>
+          <h4 class="modal-title" id="delModalVehiculoLabel">Eliminar Vehículo</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -157,7 +155,7 @@
               @csrf
               @method('DELETE')
 
-              <p class="text-center">¿Esta seguro de eliminar este Proveedor?</p><br>
+              <p class="text-center">¿Esta seguro de eliminar este Vehículo?</p><br>
 
               <center>
                 <button class="btn btn-fill btn-danger" type="submit">Eliminar</button>
@@ -172,12 +170,10 @@
 @endsection
 
 @section('scripts')
-
-<script type="text/javascript">
-  $(".del_vehiculo").click(function(event) {
-    $("#delModalVehiculo").modal('show');
-    $("#form_delete_vehiculo").attr('action',$(this).data('url'));
-  });
+  <script type="text/javascript">
+    $('.del_vehiculo').click(function(event) {
+      $('#delModalVehiculo').modal('show');
+      $('#form_delete_vehiculo').attr('action',$(this).data('url'));
+    });
 </script>
-
 @endsection

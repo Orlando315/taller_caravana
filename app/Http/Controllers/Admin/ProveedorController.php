@@ -37,34 +37,30 @@ class ProveedorController extends Controller
      */
     public function store(Request $request)
     {
-
-
-        //dd($request->all());
       $this->validate($request, [
         'tienda' => 'required',
         'vendedor' => 'required',
         'direccion' => 'required',
         'email' => 'required|email|unique:proveedores,email',
-        'telefono_local' => 'required|max:15',
-        'telefono_celular' => 'required|max:15',
+        'telefono_local' => 'nullable|max:15',
+        'telefono_celular' => 'nullable|max:15',
+        'descuento' => 'nullable|numeric|min:0',
       ]);
 
-      $proveedor = new Proveedor();
-      $proveedor->fill($request->all());
-      
+      $proveedor = new Proveedor($request->all());
 
-      if($proveedor->save()){
+      if(Auth::user()->proveedores()->save($proveedor)){
         return redirect()->route('admin.proveedor.show',['proveedor' => $proveedor->id])->with([
                 'flash_message' => 'Proveedor agregado exitosamente.',
                 'flash_class' => 'alert-success'
               ]);
-      }else{
-        return redirect()->route('admin.proveedor.index')->withInput()->with([
-                'flash_message' => 'Ha ocurrido un error.',
-                'flash_class' => 'alert-danger',
-                'flash_important' => true
-              ]);
       }
+
+      return redirect()->route('admin.proveedor.index')->withInput()->with([
+              'flash_message' => 'Ha ocurrido un error.',
+              'flash_class' => 'alert-danger',
+              'flash_important' => true
+            ]);
     }
 
     /**
@@ -99,12 +95,13 @@ class ProveedorController extends Controller
     public function update(Request $request, Proveedor $proveedor)
     {
       $this->validate($request, [
-         'tienda' => 'required',
+        'tienda' => 'required',
         'vendedor' => 'required',
         'direccion' => 'required',
-        'telefono_local' => 'required|max:15',
-        'telefono_celular' => 'required|max:15',
+        'telefono_local' => 'nullable|max:15',
+        'telefono_celular' => 'nullable|max:15',
         'email' => 'required|email|unique:proveedores,email,' . $proveedor->id . ',id',
+        'descuento' => 'nullable|numeric|min:0',
       ]);
 
       $proveedor->fill($request->all());
@@ -114,13 +111,12 @@ class ProveedorController extends Controller
                 'flash_message' => 'Proveedor modificado exitosamente.',
                 'flash_class' => 'alert-success'
               ]);
-      }else{
-        return redirect()->route('admin.proveedor.edit', ['proveedor' => $proveedor->id])->withInput()->with([
-                'flash_message' => 'Ha ocurrido un error.',
-                'flash_class' => 'alert-danger',
-                'flash_important' => true
-              ]);
       }
+      return redirect()->route('admin.proveedor.edit', ['proveedor' => $proveedor->id])->withInput()->with([
+              'flash_message' => 'Ha ocurrido un error.',
+              'flash_class' => 'alert-danger',
+              'flash_important' => true
+            ]);
     }
 
     /**
@@ -131,18 +127,17 @@ class ProveedorController extends Controller
      */
     public function destroy(Proveedor $proveedor)
     {
-
      if($proveedor->delete()){
         return redirect()->route('admin.proveedor.index')->with([
                 'flash_class'   => 'alert-success',
                 'flash_message' => 'Proveedor eliminado exitosamente.'
               ]);
-      }else{
-        return redirect()->route('admin.proveedor.show', ['proveedor' => $proveedor->id])->with([
-                'flash_class'     => 'alert-danger',
-                'flash_message'   => 'Ha ocurrido un error.',
-                'flash_important' => true
-              ]);
       }
+
+      return redirect()->route('admin.proveedor.show', ['proveedor' => $proveedor->id])->with([
+              'flash_class'     => 'alert-danger',
+              'flash_message'   => 'Ha ocurrido un error.',
+              'flash_important' => true
+            ]);
     }
 }

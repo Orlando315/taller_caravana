@@ -17,7 +17,6 @@
           <div class="card-body">
             <form action="{{ route('admin.proveedor.store') }}" method="POST">
               @csrf
-              <input type="hidden" name="taller" value="{{ Auth::user()->id }}">
               <h4>Agregar Proveedor</h4>
 
               <div class="form-group">
@@ -31,27 +30,27 @@
               </div>
 
               <div class="form-group">
-                <label class="control-label" for="vendedor">Vendedor:</label>
-                <input id="vendedor" class="form-control{{ $errors->has('vendedor') ? ' is-invalid' : '' }}" type="text" name="vendedor" maxlength="50" value="{{ old('vendedor') }}" placeholder="Vendedor">
+                <label class="control-label" for="vendedor">Vendedor: *</label>
+                <input id="vendedor" class="form-control{{ $errors->has('vendedor') ? ' is-invalid' : '' }}" type="text" name="vendedor" maxlength="50" value="{{ old('vendedor') }}" placeholder="Vendedor" required>
               </div>
 
               <div class="form-group">
                 <label class="control-label" for="direccion">Dirección: *</label>
-                <textarea class="form-control{{ $errors->has('direccion') ? ' is-invalid' : '' }}" name="direccion" placeholder="Dirección">{{ old('direccion') }}</textarea>
+                <textarea class="form-control{{ $errors->has('direccion') ? ' is-invalid' : '' }}" name="direccion" placeholder="Dirección" required>{{ old('direccion') }}</textarea>
               </div>
               
               <div class="form-group">
                 <label class="control-label" for="telefono_local">Teléfono Local: *</label>
-                <input id="telefono_local" class="form-control{{ $errors->has('telefono_local') ? ' is-invalid' : '' }}" type="number" name="telefono_local" maxlength="50" value="{{ old('telefono_local') }}" placeholder="Teléfono Local" required>
+                <input id="telefono_local" class="form-control{{ $errors->has('telefono_local') ? ' is-invalid' : '' }}" type="text" name="telefono_local" maxlength="15" value="{{ old('telefono_local') }}" placeholder="Teléfono Local">
               </div>
 
               <div class="form-group">
                 <label class="control-label" for="telefono_celular">Teléfono Celular: *</label>
-                <input id="telefono_celular" class="form-control{{ $errors->has('telefono_celular') ? ' is-invalid' : '' }}" type="number" name="telefono_celular" maxlength="50" value="{{ old('telefono_celular') }}" placeholder="Teléfono Celular" required>
+                <input id="telefono_celular" class="form-control{{ $errors->has('telefono_celular') ? ' is-invalid' : '' }}" type="text" name="telefono_celular" maxlength="15" value="{{ old('telefono_celular') }}" placeholder="Teléfono Celular">
               </div>
 
               <div class="form-group">
-                <label class="control-label" for="descuento_convenio">Descuento: *</label>
+                <label class="control-label" for="descuento_convenio">Descuento:</label>
                 <input id="descuento_convenio" class="form-control{{ $errors->has('descuento_convenio') ? ' is-invalid' : '' }}" type="number" name="descuento_convenio" min="0" max="99999999" step="0.01" value="{{ old('descuento_convenio') }}" placeholder="Descuento">
               </div>
 
@@ -66,7 +65,7 @@
               @endif
 
               <div class="form-group text-right">
-                <a class="btn btn-default" href="{{ route('admin.users.index') }}"><i class="fa fa-reply"></i> Atras</a>
+                <a class="btn btn-default" href="{{ route('admin.proveedor.index') }}"><i class="fa fa-reply"></i> Atras</a>
                 <button class="btn btn-primary" type="submit"><i class="fa fa-send"></i> Guardar</button>
               </div>
             </form>

@@ -218,4 +218,12 @@ class User extends Authenticatable
 
       return $agendamientos;
     }
+
+    /**
+     * Obtener los Proveedores
+     */
+    public function proveedores()
+    {
+      return $this->hasMany('App\Proveedor', 'taller');
+    }
 }

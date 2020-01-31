@@ -54,7 +54,6 @@ class VehiculosController extends Controller
       $this->validate($request, [
         'cliente' => 'required',
         'año' => 'required',
-        'marca' => 'required',
         'modelo' => 'required',
         'patentes' => 'nullable|string|max:50',
         'color' => 'nullable|string|max:50',
@@ -62,10 +61,12 @@ class VehiculosController extends Controller
         'vin' => 'nullable|string|max:50'
       ]);
 
+      $modelo = VehiculosModelo::findOrFail($request->modelo);
+
       $vehiculo = new Vehiculo($request->only(['patentes', 'km', 'vin']));
       $vehiculo->cliente_id = $request->cliente;
-      $vehiculo->vehiculo_marca_id = $request->marca;
-      $vehiculo->vehiculo_modelo_id = $request->modelo;
+      $vehiculo->vehiculo_marca_id = $modelo->vehiculo_marca_id;
+      $vehiculo->vehiculo_modelo_id = $modelo->id;
       $vehiculo->vehiculo_anio_id = $request->input('año');
 
       if(Auth::user()->vehiculos()->save($vehiculo)){

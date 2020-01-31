@@ -24,9 +24,11 @@
             <thead>
               <tr>
                 <th scope="col" class="text-center">#</th>
-                <th scope="col" class="text-center">Email</th>
                 <th scope="col" class="text-center">Tienda</th>
                 <th scope="col" class="text-center">Vendedor</th>
+                <th scope="col" class="text-center">Email</th>
+                <th scope="col" class="text-center">Telf. Local</th>
+                <th scope="col" class="text-center">Telf. Celular</th>
               </tr>
             </thead>
             <tbody>
@@ -35,13 +37,13 @@
                   <td scope="row" class="text-center">{{ $loop->index + 1 }}</td>
                   <td>
                     <a href="{{ route('admin.proveedor.show', ['proveedor' => $d->id] )}}" title="Ver proveedor">
-                      {{ $d->email }}
+                      {{ $d->tienda }}
                     </a>
                   </td>
-                  <td>
-                      {{ $d->tienda }}
-                  </td>
                   <td>{{ $d->vendedor }}</td>
+                  <td>{{ $d->email ?? 'N/A' }}</td>
+                  <td>{{ $d->telefono_local ?? 'N/A' }}</td>
+                  <td>{{ $d->telefono_celular ?? 'N/A' }}</td>
                 </tr>
               @endforeach
             </tbody>

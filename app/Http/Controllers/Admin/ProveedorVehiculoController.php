@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\{Proveedor, ProveedorVehiculo, VehiculosMarca, VehiculosAnio};
+use App\{Proveedor, ProveedorVehiculo, VehiculosMarca, VehiculosModelo, VehiculosAnio};
 
 class ProveedorVehiculoController extends Controller
 {
@@ -22,51 +22,58 @@ class ProveedorVehiculoController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \App\Proveedor  $proveedor
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create(Proveedor $proveedor)
     {
-        $proveedor = Proveedor::findOrfail($id);
-        $marca = VehiculosMarca::all();
-        $anio = VehiculosAnio::all();
+      $marcas = VehiculosMarca::all();
+      $anios = VehiculosAnio::all();
 
-        return view('admin.proveedores.vehiculos.create',['proveedor' => $proveedor,'marca' => $marca,'anio' => $anio]);
+      return view('admin.proveedores.vehiculos.create', ['proveedor' => $proveedor,'marcas' => $marcas, 'anios' => $anios]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
+     * @param  \App\Proveedor  $proveedor
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Proveedor $proveedor)
     {
-        
-
       $this->validate($request, [
-        'proveedor_id' => 'required|integer',
-        'vehiculo_marca_id' => 'required|integer',
-        'vehiculo_modelo_id' => 'required|integer',
-        'vehiculo_anio_id' => 'required|integer',
-        
+        'modelos' => 'required',
+        'año' => 'required',
       ]);
 
-      $proveedor_vehiculo = new ProveedorVehiculo();
-      $proveedor_vehiculo->fill($request->all());
-      
+      $vehiculos = [];
 
-      if($proveedor_vehiculo->save()){
-        return redirect()->route('admin.proveedor.show',['proveedor' => $request->proveedor_id])->with([
-                'flash_message' => 'Vehiculo agregado exitosamente.',
+      foreach ($request->modelos as $id) {
+        $modelo = VehiculosModelo::find($id);
+
+        if($modelo){
+          $vehiculos[] = [
+                        'taller' => Auth::id(),
+                        'vehiculo_anio_id' => $request->input('año'),
+                        'vehiculo_marca_id' => $modelo->vehiculo_marca_id,
+                        'vehiculo_modelo_id' => $modelo->id,
+                      ];
+        }
+      }
+
+      if($proveedor->vehiculos()->createMany($vehiculos)){
+        return redirect()->route('admin.proveedor.show', ['proveedor' => $proveedor->id])->with([
+                'flash_message' => 'Vehículo agregado exitosamente.',
                 'flash_class' => 'alert-success'
               ]);
-      }else{
-        return redirect()->route('admin.proveedor.show',['proveedor' => $request->proveedor_id])->withInput()->with([
-                'flash_message' => 'Ha ocurrido un error.',
-                'flash_class' => 'alert-danger',
-                'flash_important' => true
-              ]);
       }
+
+      return redirect()->route('admin.proveedor.show', ['proveedor' => $proveedor->id])->withInput()->with([
+              'flash_message' => 'Ha ocurrido un error.',
+              'flash_class' => 'alert-danger',
+              'flash_important' => true
+            ]);
     }
 
     /**
@@ -109,28 +116,19 @@ class ProveedorVehiculoController extends Controller
      * @param  \App\ProveedorVehiculo  $proveedorVehiculo
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(ProveedorVehiculo $vehiculo)
     {
+      if($vehiculo->delete()){
+          return redirect()->back()->with([
+                  'flash_class'   => 'alert-success',
+                  'flash_message' => 'Vehículo eliminado exitosamente.'
+                ]);
+      }
 
-        $vehiculo = ProveedorVehiculo::findOrfail($id);
-        if($vehiculo->delete()){
-            return redirect()->back()->with([
-                    'flash_class'   => 'alert-success',
-                    'flash_message' => 'Vehiculo eliminado exitosamente.'
-                  ]);
-        }else{
-            return redirect()->back()->with([
-                    'flash_class'     => 'alert-danger',
-                    'flash_message'   => 'Ha ocurrido un error.',
-                    'flash_important' => true
-                  ]);
-        }
-    }
-
-    public function search_modelo(Request $request)
-    {
-        $modelos = VehiculosMarca::findOrfail($request->id)->modelos;
-
-        return response()->json(['modelos' => $modelos]);
+      return redirect()->back()->with([
+              'flash_class'     => 'alert-danger',
+              'flash_message'   => 'Ha ocurrido un error.',
+              'flash_important' => true
+            ]);
     }
 }
