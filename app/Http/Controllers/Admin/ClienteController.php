@@ -151,4 +151,15 @@ class ClienteController extends Controller
               'flash_important' => true
             ]);
     }
+
+    /**
+     * Obtener los Vehiculos del Cliente especificado
+     *
+     * @param  \App\Cliente  $cliente
+     * @return \Illuminate\Http\Response
+     */
+    public function vehiculos(Cliente $cliente)
+    {
+      return response()->json($cliente->vehiculos()->with(['marca', 'modelo', 'anio'])->get());
+    }
 }

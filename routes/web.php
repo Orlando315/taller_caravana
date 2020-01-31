@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth'], function (){
     Route::patch('users/{user}/password', 'UsersControllers@password')->name('users.password');
 
     /* --- Clientes --- */
+    Route::post('cliente/{cliente}/vehiculos', 'ClienteController@vehiculos');
     Route::resource('cliente', 'ClienteController');
 
     /* --- Vehiculo --- */
@@ -65,6 +66,11 @@ Route::group(['middleware' => 'auth'], function (){
 
     /* --- Proveedores vehiculos --- */
     Route::resource('proveedor/vehiculo', 'ProveedorVehiculoController', ['names' => 'proveedor.vehiculo']);
+
+    /* --- Agendamientos --- */
+    Route::get('agendamiento/create/{vehiculo?}', 'AgendamientoController@create')->name('agendamiento.create');
+    Route::resource('agendamiento', 'AgendamientoController')
+          ->except('create');
 
     /* --- Configurations --- */
     Route::get('configurations', 'ConfigurationsControllers@edit')->name('configurations.edit');

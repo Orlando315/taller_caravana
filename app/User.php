@@ -190,4 +190,32 @@ class User extends Authenticatable
     {
       return $this->hasMany('App\Vehiculo', 'taller');
     }
+
+    /**
+     * Obtener los Agendamientos
+     */
+    public function agendamientos()
+    {
+      return $this->hasMany('App\Agendamiento', 'taller');
+    }
+
+    /**
+     * Obtener los Agendamientos para el calendario
+     */
+    public function calendarAgendamientos()
+    {
+      $agendamientos = [];
+
+      foreach ($this->agendamientos()->with(['vehiculo.marca', 'vehiculo.anio', 'vehiculo.modelo', 'vehiculo.cliente'])->get() as $agendamiento) {
+        $agendamientos[] = [
+          'id' => $agendamiento->id,
+          'title' => $agendamiento->vehiculo->marca->marca.' - '.$agendamiento->vehiculo->modelo->modelo.'('.$agendamiento->vehiculo->anio->anio.') | '.$agendamiento->vehiculo->cliente->nombre(),
+          'start' => $agendamiento->fecha->format('Y-m-d H:i:s'),
+          'cliente' => $agendamiento->vehiculo->cliente->nombre(),
+          'url' => route('admin.agendamiento.show', ['agendamiento' => $agendamiento->id]),
+        ];
+      }
+
+      return $agendamientos;
+    }
 }

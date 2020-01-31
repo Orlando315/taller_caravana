@@ -17,6 +17,8 @@
     <link href="{{ asset('js/plugins/datatables/datatables.min.css') }}" rel="stylesheet"/>
     <!-- Select2 -->
     <link href="{{ asset('js/plugins/select2/select2.min.css') }}" rel="stylesheet"/>
+    <!-- Fullcalendar -->
+    <link href="{{ asset('js/plugins/fullcalendar-3.10.0/fullcalendar.min.css') }}" rel="stylesheet"/>
     <!-- App -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"/>
 
@@ -59,6 +61,13 @@
               <a class="nav-link" href="{{ route('admin.vehiculo.index') }}">
                 <i class="fa fa-car"></i>
                 <p>Vehiculos</p>
+              </a>
+            </li>
+
+            <li class="nav-item{{ $currentRoute == 'admin.agendamiento' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('admin.agendamiento.index') }}">
+                <i class="fa fa-calendar"></i>
+                <p>Agendamientos</p>
               </a>
             </li>
             @endif
@@ -195,8 +204,12 @@
     <script src="{{ asset('js/plugins/bootstrap-notify.js') }}" type="text/javascript"></script>
     <!-- Data-table -->
     <script src="{{ asset('js/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
-    <!-- Data-table -->
+    <!-- Select2 -->
     <script src="{{ asset('js/plugins/select2/select2.min.js') }}" type="text/javascript"></script>
+    <!-- Fullcalendar -->
+    <script src="{{ asset('js/plugins/fullcalendar-3.10.0/lib/moment.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/plugins/fullcalendar-3.10.0/fullcalendar.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/plugins/fullcalendar-3.10.0/locale/es.js') }}" type="text/javascript"></script>
 
     <script type="text/javascript">
       $(document).ready(function(){

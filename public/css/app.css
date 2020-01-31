@@ -127,15 +127,13 @@ button:disabled:hover{
   cursor: default;
 }
 
-/* Check en modal de editar expiracion */
-#expirationModal .form-check .form-check-sign::before, .form-check .form-check-sign::after {
-  margin-top: 0;
-}
-#expirationModal .form-check .form-check-label {
+/* checkbox */
+.form-check{
   padding-left: 0;
 }
-
-/* checkbox */
+.form-check .form-check-label{
+  padding-left: 25px;
+}
 .form-check .form-check-sign::before, .form-check .form-check-sign::after{
   color: #888888;
   margin-left: -23px;
@@ -224,4 +222,18 @@ button:disabled:hover{
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
+}
+
+.calendar-small .fc-header-toolbar h2{
+  font-size: 18px !important;
+}
+.calendar-small .fc-header-toolbar button{
+  font-size: 14px !important;
+}
+.calendar-small table{
+  font-size: 12px;
+}
+.fc .fc-highlight-container .fc-highlight{
+  background-color: #bfe5c7;
+  opacity: .7;
 }
