@@ -20,6 +20,8 @@
               @method('PUT')
 
               <h4>Editar Agendamiento</h4>
+              
+              <h5 class="text-center">{{ $proceso->cliente->nombre().' | '.$proceso->vehiculo->vehiculo() }}</h5>
 
               <div class="row justify-content-center group-agenda">
                 <div class="col-md-6">

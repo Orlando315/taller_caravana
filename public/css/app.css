@@ -237,3 +237,48 @@ button:disabled:hover{
   background-color: #bfe5c7;
   opacity: .7;
 }
+
+/* Fileinput */
+#foto-group .input-group-btn .btn{
+  padding: .375rem .75rem !important;
+}
+.krajee-default.file-preview-frame, .krajee-default.file-preview-frame:hover{
+  box-shadow: none !important;
+}
+.krajee-default.file-preview-frame .file-thumbnail-footer{
+  height: auto !important;
+}
+.krajee-default.file-preview-frame .file-thumbnail-footer .file-footer-caption{
+  margin-bottom: 0;
+}
+.krajee-default.file-preview-frame .file-thumbnail-footer .file-upload-indicator,
+.krajee-default.file-preview-frame .file-thumbnail-footer .clearfix{
+  display: none;
+}
+#foto-group .btn:hover{
+  cursor: pointer;
+}
+
+/* Media thumbs */
+.media-thumbs{
+  border: 1px solid rgba(0,0,0,.2);
+}
+.media-thumbs .media-thumbs-options{
+  text-align: right;
+}
+.media-thumbs .media-thumbs-options .btn-xs{
+  font-size: 8px;
+  padding: 3px 5px;
+}
+.media-thumbs .media-thumbs-content{
+  height: 80px;
+  text-align: center;
+}
+.media-thumbs .media-thumbs-content img{
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  vertical-align: middle;
+  border-style: none;
+}

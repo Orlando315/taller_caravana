@@ -71,14 +71,26 @@ Route::group(['middleware' => 'auth'], function (){
           ->only(['destroy']);
     Route::post('proveedor/vehiculo/modelos','ProveedorVehiculoController@search_modelo')->name('proveedor.vehiculo.search.modelo');
 
+    /* --- Procesos --- */
+    Route::resource('proceso', 'ProcesoController');
+    
     /* --- Agendamientos --- */
     Route::get('agendamiento/create/{proceso}', 'AgendamientoController@create')->name('agendamiento.create');
     Route::post('agendamiento/create/{proceso}', 'AgendamientoController@store')->name('agendamiento.store');
     Route::resource('agendamiento', 'AgendamientoController')
           ->except(['create', 'store', 'show']);
 
-    /* --- Procesos --- */
-    Route::resource('proceso', 'ProcesoController');
+    /* --- Preevaluaciones --- */
+    Route::get('preevaluacion/create/{proceso}', 'PreevaluacionController@create')->name('preevaluacion.create');
+    Route::post('preevaluacion/{proceso}', 'PreevaluacionController@store')->name('preevaluacion.store');
+    Route::get('preevaluacion/{proceso}/edit', 'PreevaluacionController@edit')->name('preevaluacion.edit');
+    Route::put('preevaluacion/{proceso}', 'PreevaluacionController@update')->name('preevaluacion.update');
+    Route::resource('preevaluacion', 'PreevaluacionController')
+          ->only(['index', 'destroy']);
+
+    /* --- Preevaluaciones Fotos --- */
+    Route::get('preevaluacion/foto', 'PreevaluacionFotoController@index')->name('preevaluacion.foto.index');
+    Route::delete('preevaluacion/foto/{foto}', 'PreevaluacionFotoController@destroy')->name('preevaluacion.foto.destroy');
 
     /* --- Configurations --- */
     Route::get('configurations', 'ConfigurationsControllers@edit')->name('configurations.edit');

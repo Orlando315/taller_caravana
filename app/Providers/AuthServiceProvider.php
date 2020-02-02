@@ -4,16 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\Policies\UserPolicy;
-use App\User;
-use App\Policies\InsumoTipoPolicy;
-use App\InsumoTipo;
-use App\Policies\InsumoFormatoPolicy;
-use App\InsumoFormato;
-use App\Policies\InsumoPolicy;
-use App\Insumo;
-use App\Policies\ConfigurationPolicy;
-use App\Configuration;
+use App\Policies\{UserPolicy, InsumoTipoPolicy, InsumoFormatoPolicy, InsumoPolicy, ConfigurationPolicy, PreevaluacionPolicy};
+use App\{User, InsumoTipo, InsumoFormato, Insumo, Configuration, Preevaluacion};
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -28,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
         InsumoFormato::class => InsumoFormatoPolicy::class,
         Insumo::class => InsumoPolicy::class,
         Configuration::class => ConfigurationPolicy::class,
+        Preevaluacion::class => PreevaluacionPolicy::class,
     ];
 
     /**

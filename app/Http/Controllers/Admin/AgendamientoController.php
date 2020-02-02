@@ -62,7 +62,10 @@ class AgendamientoController extends Controller
                       ]);
 
       if($proceso->agendamiento()->save($agendamiento)){
-        return redirect()->route('admin.proceso.show', ['proceso' => $proceso->id])->with([
+        $proceso->etapa = 2;
+        $proceso->save();
+
+        return redirect()->route('admin.preevaluacion.create', ['proceso' => $proceso->id])->with([
                 'flash_message' => 'Agendamiento agregado exitosamente.',
                 'flash_class' => 'alert-success'
               ]);

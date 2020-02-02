@@ -20,9 +20,7 @@
 
               <h4>Generar Agendamiento</h4>
               
-              <div class="row justify-content-center">
-                <h5 class="text-center">{{ $proceso->cliente->nombre().' | '.$proceso->vehiculo->vehiculo() }}</h5>
-              </div>
+              <h5 class="text-center">{{ $proceso->cliente->nombre().' | '.$proceso->vehiculo->vehiculo() }}</h5>
 
               <div class="row justify-content-center">
                 <div class="col-md-6">

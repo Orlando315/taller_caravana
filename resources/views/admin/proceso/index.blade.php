@@ -41,9 +41,9 @@
                     </a>
                   </td>
                   <td>{{ $proceso->vehiculo->vehiculo() }}</td>
-                  <td>{{ $proceso->agendamiento ? $proceso->agendamiento->fecha() : 'N/A' }}</td>
-                  <td>{{ $proceso->preevaluacion ?? 'N/A' }}</td>
-                  <td>{{ $proceso->created_at->format('d-m-Y H:i:s') }}</td>
+                  <td class="text-center">{{ $proceso->agendamiento ? $proceso->agendamiento->fecha() : 'N/A' }}</td>
+                  <td class="text-center">{!! $proceso->preevaluacionesStatus() !!}</td>
+                  <td class="text-center">{{ $proceso->created_at->format('d-m-Y H:i:s') }}</td>
                 </tr>
               @endforeach
             </tbody>
