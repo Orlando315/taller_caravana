@@ -84,6 +84,13 @@
                 <p>Proveedores</p>
               </a>
             </li>
+
+            <li class="nav-item{{ $currentRoute == 'admin.repuesto' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('admin.repuesto.index') }}">
+                <i class="fa fa-cubes"></i>
+                <p>Repuestos</p>
+              </a>
+            </li>
             @endif
 
             <li class="nav-item">

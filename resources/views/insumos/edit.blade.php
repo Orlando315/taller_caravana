@@ -2,11 +2,6 @@
 
 @section('title', 'Insumos - '.config('app.name'))
 
-@section('head')
-  <!-- Select2 -->
-  <link rel="stylesheet" type="text/css" href="{{ asset('js/plugins/select2/select2.min.css') }}">
-@endsection
-
 @section('brand')
   <a class="navbar-brand" href="{{ route('insumos.index') }}"> Insumos </a>
 @endsection
@@ -160,7 +155,6 @@
 @endsection
 
 @section('scripts')
-  <script type="text/javascript" src="{{ asset( 'js/plugins/select2/select2.min.js' ) }}"></script>
   <script type="text/javascript">
     const alertOption = $('.alert-option');
     const optionSubmit = $('#option-submit');

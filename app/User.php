@@ -234,4 +234,12 @@ class User extends Authenticatable
     {
       return $this->hasMany('App\Proceso', 'taller');
     }
+
+    /**
+     * Obtener los Repuestos
+     */
+    public function repuestos()
+    {
+      return $this->hasMany('App\Repuesto', 'taller');
+    }
 }

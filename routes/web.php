@@ -75,6 +75,9 @@ Route::group(['middleware' => 'auth'], function (){
           ->only(['destroy']);
     Route::post('proveedor/vehiculo/modelos','ProveedorVehiculoController@search_modelo')->name('proveedor.vehiculo.search.modelo');
 
+    /* --- Repuestos --- */
+    Route::resource('repuesto', 'RepuestoController');
+
     /* --- Procesos --- */
     Route::resource('proceso', 'ProcesoController');
     
