@@ -37,6 +37,12 @@
   visibility: visible;
 }
 
+.dropdown-menu.dropdown-menu-right{
+  top: 100% !important;
+  right: 0 !important;
+  left: auto !important;
+}
+
 /* Select 2 */
 .select2-container .select2-selection--single,
 .select2-container--default .select2-selection--single .select2-selection__arrow {

@@ -29,7 +29,11 @@ Route::group(['middleware' => 'auth'], function (){
   /* --- Insumos --- */
   Route::resource('insumos', 'InsumosControllers');
   /* --- Stock --- */
-  Route::resource('stocks', 'StocksControllers')->only(['edit', 'update']);
+  Route::get('insumos/stock/create/{insumo}', 'StocksControllers@create')->name('insumos.stock.create');
+  Route::post('insumos/stock/{insumo}', 'StocksControllers@store')->name('insumos.stock.store');
+  Route::resource('insumos/stock', 'StocksControllers')
+        ->names('insumos.stock')
+        ->except(['create', 'store']);
   /* --- Insumos Tipos --- */
   Route::resource('tipos', 'InsumosTiposControllers');
   /* --- Insumos Formatos --- */

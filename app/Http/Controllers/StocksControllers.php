@@ -2,11 +2,67 @@
 
 namespace App\Http\Controllers;
 
-use App\Stock;
 use Illuminate\Http\Request;
+use App\{Stock, Insumo, Proveedor};
 
 class StocksControllers extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+      abort(404);
+    }
+    /**
+     * Show the form for creating a new resource.
+     * 
+     * @param  \App\Insumo  $insumo
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Insumo $insumo)
+    {
+      $proveedores = Proveedor::all();
+
+      return view('insumos.stock.create', compact('insumo', 'proveedores'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Insumo  $insumo
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request, Insumo $insumo)
+    {
+      $this->authorize('create', Insumo::class);
+
+      $this->validate($request, [
+        'proveedor' => 'required|',
+        'coste' => 'required|numeric|min:0||max:99999999',
+        'venta' => 'required|numeric|min:0||max:99999999|gt:coste',
+        'stock' => 'nullable|integer|min:0|max:99999999',
+      ]);
+
+      $stock = new Stock($request->only(['coste', 'venta', 'stock']));
+      $stock->proveedor_id = $request->proveedor;
+
+      if($insumo->stocks()->save($stock)){
+        return redirect()->route('insumos.show', ['insumo' => $insumo->id])->with([
+                'flash_message' => 'Stock agregado exitosamente.',
+                'flash_class' => 'alert-success'
+              ]);
+      }
+
+      return redirect()->route('insumos.create', ['insumo' => $request->role])->withInput()->with([
+              'flash_message' => 'Ha ocurrido un error.',
+              'flash_class' => 'alert-danger',
+              'flash_important' => true
+            ]);
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -17,7 +73,7 @@ class StocksControllers extends Controller
     {
       $this->authorize('update', $stock->insumo);
 
-      return view('stocks.edit', compact('stock'));
+      return view('insumos.stock.edit', compact('stock'));
     }
 
     /**
@@ -32,24 +88,46 @@ class StocksControllers extends Controller
       $this->authorize('update', $stock->insumo);
 
       $this->validate($request, [
-        'stock' => 'required|integer|min:0|max:99999999',
-        'minimo' => 'nullable|integer|min:0|max:99999999',
+        'coste' => 'required|numeric|min:0||max:99999999',
+        'venta' => 'required|numeric|min:0||max:99999999|gt:coste',
+        'stock' => 'nullable|integer|min:0|max:99999999',
       ]);
 
-      $stock->stock = $request->stock;
-      $stock->minimo = $request->minimo;
+      $stock->fill($request->only(['coste', 'venta', 'stock']));
 
       if($stock->save()){
-        return redirect()->route('insumos.show', ['insumo' => $stock->insumo->id])->with([
+        return redirect()->route('insumos.show', ['insumo' => $stock->insumo_id])->with([
                 'flash_message' => 'Stock modificado exitosamente.',
                 'flash_class' => 'alert-success'
               ]);
-      }else{
-        return redirect()->route('stocks.edit', ['stock' => $stock->id])->withInput()->with([
-                'flash_message' => 'Ha ocurrido un error.',
-                'flash_class' => 'alert-danger',
-                'flash_important' => true
-              ]);
       }
+
+      return redirect()->route('stocks.edit', ['stock' => $stock->id])->withInput()->with([
+              'flash_message' => 'Ha ocurrido un error.',
+              'flash_class' => 'alert-danger',
+              'flash_important' => true
+            ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Stock  $stock
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Stock $stock)
+    {
+      if($stock->delete()){
+          return redirect()->back()->with([
+                  'flash_class'   => 'alert-success',
+                  'flash_message' => 'Stock eliminado exitosamente.'
+                ]);
+      }
+
+      return redirect()->back()->with([
+              'flash_class'     => 'alert-danger',
+              'flash_message'   => 'Ha ocurrido un error.',
+              'flash_important' => true
+            ]);
     }
 }

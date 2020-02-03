@@ -27,8 +27,7 @@ class Insumo extends Model
       'formato_id',
       'descripcion', 
       'factura',
-      'coste',
-      'venta',
+      'minimo'
     ];
 
     /**
@@ -79,26 +78,44 @@ class Insumo extends Model
     }
 
     /**
-     * Darle formato al campo costo
+     * Stock del Insumo
      */
-    public function costo()
+    public function stocks()
     {
-      return number_format($this->coste, 0, ',', '.');
-    }
-
-    /**
-     * Darle formato al campo venta
-     */
-    public function venta()
-    {
-      return number_format($this->venta, 0, ',', '.');
+      return $this->hasMany('App\Stock');
     }
 
     /**
      * Stock del Insumo
      */
-    public function stock()
+    public function hasLowStockAlert()
     {
-      return $this->hasOne('App\Stock');
+      return $this->minimo !== null;
+    }
+
+    /**
+     * Stock del Insumo
+     */
+    public function isLowStock()
+    {
+      return $this->minimo >= $this->getStock();
+    }
+
+    /**
+     * Stock del Insumo
+     *
+     * @param  \Bool $foramt  Define si devolver el Stock formateado o no
+     */
+    public function getStock($format = false)
+    {
+      return $format ? number_format($this->stocks()->sum('stock'), 0, ',', '.') : $this->stocks()->sum('stock');
+    }
+
+    /**
+     * Obtener el stock en uso actual
+     */
+    public function stockEnUso()
+    {
+      return $this->hasOne('App\Stock')->where('stock', '>', 0);
     }
 }

@@ -150,17 +150,17 @@
                 <li class="dropdown nav-item">
                   <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="true" rel="tooltip" title="Stock mínimo">
                     <i class="fa fa-th-large"></i>
-                    @if(count($lowStocks) > 0)
-                      <span class="notification">{{ count($lowStocks) }}</span>
+                    @if($insumosWithStockMinimo->count() > 0)
+                      <span class="notification">{{ $insumosWithStockMinimo->count() }}</span>
                     @endif
                     <span class="d-lg-none">Stock</span>
                   </a>
                   <ul class="dropdown-menu menu-notifications">
-                    @forelse($lowStocks as $lowStock)
-                      <a class="dropdown-item" href="{{ route('insumos.show', ['insumo' => $lowStock->insumo->id]) }}">
-                        {{ $lowStock->insumo->nombre }}
+                    @forelse($insumosWithStockMinimo as $lowStock)
+                      <a class="dropdown-item" href="{{ route('insumos.show', ['insumo' => $lowStock->id]) }}">
+                        {{ $lowStock->nombre }}
                         </br>
-                        <small class="text-muted">Stock: {{ $lowStock->stock }}</small>
+                        <small class="text-muted">Stock: {{ $lowStock->getStock() }}</small>
                       </a>
                     @empty
                       <a class="dropdown-item disabled text-muted" href="#" tabindex="-1" aria-disabled="true">Stock mínimo</a>

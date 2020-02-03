@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\{Auth, Storage};
 use Illuminate\Http\Request;
-use App\Insumo;
-use App\InsumoTipo;
-use App\InsumoFormato;
+use App\{Insumo, InsumoTipo, InsumoFormato};
 
 class InsumosControllers extends Controller
 {
@@ -60,8 +57,7 @@ class InsumosControllers extends Controller
         'descripcion' => 'required|string|max:255',
         'factura' => 'required|integer',
         'foto_factura' => 'required|file|mimes:jpeg,jpg,png',
-        'coste' => 'required|integer|min:1|max:9999999999',
-        'venta' => 'required|integer|min:1|max:9999999999',
+        'minimo' => 'nullable|numeric|min:0|max:99999999',
       ]);
 
       $tipo = InsumoTipo::findOrFail($request->tipo);
@@ -74,8 +70,6 @@ class InsumosControllers extends Controller
       $insumo->formato_id = $formato->id;
 
       if($insumo->save()){
-        $insumo->stock()->create([]);
-
         $directory = $insumo->user_id.'/'.$insumo->id;
         if(!Storage::exists($directory)){
           Storage::makeDirectory($directory);
@@ -107,14 +101,9 @@ class InsumosControllers extends Controller
     {
       $this->authorize('view', $insumo);
 
-      $insumos = $insumo->insumos;
+      $stocks = $insumo->stocks()->with('proveedor')->get();
 
-      if(!$insumo->stock){
-        $insumo->stock()->create([]);
-        $insumo->load('stock');
-      }
-
-      return view('insumos.show', compact('insumo', 'insumos'));
+      return view('insumos.show', compact('insumo', 'stocks'));
     }
 
     /**
@@ -154,8 +143,7 @@ class InsumosControllers extends Controller
         'descripcion' => 'required|string|max:255',
         'factura' => 'required|integer',
         'foto_factura' => 'nullable|file|mimes:jpeg,jpg,png',
-        'coste' => 'required|numeric|min:1|max:9999999999',
-        'venta' => 'required|numeric|min:1|max:9999999999',
+        'minimo' => 'nullable|numeric|min:0|max:99999999',
       ]);
 
       $tipo = InsumoTipo::findOrFail($request->tipo);
@@ -166,10 +154,6 @@ class InsumosControllers extends Controller
       $insumo->formato_id = $formato->id;
 
       if($insumo->save()){
-        if(!$insumo->stock){
-          $insumo->stock()->create([]);
-        }
-
         $directory = $insumo->user_id.'/'.$insumo->id;
         if(!Storage::exists($directory)){
           Storage::makeDirectory($directory);
@@ -193,13 +177,13 @@ class InsumosControllers extends Controller
                 'flash_message' => 'Insumo modificado exitosamente.',
                 'flash_class' => 'alert-success'
               ]);
-      }else{
-        return redirect()->route('insumos.edit', ['insumo' => $insumo->id])->withInput()->with([
-                'flash_message' => 'Ha ocurrido un error.',
-                'flash_class' => 'alert-danger',
-                'flash_important' => true
-              ]);
       }
+
+      return redirect()->route('insumos.edit', ['insumo' => $insumo->id])->withInput()->with([
+              'flash_message' => 'Ha ocurrido un error.',
+              'flash_class' => 'alert-danger',
+              'flash_important' => true
+            ]);
     }
 
     /**

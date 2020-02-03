@@ -26,8 +26,8 @@
             <thead>
               <tr>
                 <th scope="col" class="text-center">#</th>
-                <th scope="col" class="text-center">Foto</th>
                 <th scope="col" class="text-center">Nombre</th>
+                <th scope="col" class="text-center">Foto</th>
                 <th scope="col" class="text-center">Stock</th>
                 <th scope="col" class="text-center">Grado</th>
                 <th scope="col" class="text-center">Tipo</th>
@@ -37,17 +37,17 @@
               @foreach($insumos as $insumo)
                 <tr>
                   <td scope="row" class="text-center">{{ $loop->index + 1 }}</td>
-                  <td class="text-center">
-                    <div class="img-container">
-                      <img class="img-fluid img-thumbnail" src="{{ $insumo->getPhoto($insumo->foto) }}" alt="{{ $insumo->nombre }}" style="max-height: 75px">
-                    </div>
-                  </td>
                   <td>
                     <a href="{{ route('insumos.show', ['insumo' => $insumo->id] )}}">
                       {{ $insumo->nombre }}
                     </a>
                   </td>
-                  <td class="text-right">{{ $insumo->stock ? $insumo->stock->stock: '0' }}</td>
+                  <td class="text-center">
+                    <div class="img-container">
+                      <img class="img-fluid img-thumbnail" src="{{ $insumo->getPhoto($insumo->foto) }}" alt="{{ $insumo->nombre }}" style="max-height: 75px">
+                    </div>
+                  </td>
+                  <td class="text-right">{{ $insumo->getStock(true) }}</td>
                   <td>{{ $insumo->grado }}</td>
                   <td>{{ $insumo->tipo->tipo }}</td>
                 </tr>

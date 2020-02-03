@@ -2,11 +2,6 @@
 
 @section('title', 'Insumos - '.config('app.name'))
 
-@section('head')
-  <!-- Select2 -->
-  <link rel="stylesheet" type="text/css" href="{{ asset('js/plugins/select2/select2.min.css') }}">
-@endsection
-
 @section('brand')
   <a class="navbar-brand" href="{{ route('insumos.index') }}"> Insumos </a>
 @endsection
@@ -92,13 +87,8 @@
               </div>
 
               <div class="form-group">
-                <label class="control-label" for="coste">Coste: *</label>
-                <input id="coste" class="form-control{{ $errors->has('coste') ? ' is-invalid' : '' }}" type="number" name="coste" min="1" max="9999999999" value="{{ old('coste') }}" placeholder="Coste" required>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="venta">Venta: *</label>
-                <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" name="venta" min="1" max="9999999999" value="{{ old('venta') }}" placeholder="Venta" required>
+                <label class="control-label" for="minimo">Stock mínimo:</label>
+                <input id="minimo" class="form-control{{ $errors->has('minimo') ? ' is-invalid' : '' }}" type="number" name="minimo" min="1" max="9999999999" value="{{ old('minimo') }}" placeholder="Stock mínimo" required>
               </div>
 
               @if(count($errors) > 0)
@@ -165,7 +155,6 @@
 @endsection
 
 @section('scripts')
-  <script type="text/javascript" src="{{ asset( 'js/plugins/select2/select2.min.js' ) }}"></script>
   <script type="text/javascript">
     const alertOption = $('.alert-option');
     const optionSubmit = $('#option-submit');

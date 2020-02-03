@@ -25,8 +25,21 @@ class Stock extends Model
      * @var array
      */
     protected $fillable = [
+      'proveedor_id',
+      'coste',
+      'venta',
       'stock',
-      'minimo'
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+      'coste' => 'float',
+      'venta' => 'float',
+      'stock' => 'integer',
     ];
 
     /**
@@ -44,10 +57,42 @@ class Stock extends Model
     }
 
     /**
-     * Stock del Insumo
+     * Obtener el Insumo
      */
     public function insumo()
     {
       return $this->belongsTo('App\Insumo');
+    }
+
+    /**
+     * Obtener el proveedor
+     */
+    public function proveedor()
+    {
+      return $this->belongsTo('App\Proveedor');
+    }
+
+    /**
+     * Obtener el atributo formateado
+     */
+    public function coste()
+    {
+      return number_format($this->coste, 2, ',', '.');
+    }
+
+    /**
+     * Obtener el atributo formateado
+     */
+    public function venta()
+    {
+      return number_format($this->venta, 2, ',', '.');
+    }
+
+    /**
+     * Obtener el atributo formateado
+     */
+    public function stock()
+    {
+      return number_format($this->stock, 0, ',', '.');
     }
 }
