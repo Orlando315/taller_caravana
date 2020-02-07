@@ -76,10 +76,15 @@ class Cotizacion extends Model
 
     /**
      * Obtener el Total Pagado
+     * 
+     * @param \Boolean  $onlyNumbers
+     * @return  mixed
      */
-    public function pagado()
+    public function pagado($onlyNumbers = true)
     {
-      return 0;
+      $total = $this->pagos->sum('pago');
+
+      return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
     }
 
     /**
@@ -95,5 +100,45 @@ class Cotizacion extends Model
       $total = $this->situacionItems->sum($column);
 
       return $onlyNumbers ? $total : number_format($total, $decimals, ',', '.');
+    }
+
+    /**
+     * Obtener los Pagos
+     */
+    public function pagos()
+    {
+      return $this->hasMany('App\Pago');
+    }
+
+    /**
+     * Obtener el Total pendiente por pagar
+     * 
+     * @param \Boolean  $onlyNumbers
+     * @return  mixed
+     */
+    public function porPagar($onlyNumbers = true)
+    {
+      $pagado = $this->pagado();
+      $total = ($this->total(true) - $pagado);
+
+      return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
+    }
+
+    /**
+     * Evaluar si hay Pagos
+     * 
+     * @return  Boolean
+     */
+    public function hasPagos()
+    {
+      return $this->pagos->count() > 0;
+    }
+
+    /**
+     * Badge status
+     */
+    public function status()
+    {
+      return $this->status ? '<span class="badge badge-success">Pago</span>' : '<span class="badge badge-secondary">Pendiente</span>';
     }
 }

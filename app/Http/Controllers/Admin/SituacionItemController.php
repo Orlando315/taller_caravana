@@ -26,6 +26,7 @@ class SituacionItemController extends Controller
      */
     public function destroy(SituacionItem $item)
     {
+      $this->authorize('delete_item', $item->situacion);
       if($item->status){
         return redirect()->back()->with([
               'flash_class'     => 'alert-danger',

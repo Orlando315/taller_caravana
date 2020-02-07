@@ -76,8 +76,9 @@ class ProcesoController extends Controller
     {
       $preevaluaciones = $proceso->preevaluaciones;
       $preevaluacionesFotos = $proceso->preevaluacionFotos;
+      $pagos = $proceso->pagos;
 
-      return view('admin.proceso.show', compact('proceso', 'preevaluaciones', 'preevaluacionesFotos'));
+      return view('admin.proceso.show', compact('proceso', 'preevaluaciones', 'preevaluacionesFotos', 'pagos'));
     }
 
     /**

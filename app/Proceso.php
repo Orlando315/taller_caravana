@@ -184,4 +184,55 @@ class Proceso extends Model
     {
       return $status ? '<span class="badge badge-success">Sí</span>' : '<span class="badge badge-secondary">No</span>';
     }
+
+    /**
+     * Obtener el Status como bagde
+     */
+    public function status()
+    {
+      return $this->status ? '<span class="badge badge-success">Completado</span>' : '<span class="badge badge-secondary">Pendiente</span>';
+    }
+
+    /**
+     * Obtener el Total de la Situacion
+     * 
+     * @param \Boolean  $onlyNumbers
+     * @return  mixed
+     */
+    public function total($onlyNumbers = true)
+    {
+      return $this->situacion->total($onlyNumbers);
+    }
+
+    /**
+     * Obtener los Pagos
+     * 
+     */
+    public function pagos()
+    {
+      return $this->hasMany('App\Pago');
+    }
+
+    /**
+     * Evaluar si hay Preevaluaciones
+     * 
+     * @return  Boolean
+     */
+    public function hasPagos()
+    {
+      return $this->pagos->count() > 0;
+    }
+
+    /**
+     * Obtener el Total Pagado
+     * 
+     * @param \Boolean  $onlyNumbers
+     * @return  mixed
+     */
+    public function pagado($onlyNumbers = true)
+    {
+      $total = $this->pagos->sum('pago');
+
+      return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
+    }
 }

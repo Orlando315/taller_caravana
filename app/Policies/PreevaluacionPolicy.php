@@ -41,7 +41,7 @@ class PreevaluacionPolicy
      */
     public function create(User $user, Proceso $proceso)
     {
-      return $proceso->etapa == 2 && !$proceso->hasPreevaluaciones() && !$proceso->hasPreevaluacionFotos();
+      return $proceso->etapa == 2 && !$proceso->hasPreevaluaciones() && !$proceso->hasPreevaluacionFotos() && !$proceso->status;
     }
 
     /**
@@ -53,7 +53,7 @@ class PreevaluacionPolicy
      */
     public function update(User $user, Proceso $proceso)
     {
-      return ($proceso->hasPreevaluaciones() || $proceso->preevaluaciones->count() <= 12);
+      return ($proceso->hasPreevaluaciones() || $proceso->preevaluaciones->count() <= 12) && !$proceso->status;
     }
 
     /**

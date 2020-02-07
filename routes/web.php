@@ -115,6 +115,12 @@ Route::group(['middleware' => 'auth'], function (){
     Route::resource('cotizacion', 'CotizacionController')
           ->only(['show', 'destroy']);
 
+    /* --- Pagos --- */
+    Route::get('pago/create/{cotizacion}', 'PagoController@create')->name('pago.create');
+    Route::post('pago/{cotizacion}', 'PagoController@store')->name('pago.store');
+    Route::resource('pago', 'PagoController')
+          ->only(['index', 'destroy']);
+
     /* --- Configurations --- */
     Route::get('configurations', 'ConfigurationsControllers@edit')->name('configurations.edit');
     Route::patch('configurations', 'ConfigurationsControllers@update')->name('configurations.update');

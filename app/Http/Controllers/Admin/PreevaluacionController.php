@@ -198,6 +198,7 @@ class PreevaluacionController extends Controller
      */
     public function destroy(Preevaluacion $preevaluacion)
     {
+      $this->authorize('destroy', [Preevaluacion::class, $proceso]);
       if($preevaluacion->delete()){
         return redirect()->route('admin.proceso.show', ['proceso' => $preevaluacion->proceso_id])->with([
                 'flash_class'   => 'alert-success',

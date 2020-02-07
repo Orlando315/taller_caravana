@@ -103,7 +103,7 @@
 
       $('#todos').click( function() {
         $('.items-check').prop('checked', this.checked)
-        $('#btn-cotizacion').prop('disabled', !this.checked)
+        toggleBtn()
       })
 
       $('.items-check').click( function() {

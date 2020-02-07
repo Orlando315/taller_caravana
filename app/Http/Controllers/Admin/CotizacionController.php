@@ -27,6 +27,7 @@ class CotizacionController extends Controller
      */
     public function create(Situacion $situacion)
     {
+      $this->authorize('create', [Cotizacion::class, $situacion]);
       $items = $situacion->items;
 
       return view('admin.cotizacion.create', compact('situacion', 'items'));
@@ -41,6 +42,7 @@ class CotizacionController extends Controller
      */
     public function store(Request $request, Situacion $situacion)
     {
+      $this->authorize('create', [Cotizacion::class, $situacion]);
       $this->validate($request, [
         'items.*' => 'min:1'
       ]);
@@ -88,7 +90,9 @@ class CotizacionController extends Controller
      */
     public function show(Cotizacion $cotizacion)
     {
-      return view('admin.cotizacion.show', compact('cotizacion'));
+      $pagos = $cotizacion->pagos;
+
+      return view('admin.cotizacion.show', compact('cotizacion', 'pagos'));
     }
 
     /**

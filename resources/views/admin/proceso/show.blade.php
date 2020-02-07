@@ -37,6 +37,18 @@
           <p class="text-muted">
             {{ $proceso->vehiculo->vehiculo() }}
           </p>
+          <hr>
+
+          <strong>Total</strong>
+          <p class="text-muted">
+            {{ $proceso->total(false) }}
+          </p>
+          <hr>
+
+          <strong>Estatus</strong>
+          <p class="text-muted">
+            {!! $proceso->status() !!}
+          </p>
 
         </div>
         <div class="card-footer text-center">
@@ -51,10 +63,12 @@
     <div class="col-md-8">
       <div class="row">
         <div class="col-md-4">
-          @if($proceso->agendamiento)
-          <a href="{{ route('admin.agendamiento.edit', ['agendamiento' => $proceso->agendamiento->id]) }}" title="Editar agendamiento">
-          @else
-          <a href="{{ route('admin.agendamiento.create', ['proceso' => $proceso->id]) }}" title="Agregar agendamiento">
+          @if(!$proceso->status)
+            @if($proceso->agendamiento)
+            <a href="{{ route('admin.agendamiento.edit', ['agendamiento' => $proceso->agendamiento->id]) }}" title="Editar agendamiento">
+            @else
+            <a href="{{ route('admin.agendamiento.create', ['proceso' => $proceso->id]) }}" title="Agregar agendamiento">
+            @endif
           @endif
             <div class="card card-stats">
               <div class="card-body py-1">
@@ -75,14 +89,18 @@
                 </div>
               </div>
             </div>
+          @if(!$proceso->status)
           </a>
+          @endif
         </div>
 
         <div class="col-md-4">
-          @if($proceso->hasPreevaluaciones())
-          <a href="{{ ($preevaluaciones->count() < 12 || $preevaluacionesFotos->count() < 6) ? route('admin.preevaluacion.edit', ['proceso' => $proceso->id]) : '#preevaluaciones' }}" title="{{ ($preevaluaciones->count() < 12 || $preevaluacionesFotos->count() < 6) ? 'Editar pre-evaluación' : '' }}">
-          @else
-          <a href="{{ ($proceso->etapa == 2) ? route('admin.preevaluacion.create', ['proceso' => $proceso->id]) : '#' }}" title="{{ ($proceso->etapa == 2) ? 'Agregar pre-evaluación' : '' }}">
+          @if(!$proceso->status)
+            @if($proceso->hasPreevaluaciones())
+            <a href="{{ ($preevaluaciones->count() < 12 || $preevaluacionesFotos->count() < 6) ? route('admin.preevaluacion.edit', ['proceso' => $proceso->id]) : '#preevaluaciones' }}" title="{{ ($preevaluaciones->count() < 12 || $preevaluacionesFotos->count() < 6) ? 'Editar pre-evaluación' : '' }}">
+            @else
+            <a href="{{ ($proceso->etapa == 2) ? route('admin.preevaluacion.create', ['proceso' => $proceso->id]) : '#' }}" title="{{ ($proceso->etapa == 2) ? 'Agregar pre-evaluación' : '' }}">
+            @endif
           @endif
             <div class="card card-stats">
               <div class="card-body py-1">
@@ -103,13 +121,18 @@
                 </div>
               </div>
             </div>
+          @if(!$proceso->status)
           </a>
+          @endif
         </div>
+
         <div class="col-md-4">
-          @if($proceso->situacion)
-            <a href="{{ route('admin.situacion.edit', ['situacion' => $proceso->situacion->id]) }}" title="Editar Hoja de situación">
-          @else
-            <a href="{{ ($proceso->etapa == 3) ? route('admin.situacion.create', ['proceso' => $proceso->id]) : '#' }}" title="{{ ($proceso->etapa == 3) ? 'Agregar' : '' }}">
+          @if(!$proceso->status)
+            @if($proceso->situacion)
+              <a href="{{ route('admin.situacion.edit', ['situacion' => $proceso->situacion->id]) }}" title="Editar Hoja de situación">
+            @else
+              <a href="{{ ($proceso->etapa == 3) ? route('admin.situacion.create', ['proceso' => $proceso->id]) : '#' }}" title="{{ ($proceso->etapa == 3) ? 'Agregar' : '' }}">
+            @endif
           @endif
             <div class="card card-stats">
               <div class="card-body py-1">
@@ -130,7 +153,9 @@
                 </div>
               </div>
             </div>
+          @if(!$proceso->status)
           </a>
+          @endif
         </div>
         <div class="col-md-4">
           @if($proceso->hasCotizaciones())
@@ -159,6 +184,30 @@
             </div>
           </a>
         </div>
+
+        <div class="col-md-4">
+          <div class="card card-stats">
+            <a class="link-pagos" href="#pagos" title="Ver pagos">
+              <div class="card-body py-1">
+                <div class="row">
+                  <div class="col-4">
+                    <div class="icon-big text-center {{ $proceso->hasPagos() ? 'text-danger' : 'text-muted' }}">
+                      <i class="fa fa-credit-card"></i>
+                    </div>
+                  </div>
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="card-category">Pagos</p>
+                      <p class="card-title">
+                        {{ $pagos->count() }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -178,12 +227,15 @@
             <li class="nav-item">
               <a class="nav-link" id="tab3-tab" href="#tab3" role="tab" data-toggle="tab" aria-controls="tab3" aria-selected="false"><i class="fa fa-calculator"></i> Cotizaciones</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" id="tab4-tab" href="#tab4" role="tab" data-toggle="tab" aria-controls="tab4" aria-selected="false"><i class="fa fa-credit-card"></i> Pagos</a>
+            </li>
             @endif
           </ul>
           <div class="tab-content">
-            <div id="tab1" class="tab-pane fade show active" role="tabpanel" aria-labelledby="tab1-tab">
-              @if($preevaluaciones->count() < 12 || $preevaluacionesFotos->count() < 6)
-                <a class="btn btn-success btn-fill btn-xs my-2" href="{{ route('admin.preevaluacion.edit', ['proceso' => $proceso->id]) }}">
+            <div id="tab1" class="tab-pane fade show active pt-2" role="tabpanel" aria-labelledby="tab1-tab">
+              @if( !$proceso->status && ($preevaluaciones->count() < 12 || $preevaluacionesFotos->count() < 6))
+                <a class="btn btn-success btn-fill btn-xs mb-2" href="{{ route('admin.preevaluacion.edit', ['proceso' => $proceso->id]) }}">
                   <i class="fa fa-pencil"></i> Modificar pre-evaluación
                 </a>
               @endif
@@ -191,11 +243,13 @@
                 @foreach($preevaluacionesFotos as $foto)
                   <div class="col-md-2 mb-2">
                     <div class="media-thumbs p-1 rounded">
+                      @if(!$proceso->status)
                       <div class="media-thumbs-options mb-1">
                         <button class="btn btn-danger btn-xs btn-fill btn-delete" data-id="{{ $foto->id }}" data-type="foto" data-toggle="modal"  data-target="#delPreevaluacionModal">
                           <i class="fa fa-times"></i>
                         </button>
                       </div>
+                      @endif
                       <div class="media-thumbs-content">
                         <a href="#imageModal" data-toggle="modal" data-url="{{ asset('storage/'.$foto->foto) }}">
                           <img src="{{ asset('storage/'.$foto->foto) }}" class="img-fluid">
@@ -224,9 +278,11 @@
                         <td>{{ $preevaluacion->observacion ?? 'N/A' }}</td>
                         <td class="text-right">{{ $preevaluacion->referencia() ?? 'N/A'  }}</td>
                         <td class="text-center">
+                          @if(!$proceso->status)
                           <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $preevaluacion->id }}" data-type="preevaluacion" data-toggle="modal"  data-target="#delPreevaluacionModal">
                             <i class="fa fa-times"></i>
                           </button>
+                          @endif
                         </td>
                       </tr>
                     @endforeach
@@ -234,12 +290,14 @@
                 </table>
               </div>
             </div><!-- .tab-pane -->
-            <div id="tab2" class="tab-pane fade" role="tabpanel" aria-labelledby="tab2-tab">
-              <a class="btn btn-success btn-fill btn-xs my-2" href="{{ route('admin.situacion.edit', ['proceso' => $proceso->situacion->id]) }}">
+            <div id="tab2" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab2-tab">
+              @if(!$proceso->status)
+              <a class="btn btn-success btn-fill btn-xs mb-2" href="{{ route('admin.situacion.edit', ['proceso' => $proceso->situacion->id]) }}">
                 <i class="fa fa-pencil"></i> Modificar Hoja de situación
               </a>
+              @endif
 
-              <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
+              <table id="cotizaciones" class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
                 <thead>
                   <tr>
                     <th class="text-center">#</th>
@@ -277,9 +335,9 @@
               </table>
               
             </div><!-- .tab-pane -->
-            <div id="tab3" class="tab-pane fade" role="tabpanel" aria-labelledby="tab3-tab" aria-expanded="false">
-              @if($proceso->etapa == 4 || $proceso->etapa == 5)
-              <a class="btn btn-primary btn-fill btn-xs my-2" href="{{ route('admin.cotizacion.create', ['situacion' => $proceso->situacion->id]) }}">
+            <div id="tab3" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab3-tab" aria-expanded="false">
+              @if( !$proceso->status && ($proceso->etapa == 4 || $proceso->etapa == 5))
+              <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('admin.cotizacion.create', ['situacion' => $proceso->situacion->id]) }}">
                 <i class="fa fa-plus"></i> Generar cotización
               </a>
               @endif
@@ -293,6 +351,7 @@
                     <th class="text-center">Total</th>
                     <th class="text-center">Pagado</th>
                     <th class="text-center">Fecha</th>
+                    <th class="text-center">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -306,8 +365,35 @@
                       </td>
                       <td class="text-center">{{ $cotizacion->items->count() }}</td>
                       <td class="text-right">{{ $cotizacion->total(false) }}</td>
-                      <td class="text-right">{{ $cotizacion->pagado() }}</td>
+                      <td class="text-right">{{ $cotizacion->pagado(false) }}</td>
                       <td class="text-center">{{ $cotizacion->created_at->format('d-m-Y H:i:s') }}</td>
+                      <td class="text-center">{!! $cotizacion->status() !!}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div><!-- .tab-pane -->
+            <div id="tab4" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab4-tab" aria-expanded="false">
+              <table id="pagos" class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">Cotización</th>
+                    <th scope="col" class="text-center">Pago</th>
+                    <th scope="col" class="text-center">Fecha</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($pagos as $pago)
+                    <tr>
+                      <td scope="row" class="text-center">{{ $loop->iteration }}</td>
+                      <td class="text-center">
+                        <a href="{{ route('admin.cotizacion.show', ['cotizacion' => $pago->cotizacion_id]) }}">
+                          Cotización #{{ $pago->cotizacion_id }}
+                        </a>
+                      </td>
+                      <td class="text-right">{{ $pago->pago() }}</td>
+                      <td class="text-center">{{ $pago->created_at->format('d-m-Y H:i:s')}}</td>
                     </tr>
                   @endforeach
                 </tbody>
@@ -346,62 +432,64 @@
       </div>
     </div>
   </div>
+  
+  @if(!$proceso->status)
+    <div id="delPreevaluacionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delPreevaluacionModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="delPreevaluacionModalLabel"></h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row justify-content-md-center">
+              <form id="delPreevaluacion" class="col-md-8" action="#" method="POST">
+                @csrf
+                @method('DELETE')
 
-  <div id="delPreevaluacionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delPreevaluacionModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="delPreevaluacionModalLabel"></h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row justify-content-md-center">
-            <form id="delPreevaluacion" class="col-md-8" action="#" method="POST">
-              @csrf
-              @method('DELETE')
+                <p class="text-center">¿Esta seguro de eliminar <span id="modal-message"></span>?</p><br>
 
-              <p class="text-center">¿Esta seguro de eliminar <span id="modal-message"></span>?</p><br>
-
-              <center>
-                <button class="btn btn-fill btn-danger" type="submit">Eliminar</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-              </center>
-            </form>
+                <center>
+                  <button class="btn btn-fill btn-danger" type="submit">Eliminar</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </center>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div id="delSituacionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delSituacionModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="delSituacionModalLabel"></h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row justify-content-md-center">
-            <form id="delSituacion" class="col-md-8" action="#" method="POST">
-              @csrf
-              @method('DELETE')
+    <div id="delSituacionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delSituacionModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="delSituacionModalLabel"></h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row justify-content-md-center">
+              <form id="delSituacion" class="col-md-8" action="#" method="POST">
+                @csrf
+                @method('DELETE')
 
-              <p class="text-center">¿Esta seguro de eliminar este Item?</p><br>
+                <p class="text-center">¿Esta seguro de eliminar este Item?</p><br>
 
-              <center>
-                <button class="btn btn-fill btn-danger" type="submit">Eliminar</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-              </center>
-            </form>
+                <center>
+                  <button class="btn btn-fill btn-danger" type="submit">Eliminar</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </center>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  @endif
 
   <div id="imageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -453,7 +541,10 @@
       $('.link-cotizaciones').click(function () {
         $('#tab3-tab').click()
       })
+
+      $('.link-pagos').click(function () {
+        $('#tab4-tab').click()
+      })
     })
   </script>
 @endsection
-

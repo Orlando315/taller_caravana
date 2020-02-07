@@ -57,6 +57,13 @@
               </a>
             </li>
 
+            <li class="nav-item{{ $currentRoute == 'admin.pagos' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('admin.pago.index') }}">
+                <i class="fa fa-credit-card"></i>
+                <p>Pagos</p>
+              </a>
+            </li>
+
             <li class="nav-item{{ $currentRoute == 'admin.cliente' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('admin.cliente.index') }}">
                 <i class="fa fa-address-book"></i>
@@ -68,13 +75,6 @@
               <a class="nav-link" href="{{ route('admin.vehiculo.index') }}">
                 <i class="fa fa-car"></i>
                 <p>Vehiculos</p>
-              </a>
-            </li>
-
-            <li class="nav-item{{ $currentRoute == 'admin.agendamiento' ? ' active' : '' }}">
-              <a class="nav-link" href="{{ route('admin.agendamiento.index') }}">
-                <i class="fa fa-calendar"></i>
-                <p>Agendamientos</p>
               </a>
             </li>
 
@@ -150,6 +150,12 @@
                   <li class="nav-item">
                     <a href="{{ route('admin.users.create') }}" class="nav-link" rel="tooltip" title="Agregar usuario">
                       <i class="fa fa-user-plus" aria-hidden="true"></i> Agregar usuario
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.agendamiento.index') }}" rel="tooltip" title="Agendamientos">
+                      <i class="fa fa-calendar" aria-hiddentrue></i> Agendamientos
                     </a>
                   </li>
                 @endif

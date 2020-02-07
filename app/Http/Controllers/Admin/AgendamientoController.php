@@ -29,6 +29,8 @@ class AgendamientoController extends Controller
      */
     public function create(Proceso $proceso)
     {
+      $this->authorize('create', [Agendamiento::class, $proceso]);
+
       return view('admin.agendamiento.create', compact('proceso'));
     }
 
@@ -41,6 +43,7 @@ class AgendamientoController extends Controller
      */
     public function store(Request $request, Proceso $proceso)
     {
+      $this->authorize('create', [Agendamiento::class, $proceso]);
       if(!$request->atender){
         $this->validate($request, [
         'fecha' => 'required|date',
@@ -97,6 +100,7 @@ class AgendamientoController extends Controller
      */
     public function edit(Agendamiento $agendamiento)
     {
+      $this->authorize('update', [Agendamiento::class, $proceso]);
       return view('admin.agendamiento.edit', compact('agendamiento'));
     }
 
@@ -109,6 +113,7 @@ class AgendamientoController extends Controller
      */
     public function update(Request $request, Agendamiento $agendamiento)
     {
+      $this->authorize('update', [Agendamiento::class, $proceso]);
       $this->validate($request, [
         'fecha' => 'nullable|date',
       ]);

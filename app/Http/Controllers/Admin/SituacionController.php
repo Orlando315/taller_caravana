@@ -27,6 +27,7 @@ class SituacionController extends Controller
      */
     public function create(Proceso $proceso)
     {
+      $this->authorize('create', [Situacion::class, $proceso]);
       $insumos = Insumo::has('stockEnUso')->with('stockEnUso')->get();
       $repuestos = Repuesto::all();
 
@@ -42,6 +43,7 @@ class SituacionController extends Controller
      */
     public function store(Request $request, Proceso $proceso)
     {
+      $this->authorize('create', [Situacion::class, $proceso]);
       $this->validate($request, [
         'datos' => 'required|min:1'
       ]);
@@ -105,6 +107,7 @@ class SituacionController extends Controller
      */
     public function edit(Situacion $situacion)
     {
+      $this->authorize('update', $situacion);
       $insumos = Insumo::has('stockEnUso')->with('stockEnUso')->get();
       $repuestos = Repuesto::all();
 
@@ -120,6 +123,7 @@ class SituacionController extends Controller
      */
     public function update(Request $request, Situacion $situacion)
     {
+      $this->authorize('update', $situacion);
       $datos = [];
 
       foreach ($request->datos as $dato) {
