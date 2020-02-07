@@ -99,6 +99,22 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('preevaluacion/foto', 'PreevaluacionFotoController@index')->name('preevaluacion.foto.index');
     Route::delete('preevaluacion/foto/{foto}', 'PreevaluacionFotoController@destroy')->name('preevaluacion.foto.destroy');
 
+    /* --- Situaciones --- */
+    Route::get('situacion/create/{proceso}', 'SituacionController@create')->name('situacion.create');
+    Route::post('situacion/{proceso}', 'SituacionController@store')->name('situacion.store');
+    Route::resource('situacion', 'SituacionController')
+          ->only(['edit', 'update']);
+
+    /* --- Situaciones Items --- */
+    Route::get('situacion/item/', 'SituacionItemController@index')->name('situacion.item.index');
+    Route::delete('situacion/item/{item}', 'SituacionItemController@destroy')->name('situacion.item.destroy');
+
+    /* --- Cotizacion --- */
+    Route::get('cotizacion/create/{situacion}', 'CotizacionController@create')->name('cotizacion.create');
+    Route::post('cotizacion/{situacion}', 'CotizacionController@store')->name('cotizacion.store');
+    Route::resource('cotizacion', 'CotizacionController')
+          ->only(['show', 'destroy']);
+
     /* --- Configurations --- */
     Route::get('configurations', 'ConfigurationsControllers@edit')->name('configurations.edit');
     Route::patch('configurations', 'ConfigurationsControllers@update')->name('configurations.update');

@@ -32,6 +32,7 @@ class Repuesto extends Model
       'componente',
       'foto',
       'procedencia',
+      'venta',
       'envio',
       'aduana',
     ];
@@ -95,6 +96,14 @@ class Repuesto extends Model
     /**
      * Obtener el atributo formateado
      */
+    public function venta()
+    {
+      return number_format($this->venta, 2, ',', '.');
+    }
+
+    /**
+     * Obtener el atributo formateado
+     */
     public function envio()
     {
       return number_format($this->envio, 2, ',', '.');
@@ -122,5 +131,13 @@ class Repuesto extends Model
     public function procedencia()
     {
       return ucfirst($this->procedencia);
+    }
+
+    /**
+     * Obtener la descripcion
+     */
+    public function descripcion()
+    {
+      return $this->nro_oem.' | '.$this->marcaModeloAnio();
     }
 }

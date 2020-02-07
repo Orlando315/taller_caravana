@@ -96,6 +96,11 @@
                   </select>
                 </div>
 
+                <div class="form-group">
+                  <label class="control-label" for="venta">Venta:</label>
+                  <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="venta" maxlength="50" value="{{ old('venta', $repuesto->venta) }}" placeholder="Precio de venta">
+                </div>
+
                 <div class="form-group envio">
                   <label class="control-label" for="envio">Envio:</label>
                   <input id="envio" class="form-control{{ $errors->has('envio') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio" maxlength="50" value="{{ old('envio', $repuesto->envio) }}" placeholder="Envio">
@@ -129,7 +134,6 @@
                   <label class="control-label" for="casilla">Gastos casilla:</label>
                   <input id="casilla" class="form-control{{ $errors->has('casilla') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="casilla" maxlength="50" value="{{ old('casilla', $repuesto->extra->casilla) }}" placeholder="Gastos casilla">
                 </div>
-
 
                 <div class="form-group">
                   <label class="control-label" for="impuestos">Impuestos:</label>

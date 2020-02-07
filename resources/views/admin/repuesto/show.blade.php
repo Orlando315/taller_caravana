@@ -76,16 +76,20 @@
                         <th>Procedencia:</th>
                         <td>{{ $repuesto->procedencia() }}</td>
                       </tr>
+                      <tr>
+                        <th>Venta:</th>
+                        <td>{{ $repuesto->venta() }}</td>
+                      </tr>
                       @if($repuesto->procedencia == 'nacional' || $repuesto->procedencia == 'internacional')
                       <tr>
                         <th>Envio:</th>
-                        <td>{{ $repuesto->envio }}</td>
+                        <td>{{ $repuesto->envio() }}</td>
                       </tr>
                       @endif
                       @if($repuesto->procedencia == 'internacional')
                       <tr>
                         <th>Aduana:</th>
-                        <td>{{ $repuesto->aduana }}</td>
+                        <td>{{ $repuesto->aduana() }}</td>
                       </tr>
                       @endif
                     </tbody>

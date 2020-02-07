@@ -97,7 +97,7 @@ class Proceso extends Model
      */
     public function preevaluacionesStatus()
     {
-      return $this->hasPreevaluaciones() ? '<span class="badge badge-success">Sí</span>' : '<span class="badge badge-secondary">No</span>';
+      return $this->statusBadge($this->hasPreevaluaciones());
     }
 
     /**
@@ -129,5 +129,59 @@ class Proceso extends Model
     public function hasPreevaluacionFotos()
     {
       return $this->preevaluacionFotos->count() > 0;
+    }
+
+    /**
+     * Obtener la Situzacion Principal
+     * 
+     * @return  Boolean
+     */
+    public function situacion()
+    {
+      return $this->hasOne('App\Situacion');
+    }
+
+    /**
+     * Verificar si hay Preevaluaciones y mostrarlo como badge
+     */
+    public function situacionStatus()
+    {
+      return $this->statusBadge($this->situacion);
+    }
+
+    /**
+     * Obtener las Cotizaciones
+     * 
+     * @return  Boolean
+     */
+    public function cotizaciones()
+    {
+      return $this->hasManyThrough('App\Cotizacion', 'App\Situacion');
+    }
+
+    /**
+     * Evaluar si hay Preevaluaciones
+     * 
+     * @return  Boolean
+     */
+    public function hasCotizaciones()
+    {
+      return $this->cotizaciones->count() > 0;
+    }
+
+    /**
+     * Verificar si hay Cotizaciones y mostrarlo como badge
+     */
+    public function cotizacionesStatus()
+    {
+      return $this->statusBadge($this->hasCotizaciones());
+    }
+
+    /**
+     * Badge status
+     */
+    public function statusBadge($status)
+    {
+      return $status ? '<span class="badge badge-success">Sí</span>' : '<span class="badge badge-secondary">No</span>';
     }
 }

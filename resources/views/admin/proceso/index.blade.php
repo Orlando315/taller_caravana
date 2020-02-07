@@ -28,7 +28,7 @@
                 <th scope="col" class="text-center">Vehículo</th>
                 <th scope="col" class="text-center">Agendamiento</th>
                 <th scope="col" class="text-center">Pre-evaluación</th>
-                <th scope="col" class="text-center">Agregado</th>
+                <th scope="col" class="text-center">Cotización</th>
               </tr>
             </thead>
             <tbody>
@@ -43,7 +43,7 @@
                   <td>{{ $proceso->vehiculo->vehiculo() }}</td>
                   <td class="text-center">{{ $proceso->agendamiento ? $proceso->agendamiento->fecha() : 'N/A' }}</td>
                   <td class="text-center">{!! $proceso->preevaluacionesStatus() !!}</td>
-                  <td class="text-center">{{ $proceso->created_at->format('d-m-Y H:i:s') }}</td>
+                  <td class="text-center">{!! $proceso->cotizacionesStatus() !!}</td>
                 </tr>
               @endforeach
             </tbody>

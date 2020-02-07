@@ -193,7 +193,7 @@
       });
 
       $('#foto-group').on('click', '.file-caption-name', function () {
-        $('#foto').click()
+        $('#fotos').click()
       })
     })
 
@@ -201,13 +201,13 @@
       return `<tr class="tr-dato">
                 <td class="text-center">${index}</td>
                 <td>
-                  <input class="form-control" type="text" name="datos[${index}][descripcion]" maxlength="100" value="{{ old('datos.${index}.descripcion') }}">
+                  <input class="form-control" type="text" name="datos[${index}][descripcion]" maxlength="100" value="">
                 </td>
                 <td>
-                  <input class="form-control" type="text" name="datos[${index}][observacion]" maxlength="100" value="{{ old('datos.${index}.observacion') }}">
+                  <input class="form-control" type="text" name="datos[${index}][observacion]" maxlength="100" value="">
                 </td>
                 <td>
-                  <input class="form-control" type="number" min="1" step="0.01" step="99999999" name="datos[${index}][referencia]" value="{{ old('datos.${index}.referencia') }}">
+                  <input class="form-control" type="number" min="1" step="0.01" step="99999999" name="datos[${index}][referencia]" value="">
                 </td>
               </tr>`
     }

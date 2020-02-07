@@ -118,4 +118,12 @@ class Insumo extends Model
     {
       return $this->hasOne('App\Stock')->where('stock', '>', 0);
     }
+
+    /**
+     * Obtener la decsripcion
+     */
+    public function descripcion()
+    {
+      return $this->nombre.' ('.$this->formato->formato.')';
+    }
 }

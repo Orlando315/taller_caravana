@@ -146,6 +146,9 @@ button:disabled:hover{
   font-size: 18px;
   margin-top: 0;
 }
+.only-check.form-check .form-check-sign::before, .only-check.form-check .form-check-sign::after{
+  margin-top: -15px;
+}
 .form-check .form-check-sign::after{
   color: #23CCEF;
 }
@@ -287,4 +290,7 @@ button:disabled:hover{
   max-height: 100%;
   vertical-align: middle;
   border-style: none;
+}
+.table-responsive .table-bordered th{
+  border: 1px solid #dee2e6 !important;
 }

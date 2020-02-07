@@ -79,9 +79,9 @@ class PreevaluacionController extends Controller
         }
 
         $proceso->etapa = 3;
-        $proceso->sasve();
+        $proceso->save();
 
-        return redirect()->route('admin.proceso.show', ['proceso' => $proceso->id])->with([
+        return redirect()->route('admin.situacion.create', ['proceso' => $proceso->id])->with([
                 'flash_message' => 'Pre-evaluación agregada exitosamente.',
                 'flash_class' => 'alert-success'
               ]);

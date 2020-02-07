@@ -165,8 +165,7 @@
                   <ul class="dropdown-menu menu-notifications">
                     @forelse($insumosWithStockMinimo as $lowStock)
                       <a class="dropdown-item" href="{{ route('insumos.show', ['insumo' => $lowStock->id]) }}">
-                        {{ $lowStock->nombre }}
-                        </br>
+                        <p class="m-0">{{ $lowStock->nombre }}</p>
                         <small class="text-muted">Stock: {{ $lowStock->getStock() }}</small>
                       </a>
                     @empty
