@@ -127,6 +127,7 @@
       $('#fotos').fileinput({
         initialPreview: @json($proceso->preevaluacionFotosAsAssets()),
         initialPreviewAsData: true,
+        initialPreviewShowDelete: false,
         overwriteInitial: false,
         showUpload: false,
         maxFileSize: 12000,
@@ -144,6 +145,9 @@
         fileActionSettings: {
           showRemove: false,
           showZoom: false,
+          showDrag: false,
+          showDownload: false,
+          showUpload: false,
         },
         focusCaptionOnBrowse: false,
         focusCaptionOnClear: false,

@@ -235,4 +235,21 @@ class Proceso extends Model
 
       return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
     }
+
+    /**
+     * Obtener la Inspeccion
+     * 
+     */
+    public function Inspeccion()
+    {
+      return $this->hasOne('App\Inspeccion');
+    }
+
+    /**
+     * Verificar si hay Inspecion y mostrarlo como badge
+     */
+    public function inspeccionStatus()
+    {
+      return $this->statusBadge($this->inspeccion);
+    }
 }

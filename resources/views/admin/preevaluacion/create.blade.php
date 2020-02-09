@@ -168,6 +168,7 @@
 
       $('#fotos').fileinput({
         overwriteInitial: false,
+        initialPreviewShowDelete: false,
         showUpload: false,
         maxFileSize: 12000,
         initialPreviewCount: 6,
@@ -184,6 +185,9 @@
         fileActionSettings: {
           showRemove: false,
           showZoom: false,
+          showDrag: false,
+          showDownload: false,
+          showUpload: false,
         },
         focusCaptionOnBrowse: false,
         focusCaptionOnClear: false,

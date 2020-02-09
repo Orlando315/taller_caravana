@@ -294,3 +294,37 @@ button:disabled:hover{
 .table-responsive .table-bordered th{
   border: 1px solid #dee2e6 !important;
 }
+
+/* Bootstrap switch */
+.bootstrap-switch{
+  display: inline-block;
+  direction: ltr;
+  cursor: pointer;
+  border-radius: 30px;
+  border: 0;
+  position: relative;
+  text-align: left;
+  overflow: hidden;
+  margin-bottom: 5px;
+  margin-left: 0;
+  line-height: 8px;
+  width: 61px !important;
+  height: 26px;
+  outline: none;
+  z-index: 0;
+  margin-right: 1px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  vertical-align: middle;
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.bootstrap-switch.bootstrap-switch-off .bootstrap-switch-danger,
+.bootstrap-switch.bootstrap-switch-off .bootstrap-switch-primary,
+.bootstrap-switch.bootstrap-switch-off .bootstrap-switch-info,
+.bootstrap-switch.bootstrap-switch-off .bootstrap-switch-warning,
+.bootstrap-switch.bootstrap-switch-off .bootstrap-switch-success{
+  background-color: #cfcfca;
+}

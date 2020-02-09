@@ -121,6 +121,14 @@ Route::group(['middleware' => 'auth'], function (){
     Route::resource('pago', 'PagoController')
           ->only(['index', 'destroy']);
 
+    /* --- Inspeccion --- */
+    Route::get('inspeccion/create/{proceso}', 'InspeccionController@create')->name('inspeccion.create');
+    Route::post('inspeccion/{proceso}', 'InspeccionController@store')->name('inspeccion.store');
+    Route::resource('inspeccion', 'InspeccionController')
+          ->only(['edit', 'update', 'destroy']);
+    Route::get('inspeccion/foto', 'InspeccionFotoController@index')->name('inspeccion.foto.index');
+    Route::delete('inspeccion/foto/{foto}', 'InspeccionFotoController@destroy')->name('inspeccion.foto.destroy');
+
     /* --- Configurations --- */
     Route::get('configurations', 'ConfigurationsControllers@edit')->name('configurations.edit');
     Route::patch('configurations', 'ConfigurationsControllers@update')->name('configurations.update');

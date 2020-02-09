@@ -62,7 +62,7 @@
 
     <div class="col-md-8">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-sm-6 col-md-4">
           @if(!$proceso->status)
             @if($proceso->agendamiento)
             <a href="{{ route('admin.agendamiento.edit', ['agendamiento' => $proceso->agendamiento->id]) }}" title="Editar agendamiento">
@@ -94,7 +94,7 @@
           @endif
         </div>
 
-        <div class="col-md-4">
+        <div class="col-sm-6 col-md-4">
           @if(!$proceso->status)
             @if($proceso->hasPreevaluaciones())
             <a href="{{ ($preevaluaciones->count() < 12 || $preevaluacionesFotos->count() < 6) ? route('admin.preevaluacion.edit', ['proceso' => $proceso->id]) : '#preevaluaciones' }}" title="{{ ($preevaluaciones->count() < 12 || $preevaluacionesFotos->count() < 6) ? 'Editar pre-evaluación' : '' }}">
@@ -126,7 +126,7 @@
           @endif
         </div>
 
-        <div class="col-md-4">
+        <div class="col-sm-6 col-md-4">
           @if(!$proceso->status)
             @if($proceso->situacion)
               <a href="{{ route('admin.situacion.edit', ['situacion' => $proceso->situacion->id]) }}" title="Editar Hoja de situación">
@@ -157,7 +157,8 @@
           </a>
           @endif
         </div>
-        <div class="col-md-4">
+
+        <div class="col-sm-6 col-md-4">
           @if($proceso->hasCotizaciones())
             <a class="link-cotizaciones" href="#cotizaciones">
           @else
@@ -185,7 +186,7 @@
           </a>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-sm-6 col-md-4">
           <div class="card card-stats">
             <a class="link-pagos" href="#pagos" title="Ver pagos">
               <div class="card-body py-1">
@@ -208,6 +209,34 @@
             </a>
           </div>
         </div>
+
+        <div class="col-sm-6 col-md-4">
+          @if($proceso->inspeccion)
+            <a class="link-cotizaciones" href="{{ route('admin.inspeccion.edit', ['inspeccion' => $proceso->inspeccion->id]) }}">
+          @else
+            <a href="{{ ($proceso->etapa >= 5) ? route('admin.inspeccion.create', ['proceso' => $proceso->id]) : '#' }}">
+          @endif
+            <div class="card card-stats">
+              <div class="card-body py-1">
+                <div class="row">
+                  <div class="col-4">
+                    <div class="icon-big text-center {{ $proceso->inspeccion ? 'text-danger' : 'text-muted' }}">
+                      <i class="fa fa-list"></i>
+                    </div>
+                  </div>
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="card-category">Inspección de recepción</p>
+                      <p class="{{ $proceso->inspeccion ? 'card-title' : '' }}">
+                        {!! $proceso->inspeccion ? $proceso->inspeccionStatus() : 'Agregar' !!}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -216,7 +245,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-body">
-          <ul class="nav nav-tabs" role="tablist">
+          <ul class="nav nav-tabs proceso-tabs" role="tablist">
             <li class="nav-item">
               <a class="nav-link active" id="tab1-tab" href="#tab1" role="tab" data-toggle="tab" aria-controls="tab1" aria-selected="true"><i class="fa fa-check-square-o"></i> Pre-evaluación</a>
             </li>
@@ -231,6 +260,11 @@
               <a class="nav-link" id="tab4-tab" href="#tab4" role="tab" data-toggle="tab" aria-controls="tab4" aria-selected="false"><i class="fa fa-credit-card"></i> Pagos</a>
             </li>
             @endif
+            @if($proceso->inspeccion)
+            <li class="nav-item">
+              <a class="nav-link" id="tab5-tab" href="#tab5" role="tab" data-toggle="tab" aria-controls="tab5" aria-selected="false"><i class="fa fa-list"></i> Inspección</a>
+            </li>
+            @endif
           </ul>
           <div class="tab-content">
             <div id="tab1" class="tab-pane fade show active pt-2" role="tabpanel" aria-labelledby="tab1-tab">
@@ -241,11 +275,11 @@
               @endif
               <div class="row">
                 @foreach($preevaluacionesFotos as $foto)
-                  <div class="col-md-2 mb-2">
+                  <div class="col-sm-4 col-md-2 mb-2">
                     <div class="media-thumbs p-1 rounded">
                       @if(!$proceso->status)
                       <div class="media-thumbs-options mb-1">
-                        <button class="btn btn-danger btn-xs btn-fill btn-delete" data-id="{{ $foto->id }}" data-type="foto" data-toggle="modal"  data-target="#delPreevaluacionModal">
+                        <button class="btn btn-danger btn-xs btn-fill btn-delete" data-id="{{ $foto->id }}" data-type="foto" data-toggle="modal"  data-target="#delElementModal">
                           <i class="fa fa-times"></i>
                         </button>
                       </div>
@@ -279,7 +313,7 @@
                         <td class="text-right">{{ $preevaluacion->referencia() ?? 'N/A'  }}</td>
                         <td class="text-center">
                           @if(!$proceso->status)
-                          <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $preevaluacion->id }}" data-type="preevaluacion" data-toggle="modal"  data-target="#delPreevaluacionModal">
+                          <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $preevaluacion->id }}" data-type="preevaluacion" data-toggle="modal"  data-target="#delElementModal">
                             <i class="fa fa-times"></i>
                           </button>
                           @endif
@@ -374,7 +408,7 @@
               </table>
             </div><!-- .tab-pane -->
             <div id="tab4" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab4-tab" aria-expanded="false">
-              <table id="pagos" class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
+              <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
                 <thead>
                   <tr>
                     <th scope="col" class="text-center">#</th>
@@ -399,6 +433,119 @@
                 </tbody>
               </table>
             </div><!-- .tab-pane -->
+            @if($proceso->inspeccion)
+            <div id="tab5" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab5-tab">
+              @if( !$proceso->status && $proceso->inspeccion)
+                <a class="btn btn-success btn-fill btn-xs mb-2" href="{{ route('admin.inspeccion.edit', ['inspeccion' => $proceso->inspeccion->id]) }}">
+                  <i class="fa fa-pencil"></i> Modificar inspección
+                </a>
+              @endif
+              <div class="row">
+                @foreach($proceso->inspeccion->fotos as $foto)
+                  <div class="col-sm-4 col-md-2 mb-2">
+                    <div class="media-thumbs p-1 rounded">
+                      @if(!$proceso->status)
+                      <div class="media-thumbs-options mb-1">
+                        <button class="btn btn-danger btn-xs btn-fill btn-delete" data-id="{{ $foto->id }}" data-type="foto-inspeccion" data-toggle="modal"  data-target="#delElementModal">
+                          <i class="fa fa-times"></i>
+                        </button>
+                      </div>
+                      @endif
+                      <div class="media-thumbs-content">
+                        <a href="#imageModal" data-toggle="modal" data-url="{{ asset('storage/'.$foto->foto) }}">
+                          <img src="{{ asset('storage/'.$foto->foto) }}" class="img-fluid">
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                @endforeach
+              </div>
+              <div class="mt-2 table-responsive">
+                <p class="text-muted">
+                  <span class="text-dark"><strong>Combustible:</strong></span> {{ $proceso->inspeccion->combustible() }}
+                </p>
+                <p class="text-muted">
+                  <span class="text-dark"><strong>observación:</strong></span> {{ $proceso->inspeccion->observacion }}
+                </p>
+                <table class="table table-sm" style="width: 100%">
+                  <tbody>
+                    <tr>
+                      <td>Radio</td>
+                      <td>{!! $proceso->inspeccion->badge('radio') !!}</td>
+                      <td>Luces altas</td>
+                      <td>{!! $proceso->inspeccion->badge('luces_altas') !!}</td>
+                    </tr>
+                    <tr>
+                      <td>Antena</td>
+                      <td>{!! $proceso->inspeccion->badge('antena') !!}</td>
+                      <td>Luces bajas</td>
+                      <td>{!! $proceso->inspeccion->badge('luces_bajas') !!}</td>
+                    </tr>
+                    <tr>
+                      <td>Pisos delanteros</td>
+                      <td>{!! $proceso->inspeccion->badge('pisos_delanteros') !!}</td>
+                      <td>Intermitentes</td>
+                      <td>{!! $proceso->inspeccion->badge('intermitentes') !!}</td>
+                    </tr>
+                    <tr>
+                      <td>Pisos traseros</td>
+                      <td>{!! $proceso->inspeccion->badge('pisos_traseros') !!}</td>
+                      <td>Encendedor</td>
+                      <td>{!! $proceso->inspeccion->badge('encendedor') !!}</td>
+                    </tr>
+                    <tr>
+                      <td>Cinturones</td>
+                      <td>{!! $proceso->inspeccion->badge('cinturones') !!}</td>
+                      <td>Limpia parabrisas delantero</td>
+                      <td>{!! $proceso->inspeccion->badge('limpia_parabrisas_delantero') !!}</td>
+                    </tr>
+                    <tr>
+                      <td>Tapiz</td>
+                      <td>{!! $proceso->inspeccion->badge('tapiz') !!}</td>
+                      <td>Limpia parabrisas trasero</td>
+                      <td>{!! $proceso->inspeccion->badge('limpia_parabrisas_trasero') !!}</td>
+                    </tr>
+                    <tr>
+                      <td>Triángulos</td>
+                      <td>{!! $proceso->inspeccion->badge('triangulos') !!}</td>
+                      <td>Tapa de combustible</td>
+                      <td>{!! $proceso->inspeccion->badge('tapa_combustible') !!}</td>
+                    </tr>
+                    <tr>
+                      <td>Extintor</td>
+                      <td>{!! $proceso->inspeccion->badge('extintor') !!}</td>
+                      <td>Seguro de ruedas</td>
+                      <td>{!! $proceso->inspeccion->badge('seguro_ruedas') !!}</td>
+                    </tr>
+                    <tr>
+                      <td>Botiquín</td>
+                      <td>{!! $proceso->inspeccion->badge('botiquin') !!}</td>
+                      <td>Perilla interior</td>
+                      <td>{!! $proceso->inspeccion->badge('perilla_interior') !!}</td>
+                    </tr>
+                    <tr>
+                      <td>Gata</td>
+                      <td>{!! $proceso->inspeccion->badge('gata') !!}</td>
+                      <td>Perilla exterior</td>
+                      <td>{!! $proceso->inspeccion->badge('perilla_exterior') !!}</td>
+                    </tr>
+                    <tr>
+                      <td>Herramientas</td>
+                      <td>{!! $proceso->inspeccion->badge('herramientas') !!}</td>
+                      <td>Manuales</td>
+                      <td>{!! $proceso->inspeccion->badge('manuales') !!}</td>
+                    </tr>
+                    <tr>
+                      <td>Neumático repuesto</td>
+                      <td>{!! $proceso->inspeccion->badge('neumatico_repuesto') !!}</td>
+                      <td>Documentación</td>
+                      <td>{!! $proceso->inspeccion->badge('documentación') !!}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div><!-- .tab-pane -->
+            @endif
           </div><!-- .tab-content -->
         </div><!-- .card-body -->
       </div>
@@ -434,18 +581,18 @@
   </div>
   
   @if(!$proceso->status)
-    <div id="delPreevaluacionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delPreevaluacionModalLabel">
+    <div id="delElementModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delElementModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="delPreevaluacionModalLabel"></h4>
+            <h4 class="modal-title" id="delElementModalLabel"></h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <div class="row justify-content-md-center">
-              <form id="delPreevaluacion" class="col-md-8" action="#" method="POST">
+              <form id="delElement" class="col-md-8" action="#" method="POST">
                 @csrf
                 @method('DELETE')
 
@@ -495,7 +642,7 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="delPreevaluacionModalLabel">Imagen</h4>
+          <h4 class="modal-title" id="delElementModalLabel">Imagen</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -515,15 +662,14 @@
 @section('scripts')
   <script type="text/javascript">
     $(document).ready(function() {
-      $('#delPreevaluacionModal').on('show.bs.modal', function (e) {
+      $('#delElementModal').on('show.bs.modal', function (e) {
         let id = $(e.relatedTarget).data('id'),
-            type = $(e.relatedTarget).data('type'),
+            type = $(e.relatedTarget).data('type');
+        let url = (type == 'preevaluacion' ? '{{ route("admin.preevaluacion.index") }}/' : ( type == 'foto' ? '{{ route("admin.preevaluacion.foto.index") }}/' : '{{ route("admin.inspeccion.foto.index") }}/')) + id
 
-        url = (type == 'preevaluacion' ? '{{ route("admin.preevaluacion.index") }}/' : '{{ route("admin.preevaluacion.foto.index") }}/') + id
-
-        $('#delPreevaluacionModalLabel').text(type == 'preevaluacion' ? 'Eliminar Pre-evaluación' : 'Eliminar Foto')
+        $('#delElementModalLabel').text(type == 'preevaluacion' ? 'Eliminar Pre-evaluación' : 'Eliminar Foto')
         $('#modal-message').text(type == 'preevaluacion' ? 'este dato de Pre-evaluación' : 'esta Foto')
-        $('#delPreevaluacion').attr('action', url)
+        $('#delElement').attr('action', url)
       })
 
       $('#delSituacionModal').on('show.bs.modal', function (e) {
@@ -538,12 +684,20 @@
         $('#image').attr('src', src)
       })
 
-      $('.link-cotizaciones').click(function () {
+      $('.link-cotizaciones').click(function (e) {
+        e.preventDefault();
         $('#tab3-tab').click()
+        $('.main-panel').animate({
+            scrollTop: $('.proceso-tabs').offset().top
+        }, 500);
       })
 
-      $('.link-pagos').click(function () {
+      $('.link-pagos').click(function (e) {
+        e.preventDefault();
         $('#tab4-tab').click()
+        $('.main-panel').animate({
+            scrollTop: $('.proceso-tabs').offset().top
+        }, 500);
       })
     })
   </script>
