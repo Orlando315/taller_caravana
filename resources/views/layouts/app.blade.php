@@ -148,8 +148,8 @@
 
                 @if(Auth::user()->isAdmin())
                   <li class="nav-item">
-                    <a href="{{ route('admin.users.create') }}" class="nav-link" rel="tooltip" title="Agregar usuario">
-                      <i class="fa fa-user-plus" aria-hidden="true"></i> Agregar usuario
+                    <a href="{{ route('admin.proceso.create') }}" class="nav-link" rel="tooltip" title="Iniciar proceso">
+                      <i class="fa fa-plus" aria-hidden="true"></i> Iniciar proceso
                     </a>
                   </li>
 

@@ -24,24 +24,26 @@
             <thead>
               <tr>
                 <th scope="col" class="text-center">#</th>
-                <th scope="col" class="text-center">Nombre</th>
                 <th scope="col" class="text-center">Email</th>
+                <th scope="col" class="text-center">Nombre</th>
                 <th scope="col" class="text-center">Teléfono</th>
                 <th scope="col" class="text-center">RUT</th>
+                <th scope="col" class="text-center">Vehículos</th>
               </tr>
             </thead>
             <tbody>
               @foreach($clientes as $d)
                 <tr>
                   <td scope="row" class="text-center">{{ $loop->index + 1 }}</td>
-                  <td>{{ $d->nombre() }}</td>
                   <td>
                     <a href="{{ route('admin.cliente.show', ['cliente' => $d->id] )}}" title="Ver cliente">
-                      {{ $d->email }}
+                      {{ $d->user->email }}
                     </a>
                   </td>
+                  <td>{{ $d->nombre() }}</td>
                   <td>{{ $d->telefono }}</td>
                   <td>{{ $d->rut }}</td>
+                  <td class="text-center">{{ $d->vehiculos->count() }}</td>
                 </tr>
               @endforeach
             </tbody>

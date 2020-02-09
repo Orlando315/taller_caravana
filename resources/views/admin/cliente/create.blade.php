@@ -31,9 +31,9 @@
               </div>
 
               <div class="form-group">
-                <label class="control-label" for="rut">RUT:</label>
+                <label class="control-label" for="rut">RUT: *</label>
                 <input id="rut" class="form-control" type="text" name="rut" maxlength="11" pattern="^(\d{4,9}-[\dk])$" value="{{ old('rut') }}" placeholder="RUT" required>
-                <span class="help-block text-muted">Ejemplo: 00000000-0</span>
+                <small class="text-muted">Ejemplo: 00000000-0</small>
               </div>
 
               <div class="form-group">
@@ -42,8 +42,8 @@
               </div>
 
               <div class="form-group">
-                <label class="control-label" for="email">Email: </label>
-                <input id="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" type="email" name="email" maxlength="50" value="{{ old('email') }}" placeholder="Email">
+                <label class="control-label" for="email">Email: *</label>
+                <input id="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" type="email" name="email" maxlength="50" value="{{ old('email') }}" placeholder="Email" required>
               </div>
 
               <div class="form-group">
@@ -51,9 +51,19 @@
                 <input id="direccion" class="form-control{{ $errors->has('direccion') ? ' is-invalid' : '' }}" type="text" name="direccion" maxlength="150" value="{{ old('direccion') }}" placeholder="Dirección">
               </div>
 
+              <div class="form-group">
+                <label class="control-label" for="contraseña">Contraseña: *</label>
+                <input id="contraseña" class="form-control{{ $errors->has('contraseña') ? ' is-invalid' : '' }}" type="password" name="contraseña" maxlength="30" placeholder="Contraseña" required>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="contraseña_confirmation">Confirmar contraseña:</label>
+                <input id="contraseña_confirmation" class="form-control{{ $errors->has('contraseña_confirmation') ? ' is-invalid' : '' }}" type="password" name="contraseña_confirmation" maxlength="30" placeholder="Confirmar contraseña" required>
+              </div>
+
               @if(count($errors) > 0)
               <div class="alert alert-danger alert-important">
-                <ul>
+                <ul class="m-0">
                   @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
                   @endforeach

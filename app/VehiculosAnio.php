@@ -49,6 +49,14 @@ class VehiculosAnio extends Model
     }
 
     /**
+     * Obtener el atributo formateada
+     */
+    public function anio()
+    {
+      return number_format($this->anio, 0, ',', '.');
+    }
+
+    /**
      * Obtener los vehiculos
      */
     public function vehiculos()

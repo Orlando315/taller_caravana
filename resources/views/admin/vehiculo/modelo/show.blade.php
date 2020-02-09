@@ -62,13 +62,14 @@
                 <th scope="col" class="text-center">Marca</th>
                 <th scope="col" class="text-center">Color</th>
                 <th scope="col" class="text-center">Año</th>
+                <th scope="col" class="text-center">Patentes</th>
                 <th scope="col" class="text-center">Agregado</th>
               </tr>
             </thead>
             <tbody>
               @foreach($vehiculos as $d)
                 <tr>
-                  <td scope="row" class="text-center">{{ $loop->index + 1 }}</td>
+                  <td scope="row" class="text-center">{{ $loop->iteration }}</td>
                   <td>
                     <a href="{{ route('admin.vehiculo.show', ['vehiculo' => $d->id]) }}">
                       {{ $d->cliente->nombre() }}
@@ -77,6 +78,7 @@
                   <td>{{ $d->marca->marca }}</td>
                   <td>{{ $d->color }}</td>
                   <td>{{ $d->anio->anio }}</td>
+                  <td>{{ $d->patentes }}</td>
                   <td>{{ $d->createdAt() }}</td>
                 </tr>
               @endforeach

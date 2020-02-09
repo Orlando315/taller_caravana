@@ -44,6 +44,10 @@ class VehiculosAnioController extends Controller
       $anio = new VehiculosAnio(['anio' => $request->input('año')]);
 
       if(Auth::user()->anios()->save($anio)){
+        if($request->ajax()){
+          return response()->json(['response' => true, 'anio' => ['id' => $anio->id, 'anio' => $anio->anio()]]);
+        }
+
         return redirect()->route('admin.vehiculo.anio.show', ['anio' => $anio->id])->with([
                 'flash_message' => 'Año agregado exitosamente.',
                 'flash_class' => 'alert-success'

@@ -28,13 +28,13 @@
         <div class="card-body">
           <strong>Nombres</strong>
           <p class="text-muted">
-            {{ $cliente->nombres }}
+            {{ $cliente->user->nombres }}
           </p>
           <hr>
 
           <strong>Apellidos</strong>
           <p class="text-muted">
-            {{ $cliente->apellidos }}
+            {{ $cliente->user->apellidos }}
           </p>
           <hr>
 
@@ -46,7 +46,7 @@
 
           <strong>Email</strong>
           <p class="text-muted">
-            {{ $cliente->email }}
+            {{ $cliente->user->email }}
           </p>
           <hr>
 
@@ -67,43 +67,84 @@
 
     <div class="col-md-9">
       <div class="card">
-        <div class="card-header">
-          <h4 class="card-title">Vehículos ({{ $vehiculos->count() }})</h4>
-          <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('admin.vehiculo.create', ['cliente' => $cliente->id]) }}">
-            <i class="fa fa-plus"></i> Agregar vehículo
-          </a>
-        </div>
         <div class="card-body">
-          <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
-            <thead>
-              <tr>
-                <th scope="col" class="text-center">#</th>
-                <th scope="col" class="text-center">Marca</th>
-                <th scope="col" class="text-center">Modelo</th>
-                <th scope="col" class="text-center">Color</th>
-                <th scope="col" class="text-center">Año</th>
-                <th scope="col" class="text-center">Agregado</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach($vehiculos as $d)
-                <tr>
-                  <td scope="row" class="text-center">{{ $loop->index + 1 }}</td>
-                  <td>
-                    <a href="{{ route('admin.vehiculo.show', ['vehiculo' => $d->id]) }}">
-                      {{ $d->marca->marca }}
-                    </a>
-                  </td>
-                  <td>{{ $d->modelo->modelo }}</td>
-                  <td>{{ $d->color }}</td>
-                  <td>{{ $d->anio->anio }}</td>
-                  <td>{{ $d->createdAt() }}</td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="tab1-tab" href="#tab1" role="tab" data-toggle="tab" aria-controls="tab1" aria-selected="false"><i class="fa fa-tasks" aria-hidden="true"></i> Procesos ({{ $procesos->count() }})</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="tab2-tab" href="#tab2" role="tab" data-toggle="tab" aria-controls="tab2" aria-selected="true"><i class="fa fa-car" aria-hidden="true"></i> Vehículos ({{ $vehiculos->count() }})</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div id="tab1" class="tab-pane fade show active pt-2" role="tabpanel" aria-labelledby="tab1-tab">
+              <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">Vehículo</th>
+                    <th scope="col" class="text-center">Agendamiento</th>
+                    <th scope="col" class="text-center">Pre-evaluación</th>
+                    <th scope="col" class="text-center">Cotización</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($procesos as $proceso)
+                    <tr>
+                      <td scope="row" class="text-center">{{ $loop->index + 1 }}</td>
+                      <td>
+                        <a href="{{ route('admin.proceso.show', ['proceso' => $proceso->id] )}}" title="Ver proceso">
+                          {{ $proceso->vehiculo->vehiculo() }}
+                        </a>
+                      </td>
+                      <td class="text-center">{{ $proceso->agendamiento ? $proceso->agendamiento->fecha() : 'N/A' }}</td>
+                      <td class="text-center">{!! $proceso->preevaluacionesStatus() !!}</td>
+                      <td class="text-center">{!! $proceso->cotizacionesStatus() !!}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div><!-- .tab-pane -->
+
+            <div id="tab2" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab2-tab">
+              <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('admin.vehiculo.create', ['cliente' => $cliente->id]) }}">
+                <i class="fa fa-plus"></i> Agregar vehículo
+              </a>
+
+              <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">Marca</th>
+                    <th scope="col" class="text-center">Modelo</th>
+                    <th scope="col" class="text-center">Color</th>
+                    <th scope="col" class="text-center">Año</th>
+                    <th scope="col" class="text-center">Patentes</th>
+                    <th scope="col" class="text-center">Agregado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($vehiculos as $d)
+                    <tr>
+                      <td scope="row" class="text-center">{{ $loop->iteration }}</td>
+                      <td>
+                        <a href="{{ route('admin.vehiculo.show', ['vehiculo' => $d->id]) }}">
+                          {{ $d->marca->marca }}
+                        </a>
+                      </td>
+                      <td>{{ $d->modelo->modelo }}</td>
+                      <td>{{ $d->color }}</td>
+                      <td>{{ $d->anio->anio() }}</td>
+                      <td>{{ $d->patentes }}</td>
+                      <td>{{ $d->createdAt() }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div><!-- .tab-pane -->
+          </div><!-- .tab-content -->
         </div><!-- .card-body -->
-      </div>
+      </div><!-- .card -->
     </div>
   </div>
 

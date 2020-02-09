@@ -20,18 +20,18 @@
 
               <div class="form-group">
                 <label class="control-label" for="nombres">Nombres: *</label>
-                <input id="nombres" class="form-control{{ $errors->has('nombres') ? ' is-invalid' : '' }}" type="text" name="nombres" maxlength="50" value="{{ old('nombres', $cliente->nombres) }}" placeholder="Nombres" required>
+                <input id="nombres" class="form-control{{ $errors->has('nombres') ? ' is-invalid' : '' }}" type="text" name="nombres" maxlength="50" value="{{ old('nombres', $cliente->user->nombres) }}" placeholder="Nombres" required>
               </div>
 
               <div class="form-group">
                 <label class="control-label" for="apellidos">Apellidos:</label>
-                <input id="apellidos" class="form-control{{ $errors->has('apellidos') ? ' is-invalid' : '' }}" type="text" name="apellidos" maxlength="50" value="{{ old('apellidos', $cliente->apellidos) }}" placeholder="Apellidos">
+                <input id="apellidos" class="form-control{{ $errors->has('apellidos') ? ' is-invalid' : '' }}" type="text" name="apellidos" maxlength="50" value="{{ old('apellidos', $cliente->user->apellidos) }}" placeholder="Apellidos">
               </div>
 
               <div class="form-group">
-                <label class="control-label" for="rut">RUT:</label>
+                <label class="control-label" for="rut">RUT: *</label>
                 <input id="rut" class="form-control" type="text" name="rut" maxlength="11" pattern="^(\d{4,9}-[\dk])$" value="{{ old('rut', $cliente->rut) }}" placeholder="RUT" required>
-                <span class="help-block text-muted">Ejemplo: 00000000-0</span>
+                <small class="text-muted">Ejemplo: 00000000-0</small>
               </div>
 
               <div class="form-group">
@@ -40,8 +40,8 @@
               </div>
 
               <div class="form-group">
-                <label class="control-label" for="email">Email:</label>
-                <input id="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" type="email" name="email" maxlength="50" value="{{ old('email', $cliente->email) }}" placeholder="Email">
+                <label class="control-label" for="email">Email: *</label>
+                <input id="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" type="email" name="email" maxlength="50" value="{{ old('email', $cliente->user->email) }}" placeholder="Email" required>
               </div>
 
               <div class="form-group">
@@ -51,7 +51,7 @@
 
               @if(count($errors) > 0)
               <div class="alert alert-danger alert-important">
-                <ul>
+                <ul class="m-0">
                   @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
                   @endforeach
@@ -60,7 +60,7 @@
               @endif
 
               <div class="form-group text-right">
-                <a class="btn btn-default" href="{{ url()->previous() }}"><i class="fa fa-reply"></i> Atras</a>
+                <a class="btn btn-default" href="{{ route('admin.cliente.show', ['cliente' => $cliente->id]) }}"><i class="fa fa-reply"></i> Atras</a>
                 <button class="btn btn-primary" type="submit"><i class="fa fa-send"></i> Guardar</button>
               </div>
             </form>

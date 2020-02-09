@@ -48,12 +48,13 @@
                     <th scope="col" class="text-center">Modelo</th>
                     <th scope="col" class="text-center">Color</th>
                     <th scope="col" class="text-center">Año</th>
+                    <th scope="col" class="text-center">Patentes</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($vehiculos as $d)
                     <tr>
-                      <td scope="row" class="text-center">{{ $loop->index + 1 }}</td>
+                      <td scope="row" class="text-center">{{ $loop->iteration }}</td>
                       <td>
                         <a href="{{ route('admin.vehiculo.show', ['vehiculo' => $d->id]) }}">
                           {{ $d->cliente->nombre() }}
@@ -63,6 +64,7 @@
                       <td>{{ $d->modelo->modelo }}</td>
                       <td>{{ $d->color }}</td>
                       <td>{{ $d->anio->anio }}</td>
+                      <td>{{ $d->patentes }}</td>
                     </tr>
                   @endforeach
                 </tbody>
@@ -86,7 +88,7 @@
                 <tbody class="text-center">
                   @foreach($marcas as $d)
                     <tr>
-                      <td scope="row" class="text-center">{{ $loop->index + 1 }}</td>
+                      <td scope="row" class="text-center">{{ $loop->iteration }}</td>
                       <td>
                         <a href="{{ route('admin.vehiculo.marca.show', ['marca' => $d->id] )}}" title="Ver Marca">
                           {{ $d->marca }}
@@ -118,7 +120,7 @@
                 <tbody class="text-center">
                   @foreach($modelos as $d)
                     <tr>
-                      <td scope="row" class="text-center">{{ $loop->index + 1 }}</td>
+                      <td scope="row" class="text-center">{{ $loop->iteration }}</td>
                       <td>
                         <a href="{{ route('admin.vehiculo.modelo.show', ['modelo' => $d->id] )}}" title="Ver Modelo">
                           {{ $d->modelo }}

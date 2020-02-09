@@ -27,13 +27,19 @@ class Cliente extends Model
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
+     * Obtener el User
+     */
+    public function user()
+    {
+      return $this->belongsTo('App\User');
+    }
+
+    /**
+     * Obtener el nombre completo del Cliente.
      */
     public function nombre()
     {
-      return $this->nombres.' '.$this->apellidos;
+      return $this->user->nombres.' '.$this->user->apellidos;
     }
 
     /**
@@ -42,5 +48,13 @@ class Cliente extends Model
     public function vehiculos()
     {
       return $this->hasMany('App\Vehiculo');
+    }
+
+    /**
+     * Obtener los Procesos
+     */
+    public function procesos()
+    {
+      return $this->hasMany('App\Proceso');
     }
 }

@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-      'nombres', 'apellidos', 'email', 'password', 'status'
+      'user_id', 'nombres', 'apellidos', 'email', 'password', 'status'
     ];
 
     /**
@@ -157,6 +157,14 @@ class User extends Authenticatable
     public function clientes()
     {
       return $this->hasMany('App\Cliente', 'taller');
+    }
+
+    /**
+     * Obtener el Cliente del User (role = user)
+     */
+    public function cliente()
+    {
+      return $this->hasOne('App\Cliente');
     }
 
     /**

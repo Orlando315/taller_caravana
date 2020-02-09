@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Cliente;
+use App\{Cliente, User};
 
 class ClienteController extends Controller
 {
@@ -16,7 +16,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-      $clientes = Cliente::all();
+      $clientes = Cliente::with('user')->get();
 
       return view('admin.cliente.index', compact('clientes'));
     }
@@ -43,21 +43,32 @@ class ClienteController extends Controller
         'nombres' => 'required|string|max:50',
         'apellidos' => 'nullable|string|max:50',
         'rut' => 'required|regex:/^(\d{4,9}-[\dk])$/|unique:clientes,rut',
-        'email' => 'nullable|email|unique:clientes,email',
+        'email' => 'required|email|unique:users,email',
         'telefono' => 'required|string|max:15',
         'direccion' => 'nullable|string|max:150',
+        'contraseña' => 'required|string|confirmed'
       ]);
 
-      $cliente = new Cliente($request->all());
+      $user = new User($request->only(['nombres', 'apellidos', 'email']));
+      $user->user_id = Auth::id();
+      $user->password = bcrypt($request->input('contraseña'));
+      $cliente = new Cliente($request->only(['rut', 'direccion', 'telefono']));
+      $cliente->taller = Auth::id();
 
-      if(Auth::user()->clientes()->save($cliente)){
+      if($user->save()){
+        $user->cliente()->save($cliente);
+        
+        if($request->ajax()){
+          return response()->json(['response' => true, 'cliente' => ['id' => $cliente->id, 'nombre' => $cliente->nombre()]]);
+        }
+
         return redirect()->route('admin.cliente.show', ['cliente' => $cliente->id])->with([
                 'flash_message' => 'Cliente agregado exitosamente.',
                 'flash_class' => 'alert-success'
               ]);
       }
 
-      return redirect()->route('admin.cliente.create')->withInput()->with([
+      return redirect()->back()->withInput()->with([
               'flash_message' => 'Ha ocurrido un error.',
               'flash_class' => 'alert-danger',
               'flash_important' => true
@@ -73,8 +84,9 @@ class ClienteController extends Controller
     public function show(Cliente $cliente)
     {
       $vehiculos = $cliente->vehiculos()->with(['marca', 'modelo'])->get();
+      $procesos = $cliente->procesos;
 
-      return view('admin.cliente.show', compact('cliente', 'vehiculos'));
+      return view('admin.cliente.show', compact('cliente', 'vehiculos', 'procesos'));
     }
 
     /**
@@ -101,21 +113,22 @@ class ClienteController extends Controller
         'nombres' => 'required|string|max:50',
         'apellidos' => 'nullable|string|max:50',
         'rut' => 'required|regex:/^(\d{4,9}-[\dk])$/|unique:clientes,rut,' . $cliente->id . ',id',
-        'email' => 'required|email|unique:clientes,email,' . $cliente->id . ',id',
+        'email' => 'required|email|unique:users,email,' . $cliente->user_id . ',id',
         'telefono' => 'required|string|max:15',
         'direccion' => 'nullable|string|max:150',
       ]);
 
-      $cliente->fill($request->all());
+      $cliente->fill($request->only(['rut', 'telefono', 'direccion']));
+      $cliente->user->fill($request->only(['nombres', 'apellidos', 'email']));
 
-      if($cliente->save()){
+      if($cliente->push()){
         return redirect()->route('admin.cliente.show', ['cliente' => $cliente->id])->with([
                 'flash_message' => 'Cliente modificado exitosamente.',
                 'flash_class' => 'alert-success'
               ]);
       }
 
-      return redirect()->route('admin.cliente.edit', ['cliente' => $cliente->id])->withInput()->with([
+      return redirect()->back()->withInput()->with([
               'flash_message' => 'Ha ocurrido un error.',
               'flash_class' => 'alert-danger',
               'flash_important' => true

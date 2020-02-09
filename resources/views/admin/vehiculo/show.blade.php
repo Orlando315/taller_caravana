@@ -50,10 +50,16 @@
           </p>
           <hr>
 
+          <strong>Vin</strong>
+          <p class="text-muted">
+            {{ $vehiculo->vin ?? 'N/A' }}
+          </p>
+          <hr>
+
           <strong>Año</strong>
           <p class="text-muted">
             <a href="{{ route('admin.vehiculo.anio.show', ['anio' => $vehiculo->vehiculo_anio_id]) }}">
-              {{ $vehiculo->anio->anio }}
+              {{ $vehiculo->anio->anio() }}
             </a>
           </p>
           <hr>
@@ -73,12 +79,6 @@
           <strong>Patentes</strong>
           <p class="text-muted">
             {{ $vehiculo->patentes ?? 'N/A' }}
-          </p>
-          <hr>
-
-          <strong>Vin</strong>
-          <p class="text-muted">
-            {{ $vehiculo->vin ?? 'N/A' }}
           </p>
 
         </div>

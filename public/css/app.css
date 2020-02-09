@@ -71,9 +71,9 @@
 }
 
 .modal.show .modal-dialog.dialog-top{
-  -webkit-transform: translate(0, 5%);
-  -o-transform: translate(0, 5%);
-  transform: translate(0, 5%);
+  -webkit-transform: translate(0, 10px);
+  -o-transform: translate(0, 10px);
+  transform: translate(0, 10px);
 }
 
 .card-stats:hover .card-hover-danger{

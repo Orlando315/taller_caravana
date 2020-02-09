@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\{Proceso, Cliente};
+use App\{Proceso, Cliente, VehiculosAnio, VehiculosMarca};
 
 class ProcesoController extends Controller
 {
@@ -29,8 +29,10 @@ class ProcesoController extends Controller
     public function create()
     {
       $clientes = Cliente::all();
+      $marcas = VehiculosMarca::has('modelos')->with('modelos')->get();
+      $anios = VehiculosAnio::all();
 
-      return view('admin.proceso.create', compact('clientes'));
+      return view('admin.proceso.create', compact('clientes', 'marcas', 'anios'));
     }
 
     /**

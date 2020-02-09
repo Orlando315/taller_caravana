@@ -135,7 +135,6 @@
 
             <form id="option-form" class="col-md-8" action="#" method="POST">
               @csrf
-              @method('DELETE')
 
               <div class="form-group">
                 <label id="option-label" class="control-label" for="option"></label>
