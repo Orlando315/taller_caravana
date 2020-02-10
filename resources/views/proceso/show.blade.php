@@ -126,7 +126,11 @@
         </div>
 
         <div class="col-sm-6 col-md-4">
+          @if($proceso->situacion && !$proceso->hasCotizaciones() && !$proceso->status && ($proceso->etapa == 4 || $proceso->etapa == 5))
+          <a href="{{ route('cotizacion.create', ['situcion' => $proceso->situacion->id]) }}" title="Generar cotización">
+          @else
           <a class="link-scroll" href="#" title="Ver cotizaciones" data-tab="#tab3">
+          @endif
             <div class="card card-stats">
               <div class="card-body py-1">
                 <div class="row">
@@ -139,7 +143,7 @@
                     <div class="numbers">
                       <p class="card-category">Cotizaciones</p>
                       <p class="{{ $proceso->hasCotizaciones() ? 'card-title' : '' }}">
-                        {!! $proceso->cotizacionesStatus() !!}
+                        {!! (($proceso->etapa == 4 || $proceso->etapa == 5) && !$proceso->hasCotizaciones()) ? 'Generar' : $proceso->cotizacionesStatus() !!}
                       </p>
                     </div>
                   </div>
@@ -291,6 +295,11 @@
             </div><!-- .tab-pane -->
 
             <div id="tab3" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab3-tab" aria-expanded="false">
+              @if($proceso->situacion && !$proceso->status && ($proceso->etapa == 4 || $proceso->etapa == 5))
+              <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('cotizacion.create', ['situacion' => $proceso->situacion->id]) }}">
+                <i class="fa fa-plus"></i> Generar cotización
+              </a>
+              @endif
               <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
                 <thead>
                   <tr>

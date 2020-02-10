@@ -34,6 +34,10 @@ class CotizacionPolicy
      */
     public function create(User $user, Situacion $situacion)
     {
+      if($user->isCliente()){
+        return ($user->cliente->id == $situacion->proceso->cliente_id) && !$situacion->proceso->status && ($situacion->proceso->etapa == 4 || $situacion->proceso->etapa == 5);
+      }
+
       return $user->isAdmin() && !$situacion->proceso->status && ($situacion->proceso->etapa == 4 || $situacion->proceso->etapa == 5);
     }
 

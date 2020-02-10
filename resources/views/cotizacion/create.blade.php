@@ -29,9 +29,6 @@
                     <th class="text-center">Valor venta</th>
                     <th class="text-center">Cantidad</th>
                     <th class="text-center">Valor final</th>
-                    <th class="text-center">Precio costo</th>
-                    <th class="text-center">Utilidad</th>
-                    <th class="text-center">Decuento</th>
                     <td class="text-center">
                       <div class="form-group m-0">
                         <div class="form-check only-check">
@@ -52,9 +49,6 @@
                       <td class="text-right">{{ $item->valorVenta() }}</td>
                       <td class="text-center">{{ $item->cantidad() }}</td>
                       <td class="text-right">{{ $item->total() }}</td>
-                      <td class="text-right">{{ $item->costo() }}</td>
-                      <td class="text-right">{{ $item->utilidad() }}</td>
-                      <td class="text-right">{{ $item->descuentoText() }}</td>
                       <td class="text-center">
                         @if(!$item->status)
                         <div class="form-group m-0">

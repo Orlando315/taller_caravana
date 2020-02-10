@@ -21,22 +21,65 @@ class CotizacionController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \App\Situacion  $situacion
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Situacion $situacion)
     {
-        //
+      $this->authorize('create', [Cotizacion::class, $situacion]);
+
+      $items = $situacion->items;
+
+      return view('cotizacion.create', compact('situacion', 'items'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Situacion  $situacion
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Situacion $situacion)
     {
-        //
+      $this->authorize('create', [Cotizacion::class, $situacion]);
+      $this->validate($request, [
+        'items.*' => 'min:1'
+      ]);
+
+      $ids = [];
+
+      foreach ($request->items as $item) {
+        $ids[] = ['item_id' => $item];
+      }
+
+      $cotizacion = new Cotizacion([
+                      'user_id' => Auth::id(),
+                    ]);
+
+      if($situacion->cotizaciones()->save($cotizacion)){
+        if($cotizacion->items()->createMany($ids)){
+          SituacionItem::whereIn('id', $request->items)
+                      ->update([
+                        'status' => true,
+                      ]);
+          $situacion->proceso->etapa = 5;
+          $situacion->proceso->save();
+
+          return redirect()->route('cotizacion.show', ['cotizacion' => $cotizacion->id])->with([
+                  'flash_message' => 'Cotización generada exitosamente.',
+                  'flash_class' => 'alert-success'
+                ]);
+        }else{
+          $cotizacion->delete();
+        }
+      }
+
+      return redirect()->route('cotizacion.create', ['situacion' => $situacion->id])->withInput()->with([
+              'flash_message' => 'Ha ocurrido un error.',
+              'flash_class' => 'alert-danger',
+              'flash_important' => true
+            ]);
     }
 
     /**

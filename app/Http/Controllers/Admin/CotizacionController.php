@@ -75,7 +75,7 @@ class CotizacionController extends Controller
         }
       }
 
-      return redirect()->route('admin.situacion.create', ['proceso' => $situacion->proceso_id])->withInput()->with([
+      return redirect()->route('admin.cotizacion.create', ['situacion' => $situacion->id])->withInput()->with([
               'flash_message' => 'Ha ocurrido un error.',
               'flash_class' => 'alert-danger',
               'flash_important' => true

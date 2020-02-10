@@ -116,7 +116,7 @@ class User extends Authenticatable
      */
     public function nombre()
     {
-      return $this->nobmres.' '.$this->apellidos;
+      return $this->nombres.' '.$this->apellidos;
     }
 
     /**

@@ -163,8 +163,8 @@
         </div>
 
         <div class="col-sm-6 col-md-4">
-          @if(!$proceso->hasCotizaciones() && !$proceso->status && Auth::user()->isAdmin())
-            <a href="{{ ($proceso->etapa == 4 || $proceso->etapa == 5) ? route('admin.cotizacion.create', ['situcion' => $proceso->situacion->id]) : '#' }}" title="{{ ($proceso->etapa == 4) ? 'Generar cotización' : '' }}">
+          @if(!$proceso->hasCotizaciones() && !$proceso->status && ($proceso->etapa == 4 || $proceso->etapa == 5) && Auth::user()->isAdmin())
+            <a href="{{ route('admin.cotizacion.create', ['situcion' => $proceso->situacion->id]) }}" title="Generar cotización">
           @else
             <a class="link-scroll" href="#" data-tab="#tab3">
           @endif
