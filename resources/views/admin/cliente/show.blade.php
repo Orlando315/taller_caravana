@@ -10,8 +10,11 @@
   <div class="row">
     <div class="col-12">
       <a class="btn btn-default" href="{{ route('admin.cliente.index') }}"><i class="fa fa-reply" aria-hidden="true"></i> Volver</a>
+
+      @if(Auth::user()->isAdmin())
       <a class="btn btn-success" href="{{ route('admin.cliente.edit', ['cliente' => $cliente->id]) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</a>
       <button class="btn btn-fill btn-danger" data-toggle="modal" data-target="#delModal"><i class="fa fa-times" aria-hidden="true"></i> Eliminar</button>
+      @endif
     </div>
   </div>
   
@@ -107,9 +110,11 @@
             </div><!-- .tab-pane -->
 
             <div id="tab2" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab2-tab">
+              @if(Auth::user()->isAdmin())
               <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('admin.vehiculo.create', ['cliente' => $cliente->id]) }}">
                 <i class="fa fa-plus"></i> Agregar vehículo
               </a>
+              @endif
 
               <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
                 <thead>
@@ -147,7 +152,8 @@
       </div><!-- .card -->
     </div>
   </div>
-
+  
+  @if(Auth::user()->isAdmin())
   <div id="delModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -175,4 +181,5 @@
       </div>
     </div>
   </div>
+  @endif
 @endsection

@@ -42,7 +42,7 @@
               </a>
             </li>
 
-            @if(Auth::user()->isAdmin())
+            @if(Auth::user()->isStaff())
             <li class="nav-item{{ $currentRoute == 'admin.users' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('admin.users.index') }}">
                 <i class="fa fa-users"></i>
@@ -74,7 +74,7 @@
             <li class="nav-item{{ $currentRoute == 'admin.vehiculo' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('admin.vehiculo.index') }}">
                 <i class="fa fa-car"></i>
-                <p>Vehiculos</p>
+                <p>Vehículos</p>
               </a>
             </li>
 
@@ -91,7 +91,6 @@
                 <p>Repuestos</p>
               </a>
             </li>
-            @endif
 
             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#menu-insumos" aria-expanded="true">
@@ -101,19 +100,19 @@
               <div id="menu-insumos" class="collapse{{ in_array($currentRoute, ['insumos', 'tipos', 'formatos']) ? ' show' : '' }}">
                 <ul class="nav">
                   <li class="nav-item{{ $currentRoute == 'insumos' ? ' active' : '' }}">
-                    <a class="nav-link" href="{{ route('insumos.index') }}">
+                    <a class="nav-link" href="{{ route('admin.insumos.index') }}">
                       <span class="sidebar-mini">I</span>
                       <span class="sidebar-normal">Insumos</span>
                     </a>
                   </li>
                   <li class="nav-item{{ $currentRoute == 'tipos' ? ' active' : '' }}">
-                    <a class="nav-link" href="{{ route('tipos.index') }}">
+                    <a class="nav-link" href="{{ route('admin.tipos.index') }}">
                       <span class="sidebar-mini">T</span>
                       <span class="sidebar-normal">Tipos</span>
                     </a>
                   </li>
                   <li class="nav-item{{ $currentRoute == 'formatos' ? ' active' : '' }}">
-                    <a class="nav-link" href="{{ route('formatos.index') }}">
+                    <a class="nav-link" href="{{ route('admin.formatos.index') }}">
                       <span class="sidebar-mini">F</span>
                       <span class="sidebar-normal">Formatos</span>
                     </a>
@@ -121,6 +120,23 @@
                 </ul>
               </div>
             </li>
+            @else
+
+            <li class="nav-item{{ $currentRoute == 'proceso' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('proceso.index') }}">
+                <i class="fa fa-tasks"></i>
+                <p>Procesos</p>
+              </a>
+            </li>
+
+            <li class="nav-item{{ $currentRoute == 'vehiculo' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('vehiculo.index') }}">
+                <i class="fa fa-car"></i>
+                <p>Vehículos</p>
+              </a>
+            </li>
+            @endif
+
           </ul>
         </div>
       </div>
@@ -140,25 +156,27 @@
               <ul class="nav navbar-nav mr-auto">
               </ul>
               <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                  <a href="{{ Auth::user()->isAdmin() ? route('admin.configurations.edit') : '#' }}" class="nav-link text-success" rel="tooltip">
-                    <i class="fa fa-dollar" aria-hidden="true"></i> {{ Auth::user()->getDollar() }}
-                  </a>
-                </li>
 
-                @if(Auth::user()->isAdmin())
+                @if(Auth::user()->isStaff())
+                  <li class="nav-item">
+                    <a href="{{ Auth::user()->isAdmin() ? route('admin.configurations.edit') : '#' }}" class="nav-link text-success" rel="tooltip">
+                      <i class="fa fa-dollar" aria-hidden="true"></i> {{ Auth::user()->getDollar() }}
+                    </a>
+                  </li>
+                  
+                  @if(Auth::user()->isAdmin())
                   <li class="nav-item">
                     <a href="{{ route('admin.proceso.create') }}" class="nav-link" rel="tooltip" title="Iniciar proceso">
                       <i class="fa fa-plus" aria-hidden="true"></i> Iniciar proceso
                     </a>
                   </li>
+                  @endif
 
                   <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.agendamiento.index') }}" rel="tooltip" title="Agendamientos">
                       <i class="fa fa-calendar" aria-hiddentrue></i> Agendamientos
                     </a>
                   </li>
-                @endif
 
                 <li class="dropdown nav-item">
                   <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="true" rel="tooltip" title="Stock mínimo">
@@ -170,7 +188,7 @@
                   </a>
                   <ul class="dropdown-menu menu-notifications">
                     @forelse($insumosWithStockMinimo as $lowStock)
-                      <a class="dropdown-item" href="{{ route('insumos.show', ['insumo' => $lowStock->id]) }}">
+                      <a class="dropdown-item" href="{{ route('admin.insumos.show', ['insumo' => $lowStock->id]) }}">
                         <p class="m-0">{{ $lowStock->nombre }}</p>
                         <small class="text-muted">Stock: {{ $lowStock->getStock() }}</small>
                       </a>
@@ -179,6 +197,7 @@
                     @endforelse
                   </ul>
                 </li>
+                @endif
 
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

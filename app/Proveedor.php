@@ -3,8 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
+use App\Scopes\TallerScope;
 
 class Proveedor extends Model
 {
@@ -39,12 +38,7 @@ class Proveedor extends Model
     protected static function boot()
     {
       parent::boot();
-
-      if(Auth::check()){
-        static::addGlobalScope('taller', function (Builder $query) {
-          $query->where('taller', Auth::user()->id);
-        });
-      }
+      static::addGlobalScope(new TallerScope);
     }
 
     /**
@@ -62,5 +56,13 @@ class Proveedor extends Model
     public function vehiculos()
     {
       return $this->hasMany('App\ProveedorVehiculo','proveedor_id');
+    }
+
+    /**
+     * Obtener el atributo formateado
+     */
+    public function descuento()
+    {
+      return number_format($this->descuento_convenio, 2, ',', '.');
     }
 }

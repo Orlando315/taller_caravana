@@ -16,7 +16,11 @@ class ProveedorController extends Controller
      */
     public function index()
     {
-        return view('admin.proveedores.index',['proveedores' => Proveedor::all() ]);
+      $this->authorize('index', Proveedor::class);
+
+      $proveedores = Proveedor::all();
+
+      return view('admin.proveedores.index', compact('proveedores'));
     }
 
     /**
@@ -26,7 +30,9 @@ class ProveedorController extends Controller
      */
     public function create()
     {
-        return view('admin.proveedores.create');
+      $this->authorize('create', Proveedor::class);
+
+      return view('admin.proveedores.create');
     }
 
     /**
@@ -37,6 +43,7 @@ class ProveedorController extends Controller
      */
     public function store(Request $request)
     {
+      $this->authorize('create', Proveedor::class);
       $this->validate($request, [
         'tienda' => 'required',
         'vendedor' => 'required',
@@ -50,7 +57,7 @@ class ProveedorController extends Controller
       $proveedor = new Proveedor($request->all());
 
       if(Auth::user()->proveedores()->save($proveedor)){
-        return redirect()->route('admin.proveedor.show',['proveedor' => $proveedor->id])->with([
+        return redirect()->route('admin.proveedor.show', ['proveedor' => $proveedor->id])->with([
                 'flash_message' => 'Proveedor agregado exitosamente.',
                 'flash_class' => 'alert-success'
               ]);
@@ -71,7 +78,9 @@ class ProveedorController extends Controller
      */
     public function show(Proveedor $proveedor)
     {
-        return view('admin.proveedores.show',['proveedor' => $proveedor]);
+      $this->authorize('view', $proveedor);
+
+      return view('admin.proveedores.show', compact('proveedor'));
     }
 
     /**
@@ -82,7 +91,9 @@ class ProveedorController extends Controller
      */
     public function edit(Proveedor $proveedor)
     {
-        return view('admin.proveedores.edit',['proveedor' => $proveedor]);
+      $this->authorize('update', $proveedor);
+
+      return view('admin.proveedores.edit', compact('proveedor'));
     }
 
     /**
@@ -94,6 +105,7 @@ class ProveedorController extends Controller
      */
     public function update(Request $request, Proveedor $proveedor)
     {
+      $this->authorize('update', $proveedor);
       $this->validate($request, [
         'tienda' => 'required',
         'vendedor' => 'required',
@@ -112,6 +124,7 @@ class ProveedorController extends Controller
                 'flash_class' => 'alert-success'
               ]);
       }
+
       return redirect()->route('admin.proveedor.edit', ['proveedor' => $proveedor->id])->withInput()->with([
               'flash_message' => 'Ha ocurrido un error.',
               'flash_class' => 'alert-danger',
@@ -127,7 +140,9 @@ class ProveedorController extends Controller
      */
     public function destroy(Proveedor $proveedor)
     {
-     if($proveedor->delete()){
+      $this->authorize('delete', $proveedor);
+
+      if($proveedor->delete()){
         return redirect()->route('admin.proveedor.index')->with([
                 'flash_class'   => 'alert-success',
                 'flash_message' => 'Proveedor eliminado exitosamente.'

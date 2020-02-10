@@ -10,6 +10,18 @@ class PagoPolicy
     use HandlesAuthorization;
 
     /**
+     * Determine whether the user can view the model.
+     *
+     * @param  \App\User  $user
+     * @param  \App\User  $model
+     * @return mixed
+     */
+    public function index(User $user)
+    {
+      return $user->isStaff();
+    }
+
+    /**
      * Determine whether the user can view the pago.
      *
      * @param  \App\User  $user
@@ -30,7 +42,7 @@ class PagoPolicy
      */
     public function create(User $user, Cotizacion $cotizacion)
     {
-      return !$cotizacion->status;
+      return $user->isAdmin() && !$cotizacion->status;
     }
 
     /**
@@ -54,7 +66,7 @@ class PagoPolicy
      */
     public function delete(User $user, Pago $pago)
     {
-        //
+      return $user->isAdmin() && !$paago->$cotizacion->status;
     }
 
     /**
@@ -78,6 +90,6 @@ class PagoPolicy
      */
     public function forceDelete(User $user, Pago $pago)
     {
-      return !$cotizacion->status;
+        //
     }
 }

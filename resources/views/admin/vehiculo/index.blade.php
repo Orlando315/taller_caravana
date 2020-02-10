@@ -3,7 +3,7 @@
 @section('title', 'Vehículos - '.config('app.name'))
 
 @section('brand')
-  <a class="navbar-brand" href="{{ route('admin.users.index') }}"> Vehículos </a>
+  <a class="navbar-brand" href="{{ route('admin.vehiculo.index') }}"> Vehículos </a>
 @endsection
 
 @section('content')
@@ -34,10 +34,12 @@
             </li>
           </ul>
           <div class="tab-content">
-            <div id="tab1" class="tab-pane fade show active" role="tabpanel" aria-labelledby="tab1-tab">
-              <a class="btn btn-primary btn-fill btn-xs my-2" href="{{ route('admin.vehiculo.create') }}">
+            <div id="tab1" class="tab-pane fade pt-2 show active" role="tabpanel" aria-labelledby="tab1-tab">
+              @if(Auth::user()->isAdmin())
+              <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('admin.vehiculo.create') }}">
                 <i class="fa fa-plus"></i> Agregar Vehículo
               </a>
+              @endif
 
               <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
                 <thead>
@@ -63,7 +65,7 @@
                       <td>{{ $d->marca->marca }}</td>
                       <td>{{ $d->modelo->modelo }}</td>
                       <td>{{ $d->color }}</td>
-                      <td>{{ $d->anio->anio }}</td>
+                      <td>{{ $d->anio->anio() }}</td>
                       <td>{{ $d->patentes }}</td>
                     </tr>
                   @endforeach
@@ -71,10 +73,12 @@
               </table>
               
             </div><!-- .tab-pane -->
-            <div id="tab2" class="tab-pane fade" role="tabpanel" aria-labelledby="tab2-tab" aria-expanded="false">
-              <a class="btn btn-primary btn-fill btn-xs my-2" href="{{ route('admin.vehiculo.marca.create') }}">
+            <div id="tab2" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab2-tab" aria-expanded="false">
+              @if(Auth::user()->isAdmin())
+              <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('admin.vehiculo.marca.create') }}">
                 <i class="fa fa-plus"></i> Agregar marca
               </a>
+              @endif
 
               <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
                 <thead>
@@ -102,10 +106,12 @@
               </table>  
             </div><!-- .tab-pane -->
 
-            <div id="tab3" class="tab-pane fade" role="tabpanel" aria-labelledby="tab3-tab" aria-expanded="false">
-              <a class="btn btn-primary btn-fill btn-xs my-2" href="{{ route('admin.vehiculo.modelo.create') }}">
+            <div id="tab3" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab3-tab" aria-expanded="false">
+              @if(Auth::user()->isAdmin())
+              <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('admin.vehiculo.modelo.create') }}">
                 <i class="fa fa-plus"></i> Agregar modelo
               </a>
+              @endif
 
               <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
                 <thead>
@@ -135,10 +141,12 @@
               </table>  
             </div><!-- .tab-pane -->
 
-            <div id="tab4" class="tab-pane fade" role="tabpanel" aria-labelledby="tab4-tab" aria-expanded="false">
-              <a class="btn btn-primary btn-fill btn-xs my-2" href="{{ route('admin.vehiculo.anio.create') }}">
+            <div id="tab4" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab4-tab" aria-expanded="false">
+              @if(Auth::user()->isAdmin())
+              <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('admin.vehiculo.anio.create') }}">
                 <i class="fa fa-plus"></i> Agregar año
               </a>
+              @endif
 
               <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
                 <thead>
@@ -152,10 +160,9 @@
                 <tbody class="text-center">
                   @foreach($anios as $d)
                     <tr>
-                      <td scope="row" class="text-center">{{ $loop->index + 1 }}</td>
-                      <td>
+                      <td scope="row" class="text-center">{{ $loop->iteration }}</td> <td>
                         <a href="{{ route('admin.vehiculo.anio.show', ['anio' => $d->id] )}}" title="Ver Año">
-                          {{ $d->anio }}
+                          {{ $d->anio() }}
                         </a>
                       </td>
                       <td>{{ $d->vehiculos_count }}</td>

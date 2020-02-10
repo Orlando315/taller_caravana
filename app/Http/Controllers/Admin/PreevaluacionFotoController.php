@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
-use App\PreevaluacionFoto;
+use App\{PreevaluacionFoto, Preevaluacion};
 
 class PreevaluacionFotoController extends Controller
 {
@@ -82,6 +82,8 @@ class PreevaluacionFotoController extends Controller
      */
     public function destroy(PreevaluacionFoto $foto)
     {
+      $this->authorize('deletePhoto', [Preevaluacion::class, $foto->proceso]);
+
       if($foto->delete()){
         Storage::delete($foto->foto);
 

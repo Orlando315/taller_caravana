@@ -16,7 +16,9 @@ class AgendamientoController extends Controller
      */
     public function index()
     {
-      $agendamientos = Agendamiento::all();
+      $this->authorize('index', Agendamiento::class);
+
+      $agendamientos = Agendamiento::count();
 
       return view('admin.agendamiento.index', compact('agendamientos'));
     }
@@ -60,7 +62,7 @@ class AgendamientoController extends Controller
 
       $agendamiento = new Agendamiento([
                         'taller' => Auth::id(),
-                        'atender' => isset($request->atender),
+                        'inmediatamente' => $request->has('atender'),
                         'fecha' => $request->atender ? date('Y-m-d H:i:s') : $request->fecha,
                       ]);
 
@@ -100,7 +102,8 @@ class AgendamientoController extends Controller
      */
     public function edit(Agendamiento $agendamiento)
     {
-      $this->authorize('update', [Agendamiento::class, $proceso]);
+      $this->authorize('update', $agendamiento);
+
       return view('admin.agendamiento.edit', compact('agendamiento'));
     }
 
@@ -113,7 +116,7 @@ class AgendamientoController extends Controller
      */
     public function update(Request $request, Agendamiento $agendamiento)
     {
-      $this->authorize('update', [Agendamiento::class, $proceso]);
+      $this->authorize('update', $agendamiento);
       $this->validate($request, [
         'fecha' => 'nullable|date',
       ]);
@@ -142,6 +145,8 @@ class AgendamientoController extends Controller
      */
     public function destroy(Agendamiento $agendamiento)
     {
+      $this->authorize('delete', $agendamiento);
+
       if($agendamiento->delete()){
         return redirect()->route('admin.proceso.show', ['proceso' => $agendamiento->proceso_id])->with([
                 'flash_class'   => 'alert-success',

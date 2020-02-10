@@ -27,6 +27,7 @@ class ProveedorVehiculoController extends Controller
      */
     public function create(Proveedor $proveedor)
     {
+      $this->authorize('update', $proveedor);
       $marcas = VehiculosMarca::all();
       $anios = VehiculosAnio::all();
 
@@ -42,6 +43,7 @@ class ProveedorVehiculoController extends Controller
      */
     public function store(Request $request, Proveedor $proveedor)
     {
+      $this->authorize('update', $proveedor);
       $this->validate($request, [
         'modelos' => 'required',
         'año' => 'required',
@@ -118,6 +120,7 @@ class ProveedorVehiculoController extends Controller
      */
     public function destroy(ProveedorVehiculo $vehiculo)
     {
+      $this->authorize('update', $vehiculo->proveedor);
       if($vehiculo->delete()){
           return redirect()->back()->with([
                   'flash_class'   => 'alert-success',

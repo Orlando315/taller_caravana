@@ -26,6 +26,8 @@ class VehiculosAnioController extends Controller
      */
     public function create()
     {
+      $this->authorize('create', VehiculosAnio::class);
+
       return view('admin.vehiculo.anio.create');
     }
 
@@ -37,6 +39,7 @@ class VehiculosAnioController extends Controller
      */
     public function store(Request $request)
     {
+      $this->authorize('create', VehiculosAnio::class);
       $this->validate($request, [
         'año' => 'required|integer|min:1900|max:2100',
       ]);
@@ -69,6 +72,8 @@ class VehiculosAnioController extends Controller
      */
     public function show(VehiculosAnio $anio)
     {
+      $this->authorize('view', $anio);
+
       $vehiculos = $anio->vehiculos()->with(['cliente', 'marca', 'modelo'])->get();
 
       return view('admin.vehiculo.anio.show', compact('anio', 'vehiculos'));
@@ -82,6 +87,8 @@ class VehiculosAnioController extends Controller
      */
     public function edit(VehiculosAnio $anio)
     {
+      $this->authorize('update', $anio);
+
       return view('admin.vehiculo.anio.edit', compact('anio'));
     }
 
@@ -94,6 +101,7 @@ class VehiculosAnioController extends Controller
      */
     public function update(Request $request, VehiculosAnio $anio)
     {
+      $this->authorize('update', $anio);
       $this->validate($request, [
         'anio' => 'required|integer|min:1900|max:2100',
       ]);
@@ -122,6 +130,8 @@ class VehiculosAnioController extends Controller
      */
     public function destroy(VehiculosAnio $anio)
     {
+      $this->authorize('delete', $anio);
+
       if($anio->anios()->count() > 0){
         return redirect()->route('admin.vehiculo.anio.show', ['anio' => $anio->id])->with([
               'flash_class'     => 'alert-danger',

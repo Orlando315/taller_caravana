@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\{Model, Builder};
+use Illuminate\Database\Eloquent\Model;
+use App\Scopes\TallerScope;
 
 class Preevaluacion extends Model
 {
@@ -44,12 +44,7 @@ class Preevaluacion extends Model
     protected static function boot()
     {
       parent::boot();
-
-      if(Auth::check()){
-        static::addGlobalScope('taller', function (Builder $query) {
-          $query->where('taller', Auth::user()->id);
-        });
-      }
+      static::addGlobalScope(new TallerScope);
     }
 
     /**

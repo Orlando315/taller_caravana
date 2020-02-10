@@ -25,7 +25,7 @@ class ConfigurationsControllers extends Controller
 
       $configuration = Configuration::first();
 
-      return view('configurations.edit', compact('configuration'));
+      return view('admin.configurations.edit', compact('configuration'));
     }
 
     /**

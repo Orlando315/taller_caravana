@@ -45,9 +45,9 @@ class PreevaluacionController extends Controller
         'fotos.*' => 'nullable|image|max:12000|mimes:jpeg,jpg,png',
         'datos' => 'required|min:1|max:12',
         'datos.1.descripcion' => 'required|string',
-        'datos.descripcion' => 'nullable|string',
-        'datos.observacion' => 'nullable|string',
-        'datos.referencia' => 'nullable|numeric|min:0',
+        'datos.*.descripcion' => 'nullable|string',
+        'datos.*.observacion' => 'nullable|string',
+        'datos.*.referencia' => 'nullable|numeric|min:0',
       ]);
 
       $datos = [];
@@ -61,7 +61,7 @@ class PreevaluacionController extends Controller
 
       if($proceso->preevaluaciones()->createMany($datos)){
         if($request->hasFile('fotos')){
-          $directory = Auth::id().'/procesos/'.$proceso->id;
+          $directory = Auth::id().'/procesos/'.$proceso->id.'/preevaluacion';
           if(!Storage::exists($directory)){
             Storage::makeDirectory($directory);
           }
@@ -133,9 +133,9 @@ class PreevaluacionController extends Controller
         'fotos.*' => 'nullable|image|max:12000|mimes:jpeg,jpg,png',
         'datos' => 'required|min:1|max:12',
         'datos.1.descripcion' => 'required|string',
-        'datos.descripcion' => 'nullable|string',
-        'datos.observacion' => 'nullable|string',
-        'datos.referencia' => 'nullable|numeric|min:0',
+        'datos.*.descripcion' => 'nullable|string',
+        'datos.*.observacion' => 'nullable|string',
+        'datos.*.referencia' => 'nullable|numeric|min:0',
       ]);
 
       $newDatos = [];
@@ -167,7 +167,7 @@ class PreevaluacionController extends Controller
       }
 
       if($request->hasFile('fotos') && ($proceso->preevaluacionFotos()->count() < 6)){
-        $directory = Auth::id().'/procesos/'.$proceso->id;
+        $directory = Auth::id().'/procesos/'.$proceso->id.'/preevaluacion';
         if(!Storage::exists($directory)){
           Storage::makeDirectory($directory);
         }
@@ -198,7 +198,8 @@ class PreevaluacionController extends Controller
      */
     public function destroy(Preevaluacion $preevaluacion)
     {
-      $this->authorize('destroy', [Preevaluacion::class, $proceso]);
+      $this->authorize('delete', $preevaluacion);
+
       if($preevaluacion->delete()){
         return redirect()->route('admin.proceso.show', ['proceso' => $preevaluacion->proceso_id])->with([
                 'flash_class'   => 'alert-success',

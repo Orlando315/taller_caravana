@@ -15,9 +15,11 @@
       <div class="card">
         <div class="card-header">
           <h4 class="card-title">Proveedores ({{ $proveedores->count() }})</h4>
+          @if(Auth::user()->isAdmin())
           <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('admin.proveedor.create') }}">
             <i class="fa fa-plus"></i> Agregar Proveedor
           </a>
+          @endif
         </div>
         <div class="card-body">
           <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
@@ -29,12 +31,13 @@
                 <th scope="col" class="text-center">Email</th>
                 <th scope="col" class="text-center">Telf. Local</th>
                 <th scope="col" class="text-center">Telf. Celular</th>
+                <th scope="col" class="text-center">Agregado</th>
               </tr>
             </thead>
             <tbody>
               @foreach($proveedores as $d)
                 <tr>
-                  <td scope="row" class="text-center">{{ $loop->index + 1 }}</td>
+                  <td scope="row" class="text-center">{{ $loop->iteration }}</td>
                   <td>
                     <a href="{{ route('admin.proveedor.show', ['proveedor' => $d->id] )}}" title="Ver proveedor">
                       {{ $d->tienda }}
@@ -44,6 +47,7 @@
                   <td>{{ $d->email ?? 'N/A' }}</td>
                   <td>{{ $d->telefono_local ?? 'N/A' }}</td>
                   <td>{{ $d->telefono_celular ?? 'N/A' }}</td>
+                  <td class="text-center">{{ $d->created_at->format('d-m-Y H:i:s') }}</td>
                 </tr>
               @endforeach
             </tbody>

@@ -16,6 +16,18 @@ class AgendamientoPolicy
      * @param  \App\Agendamiento  $agendamiento
      * @return mixed
      */
+    public function index(User $user)
+    {
+      return $user->isStaff();
+    }
+
+    /**
+     * Determine whether the user can view the agendamiento.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Agendamiento  $agendamiento
+     * @return mixed
+     */
     public function view(User $user, Agendamiento $agendamiento)
     {
         //
@@ -30,7 +42,7 @@ class AgendamientoPolicy
      */
     public function create(User $user, Proceso $proceso)
     {
-      return !$proceso->status && !$proceso->agendamiento;
+      return $user->isAdmin() && !$proceso->status && !$proceso->agendamiento && $proceso->etapa == 1;
     }
 
     /**
@@ -42,7 +54,7 @@ class AgendamientoPolicy
      */
     public function update(User $user, Agendamiento $agendamiento)
     {
-      return !$agendamiento->proceso->status;
+      return $user->isAdmin() && !$agendamiento->proceso->status;
     }
 
     /**
@@ -54,7 +66,7 @@ class AgendamientoPolicy
      */
     public function delete(User $user, Agendamiento $agendamiento)
     {
-        //
+      return false;
     }
 
     /**

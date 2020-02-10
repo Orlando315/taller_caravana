@@ -15,9 +15,11 @@
       <div class="card">
         <div class="card-header">
           <h4 class="card-title">Procesos ({{ $procesos->count() }})</h4>
+          @if(Auth::user()->isAdmin())
           <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('admin.proceso.create') }}">
             <i class="fa fa-plus"></i> Iniciar Proceso
           </a>
+          @endif
         </div>
         <div class="card-body">
           <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
@@ -29,12 +31,13 @@
                 <th scope="col" class="text-center">Agendamiento</th>
                 <th scope="col" class="text-center">Pre-evaluación</th>
                 <th scope="col" class="text-center">Cotización</th>
+                <th scope="col" class="text-center">Estatus</th>
               </tr>
             </thead>
             <tbody>
               @foreach($procesos as $proceso)
                 <tr>
-                  <td scope="row" class="text-center">{{ $loop->index + 1 }}</td>
+                  <td scope="row" class="text-center">{{ $loop->iteration }}</td>
                   <td>
                     <a href="{{ route('admin.proceso.show', ['proceso' => $proceso->id] )}}" title="Ver proceso">
                       {{ $proceso->cliente->nombre() }}
@@ -44,6 +47,7 @@
                   <td class="text-center">{{ $proceso->agendamiento ? $proceso->agendamiento->fecha() : 'N/A' }}</td>
                   <td class="text-center">{!! $proceso->preevaluacionesStatus() !!}</td>
                   <td class="text-center">{!! $proceso->cotizacionesStatus() !!}</td>
+                  <td class="text-center">{!! $proceso->status() !!}</td>
                 </tr>
               @endforeach
             </tbody>

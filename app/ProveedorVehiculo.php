@@ -3,8 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
+use App\Scopes\TallerScope;
 
 class ProveedorVehiculo extends Model
 {
@@ -36,26 +35,39 @@ class ProveedorVehiculo extends Model
     protected static function boot()
     {
       parent::boot();
-
-      if(Auth::check()){
-        static::addGlobalScope('taller', function (Builder $query) {
-          $query->where('taller', Auth::user()->id);
-        });
-      }
+      static::addGlobalScope(new TallerScope);
     }
 
+    /**
+     * Obtener el Proveedor
+     */
+    public function proveedor()
+    {
+      return $this->belongsTo('App\Proveedor');
+    }
+
+    /**
+     * Obtener la marca
+     */
     public function marca()
     {
-      return $this->belongsTo('App\VehiculosMarca','vehiculo_marca_id');
+      return $this->belongsTo('App\VehiculosMarca', 'vehiculo_marca_id');
     }
 
+    /**
+     * Obtener el modelo
+     */
     public function modelo()
     {
-      return $this->belongsTo('App\VehiculosModelo','vehiculo_modelo_id');
+      return $this->belongsTo('App\VehiculosModelo', 'vehiculo_modelo_id');
     }
 
-    public function anio_vehiculo()
+
+    /**
+     * Obtener el Anio
+     */
+    public function anio()
     {
-      return $this->belongsTo('App\VehiculosAnio','vehiculo_anio_id');
+      return $this->belongsTo('App\VehiculosAnio', 'vehiculo_anio_id');
     }
 }

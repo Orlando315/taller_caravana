@@ -7,68 +7,66 @@
 @endsection
 
 @section('content')
-  <div class="container">
 
-    @include('partials.flash')
+  @include('partials.flash')
 
-    <div class="row justify-content-center">
-      <div class="col-md-10">
-        <div class="card">
-          <div class="card-body">
-            <form action="{{ route('admin.agendamiento.store', ['proceso' => $proceso->id]) }}" method="POST">
-              @csrf
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-body">
+          <form action="{{ route('admin.agendamiento.store', ['proceso' => $proceso->id]) }}" method="POST">
+            @csrf
 
-              <h4>Generar Agendamiento</h4>
-              
-              <h5 class="text-center">{{ $proceso->cliente->nombre().' | '.$proceso->vehiculo->vehiculo() }}</h5>
+            <h4>Generar Agendamiento</h4>
+            
+            <h5 class="text-center">{{ $proceso->cliente->nombre().' | '.$proceso->vehiculo->vehiculo() }}</h5>
 
-              <div class="row justify-content-center">
-                <div class="col-md-6">
-                  <div class="form-group m-0">
-                    <div class="form-check">
-                      <label class="form-check-label">
-                        <input id="atender" class="form-check-input" type="checkbox" name="atender" {{ old('atender') == 'on' ? 'checked' : '' }}>
-                        <span class="form-check-sign"></span>
-                        Atender inmediatamente
-                      </label>
-                    </div>
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <div class="form-group m-0">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input id="atender" class="form-check-input" type="checkbox" name="atender" {{ old('atender') == 'on' ? 'checked' : '' }}>
+                      <span class="form-check-sign"></span>
+                      Atender inmediatamente
+                    </label>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div class="row justify-content-center group-agenda">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="control-label">Fecha de visita: *</label>
-                    <input id="fecha" type="hidden" name="fecha" vavlue="" required>
-                    <span id="fecha_format"></span>
-                    <span class="form-text text-muted">Seleccione una fecha en el calendario.</span>
-                  </div>
+            <div class="row justify-content-center group-agenda">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">Fecha de visita: *</label>
+                  <input id="fecha" type="hidden" name="fecha" vavlue="" required>
+                  <span id="fecha_format"></span>
+                  <span class="form-text text-muted">Seleccione una fecha en el calendario.</span>
                 </div>
               </div>
+            </div>
 
-              <div class="row justify-content-center group-agenda">
-                <div class="col-md-12">
-                  <div id="calendar" class="border-top border-secondary pt-2 calendar-small"></div>
-                </div>
+            <div class="row justify-content-center group-agenda">
+              <div class="col-md-12">
+                <div id="calendar" class="border-top border-secondary pt-2 calendar-small"></div>
               </div>
+            </div>
 
-              @if(count($errors) > 0)
-              <div class="alert alert-danger alert-important">
-                <ul>
-                  @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                  @endforeach
-                </ul>
-              </div>
-              @endif
+            @if(count($errors) > 0)
+            <div class="alert alert-danger alert-important">
+              <ul>
+                @foreach($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+            @endif
 
-              <div class="form-group text-right">
-                <a class="btn btn-default" href="{{ route('admin.proceso.show', ['proceso' => $proceso->id]) }}"><i class="fa fa-reply"></i> Atras</a>
-                <button class="btn btn-primary" type="submit"><i class="fa fa-send"></i> Guardar</button>
-              </div>
-            </form>
-          </div>
+            <div class="form-group text-right">
+              <a class="btn btn-default" href="{{ route('admin.proceso.show', ['proceso' => $proceso->id]) }}"><i class="fa fa-reply"></i> Atras</a>
+              <button class="btn btn-primary" type="submit"><i class="fa fa-send"></i> Guardar</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

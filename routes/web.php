@@ -26,25 +26,37 @@ Route::group(['middleware' => 'auth'], function (){
   Route::patch('perfil', 'HomeController@update')->name('perfil.update');
   Route::patch('perfil/password', 'HomeController@password')->name('perfil.password');
 
-  /* --- Insumos --- */
-  Route::resource('insumos', 'InsumosControllers');
-  /* --- Stock --- */
-  Route::get('insumos/stock/create/{insumo}', 'StocksControllers@create')->name('insumos.stock.create');
-  Route::post('insumos/stock/{insumo}', 'StocksControllers@store')->name('insumos.stock.store');
-  Route::resource('insumos/stock', 'StocksControllers')
-        ->names('insumos.stock')
-        ->except(['create', 'store']);
-  /* --- Insumos Tipos --- */
-  Route::resource('tipos', 'InsumosTiposControllers');
-  /* --- Insumos Formatos --- */
-  Route::resource('formatos', 'InsumosFormatosControllers');
+  /* --- Vehiculo --- */
+  Route::resource('vehiculo', 'VehiculoController');
+
+  /* --- Procesos --- */
+  Route::resource('proceso', 'ProcesoController')
+        ->only(['index', 'show']);
+
+  /* --- Cotizacion --- */
+  Route::get('cotizacion/create/{situacion}', 'CotizacionController@create')->name('cotizacion.create');
+  Route::post('cotizacion/{situacion}', 'CotizacionController@store')->name('cotizacion.store');
+  Route::resource('cotizacion', 'CotizacionController')
+        ->only(['show']);
 
   /* --- Admin --- */
-  Route::prefix('/admin')->name('admin.')->namespace('Admin')->middleware('role:admin')->group(function(){
+  Route::prefix('/admin')->name('admin.')->namespace('Admin')->middleware('role:staff')->group(function(){
     /* --- Users --- */
-    Route::get('users/create/{role?}', 'UsersControllers@create')->name('users.create');
-    Route::resource('users', 'UsersControllers')->except(['create']);
+    Route::resource('users', 'UsersControllers');
     Route::patch('users/{user}/password', 'UsersControllers@password')->name('users.password');
+
+    /* --- Insumos --- */
+    Route::resource('insumos', 'InsumosControllers');
+    /* --- Stock --- */
+    Route::get('insumos/stock/create/{insumo}', 'StocksControllers@create')->name('insumos.stock.create');
+    Route::post('insumos/stock/{insumo}', 'StocksControllers@store')->name('insumos.stock.store');
+    Route::resource('insumos/stock', 'StocksControllers')
+          ->names('insumos.stock')
+          ->except(['create', 'store']);
+    /* --- Insumos Tipos --- */
+    Route::resource('tipos', 'InsumosTiposControllers');
+    /* --- Insumos Formatos --- */
+    Route::resource('formatos', 'InsumosFormatosControllers');
 
     /* --- Clientes --- */
     Route::post('cliente/{cliente}/vehiculos', 'ClienteController@vehiculos');

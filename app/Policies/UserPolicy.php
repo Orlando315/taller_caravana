@@ -18,7 +18,7 @@ class UserPolicy
      */
     public function index(User $user)
     {
-      return $user->isAdmin();
+      return $user->isStaff();
     }
 
     /**
@@ -30,7 +30,7 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-      return ($user->isAdmin() && $user->is($model)) || ($user->isAdmin() && $user->id == $model->user_id);
+      return ($user->isAdmin() && $user->id == $model->user_id) || ($user->isJefe() && $model->isJefe() && $user->user_id == $model->user_id);
     }
 
     /**
@@ -45,30 +45,7 @@ class UserPolicy
     }
 
     /**
-     * Determine whether the user can store models.
-     *
-     * @param  \App\User  $user
-     * @return mixed
-     */
-    public function store(User $user)
-    {
-      return $user->isAdmin();
-    }
-
-    /**
      * Determine whether the user can edit the model.
-     *
-     * @param  \App\User  $user
-     * @param  \App\User  $model
-     * @return mixed
-     */
-    public function edit(User $user, User $model)
-    {
-      return ($user->isAdmin() && $user->is($model)) || ($user->isAdmin() && $user->id == $model->user_id);
-    }
-
-    /**
-     * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
      * @param  \App\User  $model
@@ -76,7 +53,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-      return ($user->isAdmin() && $user->is($model)) || ($user->isAdmin() && $user->id == $model->user_id);
+      return $user->isAdmin() && $user->id == $model->user_id;
     }
 
     /**
@@ -88,7 +65,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-      return ($user->isAdmin() && $user->is($model)) || ($user->isAdmin() && $user->id == $model->user_id);
+      return $user->isAdmin() && (!$user->is($model) && $user->id == $model->user_id);
     }
 
     /**
@@ -100,6 +77,6 @@ class UserPolicy
      */
     public function password(User $user, User $model)
     {
-      return ($user->isAdmin() && $user->is($model)) || ($user->isAdmin() && $user->id == $model->user_id);
+      return $user->isAdmin() && $user->id == $model->user_id;
     }
 }

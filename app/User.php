@@ -80,11 +80,35 @@ class User extends Authenticatable
     }
 
     /**
+     * Verificar si el User tiene Role Jefe
+     */
+    public function isJefe()
+    {
+      return $this->role == 'jefe';
+    }
+
+    /**
+     * Verificar si el User tiene Role Jefe o Admin
+     */
+    public function isStaff()
+    {
+      return $this->isAdmin() || $this->isJefe();
+    }
+
+    /**
+     * Verificar si el User tiene es un Cliente
+     */
+    public function isCliente()
+    {
+      return $this->role == 'user' && $this->cliente;
+    }
+
+    /**
      * Obtener el nombre del Role del User
      */
     public function role()
     {
-      return $this->role == 'admin' ? 'Administrador' : ($this->role == 'jefe' ? 'Jefe de taller' : 'Usuario');
+      return $this->role == 'admin' ? 'Administrador' : ($this->role == 'jefe' ? 'Jefe de taller' : 'Cliente');
     }
 
     /**
@@ -100,11 +124,11 @@ class User extends Authenticatable
      */
     public function users()
     {
-      return $this->hasMany('App\User');
+      return $this->hasMany('App\User')->where('role', '!=', 'user');
     }
 
     /**
-     * Relacion con Users
+     * Obtener solo los Jefes
      */
     public function jefes()
     {
@@ -112,11 +136,10 @@ class User extends Authenticatable
     }
 
     /**
-     * Relacion con Users
+     * Obtener el nombre del Role del User
      */
-    public function usuarios()
-    {
-      return $this->users()->where('role', 'user');
+    public function taller(){
+      return $this->belongsTo('App\User', 'user_id');
     }
 
     /**
@@ -214,7 +237,9 @@ class User extends Authenticatable
     {
       $agendamientos = [];
 
-      foreach ($this->agendamientos()->get() as $agendamiento) {
+      $all = Agendamiento::all();
+
+      foreach ($all as $agendamiento) {
         $agendamientos[] = [
           'id' => $agendamiento->id,
           'title' => $agendamiento->vehiculo->marca->marca.' - '.$agendamiento->vehiculo->modelo->modelo.'('.$agendamiento->vehiculo->anio->anio.') | '.$agendamiento->vehiculo->cliente->nombre(),

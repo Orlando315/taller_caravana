@@ -15,7 +15,7 @@
       <div class="card">
         <div class="card-header">
           <h4 class="card-title">Repuestos ({{ $repuestos->count() }})</h4>
-          @if(Auth::user()->role != 'user')
+          @if(Auth::user()->isAdmin())
             <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('admin.repuesto.create') }}">
               <i class="fa fa-plus"></i> Agregar Repuesto
             </a>
@@ -36,7 +36,7 @@
             <tbody>
               @foreach($repuestos as $repuesto)
                 <tr>
-                  <td scope="row" class="text-center">{{ $loop->index + 1 }}</td>
+                  <td scope="row" class="text-center">{{ $loop->iteration }}</td>
                   <td>
                     <a href="{{ route('admin.repuesto.show', ['repuesto' => $repuesto->id] )}}">
                       {{ $repuesto->nro_parte }}

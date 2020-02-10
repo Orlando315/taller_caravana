@@ -26,6 +26,8 @@ class VehiculosMarcaController extends Controller
      */
     public function create()
     {
+      $this->authorize('create', VehiculosMarca::class);
+
       return view('admin.vehiculo.marca.create');
     }
 
@@ -37,6 +39,7 @@ class VehiculosMarcaController extends Controller
      */
     public function store(Request $request)
     {
+      $this->authorize('create', VehiculosMarca::class);
       $this->validate($request, [
         'marca' => 'required|string|max:50',
       ]);
@@ -65,6 +68,8 @@ class VehiculosMarcaController extends Controller
      */
     public function show(VehiculosMarca $marca)
     {
+      $this->authorize('view', $marca);
+
       $vehiculos = $marca->vehiculos()->with(['cliente', 'modelo', 'anio'])->get();
 
       return view('admin.vehiculo.marca.show', compact('marca', 'vehiculos'));
@@ -78,6 +83,8 @@ class VehiculosMarcaController extends Controller
      */
     public function edit(VehiculosMarca $marca)
     {
+      $this->authorize('update', $marca);
+
       return view('admin.vehiculo.marca.edit', compact('marca'));
     }
 
@@ -90,6 +97,7 @@ class VehiculosMarcaController extends Controller
      */
     public function update(Request $request, VehiculosMarca $marca)
     {
+      $this->authorize('update', $marca);
       $this->validate($request, [
         'marca' => 'required|string|max:50',
       ]);
@@ -118,6 +126,7 @@ class VehiculosMarcaController extends Controller
      */
     public function destroy(VehiculosMarca $marca)
     {
+      $this->authorize('delete', $marca);
       if($marca->modelos()->count() > 0){
         return redirect()->route('admin.vehiculo.marca.show', ['marca' => $marca->id])->with([
               'flash_class'     => 'alert-danger',
@@ -148,6 +157,7 @@ class VehiculosMarcaController extends Controller
      */
     public function modelos(VehiculosMarca $marca)
     {
+      $this->authorize('view', $marca);
       return response()->json($marca->modelos()->select(['id', 'modelo', 'vehiculo_marca_id'])->get());
     }
 }

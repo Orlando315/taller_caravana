@@ -10,7 +10,9 @@
   <div class="row">
     <div class="col-12">
       <a class="btn btn-default" href="{{ route('admin.proceso.show', ['proceso' => $cotizacion->situacion->proceso_id]) }}"><i class="fa fa-reply" aria-hidden="true"></i> Volver</a>
+      @if(Auth::user()->isAdmin())
       <button class="btn btn-fill btn-danger" data-toggle="modal" data-target="#delModal"><i class="fa fa-times" aria-hidden="true"></i> Eliminar</button>
+      @endif
     </div>
   </div>
   
@@ -27,7 +29,7 @@
         <div class="card-body">
           <strong>Generada por</strong>
           <p class="text-muted">
-            {{ $cotizacion->user->nombre() }}
+            {{ $cotizacion->user->nombre() }} ({{ $cotizacion->user->role() }})
           </p>
           <hr>
 
@@ -76,7 +78,9 @@
       <div class="row">
         <div class="col-md-4">
           <div class="card card-stats">
+            @if(Auth::user()->isAdmin())
             <a class="link-pagos" href="{{ $cotizacion->hasPagos() ? '#pagos' : route('admin.pago.create', ['cotizacion' => $cotizacion->id]) }}" title="{{ $cotizacion->hasPagos() ? 'Ver pagos' : 'Agregar pago' }}">
+              @endif
               <div class="card-body py-1">
                 <div class="row">
                   <div class="col-4">
@@ -94,7 +98,9 @@
                   </div>
                 </div>
               </div>
+            @if(Auth::user()->isAdmin())
             </a>
+            @endif
           </div>
         </div>
       </div>
@@ -169,7 +175,9 @@
                     <th scope="col" class="text-center">#</th>
                     <th scope="col" class="text-center">Pago</th>
                     <th scope="col" class="text-center">Fecha</th>
+                    @if(Auth::user()->isAdmin())
                     <th scope="col" class="text-center">Acción</th>
+                    @endif
                   </tr>
                 </thead>
                 <tbody>
@@ -178,6 +186,7 @@
                       <td scope="row" class="text-center">{{ $loop->iteration }}</td>
                       <td class="text-right">{{ $pago->pago() }}</td>
                       <td class="text-center">{{ $pago->created_at->format('d-m-Y H:i:s')}}</td>
+                      @if(Auth::user()->isAdmin())
                       <td class="text-center">
                         @if(!$cotizacion->status)
                           <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $pago->id }}" data-toggle="modal"  data-target="#delPagoModal">
@@ -185,6 +194,7 @@
                           </button>
                         @endif
                       </td>
+                      @endif
                     </tr>
                   @endforeach
                 </tbody>
@@ -195,7 +205,8 @@
       </div>
     </div>
   </div>
-
+  
+  @if(Auth::user()->isAdmin())
   <div id="delModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -223,8 +234,9 @@
       </div>
     </div>
   </div>
+  @endif
   
-  @if(!$cotizacion->status)
+  @if(Auth::user()->isAdmin() && !$cotizacion->status)
     <div id="delPagoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delPagoModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -262,7 +274,7 @@
         $('#tab2-tab').click()
       })
 
-      @if(!$cotizacion->status)
+      @if(Auth::user()->isAdmin() && !$cotizacion->status)
         $('#delPagoModal').on('show.bs.modal', function (e) {
           let id = $(e.relatedTarget).data('id')
 

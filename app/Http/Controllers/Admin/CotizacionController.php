@@ -90,6 +90,8 @@ class CotizacionController extends Controller
      */
     public function show(Cotizacion $cotizacion)
     {
+      $this->authorize('view', $cotizacion);
+
       $pagos = $cotizacion->pagos;
 
       return view('admin.cotizacion.show', compact('cotizacion', 'pagos'));
@@ -126,6 +128,8 @@ class CotizacionController extends Controller
      */
     public function destroy(Cotizacion $cotizacion)
     {
+      $this->authorize('delete', $cotizacion);
+
       $ids = $cotizacion->items->pluck('item_id')->toArray();
       if($cotizacion->delete()){
         SituacionItem::whereIn('id', $ids)

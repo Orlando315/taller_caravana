@@ -3,8 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
+use App\Scopes\TallerScope;
 
 class VehiculosModelo extends Model
 {
@@ -32,12 +31,7 @@ class VehiculosModelo extends Model
     protected static function boot()
     {
       parent::boot();
-
-      if(Auth::check()){
-        static::addGlobalScope('taller', function (Builder $query) {
-          $query->where('taller', Auth::user()->id);
-        });
-      }
+      static::addGlobalScope(new TallerScope);
     }
 
     /**

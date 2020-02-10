@@ -16,6 +16,8 @@ class ClienteController extends Controller
      */
     public function index()
     {
+      $this->authorize('index', Cliente::class);
+
       $clientes = Cliente::with('user')->get();
 
       return view('admin.cliente.index', compact('clientes'));
@@ -28,6 +30,8 @@ class ClienteController extends Controller
      */
     public function create()
     {
+      $this->authorize('create', Cliente::class);
+
       return view('admin.cliente.create');
     }
 
@@ -39,6 +43,7 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
+      $this->authorize('create', Cliente::class);
       $this->validate($request, [
         'nombres' => 'required|string|max:50',
         'apellidos' => 'nullable|string|max:50',
@@ -83,6 +88,7 @@ class ClienteController extends Controller
      */
     public function show(Cliente $cliente)
     {
+      $this->authorize('view', $cliente);
       $vehiculos = $cliente->vehiculos()->with(['marca', 'modelo'])->get();
       $procesos = $cliente->procesos;
 
@@ -97,6 +103,7 @@ class ClienteController extends Controller
      */
     public function edit(Cliente $cliente)
     {
+      $this->authorize('update', $cliente);
       return view('admin.cliente.edit', compact('cliente')); 
     }
 
@@ -109,6 +116,7 @@ class ClienteController extends Controller
      */
     public function update(Request $request, Cliente $cliente)
     {
+      $this->authorize('update', $cliente);
       $this->validate($request, [
         'nombres' => 'required|string|max:50',
         'apellidos' => 'nullable|string|max:50',
@@ -143,6 +151,8 @@ class ClienteController extends Controller
      */
     public function destroy(Cliente $cliente)
     {
+      $this->authorize('delete', $cliente);
+
       if($cliente->vehiculos()->count() > 0){
         return redirect()->route('admin.cliente.show', ['cliente' => $cliente->id])->with([
               'flash_class'     => 'alert-danger',
@@ -173,6 +183,7 @@ class ClienteController extends Controller
      */
     public function vehiculos(Cliente $cliente)
     {
+      $this->authorize('view', $cliente);
       return response()->json($cliente->vehiculos()->with(['marca', 'modelo', 'anio'])->get());
     }
 }

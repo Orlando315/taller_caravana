@@ -10,8 +10,10 @@
   <div class="row">
     <div class="col-12">
       <a class="btn btn-default" href="{{ route('admin.vehiculo.index') }}"><i class="fa fa-reply" aria-hidden="true"></i> Volver</a>
+      @if(Auth::user()->isAdmin())
       <a class="btn btn-success" href="{{ route('admin.vehiculo.marca.edit', ['marca' => $anio->id]) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</a>
       <button class="btn btn-fill btn-danger" data-toggle="modal" data-target="#delModal"><i class="fa fa-times" aria-hidden="true"></i> Eliminar</button>
+      @endif
     </div>
   </div>
   
@@ -28,7 +30,7 @@
         <div class="card-body">
           <strong>Año</strong>
           <p class="text-muted">
-            {{ $anio->anio }}
+            {{ $anio->anio() }}
           </p>
         </div>
         <div class="card-footer text-center">
@@ -80,7 +82,8 @@
       </div>
     </div>
   </div>
-
+  
+  @if(Auth::user()->isAdmin())
   <div id="delModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -108,4 +111,5 @@
       </div>
     </div>
   </div>
+  @endif
 @endsection

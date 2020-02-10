@@ -16,6 +16,8 @@ class RepuestoController extends Controller
      */
     public function index()
     {
+      $this->authorize('index', Repuesto::class);
+
       $repuestos = Repuesto::with('extra')->get();
 
       return view('admin.repuesto.index', compact('repuestos'));
@@ -28,6 +30,8 @@ class RepuestoController extends Controller
      */
     public function create()
     {
+      $this->authorize('create', Repuesto::class);
+
       $marcas = VehiculosMarca::with('modelos')->get();
 
       return view('admin.repuesto.create', compact('marcas'));
@@ -41,6 +45,7 @@ class RepuestoController extends Controller
      */
     public function store(Request $request)
     {
+      $this->authorize('create', Repuesto::class);
       $this->validate($request, [
         'nro_parte' => 'required|string|max:50',
         'nro_oem' => 'required|string|max:50',
@@ -108,6 +113,8 @@ class RepuestoController extends Controller
      */
     public function show(Repuesto $repuesto)
     {
+      $this->authorize('view', $repuesto);
+
       return view('admin.repuesto.show', compact('repuesto'));
     }
 
@@ -119,6 +126,8 @@ class RepuestoController extends Controller
      */
     public function edit(Repuesto $repuesto)
     {
+      $this->authorize('update', $repuesto);
+
       $repuesto->load('extra');
       $marcas = VehiculosMarca::with('modelos')->get();
 
@@ -134,6 +143,7 @@ class RepuestoController extends Controller
      */
     public function update(Request $request, Repuesto $repuesto)
     {
+      $this->authorize('update', $repuesto);
       $this->validate($request, [
         'nro_parte' => 'required|string|max:50',
         'nro_oem' => 'required|string|max:50',
@@ -201,6 +211,7 @@ class RepuestoController extends Controller
      */
     public function destroy(Repuesto $repuesto)
     {
+      $this->authorize('delete', $repuesto);
       if($repuesto->delete()){
           if($repuesto->foto){
             Storage::delete($repuesto->foto);
@@ -208,7 +219,7 @@ class RepuestoController extends Controller
 
           return redirect()->route('admin.repuesto.index')->with([
                   'flash_class'   => 'alert-success',
-                  'flash_message' => 'Producto eliminado exitosamente.'
+                  'flash_message' => 'Repuesto eliminado exitosamente.'
                 ]);
       }
 

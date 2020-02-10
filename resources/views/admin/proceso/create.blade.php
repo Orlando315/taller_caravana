@@ -7,56 +7,54 @@
 @endsection
 
 @section('content')
-  <div class="container">
 
-    @include('partials.flash')
+  @include('partials.flash')
 
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <form action="{{ route('admin.proceso.store') }}" method="POST">
-              @csrf
-              <h4>Iniciar proceso de cotización</h4>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <form action="{{ route('admin.proceso.store') }}" method="POST">
+            @csrf
+            <h4>Iniciar proceso de cotización</h4>
 
-              <div class="form-group">
-                <label class="control-label" for="cliente">Cliente: *</label>
-                <select id="cliente" class="form-control" name="cliente" required>
-                  <option value="">Seleccione...</option>
-                  @foreach($clientes as $cliente)
-                    <option value="{{ $cliente->id }}" {{ old('cliente') == $cliente->id ? 'selected' : '' }}>{{ $cliente->nombre() }}</option>
-                  @endforeach
-                </select>
-                <button class="btn btn-simple btn-link btn-sm" type="button" data-toggle="modal" data-target="#clienteModal">
-                  <i class="fa fa-plus" aria-hidden="true"></i> Agregar Cliente
-                </button>
-              </div>
+            <div class="form-group">
+              <label class="control-label" for="cliente">Cliente: *</label>
+              <select id="cliente" class="form-control" name="cliente" required>
+                <option value="">Seleccione...</option>
+                @foreach($clientes as $cliente)
+                  <option value="{{ $cliente->id }}" {{ old('cliente') == $cliente->id ? 'selected' : '' }}>{{ $cliente->nombre() }}</option>
+                @endforeach
+              </select>
+              <button class="btn btn-simple btn-link btn-sm" type="button" data-toggle="modal" data-target="#clienteModal">
+                <i class="fa fa-plus" aria-hidden="true"></i> Agregar Cliente
+              </button>
+            </div>
 
-              <div class="form-group">
-                <label class="control-label" for="vehiculo">Vehículo: *</label>
-                <select id="vehiculo" class="form-control" name="vehiculo"  required disabled>
-                </select>
-                <button class="btn btn-simple btn-link btn-sm btn-vehiculo" type="button" data-toggle="modal" data-target="#vehiculoModal" disabled>
-                  <i class="fa fa-plus" aria-hidden="true"></i> Agregar vehículo
-                </button>
-              </div>
-        
-              @if(count($errors) > 0)
-              <div class="alert alert-danger alert-important">
-                <ul class="m-0">
-                  @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                  @endforeach
-                </ul>
-              </div>
-              @endif
+            <div class="form-group">
+              <label class="control-label" for="vehiculo">Vehículo: *</label>
+              <select id="vehiculo" class="form-control" name="vehiculo"  required disabled>
+              </select>
+              <button class="btn btn-simple btn-link btn-sm btn-vehiculo" type="button" data-toggle="modal" data-target="#vehiculoModal" disabled>
+                <i class="fa fa-plus" aria-hidden="true"></i> Agregar vehículo
+              </button>
+            </div>
+      
+            @if(count($errors) > 0)
+            <div class="alert alert-danger alert-important">
+              <ul class="m-0">
+                @foreach($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+            @endif
 
-              <div class="form-group text-right">
-                <a class="btn btn-default" href="{{ route('admin.proceso.index') }}"><i class="fa fa-reply"></i> Atras</a>
-                <button class="btn btn-primary" type="submit"><i class="fa fa-send"></i> Guardar</button>
-              </div>
-            </form>
-          </div>
+            <div class="form-group text-right">
+              <a class="btn btn-default" href="{{ route('admin.proceso.index') }}"><i class="fa fa-reply"></i> Atras</a>
+              <button class="btn btn-primary" type="submit"><i class="fa fa-send"></i> Guardar</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -191,8 +189,8 @@
               </div>
 
               <div class="form-group">
-                <label class="control-label" for="patentes">Patentes:</label>
-                <input id="patentes" class="form-control{{ $errors->has('patentes') ? ' is-invalid' : '' }}" type="text" name="patentes" maxlength="50" value="{{ old('patentes') }}" placeholder="Patentes">
+                <label class="control-label" for="patentes">Patentes: *</label>
+                <input id="patentes" class="form-control{{ $errors->has('patentes') ? ' is-invalid' : '' }}" type="text" name="patentes" maxlength="50" value="{{ old('patentes') }}" placeholder="Patentes" required>
               </div>
 
               <div class="form-group">

@@ -30,7 +30,7 @@ class InspeccionPolicy
      */
     public function create(User $user, Proceso $proceso)
     {
-      return !$proceso->status && !$proceso->inspeccion;
+      return $user->isAdmin() && !$proceso->status && !$proceso->inspeccion;
     }
 
     /**
@@ -42,7 +42,7 @@ class InspeccionPolicy
      */
     public function update(User $user, Inspeccion $inspeccion)
     {
-      return !$inspeccion->proceso->status;
+      return $user->isAdmin() && !$inspeccion->proceso->status;
     }
 
     /**
@@ -66,7 +66,7 @@ class InspeccionPolicy
      */
     public function delete_photo(User $user, Inspeccion $inspeccion)
     {
-      return !$inspeccion->proceso->status;
+      return $user->isAdmin() && !$inspeccion->proceso->status;
     }
 
     /**

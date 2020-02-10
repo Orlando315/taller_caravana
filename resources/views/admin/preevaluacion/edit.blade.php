@@ -12,102 +12,100 @@
 @endsection
 
 @section('content')
-  <div class="container">
 
-    @include('partials.flash')
+  @include('partials.flash')
 
-    <div class="row justify-content-center">
-      <div class="col-md-10">
-        <div class="card">
-          <div class="card-body">
-            <form action="{{ route('admin.preevaluacion.update', ['proceso' => $proceso->id]) }}" method="POST" enctype="multipart/form-data">
-              @csrf
-              @method('PUT')
-              <h4>Editar Pre-evaluación</h4>
-              
-              <h5 class="text-center">{{ $proceso->cliente->nombre().' | '.$proceso->vehiculo->vehiculo() }}</h5>
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-body">
+          <form action="{{ route('admin.preevaluacion.update', ['proceso' => $proceso->id]) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <h4>Editar Pre-evaluación</h4>
+            
+            <h5 class="text-center">{{ $proceso->cliente->nombre().' | '.$proceso->vehiculo->vehiculo() }}</h5>
 
-              <div id="foto-group" class="form-group">
-                <label for="fotos">Fotos:</label>
-                <div class="file-loading">
-                  <input id="fotos" type="file" name="fotos[]" data-msg-placeholder="Seleccionar..." accept="image/jpeg,image/png" multiple>
-                </div>
-                <small class="text-muted">Hasta 6 fotos de 12 MB c/u</small>
+            <div id="foto-group" class="form-group">
+              <label for="fotos">Fotos:</label>
+              <div class="file-loading">
+                <input id="fotos" type="file" name="fotos[]" data-msg-placeholder="Seleccionar..." accept="image/jpeg,image/png" multiple>
               </div>
+              <small class="text-muted">Hasta 6 fotos de 12 MB c/u</small>
+            </div>
 
-              <div class="table-responsive">
-                <table class="table table-striped table-sm">
-                  <thead>
-                    <tr>
-                      <th class="text-center">#</th>
-                      <th class="text-center">Descripción</th>
-                      <th class="text-center">Observación</th>
-                      <th class="text-center">Referencia</th>
+            <div class="table-responsive">
+              <table class="table table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Descripción</th>
+                    <th class="text-center">Observación</th>
+                    <th class="text-center">Referencia</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody">
+                  @foreach($preevaluaciones as $preevaluacion)
+                    <tr class="tr-dato">
+                      <td class="text-center">
+                        <input type="hidden" name="datos[{{$loop->iteration}}][id]" value="{{ $preevaluacion->id }}">
+                        {{ $loop->iteration }}
+                      </td>
+                      <td>
+                        <input class="form-control{{ $errors->has('datos.'.$loop->iteration.'.descripcion') ? ' is-invalid' : '' }}" type="text" name="datos[{{$loop->iteration}}][descripcion]" maxlength="100" value="{{ old('datos.'.$loop->iteration.'.descripcion', $preevaluacion->descripcion) }}">
+                      </td>
+                      <td>
+                        <input class="form-control{{ $errors->has('datos.'.$loop->iteration.'.observacion') ? ' is-invalid' : '' }}" type="text" name="datos[{{$loop->iteration}}][observacion]" maxlength="100" value="{{ old('datos.'.$loop->iteration.'.observacion', $preevaluacion->observacion) }}">
+                      </td>
+                      <td>
+                        <input class="form-control{{ $errors->has('datos.'.$loop->iteration.'.referencia') ? ' is-invalid' : '' }}" type="number" min="1" step="0.01" step="99999999" name="datos[{{$loop->iteration}}][referencia]" value="{{ old('datos.'.$loop->iteration.'.referencia', $preevaluacion->referencia) }}">
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody id="tbody">
-                    @foreach($preevaluaciones as $preevaluacion)
+                  @endforeach
+                  
+                  @if(old('datos'))
+                    @foreach(old('datos') as $dato)
+                      @continue($loop->iteration < $preevaluaciones->count())
                       <tr class="tr-dato">
-                        <td class="text-center">
-                          <input type="hidden" name="datos[{{$loop->iteration}}][id]" value="{{ $preevaluacion->id }}">
-                          {{ $loop->iteration }}
+                        <td class="text-center">{{ $loop->iteration }}</td>
+                        <td>
+                          <input class="form-control{{ $errors->has('datos.'.$loop->iteration.'.descripcion') ? ' is-invalid' : '' }}" type="text" name="datos[{{$loop->iteration}}][descripcion]" maxlength="100" value="{{ old('datos.'.$loop->iteration.'.descripcion') }}">
                         </td>
                         <td>
-                          <input class="form-control{{ $errors->has('datos.'.$loop->iteration.'.descripcion') ? ' is-invalid' : '' }}" type="text" name="datos[{{$loop->iteration}}][descripcion]" maxlength="100" value="{{ old('datos.'.$loop->iteration.'.descripcion', $preevaluacion->descripcion) }}">
+                          <input class="form-control{{ $errors->has('datos.'.$loop->iteration.'.observacion') ? ' is-invalid' : '' }}" type="text" name="datos[{{$loop->iteration}}][observacion]" maxlength="100" value="{{ old('datos.'.$loop->iteration.'.observacion') }}">
                         </td>
                         <td>
-                          <input class="form-control{{ $errors->has('datos.'.$loop->iteration.'.observacion') ? ' is-invalid' : '' }}" type="text" name="datos[{{$loop->iteration}}][observacion]" maxlength="100" value="{{ old('datos.'.$loop->iteration.'.observacion', $preevaluacion->observacion) }}">
-                        </td>
-                        <td>
-                          <input class="form-control{{ $errors->has('datos.'.$loop->iteration.'.referencia') ? ' is-invalid' : '' }}" type="number" min="1" step="0.01" step="99999999" name="datos[{{$loop->iteration}}][referencia]" value="{{ old('datos.'.$loop->iteration.'.referencia', $preevaluacion->referencia) }}">
+                          <input class="form-control{{ $errors->has('datos.'.$loop->iteration.'.referencia') ? ' is-invalid' : '' }}" type="number" min="1" step="0.01" step="99999999" name="datos[{{$loop->iteration}}][referencia]" value="{{ old('datos.'.$loop->iteration.'.referencia') }}">
                         </td>
                       </tr>
                     @endforeach
-                    
-                    @if(old('datos'))
-                      @foreach(old('datos') as $dato)
-                        @continue($loop->iteration < $preevaluaciones->count())
-                        <tr class="tr-dato">
-                          <td class="text-center">{{ $loop->iteration }}</td>
-                          <td>
-                            <input class="form-control{{ $errors->has('datos.'.$loop->iteration.'.descripcion') ? ' is-invalid' : '' }}" type="text" name="datos[{{$loop->iteration}}][descripcion]" maxlength="100" value="{{ old('datos.'.$loop->iteration.'.descripcion') }}">
-                          </td>
-                          <td>
-                            <input class="form-control{{ $errors->has('datos.'.$loop->iteration.'.observacion') ? ' is-invalid' : '' }}" type="text" name="datos[{{$loop->iteration}}][observacion]" maxlength="100" value="{{ old('datos.'.$loop->iteration.'.observacion') }}">
-                          </td>
-                          <td>
-                            <input class="form-control{{ $errors->has('datos.'.$loop->iteration.'.referencia') ? ' is-invalid' : '' }}" type="number" min="1" step="0.01" step="99999999" name="datos[{{$loop->iteration}}][referencia]" value="{{ old('datos.'.$loop->iteration.'.referencia') }}">
-                          </td>
-                        </tr>
-                      @endforeach
-                    @endif
-                  </tbody>
-                  <tfoot>
-                    <tr class="text-center">
-                      <td colspan="4">
-                        <button class="btn btn-primary btn-sm btn-new-dato" type="button" role="button" disabled><i class="fa fa-plus"></i> Agregar dato</button>
-                      </td>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
+                  @endif
+                </tbody>
+                <tfoot>
+                  <tr class="text-center">
+                    <td colspan="4">
+                      <button class="btn btn-primary btn-sm btn-new-dato" type="button" role="button" disabled><i class="fa fa-plus"></i> Agregar dato</button>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
 
-              @if(count($errors) > 0)
-              <div class="alert alert-danger alert-important">
-                <ul>
-                  @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                  @endforeach
-                </ul>
-              </div>
-              @endif
+            @if(count($errors) > 0)
+            <div class="alert alert-danger alert-important">
+              <ul>
+                @foreach($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+            @endif
 
-              <div class="form-group text-right">
-                <a class="btn btn-default" href="{{ route('admin.proceso.show', ['proceso' => $proceso->id]) }}"><i class="fa fa-reply"></i> Atras</a>
-                <button class="btn btn-primary" type="submit"><i class="fa fa-send"></i> Guardar</button>
-              </div>
-            </form>
-          </div>
+            <div class="form-group text-right">
+              <a class="btn btn-default" href="{{ route('admin.proceso.show', ['proceso' => $proceso->id]) }}"><i class="fa fa-reply"></i> Atras</a>
+              <button class="btn btn-primary" type="submit"><i class="fa fa-send"></i> Guardar</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

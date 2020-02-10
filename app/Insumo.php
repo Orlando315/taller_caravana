@@ -72,9 +72,9 @@ class Insumo extends Model
     /**
      * Obtener la url de la foto
      */
-    public function getPhoto($foto)
+    public function getPhoto()
     {
-      return asset('storage/'.$foto);
+      return asset('storage/'.$this->foto);
     }
 
     /**

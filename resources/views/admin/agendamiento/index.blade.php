@@ -14,7 +14,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title">Agendamientos ({{ $agendamientos->count() }})</h4>
+          <h4 class="card-title">Agendamientos ({{ $agendamientos }})</h4>
         </div>
         <div class="card-body">
           <div id="calendar" class="border-top border-secondary pt-2 calendar-small"></div>

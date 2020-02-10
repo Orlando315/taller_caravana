@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\TallerScope;
 
 class Cliente extends Model
 {
@@ -25,6 +26,17 @@ class Cliente extends Model
     protected $casts = [
       'status' => 'boolean',
     ];
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+      parent::boot();
+      static::addGlobalScope(new TallerScope);
+    }
 
     /**
      * Obtener el User
@@ -56,5 +68,13 @@ class Cliente extends Model
     public function procesos()
     {
       return $this->hasMany('App\Proceso');
+    }
+
+    /**
+     * Obtener los Procesos activos (status null)
+     */
+    public function procesosActivos()
+    {
+      return $this->procesos()->where('status', null);
     }
 }

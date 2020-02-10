@@ -16,6 +16,8 @@ class PagoController extends Controller
      */
     public function index()
     {
+      $this->authorize('index', Pago::class);
+
       $pagos = Pago::all();
 
       return view('admin.pago.index', compact('pagos'));
@@ -121,6 +123,8 @@ class PagoController extends Controller
      */
     public function destroy(Pago $pago)
     {
+      $this->authorize('delete', $pago);
+
       if($pago->delete()){
         return redirect()->route('admin.cotizacion.show', ['cotizacion' => $pago->cotizacion_id])->with([
                 'flash_class'   => 'alert-success',

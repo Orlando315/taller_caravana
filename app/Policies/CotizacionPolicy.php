@@ -18,7 +18,11 @@ class CotizacionPolicy
      */
     public function view(User $user, Cotizacion $cotizacion)
     {
-        //
+      if($user->isCliente()){
+        return $user->cliente->id == $cotizacion->situacion->proceso->cliente_id;
+      }
+
+      return $user->isStaff();
     }
 
     /**
@@ -30,7 +34,7 @@ class CotizacionPolicy
      */
     public function create(User $user, Situacion $situacion)
     {
-      return !$situacion->proceso->status && ($situacion->proceso->etapa == 4 || $situacion->proceso->etapa == 5);
+      return $user->isAdmin() && !$situacion->proceso->status && ($situacion->proceso->etapa == 4 || $situacion->proceso->etapa == 5);
     }
 
     /**
@@ -42,7 +46,7 @@ class CotizacionPolicy
      */
     public function update(User $user, Cotizacion $cotizacion)
     {
-      return !$situacion->proceso->status && ($situacion->proceso->etapa == 4 || $situacion->proceso->etapa == 5);
+      return $user->isAdmin() && !$situacion->proceso->status && ($situacion->proceso->etapa == 4 || $situacion->proceso->etapa == 5);
     }
 
     /**
@@ -54,7 +58,7 @@ class CotizacionPolicy
      */
     public function delete(User $user, Cotizacion $cotizacion)
     {
-      return !$situacion->proceso->status && ($situacion->proceso->etapa == 4 || $situacion->proceso->etapa == 5);
+      return $user->isAdmin() && !$situacion->proceso->status && ($situacion->proceso->etapa == 4 || $situacion->proceso->etapa == 5);
     }
 
     /**

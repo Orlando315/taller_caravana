@@ -10,7 +10,9 @@
   <div class="row">
     <div class="col-12">
       <a class="btn btn-default" href="{{ route('admin.proceso.index') }}"><i class="fa fa-reply" aria-hidden="true"></i> Volver</a>
+      @if(Auth::user()->isAdmin())
       <button class="btn btn-fill btn-danger" data-toggle="modal" data-target="#delModal"><i class="fa fa-times" aria-hidden="true"></i> Eliminar</button>
+      @endif
     </div>
   </div>
   
@@ -38,12 +40,14 @@
             {{ $proceso->vehiculo->vehiculo() }}
           </p>
           <hr>
-
+          
+          @if($proceso->situacion)
           <strong>Total</strong>
           <p class="text-muted">
             {{ $proceso->total(false) }}
           </p>
           <hr>
+          @endif
 
           <strong>Estatus</strong>
           <p class="text-muted">
@@ -63,7 +67,7 @@
     <div class="col-md-8">
       <div class="row">
         <div class="col-sm-6 col-md-4">
-          @if(!$proceso->status)
+          @if(!$proceso->status && Auth::user()->isAdmin())
             @if($proceso->agendamiento)
             <a href="{{ route('admin.agendamiento.edit', ['agendamiento' => $proceso->agendamiento->id]) }}" title="Editar agendamiento">
             @else
@@ -89,13 +93,13 @@
                 </div>
               </div>
             </div>
-          @if(!$proceso->status)
+          @if(!$proceso->status && Auth::user()->isAdmin())
           </a>
           @endif
         </div>
 
         <div class="col-sm-6 col-md-4">
-          @if(!$proceso->status)
+          @if(!$proceso->status && Auth::user()->isAdmin())
             @if($proceso->hasPreevaluaciones())
             <a href="{{ ($preevaluaciones->count() < 12 || $preevaluacionesFotos->count() < 6) ? route('admin.preevaluacion.edit', ['proceso' => $proceso->id]) : '#preevaluaciones' }}" title="{{ ($preevaluaciones->count() < 12 || $preevaluacionesFotos->count() < 6) ? 'Editar pre-evaluación' : '' }}">
             @else
@@ -114,20 +118,20 @@
                     <div class="numbers">
                       <p class="card-category">Pre-evaluación</p>
                       <p class="{{ $proceso->hasPreevaluaciones() ? 'card-title' : '' }}">
-                        {!! $proceso->hasPreevaluaciones() ? $proceso->preevaluacionesStatus() : 'Agregar' !!}
+                        {!! $proceso->etapa == 2 ? 'Agregar' : $proceso->preevaluacionesStatus() !!}
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          @if(!$proceso->status)
+          @if(!$proceso->status && Auth::user()->isAdmin())
           </a>
           @endif
         </div>
 
         <div class="col-sm-6 col-md-4">
-          @if(!$proceso->status)
+          @if(!$proceso->status && Auth::user()->isAdmin())
             @if($proceso->situacion)
               <a href="{{ route('admin.situacion.edit', ['situacion' => $proceso->situacion->id]) }}" title="Editar Hoja de situación">
             @else
@@ -146,23 +150,23 @@
                     <div class="numbers">
                       <p class="card-category">Hoja de situación</p>
                       <p class="{{  $proceso->situacion ? 'card-title' : '' }}">
-                        {!!  $proceso->situacion ? $proceso->situacionStatus() : 'Agregar' !!}
+                        {!! $proceso->etapa == 3 ? 'Agregar' : $proceso->situacionStatus() !!}
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          @if(!$proceso->status)
+          @if(!$proceso->status && Auth::user()->isAdmin())
           </a>
           @endif
         </div>
 
         <div class="col-sm-6 col-md-4">
-          @if($proceso->hasCotizaciones())
-            <a class="link-cotizaciones" href="#cotizaciones">
-          @else
+          @if(!$proceso->hasCotizaciones() && !$proceso->status && Auth::user()->isAdmin())
             <a href="{{ ($proceso->etapa == 4 || $proceso->etapa == 5) ? route('admin.cotizacion.create', ['situcion' => $proceso->situacion->id]) : '#' }}" title="{{ ($proceso->etapa == 4) ? 'Generar cotización' : '' }}">
+          @else
+            <a class="link-scroll" href="#" data-tab="#tab3">
           @endif
             <div class="card card-stats">
               <div class="card-body py-1">
@@ -176,7 +180,7 @@
                     <div class="numbers">
                       <p class="card-category">Cotizaciones</p>
                       <p class="{{ $proceso->hasCotizaciones() ? 'card-title' : '' }}">
-                        {{ $proceso->hasCotizaciones() ? $proceso->cotizaciones->count() : 'Generar' }}
+                        {!! (($proceso->etapa == 4 || $proceso->etapa == 5) && !$proceso->hasCotizaciones()) ? 'Generar' : $proceso->cotizacionesStatus() !!}
                       </p>
                     </div>
                   </div>
@@ -187,8 +191,8 @@
         </div>
 
         <div class="col-sm-6 col-md-4">
-          <div class="card card-stats">
-            <a class="link-pagos" href="#pagos" title="Ver pagos">
+          <a class="link-scroll" href="#" title="Ver pagos" data-tab="#tab4">
+            <div class="card card-stats">
               <div class="card-body py-1">
                 <div class="row">
                   <div class="col-4">
@@ -200,22 +204,24 @@
                     <div class="numbers">
                       <p class="card-category">Pagos</p>
                       <p class="card-title">
-                        {{ $pagos->count() }}
+                        {{ $proceso->hasPagos() ? $pagos->count() : '' }}
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
-            </a>
-          </div>
+            </div>
+          </a>
         </div>
 
         <div class="col-sm-6 col-md-4">
+        @if(Auth::user()->isAdmin() && !$proceso->status)
           @if($proceso->inspeccion)
-            <a class="link-cotizaciones" href="{{ route('admin.inspeccion.edit', ['inspeccion' => $proceso->inspeccion->id]) }}">
+            <a href="{{ route('admin.inspeccion.edit', ['inspeccion' => $proceso->inspeccion->id]) }}">
           @else
             <a href="{{ ($proceso->etapa >= 5) ? route('admin.inspeccion.create', ['proceso' => $proceso->id]) : '#' }}">
           @endif
+        @endif
             <div class="card card-stats">
               <div class="card-body py-1">
                 <div class="row">
@@ -228,14 +234,16 @@
                     <div class="numbers">
                       <p class="card-category">Inspección de recepción</p>
                       <p class="{{ $proceso->inspeccion ? 'card-title' : '' }}">
-                        {!! $proceso->inspeccion ? $proceso->inspeccionStatus() : 'Agregar' !!}
+                        {!! ($proceso->etapa >= 5 && !$proceso->inspeccion) ? 'Agregar' : $proceso->inspeccionStatus() !!}
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          @if(Auth::user()->isAdmin() && !$proceso->status)
           </a>
+          @endif
         </div>
       </div>
     </div>
@@ -268,7 +276,7 @@
           </ul>
           <div class="tab-content">
             <div id="tab1" class="tab-pane fade show active pt-2" role="tabpanel" aria-labelledby="tab1-tab">
-              @if( !$proceso->status && ($preevaluaciones->count() < 12 || $preevaluacionesFotos->count() < 6))
+              @if( !$proceso->status && ($preevaluaciones->count() < 12 || $preevaluacionesFotos->count() < 6) && Auth::user()->isAdmin())
                 <a class="btn btn-success btn-fill btn-xs mb-2" href="{{ route('admin.preevaluacion.edit', ['proceso' => $proceso->id]) }}">
                   <i class="fa fa-pencil"></i> Modificar pre-evaluación
                 </a>
@@ -277,7 +285,7 @@
                 @foreach($preevaluacionesFotos as $foto)
                   <div class="col-sm-4 col-md-2 mb-2">
                     <div class="media-thumbs p-1 rounded">
-                      @if(!$proceso->status)
+                      @if(!$proceso->status && Auth::user()->isAdmin())
                       <div class="media-thumbs-options mb-1">
                         <button class="btn btn-danger btn-xs btn-fill btn-delete" data-id="{{ $foto->id }}" data-type="foto" data-toggle="modal"  data-target="#delElementModal">
                           <i class="fa fa-times"></i>
@@ -301,7 +309,9 @@
                       <th scope="col" class="text-center">Descripción</th>
                       <th scope="col" class="text-center">Observación</th>
                       <th scope="col" class="text-center">Referencia</th>
+                      @if(Auth::user()->isAdmin())
                       <th scope="col" class="text-center">Acción</th>
+                      @endif
                     </tr>
                   </thead>
                   <tbody>
@@ -311,6 +321,7 @@
                         <td>{{ $preevaluacion->descripcion }}</td>
                         <td>{{ $preevaluacion->observacion ?? 'N/A' }}</td>
                         <td class="text-right">{{ $preevaluacion->referencia() ?? 'N/A'  }}</td>
+                        @if(Auth::user()->isAdmin())
                         <td class="text-center">
                           @if(!$proceso->status)
                           <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $preevaluacion->id }}" data-type="preevaluacion" data-toggle="modal"  data-target="#delElementModal">
@@ -318,14 +329,16 @@
                           </button>
                           @endif
                         </td>
+                        @endif
                       </tr>
                     @endforeach
                   </tbody>
                 </table>
               </div>
             </div><!-- .tab-pane -->
+            @if($proceso->situacion)
             <div id="tab2" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab2-tab">
-              @if(!$proceso->status)
+              @if(!$proceso->status && Auth::user()->isAdmin())
               <a class="btn btn-success btn-fill btn-xs mb-2" href="{{ route('admin.situacion.edit', ['proceso' => $proceso->situacion->id]) }}">
                 <i class="fa fa-pencil"></i> Modificar Hoja de situación
               </a>
@@ -342,7 +355,9 @@
                     <th class="text-center">Precio costo</th>
                     <th class="text-center">Utilidad</th>
                     <th class="text-center">Decuento</th>
+                    @if(Auth::user()->isAdmin())
                     <th class="text-center">Acción</th>
+                    @endif
                   </tr>
                 </thead>
                 <tbody>
@@ -356,6 +371,7 @@
                       <td class="text-right">{{ $item->costo() }}</td>
                       <td class="text-right">{{ $item->utilidad() }}</td>
                       <td class="text-right">{{ $item->descuentoText() }}</td>
+                      @if(Auth::user()->isAdmin())
                       <td class="text-center">
                         @if(!$item->status)
                         <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $item->id }}" data-type="item" data-toggle="modal"  data-target="#delSituacionModal">
@@ -363,6 +379,7 @@
                         </button>
                         @endif
                       </td>
+                      @endif
                     </tr>
                   @endforeach
                 </tbody>
@@ -370,7 +387,7 @@
               
             </div><!-- .tab-pane -->
             <div id="tab3" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab3-tab" aria-expanded="false">
-              @if( !$proceso->status && ($proceso->etapa == 4 || $proceso->etapa == 5))
+              @if( !$proceso->status && ($proceso->etapa == 4 || $proceso->etapa == 5) && Auth::user()->isAdmin())
               <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('admin.cotizacion.create', ['situacion' => $proceso->situacion->id]) }}">
                 <i class="fa fa-plus"></i> Generar cotización
               </a>
@@ -394,7 +411,7 @@
                       <td scope="row">{{ $loop->iteration }}</td>
                       <td>
                         <a href="{{ route('admin.cotizacion.show', ['cotizacion' => $cotizacion->id]) }}">
-                          {{ $cotizacion->user->nombre() }}
+                          {{ $cotizacion->user->nombre() }} ({{ $cotizacion->user->role() }})
                         </a>
                       </td>
                       <td class="text-center">{{ $cotizacion->items->count() }}</td>
@@ -433,9 +450,10 @@
                 </tbody>
               </table>
             </div><!-- .tab-pane -->
+            @endif
             @if($proceso->inspeccion)
             <div id="tab5" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab5-tab">
-              @if( !$proceso->status && $proceso->inspeccion)
+              @if( !$proceso->status && $proceso->inspeccion && Auth::user()->isAdmin())
                 <a class="btn btn-success btn-fill btn-xs mb-2" href="{{ route('admin.inspeccion.edit', ['inspeccion' => $proceso->inspeccion->id]) }}">
                   <i class="fa fa-pencil"></i> Modificar inspección
                 </a>
@@ -444,7 +462,7 @@
                 @foreach($proceso->inspeccion->fotos as $foto)
                   <div class="col-sm-4 col-md-2 mb-2">
                     <div class="media-thumbs p-1 rounded">
-                      @if(!$proceso->status)
+                      @if(!$proceso->status && Auth::user()->isAdmin())
                       <div class="media-thumbs-options mb-1">
                         <button class="btn btn-danger btn-xs btn-fill btn-delete" data-id="{{ $foto->id }}" data-type="foto-inspeccion" data-toggle="modal"  data-target="#delElementModal">
                           <i class="fa fa-times"></i>
@@ -551,7 +569,8 @@
       </div>
     </div>
   </div>
-
+  
+  @if(Auth::user()->isAdmin())
   <div id="delModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -579,8 +598,9 @@
       </div>
     </div>
   </div>
+  @endif
   
-  @if(!$proceso->status)
+  @if(!$proceso->status & Auth::user()->isAdmin())
     <div id="delElementModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delElementModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -639,7 +659,7 @@
   @endif
 
   <div id="imageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg dialog-top" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title" id="delElementModalLabel">Imagen</h4>
@@ -662,6 +682,7 @@
 @section('scripts')
   <script type="text/javascript">
     $(document).ready(function() {
+      @if(Auth::user()->isAdmin())
       $('#delElementModal').on('show.bs.modal', function (e) {
         let id = $(e.relatedTarget).data('id'),
             type = $(e.relatedTarget).data('type');
@@ -674,9 +695,9 @@
 
       $('#delSituacionModal').on('show.bs.modal', function (e) {
         let id = $(e.relatedTarget).data('id')
-
         $('#delSituacion').attr('action', '{{ route("admin.situacion.item.index") }}/'+id)
       })
+      @endif
 
       $('#imageModal').on('show.bs.modal', function (e) {
         let src = $(e.relatedTarget).data('url')
@@ -699,6 +720,18 @@
             scrollTop: $('.proceso-tabs').offset().top
         }, 500);
       })
+
+      $('.link-scroll').click(scrollToTabs)
     })
+
+    function scrollToTabs(e){
+      e.preventDefault();
+      let tab = $(this).data('tab');
+
+      $(`${tab}-tab`).click()
+      $('.main-panel').animate({
+          scrollTop: $('.proceso-tabs').offset().top
+      }, 500);      
+    }
   </script>
 @endsection

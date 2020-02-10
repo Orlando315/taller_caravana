@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\{Auth, Storage};
 use Illuminate\Http\Request;
 use App\{Proceso, Cliente, VehiculosAnio, VehiculosMarca};
 
@@ -16,6 +16,8 @@ class ProcesoController extends Controller
      */
     public function index()
     {
+      $this->authorize('index', Proceso::class);
+
       $procesos = Proceso::all();
 
       return view('admin.proceso.index', compact('procesos'));
@@ -28,6 +30,8 @@ class ProcesoController extends Controller
      */
     public function create()
     {
+      $this->authorize('create', Proceso::class);
+
       $clientes = Cliente::all();
       $marcas = VehiculosMarca::has('modelos')->with('modelos')->get();
       $anios = VehiculosAnio::all();
@@ -43,6 +47,7 @@ class ProcesoController extends Controller
      */
     public function store(Request $request)
     {
+      $this->authorize('create', Proceso::class);
       $this->validate($request, [
         'cliente' => 'required',
         'vehiculo' => 'required',
@@ -76,6 +81,8 @@ class ProcesoController extends Controller
      */
     public function show(Proceso $proceso)
     {
+      $this->authorize('view', $proceso);
+
       $preevaluaciones = $proceso->preevaluaciones;
       $preevaluacionesFotos = $proceso->preevaluacionFotos;
       $pagos = $proceso->pagos;
@@ -114,7 +121,15 @@ class ProcesoController extends Controller
      */
     public function destroy(Proceso $proceso)
     {
+      $this->authorize('delete', $proceso);
+
       if($proceso->delete()){
+        $directory = Auth::id().'/procesos/'.$proceso->id;
+
+        if(Storage::exists($directory)){
+          Storage::deleteDirectory($directory);
+        }
+
         return redirect()->route('admin.proceso.index')->with([
                 'flash_class'   => 'alert-success',
                 'flash_message' => 'Proceso eliminado exitosamente.'

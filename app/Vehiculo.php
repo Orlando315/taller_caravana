@@ -3,8 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
+use App\Scopes\TallerScope;
 
 class Vehiculo extends Model
 {
@@ -39,12 +38,7 @@ class Vehiculo extends Model
     protected static function boot()
     {
       parent::boot();
-
-      if(Auth::check()){
-        static::addGlobalScope('taller', function (Builder $query) {
-          $query->where('taller', Auth::user()->id);
-        });
-      }
+      static::addGlobalScope(new TallerScope);
     }
 
     /**
@@ -56,11 +50,19 @@ class Vehiculo extends Model
     }
 
     /**
-     * Obtener los cliente
+     * Obtener el cliente
      */
     public function cliente()
     {
       return $this->belongsTo('App\Cliente');
+    }
+
+    /**
+     * Obtener los Procesos
+     */
+    public function procesos()
+    {
+      return $this->hasMany('App\Proceso');
     }
 
     /**

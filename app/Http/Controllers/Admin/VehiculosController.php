@@ -20,6 +20,8 @@ class VehiculosController extends Controller
      */
     public function index()
     {
+      $this->authorize('index', Vehiculo::class);
+
       $vehiculos = Vehiculo::all();
       $marcas = VehiculosMarca::withCount('vehiculos')->get();
       $modelos = VehiculosModelo::withCount('vehiculos')->get();
@@ -36,9 +38,11 @@ class VehiculosController extends Controller
      */
     public function create(Cliente $cliente = null)
     {
+      $this->authorize('create', Vehiculo::class);
+
       $clientes = Cliente::all();
       $marcas = VehiculosMarca::has('modelos')->with('modelos')->get();
-      $anios = VehiculosAnio::all();
+      $anios = VehiculosAnio::orderBy('anio', 'asc')->get();
 
       return view('admin.vehiculo.create', compact('cliente', 'clientes', 'marcas', 'anios'));
     }
@@ -52,11 +56,12 @@ class VehiculosController extends Controller
      */
     public function store(Request $request, Cliente $cliente = null)
     {
+      $this->authorize('create', Vehiculo::class);
       $this->validate($request, [
         'cliente' => 'required',
         'año' => 'required',
         'modelo' => 'required',
-        'patentes' => 'nullable|string|max:50',
+        'patentes' => 'required|string|max:50',
         'color' => 'nullable|string|max:50',
         'km' => 'nullable|numeric|min:0|max:9999999',
         'vin' => 'required|string|max:50'
@@ -96,7 +101,11 @@ class VehiculosController extends Controller
      */
     public function show(Vehiculo $vehiculo)
     {
-      return view('admin.vehiculo.show', compact('vehiculo'));
+      $this->authorize('view', $vehiculo);
+
+      $procesos = $vehiculo->procesos;
+
+      return view('admin.vehiculo.show', compact('vehiculo', 'procesos'));
     }
 
     /**
@@ -107,9 +116,11 @@ class VehiculosController extends Controller
      */
     public function edit(Vehiculo $vehiculo)
     {
+      $this->authorize('update', $vehiculo);
+
       $clientes = Cliente::all();
       $marcas = VehiculosMarca::has('modelos')->with('modelos')->get();
-      $anios = VehiculosAnio::all();
+      $anios = VehiculosAnio::orderBy('anio', 'asc')->get();
 
       return view('admin.vehiculo.edit', compact('vehiculo', 'clientes', 'marcas', 'anios'));
     }
@@ -123,11 +134,12 @@ class VehiculosController extends Controller
      */
     public function update(Request $request, Vehiculo $vehiculo)
     {
+      $this->authorize('update', $vehiculo);
       $this->validate($request, [
         'cliente' => 'required',
         'año' => 'required',
         'modelo' => 'required',
-        'patentes' => 'nullable|string|max:50',
+        'patentes' => 'required|string|max:50',
         'color' => 'nullable|string|max:50',
         'km' => 'nullable|numeric|min:0|max:9999999',
         'vin' => 'required|string|max:50'
@@ -163,6 +175,16 @@ class VehiculosController extends Controller
      */
     public function destroy(Vehiculo $vehiculo)
     {
+      $this->authorize('delete', $vehiculo);
+
+      if($vehiculo->procesos()->count() > 0){
+        return redirect()->back()->with([
+                'flash_class'     => 'alert-danger',
+                'flash_message'   => 'Este Vehículo tiene Procesos asociados a el',
+                'flash_important' => true
+              ]);
+      }
+
       if($vehiculo->delete()){
         return redirect()->route('admin.vehiculo.index')->with([
                 'flash_class'   => 'alert-success',
@@ -170,7 +192,7 @@ class VehiculosController extends Controller
               ]);
       }
 
-      return redirect()->route('admin.vehiculo.show', ['vehiculo' => $vehiculo->id])->with([
+      return redirect()->back()->with([
               'flash_class'     => 'alert-danger',
               'flash_message'   => 'Ha ocurrido un error.',
               'flash_important' => true

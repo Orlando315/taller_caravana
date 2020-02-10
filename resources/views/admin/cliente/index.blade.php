@@ -3,7 +3,7 @@
 @section('title', 'Clientes - '.config('app.name'))
 
 @section('brand')
-  <a class="navbar-brand" href="{{ route('admin.users.index') }}"> Clientes </a>
+  <a class="navbar-brand" href="{{ route('admin.cliente.index') }}"> Clientes </a>
 @endsection
 
 @section('content')
@@ -15,9 +15,11 @@
       <div class="card">
         <div class="card-header">
           <h4 class="card-title">Clientes ({{ $clientes->count() }})</h4>
+          @if(Auth::user()->isAdmin())
           <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('admin.cliente.create') }}">
             <i class="fa fa-plus"></i> Agregar Cliente
           </a>
+          @endif
         </div>
         <div class="card-body">
           <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">

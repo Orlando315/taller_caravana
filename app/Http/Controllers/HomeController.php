@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Insumo;
-use App\Cliente;
-use App\Vehiculo;
+use App\{Insumo, Cliente, Vehiculo, Proceso};
+
 
 class HomeController extends Controller
 {
@@ -17,12 +16,14 @@ class HomeController extends Controller
      */
     public function dashboard()
     {
-      $users   = Auth::user()->users->count();
-      $insumos = Insumo::count();
-      $clientes = Cliente::count();
-      $vehiculos = Vehiculo::count();
+      $insumos = Auth::user()->isStaff() ? Insumo::count() : [];
+      $clientes = Auth::user()->isStaff() ? Cliente::count() : [];
+      $vehiculos = Auth::user()->isStaff() ? Vehiculo::count() : Auth::user()->cliente->vehiculos()->count();
+      $procesosCount = Auth::user()->isStaff() ? Proceso::count() : Auth::user()->cliente->procesos()->count();
 
-      return view('dashboard', compact('users', 'insumos', 'clientes', 'vehiculos'));
+      $procesosActivos = Auth::user()->isCliente() ? Auth::user()->cliente->procesosActivos : Proceso::where('status', null)->get();
+
+      return view('dashboard', compact('insumos', 'clientes', 'vehiculos', 'procesosCount', 'procesosActivos'));
     }
 
     /**

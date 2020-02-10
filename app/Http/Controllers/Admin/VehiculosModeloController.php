@@ -27,6 +27,8 @@ class VehiculosModeloController extends Controller
      */
     public function create()
     {
+      $this->authorize('create', VehiculosModelo::class);
+
       $marcas = VehiculosMarca::all();
 
       return view('admin.vehiculo.modelo.create', compact('marcas'));
@@ -40,6 +42,7 @@ class VehiculosModeloController extends Controller
      */
     public function store(Request $request)
     {
+      $this->authorize('create', VehiculosModelo::class);
       $this->validate($request, [
         'modelo' => 'required|string|max:50',
       ]);
@@ -69,6 +72,8 @@ class VehiculosModeloController extends Controller
      */
     public function show(VehiculosModelo $modelo)
     {
+      $this->authorize('view', $modelo);
+
       $vehiculos = $modelo->vehiculos()->with(['cliente', 'marca', 'anio'])->get();
 
       return view('admin.vehiculo.modelo.show', compact('modelo', 'vehiculos'));
@@ -82,6 +87,8 @@ class VehiculosModeloController extends Controller
      */
     public function edit(VehiculosModelo $modelo)
     {
+      $this->authorize('update', $modelo);
+
       return view('admin.vehiculo.modelo.edit', compact('modelo'));
     }
 
@@ -94,6 +101,7 @@ class VehiculosModeloController extends Controller
      */
     public function update(Request $request, VehiculosModelo $modelo)
     {
+      $this->authorize('update', $modelo);
       $this->validate($request, [
         'modelo' => 'required|string|max:50',
       ]);
@@ -122,6 +130,8 @@ class VehiculosModeloController extends Controller
      */
     public function destroy(VehiculosModelo $modelo)
     {
+      $this->authorize('delete', $modelo);
+
       if($modelo->vehiculos()->count() > 0){
         return redirect()->route('admin.vehiculo.modelo.show', ['modelo' => $modelo->id])->with([
               'flash_class'     => 'alert-danger',

@@ -41,7 +41,7 @@ class PreevaluacionPolicy
      */
     public function create(User $user, Proceso $proceso)
     {
-      return $proceso->etapa == 2 && !$proceso->hasPreevaluaciones() && !$proceso->hasPreevaluacionFotos() && !$proceso->status;
+      return $user->isAdmin() && $proceso->etapa == 2 && !$proceso->hasPreevaluaciones() && !$proceso->hasPreevaluacionFotos() && !$proceso->status;
     }
 
     /**
@@ -53,7 +53,7 @@ class PreevaluacionPolicy
      */
     public function update(User $user, Proceso $proceso)
     {
-      return ($proceso->hasPreevaluaciones() || $proceso->preevaluaciones->count() <= 12) && !$proceso->status;
+      return $user->isAdmin() && ($proceso->hasPreevaluaciones() || $proceso->preevaluaciones->count() <= 12) && !$proceso->status;
     }
 
     /**
@@ -65,6 +65,18 @@ class PreevaluacionPolicy
      */
     public function delete(User $user, Preevaluacion $model)
     {
+      return $user->isAdmin() && $model->proceso->hasPreevaluaciones() && !$model->proceso->status;
+    }
 
+    /**
+     * Determine whether the user can delete the model.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Preevaluacion  $model
+     * @return mixed
+     */
+    public function deletePhoto(User $user, Proceso $Proceso)
+    {
+      return $user->isAdmin() && $proceso->hasPreevaluaciones() && !$proceso->status;
     }
 }

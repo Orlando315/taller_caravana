@@ -18,7 +18,7 @@ class InsumoPolicy
      */
     public function index(User $user)
     {
-      return true;
+      return $user->isStaff();
     }
 
     /**
@@ -30,7 +30,7 @@ class InsumoPolicy
      */
     public function view(User $user, Insumo $insumo)
     {
-      return true;
+      return $user->isStaff();
     }
 
     /**
@@ -41,7 +41,7 @@ class InsumoPolicy
      */
     public function create(User $user)
     {
-      return $user->role != 'user';
+      return $user->isAdmin();
     }
 
     /**
@@ -53,7 +53,7 @@ class InsumoPolicy
      */
     public function update(User $user, Insumo $insumo)
     {
-      return $user->role != 'user';
+      return $user->isAdmin();
     }
 
     /**
@@ -65,6 +65,6 @@ class InsumoPolicy
      */
     public function delete(User $user, Insumo $insumo)
     {
-      return $user->role != 'user';
+      return $user->isAdmin();
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\{Model, Builder};
+use Illuminate\Database\Eloquent\Model;
+use App\Scopes\TallerScope;
 
 class Inspeccion extends Model
 {
@@ -89,12 +89,7 @@ class Inspeccion extends Model
     protected static function boot()
     {
       parent::boot();
-
-      if(Auth::check()){
-        static::addGlobalScope('taller', function (Builder $query) {
-          $query->where('taller', Auth::user()->id);
-        });
-      }
+      static::addGlobalScope(new TallerScope);
     }
 
     /**

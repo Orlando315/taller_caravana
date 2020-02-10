@@ -18,7 +18,7 @@ class InsumoFormatoPolicy
      */
     public function index(User $user)
     {
-      return true;
+      return $user->isStaff();
     }
 
     /**
@@ -30,7 +30,7 @@ class InsumoFormatoPolicy
      */
     public function view(User $user, InsumoFormato $model)
     {
-      return true;
+      return $user->isStaff();
     }
 
     /**
@@ -41,7 +41,7 @@ class InsumoFormatoPolicy
      */
     public function create(User $user)
     {
-      return $user->role != 'user';
+      return $user->isAdmin();
     }
 
     /**
@@ -53,7 +53,7 @@ class InsumoFormatoPolicy
      */
     public function update(User $user, InsumoFormato $model)
     {
-      return $user->role != 'user';
+      return $user->isAdmin();
     }
 
     /**

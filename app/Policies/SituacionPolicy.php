@@ -30,7 +30,7 @@ class SituacionPolicy
      */
     public function create(User $user, Proceso $proceso)
     {
-      return $proceso->etapa == 3 && !$proceso->status && !$proceso->situacion;
+      return $user->isAdmin() && $proceso->etapa == 3 && !$proceso->status && !$proceso->situacion;
     }
 
     /**
@@ -42,7 +42,7 @@ class SituacionPolicy
      */
     public function update(User $user, Situacion $situacion)
     {
-      return $situacion->proceso->etapa > 3 && !$situacion->proceso->status && $situacion->proceso->situacion;
+      return $user->isAdmin() && $situacion->proceso->etapa > 3 && !$situacion->proceso->status && $situacion->proceso->situacion;
     }
 
     /**
@@ -54,7 +54,7 @@ class SituacionPolicy
      */
     public function delete_item(User $user, Situacion $situacion)
     {
-      return $situacion->proceso->etapa > 3 && !$situacion->proceso->status && $situacion->proceso->situacion;
+      return $user->isAdmin() && $situacion->proceso->etapa > 3 && !$situacion->proceso->status && $situacion->proceso->situacion;
     }
 
     /**

@@ -18,10 +18,9 @@ class UsersControllers extends Controller
     {
       $this->authorize('index', User::class);
 
-      $jefes = Auth::user()->role == 'admin' ? Auth::user()->jefes : [];
-      $users = Auth::user()->role == 'admin' ? Auth::user()->usuarios : [];
+      $jefes = Auth::user()->isAdmin() ? Auth::user()->jefes : Auth::user()->taller->jefes;
 
-      return view('admin.users.index', compact('users', 'jefes'));
+      return view('admin.users.index', compact('admins', 'jefes'));
     }
 
     /**
@@ -45,18 +44,17 @@ class UsersControllers extends Controller
      */
     public function store(Request $request)
     {
-      $this->authorize('store', User::class);
+      $this->authorize('create', User::class);
 
       $this->validate($request, [
-        'role' => 'required|in:user,jefe',
         'nombres' => 'required|string|max:50',
         'apellidos' => 'nullable|string|max:50',
         'email' => 'required|email|unique:users,email',
         'password' => 'required|confirmed|min:6|max:50',
       ]);
 
-      $user = new User($request->all());
-      $user->role = $request->role;
+      $user = new User($request->only(['nombres', 'apellidos', 'email']));
+      $user->role = 'jefe';
       $user->password = bcrypt($request->password);
 
       if(Auth::user()->users()->save($user)){
@@ -94,7 +92,7 @@ class UsersControllers extends Controller
      */
     public function edit(User $user)
     {
-      $this->authorize('edit', $user);
+      $this->authorize('update', $user);
 
       return view('admin.users.edit', compact('user'));
     }
@@ -116,7 +114,7 @@ class UsersControllers extends Controller
         'email' => 'required|email|unique:users,email,' . $user->id . ',id',
       ]);
 
-      $user->fill($request->all());
+      $user->fill($request->only(['nombres', 'apellidos', 'email']));
 
       if($user->save()){
         return redirect()->route('admin.users.show', ['user' => $user->id])->with([

@@ -10,8 +10,10 @@
   <div class="row">
     <div class="col-12">
       <a class="btn btn-default" href="{{ route('admin.proveedor.index') }}"><i class="fa fa-reply" aria-hidden="true"></i> Volver</a>
+      @if(Auth::user()->isAdmin())
       <a class="btn btn-success" href="{{ route('admin.proveedor.edit', ['proveedor' => $proveedor->id]) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</a>
       <button class="btn btn-fill btn-danger" data-toggle="modal" data-target="#delModal"><i class="fa fa-times" aria-hidden="true"></i> Eliminar</button>
+      @endif
     </div>
   </div>
   
@@ -55,20 +57,22 @@
             {{ $proveedor->telefono_celular }}
           </p>
           <hr>
-           <strong>Teléfono Local</strong>
+
+          <strong>Teléfono Local</strong>
           <p class="text-muted">
             {{ $proveedor->telefono_local }}
           </p>
           <hr>
+
           <strong>Descuento</strong>
           <p class="text-muted">
-            {{ $proveedor->descuento_convenio }}
+            {{ $proveedor->descuento() }}
           </p>
         </div>
         <div class="card-footer text-center">
           <hr>
           <small class="text-muted">
-            {{ $proveedor->created_at }}
+            {{ $proveedor->created_at->format('d-m-Y H:i:s') }}
           </small>
         </div><!-- .card-footer -->
       </div><!-- .card -->
@@ -78,9 +82,11 @@
       <div class="card">
         <div class="card-header">
           <h4 class="card-title">Vehículos</h4>
+          @if(Auth::user()->isAdmin())
           <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('admin.proveedor.vehiculo.create', ['proveedor' => $proveedor->id]) }}">
             <i class="fa fa-plus"></i> Agregar vehículos
           </a>
+          @endif
         </div>
         <div class="card-body">
           <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
@@ -90,19 +96,23 @@
                 <th scope="col" class="text-center">Marca</th>
                 <th scope="col" class="text-center">Modelo</th>
                 <th scope="col" class="text-center">Año</th>
+                @if(Auth::user()->isAdmin())
                 <th scope="col" class="text-center">Acción</th>
+                @endif
               </tr>
             </thead>
             <tbody>
             @foreach($proveedor->vehiculos as $v)
               <tr>
-                <td scope="row" class="text-center">{{ $loop->index + 1 }}</td>
+                <td scope="row" class="text-center">{{ $loop->iteration }}</td>
                 <td scope="col" class="text-center">{{ $v->marca->marca }}</td>
                 <td scope="col" class="text-center">{{ $v->modelo->modelo }}</td>
-                <td scope="col" class="text-center">{{ $v->anio_vehiculo->anio }}</td>
+                <td scope="col" class="text-center">{{ $v->anio->anio() }}</td>
+                @if(Auth::user()->isAdmin())
                 <td scope="col" class="text-center">
                   <button type="button" data-url="{{ route('admin.proveedor.vehiculo.destroy',['id' => $v->id]) }}" class="btn btn-sm btn-fill btn-danger del_vehiculo">X</button>
                 </td>
+                @endif
               </tr>
              @endforeach
             </tbody>
@@ -112,6 +122,7 @@
     </div>
   </div>
 
+  @if(Auth::user()->isAdmin())
   <div id="delModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -167,13 +178,16 @@
       </div>
     </div>
   </div>
+  @endif
 @endsection
 
 @section('scripts')
+  @if(Auth::user()->isAdmin())
   <script type="text/javascript">
     $('.del_vehiculo').click(function(event) {
       $('#delModalVehiculo').modal('show');
       $('#form_delete_vehiculo').attr('action',$(this).data('url'));
     });
-</script>
+  </script>
+  @endif
 @endsection
