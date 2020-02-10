@@ -11,7 +11,10 @@
     <div class="col-12">
       <a class="btn btn-default" href="{{ route('admin.proceso.index') }}"><i class="fa fa-reply" aria-hidden="true"></i> Volver</a>
       @if(Auth::user()->isAdmin())
-      <button class="btn btn-fill btn-danger" data-toggle="modal" data-target="#delModal"><i class="fa fa-times" aria-hidden="true"></i> Eliminar</button>
+        @if(!$proceso->status)
+          <button class="btn btn-fill btn-warning" data-toggle="modal" data-target="#statusModal"><i class="fa fa-check" aria-hidden="true"></i> Completado</button>
+        @endif
+        <button class="btn btn-fill btn-danger" data-toggle="modal" data-target="#delModal"><i class="fa fa-times" aria-hidden="true"></i> Eliminar</button>
       @endif
     </div>
   </div>
@@ -234,7 +237,7 @@
                     <div class="numbers">
                       <p class="card-category">Inspección de recepción</p>
                       <p class="{{ $proceso->inspeccion ? 'card-title' : '' }}">
-                        {!! ($proceso->etapa >= 5 && !$proceso->inspeccion) ? 'Agregar' : $proceso->inspeccionStatus() !!}
+                        {!! ($proceso->etapa >= 5 && !$proceso->inspeccion && !$proceso->status) ? 'Agregar' : $proceso->inspeccionStatus() !!}
                       </p>
                     </div>
                   </div>
@@ -373,7 +376,7 @@
                       <td class="text-right">{{ $item->descuentoText() }}</td>
                       @if(Auth::user()->isAdmin())
                       <td class="text-center">
-                        @if(!$item->status)
+                        @if(!$proceso->status && !$item->status)
                         <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $item->id }}" data-type="item" data-toggle="modal"  data-target="#delSituacionModal">
                           <i class="fa fa-times"></i>
                         </button>
@@ -582,7 +585,7 @@
         </div>
         <div class="modal-body">
           <div class="row justify-content-md-center">
-            <form class="col-md-8" action="{{ route('admin.proceso.destroy', ['proceso' => $proceso->id]) }}" method="POST">
+            <form class="col-md-10" action="{{ route('admin.proceso.destroy', ['proceso' => $proceso->id]) }}" method="POST">
               @csrf
               @method('DELETE')
 
@@ -598,6 +601,38 @@
       </div>
     </div>
   </div>
+    
+    @if(!$proceso->status)
+    <div id="statusModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="statusModalLabel">Marcar como completado</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row justify-content-md-center">
+              <form class="col-md-10" action="{{ route('admin.proceso.status', ['proceso' => $proceso->id]) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <h5 class="text-center">¿Esta seguro que desea marcar este Proceso como <strong>Completo</strong>?</h5>
+                <p class="text-center text-muted">No se podrán hacer modificaciones a la información de este Proceso.</p>
+                <p class="text-center text-muted">Esta acción no se puede deshacer.</p>
+
+                <center>
+                  <button class="btn btn-fill btn-warning" type="submit">Aceptar</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </center>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    @endif
   @endif
   
   @if(!$proceso->status & Auth::user()->isAdmin())
@@ -703,22 +738,6 @@
         let src = $(e.relatedTarget).data('url')
 
         $('#image').attr('src', src)
-      })
-
-      $('.link-cotizaciones').click(function (e) {
-        e.preventDefault();
-        $('#tab3-tab').click()
-        $('.main-panel').animate({
-            scrollTop: $('.proceso-tabs').offset().top
-        }, 500);
-      })
-
-      $('.link-pagos').click(function (e) {
-        e.preventDefault();
-        $('#tab4-tab').click()
-        $('.main-panel').animate({
-            scrollTop: $('.proceso-tabs').offset().top
-        }, 500);
       })
 
       $('.link-scroll').click(scrollToTabs)

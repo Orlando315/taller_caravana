@@ -10,7 +10,7 @@
   <div class="row">
     <div class="col-12">
       <a class="btn btn-default" href="{{ route('admin.proceso.show', ['proceso' => $cotizacion->situacion->proceso_id]) }}"><i class="fa fa-reply" aria-hidden="true"></i> Volver</a>
-      @if(Auth::user()->isAdmin())
+      @if(Auth::user()->isAdmin() && !$cotizacion->situacion->proceso->status)
       <button class="btn btn-fill btn-danger" data-toggle="modal" data-target="#delModal"><i class="fa fa-times" aria-hidden="true"></i> Eliminar</button>
       @endif
     </div>
@@ -78,9 +78,11 @@
       <div class="row">
         <div class="col-md-4">
           <div class="card card-stats">
-            @if(Auth::user()->isAdmin())
-            <a class="link-pagos" href="{{ $cotizacion->hasPagos() ? '#pagos' : route('admin.pago.create', ['cotizacion' => $cotizacion->id]) }}" title="{{ $cotizacion->hasPagos() ? 'Ver pagos' : 'Agregar pago' }}">
-              @endif
+            @if(Auth::user()->isAdmin() && !$cotizacion->situacion->proceso->status)
+            <a href="{{ route('admin.pago.create', ['cotizacion' => $cotizacion->id]) }}" title="Agregar pago">
+            @else
+            <a class="link-pagos" href="#" title="Ver pagos">
+            @endif
               <div class="card-body py-1">
                 <div class="row">
                   <div class="col-4">
@@ -91,16 +93,14 @@
                   <div class="col-8">
                     <div class="numbers">
                       <p class="card-category">Pagos</p>
-                      <p class="{{ $cotizacion->hasPagos() ? 'card-title' : '' }}">
-                        {{ $cotizacion->hasPagos() ? $pagos->count() : 'Agregar' }}
+                      <p class="{{ ($cotizacion->hasPagos() || $cotizacion->situacion->proceso->status) ? 'card-title' : '' }}">
+                        {{ ($cotizacion->hasPagos() || $cotizacion->situacion->proceso->status) ? $pagos->count() : 'Agregar' }}
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
-            @if(Auth::user()->isAdmin())
             </a>
-            @endif
           </div>
         </div>
       </div>
@@ -163,7 +163,7 @@
             </div><!-- .tab-pane -->
 
             <div id="tab2" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab2-tab">
-              @if(!$cotizacion->status)
+              @if(!$cotizacion->status && !$cotizacion->situacion->proceso->status)
                 <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('admin.pago.create', ['cotizacion' => $cotizacion->id]) }}">
                   <i class="fa fa-plus"></i> Agregar pago
                 </a>
@@ -188,7 +188,7 @@
                       <td class="text-center">{{ $pago->created_at->format('d-m-Y H:i:s')}}</td>
                       @if(Auth::user()->isAdmin())
                       <td class="text-center">
-                        @if(!$cotizacion->status)
+                        @if(!$cotizacion->status && !$cotizacion->situacion->proceso->status)
                           <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $pago->id }}" data-toggle="modal"  data-target="#delPagoModal">
                             <i class="fa fa-times"></i>
                           </button>
@@ -206,7 +206,7 @@
     </div>
   </div>
   
-  @if(Auth::user()->isAdmin())
+  @if(Auth::user()->isAdmin() && !$cotizacion->situacion->proceso->status)
   <div id="delModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -236,7 +236,7 @@
   </div>
   @endif
   
-  @if(Auth::user()->isAdmin() && !$cotizacion->status)
+  @if(Auth::user()->isAdmin() && !$cotizacion->status && !$cotizacion->situacion->proceso->status)
     <div id="delPagoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delPagoModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -270,11 +270,16 @@
 @section('scripts')
   <script type="text/javascript">
     $(document).ready(function() {
-      $('.link-pagos').click(function () {
+      $('.link-pagos').click(function (e) {
+        e.preventDefault()
         $('#tab2-tab').click()
+
+        $('.main-panel').animate({
+            scrollTop: $('.tab-content').offset().top
+        }, 500);
       })
 
-      @if(Auth::user()->isAdmin() && !$cotizacion->status)
+      @if(Auth::user()->isAdmin() && !$cotizacion->status && !$cotizacion->situacion->proceso->status)
         $('#delPagoModal').on('show.bs.modal', function (e) {
           let id = $(e.relatedTarget).data('id')
 

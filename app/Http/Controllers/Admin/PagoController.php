@@ -63,11 +63,6 @@ class PagoController extends Controller
           $cotizacion->save();
         }
 
-        if($cotizacion->situacion->proceso->pagado() >= $cotizacion->situacion->proceso->total()){
-          $cotizacion->situacion->proceso->status = true;
-          $cotizacion->push();
-        }
-
         return redirect()->route('admin.cotizacion.show',['cotizacion' => $cotizacion->id])->with([
                 'flash_message' => 'Pago agregado exitosamente.',
                 'flash_class' => 'alert-success'

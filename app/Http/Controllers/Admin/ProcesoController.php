@@ -142,4 +142,31 @@ class ProcesoController extends Controller
               'flash_important' => true
             ]);
     }
+
+    /**
+     * Marcar los Procesos como Completados.
+     *
+     * @param  \App\Proceso  $proceso
+     * @return \Illuminate\Http\Response
+     */
+    public function status(Proceso $proceso)
+    {
+      $this->authorize('update', $proceso);
+
+      $proceso->status = true;
+
+      if($proceso->save()){
+
+        return redirect()->route('admin.proceso.show', ['proceso' => $proceso->id])->with([
+                'flash_class'   => 'alert-success',
+                'flash_message' => 'El Proceso fue marcado como completo.'
+              ]);
+      }
+
+      return redirect()->route('admin.proceso.show', ['proceso' => $proceso->id])->with([
+              'flash_class'     => 'alert-danger',
+              'flash_message'   => 'Ha ocurrido un error.',
+              'flash_important' => true
+            ]);
+    }
 }

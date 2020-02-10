@@ -91,6 +91,7 @@ Route::group(['middleware' => 'auth'], function (){
     Route::resource('repuesto', 'RepuestoController');
 
     /* --- Procesos --- */
+    Route::put('proceso/{proceso}/status', 'ProcesoController@status')->name('proceso.status');
     Route::resource('proceso', 'ProcesoController');
     
     /* --- Agendamientos --- */

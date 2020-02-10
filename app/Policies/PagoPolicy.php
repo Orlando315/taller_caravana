@@ -42,7 +42,7 @@ class PagoPolicy
      */
     public function create(User $user, Cotizacion $cotizacion)
     {
-      return $user->isAdmin() && !$cotizacion->status;
+      return $user->isAdmin() && !$cotizacion->status && !$cotizacion->situacion->proceso->status;
     }
 
     /**
@@ -66,7 +66,7 @@ class PagoPolicy
      */
     public function delete(User $user, Pago $pago)
     {
-      return $user->isAdmin() && !$paago->$cotizacion->status;
+      return $user->isAdmin() && !$paago->$cotizacion->status && !$pago->cotizacion->situacion->proceso->status;;
     }
 
     /**
