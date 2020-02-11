@@ -231,28 +231,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Obtener los Agendamientos para el calendario
-     */
-    public function calendarAgendamientos()
-    {
-      $agendamientos = [];
-
-      $all = Agendamiento::all();
-
-      foreach ($all as $agendamiento) {
-        $agendamientos[] = [
-          'id' => $agendamiento->id,
-          'title' => $agendamiento->vehiculo->marca->marca.' - '.$agendamiento->vehiculo->modelo->modelo.'('.$agendamiento->vehiculo->anio->anio.') | '.$agendamiento->vehiculo->cliente->nombre(),
-          'start' => $agendamiento->fecha->format('Y-m-d H:i:s'),
-          'cliente' => $agendamiento->vehiculo->cliente->nombre(),
-          'url' => route('admin.proceso.show', ['proceso' => $agendamiento->proceso_id]),
-        ];
-      }
-
-      return $agendamientos;
-    }
-
-    /**
      * Obtener los Proveedores
      */
     public function proveedores()

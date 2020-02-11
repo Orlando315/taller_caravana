@@ -127,7 +127,7 @@ class Proceso extends Model
     }
 
     /**
-     * Obtener la Situzacion Principal
+     * Obtener la Situacion Principal
      * 
      * @return  Boolean
      */
@@ -142,6 +142,16 @@ class Proceso extends Model
     public function situacionStatus()
     {
       return $this->statusBadge($this->situacion);
+    }
+
+    /**
+     * Obtener la Situacion Principal
+     * 
+     * @return  Boolean
+     */
+    public function situacionItems()
+    {
+      return $this->hasManyThrough('App\SituacionItem', 'App\Situacion');
     }
 
     /**
@@ -200,6 +210,17 @@ class Proceso extends Model
     }
 
     /**
+     * Obtener la Utilidad de la Situacion
+     * 
+     * @param \Boolean  $onlyNumbers
+     * @return  mixed
+     */
+    public function utilidad($onlyNumbers = true)
+    {
+      return $this->situacion->utilidad($onlyNumbers);
+    }
+
+    /**
      * Obtener los Pagos
      * 
      */
@@ -246,5 +267,53 @@ class Proceso extends Model
     public function inspeccionStatus()
     {
       return $this->statusBadge($this->inspeccion);
+    }
+
+
+    /**
+     * Calcular el promedio de la efectividad del tiempo de los Procesos
+     */
+    public static function efectividad()
+    {
+      $today = date('Y-m-d H:i:s');
+      $less3Months = date('Y-m-d H:i:s', strtotime($today.' -3 month'));
+
+      $procesos = Proceso::where('status', true)->whereBetween('created_at', [$less3Months, $today])->get();
+
+      $segundos = 0;
+      foreach ($procesos as $proceso) {
+        $segundos += $proceso->created_at->diffInSeconds($proceso->updated_at);
+      }
+      $efectividadSegundos = ($segundos / $proceso->count());
+      return \Carbon\Carbon::now()->subSeconds($efectividadSegundos)->diffForHumans(\Carbon\Carbon::now(), true, true, 5);
+    }
+
+    /**
+     * Verificar si hay Inspecion y mostrarlo como badge
+     */
+    public static function finanzas()
+    {
+      $from = \Carbon\Carbon::now()->startOfMonth();
+      $to = $from->copy()->endOfMonth();
+
+      $procesos = Proceso::whereBetween('created_at', [$from->toDateTimeString(), $to->toDateTimeString()])
+                          ->has('situacion')
+                          ->with('situacion')
+                          ->get();
+      $totalventas = 0;
+      $porPagar = 0;
+      $utilidades = 0;
+
+      foreach ($procesos as $proceso) {
+        $total = $proceso->total();
+        $totalventas += $total;
+        if(!$proceso->status){
+          $porPagar += ($total - $proceso->pagado()); 
+        }else{
+          $utilidades += $proceso->utilidad();
+        }
+      }
+
+      return ['ventas' => $totalventas, 'pendiente'=> $porPagar, 'utilidades' => $utilidades];
     }
 }

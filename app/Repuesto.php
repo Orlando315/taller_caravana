@@ -69,7 +69,7 @@ class Repuesto extends Model
      */
     public function extra()
     {
-      return $this->hasOne('App\repuestoExtra');
+      return $this->hasOne('App\RepuestoExtra');
     }
 
     /**

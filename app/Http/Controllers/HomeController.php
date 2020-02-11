@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\{Insumo, Cliente, Vehiculo, Proceso};
+use App\{Insumo, Cliente, Vehiculo, Proceso, Agendamiento};
 
 
 class HomeController extends Controller
@@ -20,10 +20,14 @@ class HomeController extends Controller
       $clientes = Auth::user()->isStaff() ? Cliente::count() : [];
       $vehiculos = Auth::user()->isStaff() ? Vehiculo::count() : Auth::user()->cliente->vehiculos()->count();
       $procesosCount = Auth::user()->isStaff() ? Proceso::count() : Auth::user()->cliente->procesos()->count();
+      $efectividad = Auth::user()->isStaff() ? Proceso::efectividad() : null;
+      $procesosCompletados = Auth::user()->isStaff() ? Proceso::where('status', true)->count() : null;
+      $finanzas = Auth::user()->isStaff() ? Proceso::finanzas() : null;
+      $agendamientosCalendar = Auth::user()->isStaff() ? Agendamiento::toCalendar() : [];
 
       $procesosActivos = Auth::user()->isCliente() ? Auth::user()->cliente->procesosActivos : Proceso::where('status', null)->get();
 
-      return view('dashboard', compact('insumos', 'clientes', 'vehiculos', 'procesosCount', 'procesosActivos'));
+      return view('dashboard', compact('insumos', 'clientes', 'vehiculos', 'procesosCount', 'procesosActivos', 'procesosCompletados', 'efectividad', 'finanzas', 'agendamientosCalendar'));
     }
 
     /**

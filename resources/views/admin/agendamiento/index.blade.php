@@ -26,7 +26,7 @@
 
 @section('scripts')
   <script type="text/javascript">
-    let agendamientos = @json(Auth::user()->calendarAgendamientos());
+    let agendamientos = @json($agendamientosCalendar);
 
     $(document).ready(function(){
       $('#calendar').fullCalendar({

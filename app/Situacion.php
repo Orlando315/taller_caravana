@@ -80,4 +80,16 @@ class Situacion extends Model
       $total = $this->items->sum('total');
       return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
     }
+
+    /**
+     * Obtener la Utilidad de los Items
+     * 
+     * @param \Boolean  $onlyNumbers
+     * @return  mixed
+     */
+    public function utilidad($onlyNumbers = true)
+    {
+      $total = $this->items->sum('utilidad');
+      return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
+    }
 }

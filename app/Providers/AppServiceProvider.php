@@ -39,6 +39,6 @@ class AppServiceProvider extends ServiceProvider
         $view->with(compact('currentRoute', 'insumosWithStockMinimo'));
       });
 
-      setlocale(LC_TIME, config('app.locale'));
+      setlocale(LC_ALL, 'es_ES', 'Spanish_Spain', 'Spanish');
     }
 }

@@ -146,16 +146,68 @@
     @endif
   </div>
 
+  @if(Auth::user()->isStaff())
   <div class="row">
-    <div class="col-12">
-      <h4 class="text-center"> Procesos activos </h4>
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title"><i class="fa fa-clock-o text-info" aria-hidden="true"></i> Reporte de finanzas</h4>
+            </div>
+            <div class="card-body">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item" rel="tooltip" title="Total de ventas">Total ventas: {{ number_format($finanzas['ventas'], 2,',', '.') }} </li>
+                <li class="list-group-item" rel="tooltip" title="Pagos pendientes por cotizaciones abiertas">Pagos pendientes: {{ number_format($finanzas['pendiente'], 2,',', '.') }} </li>
+                <li class="list-group-item" rel="tooltip" title="Utilidades por cotizaciones cerrdas">Total utilidades: {{ number_format($finanzas['utilidades'], 2,',', '.') }} </li>
+              </ul>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="fa fa-calendar-o" aria-hidden="true"></i> Mes en curso: {{ ucfirst(strftime("%B")) }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title"><i class="fa fa-dollar text-success" aria-hidden="true"></i> Efectividad del servicio</h4>
+            </div>
+            <div class="card-body">
+              <h5 class="text-center">{{ $efectividad }}</h5>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="fa fa-tasks" aria-hidden="true"></i> En base a {{ $procesosCompletados }} procesos completados
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-2"></div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title"><i class="fa fa-calendar text-danger" aria-hidden="true"></i> Agendamientos</h4>
+        </div>
+        <div class="card-body">
+          <div id="calendar" class="border-top border-secondary pt-2 calendar-small"></div>
+        </div>
+      </div>
     </div>
   </div>
+  @endif
+
   <div class="row">
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title">Procesos ({{ $procesosActivos->count() }})</h4>
+          <h4 class="card-title">Procesos Activos ({{ $procesosActivos->count() }})</h4>
         </div>
         <div class="card-body">
           <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
@@ -193,4 +245,33 @@
     </div>
   </div>
 
+@endsection
+
+@section('scripts')
+  <script type="text/javascript">
+    let agendamientos = @json($agendamientosCalendar);
+
+    $(document).ready(function(){
+      $('#calendar').fullCalendar({
+        defaultView: 'agendaWeek',
+        themeSystem: 'bootstrap4',
+        timezone: 'local',
+        allDaySlot: false,
+        minTime: '07:00:00',
+        maxTime: '19:00:00',
+        slotLabelFormat: 'h:mm a',
+        slotLabelInterval: {
+          minutes: 30,
+        },
+        slotDuration:{
+          minutes: 30,
+        },
+        forceEventDuration: true,
+        defaultTimedEventDuration:{
+          minutes: 30,
+        },
+        events : agendamientos,
+      });
+    })
+  </script>
 @endsection

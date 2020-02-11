@@ -19,8 +19,9 @@ class AgendamientoController extends Controller
       $this->authorize('index', Agendamiento::class);
 
       $agendamientos = Agendamiento::count();
+      $agendamientosCalendar = Agendamiento::toCalendar();
 
-      return view('admin.agendamiento.index', compact('agendamientos'));
+      return view('admin.agendamiento.index', compact('agendamientos', 'agendamientosCalendar'));
     }
 
     /**
@@ -33,7 +34,9 @@ class AgendamientoController extends Controller
     {
       $this->authorize('create', [Agendamiento::class, $proceso]);
 
-      return view('admin.agendamiento.create', compact('proceso'));
+      $agendamientosCalendar = Agendamiento::toCalendar();
+
+      return view('admin.agendamiento.create', compact('proceso', 'agendamientosCalendar'));
     }
 
     /**
@@ -104,7 +107,9 @@ class AgendamientoController extends Controller
     {
       $this->authorize('update', $agendamiento);
 
-      return view('admin.agendamiento.edit', compact('agendamiento'));
+      $agendamientosCalendar = Agendamiento::toCalendar();
+
+      return view('admin.agendamiento.edit', compact('agendamiento', 'agendamientosCalendar'));
     }
 
     /**

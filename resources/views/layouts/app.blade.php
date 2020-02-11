@@ -27,7 +27,7 @@
   </head>
   <body>
     <div class="wrapper">
-      <div class="sidebar" data-color="red" data-image="{{ asset('images/bike.jpg') }}">
+      <div class="sidebar" data-color="green" data-image="{{ asset('images/bike.jpg') }}">
         <div class="sidebar-wrapper">
           <div class="logo py-1" style="background: white">
             <a href="{{ route('dashboard') }}" class="simple-text">
