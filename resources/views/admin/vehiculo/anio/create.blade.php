@@ -21,7 +21,7 @@
 
             <div class="form-group">
               <label class="control-label" for="año">Año: *</label>
-              <input id="año" class="form-control{{ $errors->has('año') ? ' is-invalid' : '' }}" type="number" name="año" min="1900" max="2100" value="{{ old('año') }}" placeholder="Año" required>
+              <input id="año" class="form-control{{ $errors->has('año') ? ' is-invalid' : '' }}" type="text" name="año" maxlength="10" value="{{ old('año') }}" placeholder="Año" required>
             </div>
 
             @if(count($errors) > 0)

@@ -39,7 +39,7 @@ class VehiculoController extends Controller
       }
 
       $marcas = VehiculosMarca::has('modelos')->with('modelos')->get();
-      $anios = VehiculosAnio::orderBy('anio', 'asc')->get();
+      $anios = VehiculosAnio::all();
 
       return view('vehiculo.create', compact('marcas', 'anios'));
     }
@@ -119,7 +119,7 @@ class VehiculoController extends Controller
       }
 
       $marcas = VehiculosMarca::has('modelos')->with('modelos')->get();
-      $anios = VehiculosAnio::orderBy('anio', 'asc')->get();
+      $anios = VehiculosAnio::all();
 
       return view('vehiculo.edit', compact('vehiculo', 'marcas', 'anios'));
     }

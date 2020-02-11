@@ -41,7 +41,7 @@ class VehiculosAnioController extends Controller
     {
       $this->authorize('create', VehiculosAnio::class);
       $this->validate($request, [
-        'año' => 'required|integer|min:1900|max:2100',
+        'año' => 'required|string|unique:vehiculos_anios,anio',
       ]);
 
       $anio = new VehiculosAnio(['anio' => $request->input('año')]);
@@ -103,10 +103,10 @@ class VehiculosAnioController extends Controller
     {
       $this->authorize('update', $anio);
       $this->validate($request, [
-        'anio' => 'required|integer|min:1900|max:2100',
+        'año' => 'required|string|unique:vehiculos_anios,anio,' . $anio->id . ',id',
       ]);
 
-      $anio->fill($request->all());
+      $anio->anio = $request->input('año');
 
       if($anio->save()){
         return redirect()->route('admin.vehiculo.anio.show', ['anio' => $anio->id])->with([
@@ -132,7 +132,7 @@ class VehiculosAnioController extends Controller
     {
       $this->authorize('delete', $anio);
 
-      if($anio->anios()->count() > 0){
+      if($anio->vehiculos()->count() > 0){
         return redirect()->route('admin.vehiculo.anio.show', ['anio' => $anio->id])->with([
               'flash_class'     => 'alert-danger',
               'flash_message'   => 'Este Año tiene Vehículos agregados.',

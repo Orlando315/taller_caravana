@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\{Model, Builder};
 use App\Scopes\TallerScope;
 
 class VehiculosAnio extends Model
@@ -32,6 +32,9 @@ class VehiculosAnio extends Model
     {
       parent::boot();
       static::addGlobalScope(new TallerScope);
+      static::addGlobalScope(function (Builder $query ){
+        $query->orderBy('anio', 'asc');
+      });
     }
 
     /**
@@ -47,7 +50,7 @@ class VehiculosAnio extends Model
      */
     public function anio()
     {
-      return number_format($this->anio, 0, ',', '.');
+      return $this->anio;
     }
 
     /**
