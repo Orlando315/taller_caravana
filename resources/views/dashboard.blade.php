@@ -35,28 +35,6 @@
       </div>
 
       <div class="col-lg-3 col-sm-6">
-        <a href="{{ route('admin.vehiculo.index') }}">
-          <div class="card card-stats">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-5">
-                  <div class="icon-big text-center text-muted card-hover-danger">
-                    <i class="fa fa-car"></i>
-                  </div>
-                </div>
-                <div class="col-7">
-                  <div class="numbers">
-                    <p class="card-category">Vehículos</p>
-                    <h4 class="card-title">{{ $vehiculos }}</h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <div class="col-lg-3 col-sm-6">
         <a href="{{ route('admin.insumos.index') }}">
           <div class="card card-stats">
             <div class="card-body">
@@ -68,8 +46,8 @@
                 </div>
                 <div class="col-7">
                   <div class="numbers">
-                    <p class="card-category">Insumos</p>
-                    <h4 class="card-title">{{ $insumos }}</h4>
+                    <p class="card-category">Stock bajo</p>
+                    <h4 class="card-title">{{ $insumosWithStockMinimo->count() }}</h4>
                   </div>
                 </div>
               </div>
@@ -90,7 +68,7 @@
                 </div>
                 <div class="col-7">
                   <div class="numbers">
-                    <p class="card-category">Procesos</p>
+                    <p class="card-category">Servicios</p>
                     <h4 class="card-title">{{ $procesosCount }}</h4>
                   </div>
                 </div>
@@ -207,7 +185,7 @@
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title">Procesos Activos ({{ $procesosActivos->count() }})</h4>
+          <h4 class="card-title">Servicios Activos ({{ $procesosActivos->count() }})</h4>
         </div>
         <div class="card-body">
           <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">

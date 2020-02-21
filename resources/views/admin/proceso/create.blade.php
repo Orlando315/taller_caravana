@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Iniciar Proceso - '.config('app.name'))
+@section('title', 'Nuevo Servicio - '.config('app.name'))
 
 @section('brand')
-  <a class="navbar-brand" href="{{ route('admin.proveedor.index') }}"> Proceso de cotización </a>
+  <a class="navbar-brand" href="{{ route('admin.proveedor.index') }}"> Servicio de cotización </a>
 @endsection
 
 @section('content')
@@ -16,7 +16,7 @@
         <div class="card-body">
           <form action="{{ route('admin.proceso.store') }}" method="POST">
             @csrf
-            <h4>Iniciar proceso de cotización</h4>
+            <h4>Nuevo servicio de cotización</h4>
 
             <div class="form-group">
               <label class="control-label" for="cliente">Cliente: *</label>

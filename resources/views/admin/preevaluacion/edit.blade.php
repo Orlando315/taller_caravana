@@ -41,7 +41,7 @@
                     <th class="text-center">#</th>
                     <th class="text-center">Descripción</th>
                     <th class="text-center">Observación</th>
-                    <th class="text-center">Referencia</th>
+                    <th class="text-center">Valor referencial</th>
                   </tr>
                 </thead>
                 <tbody id="tbody">

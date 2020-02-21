@@ -25,8 +25,8 @@
             </div>
 
             <div class="form-group">
-              <label class="control-label" for="tienda">Tienda: *</label>
-              <input id="tienda" class="form-control{{ $errors->has('tienda') ? ' is-invalid' : '' }}" type="text" name="tienda"  value="{{ old('tienda', $proveedor->tienda) }}" placeholder="Tienda" value="{{ $proveedor->tienda }}" required>
+              <label class="control-label" for="proveedor">Proveedor: *</label>
+              <input id="proveedor" class="form-control{{ $errors->has('proveedor') ? ' is-invalid' : '' }}" type="text" name="proveedor"  value="{{ old('proveedor', $proveedor->tienda) }}" placeholder="Proveedor" value="{{ $proveedor->tienda }}" required>
             </div>
 
             <div class="form-group">

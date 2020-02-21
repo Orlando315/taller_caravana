@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Procesos - '.config('app.name'))
+@section('title', 'Servicios - '.config('app.name'))
 
 @section('brand')
   <a class="navbar-brand" href="{{ route('dashboard') }}"> Inicio </a>
@@ -14,10 +14,10 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title">Procesos ({{ $procesos->count() }})</h4>
+          <h4 class="card-title">Servicios ({{ $procesos->count() }})</h4>
           @if(Auth::user()->isAdmin())
           <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('admin.proceso.create') }}">
-            <i class="fa fa-plus"></i> Iniciar Proceso
+            <i class="fa fa-plus"></i> Nuevo Servicio
           </a>
           @endif
         </div>

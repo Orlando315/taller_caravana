@@ -34,7 +34,7 @@
           </p>
           <hr>
 
-          <strong>Tienda</strong>
+          <strong>Proveedor</strong>
           <p class="text-muted">
             {{ $proveedor->tienda }}
           </p>
@@ -81,7 +81,7 @@
     <div class="col-md-8">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title">Vehículos</h4>
+          <h4 class="card-title">Repustos para</h4>
           @if(Auth::user()->isAdmin())
           <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('admin.proveedor.vehiculo.create', ['proveedor' => $proveedor->id]) }}">
             <i class="fa fa-plus"></i> Agregar vehículos

@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Procesos - '.config('app.name'))
+@section('title', 'Servicios - '.config('app.name'))
 
 @section('brand')
-  <a class="navbar-brand" href="{{ route('proceso.index') }}"> Procesos </a>
+  <a class="navbar-brand" href="{{ route('proceso.index') }}"> Servicios </a>
 @endsection
 
 @section('content')
@@ -14,7 +14,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title">Procesos ({{ $procesos->count() }})</h4>
+          <h4 class="card-title">Servicios ({{ $procesos->count() }})</h4>
         </div>
         <div class="card-body">
           <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">

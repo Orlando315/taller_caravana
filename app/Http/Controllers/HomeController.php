@@ -16,7 +16,6 @@ class HomeController extends Controller
      */
     public function dashboard()
     {
-      $insumos = Auth::user()->isStaff() ? Insumo::count() : [];
       $clientes = Auth::user()->isStaff() ? Cliente::count() : [];
       $vehiculos = Auth::user()->isStaff() ? Vehiculo::count() : Auth::user()->cliente->vehiculos()->count();
       $procesosCount = Auth::user()->isStaff() ? Proceso::count() : Auth::user()->cliente->procesos()->count();
@@ -27,7 +26,7 @@ class HomeController extends Controller
 
       $procesosActivos = Auth::user()->isCliente() ? Auth::user()->cliente->procesosActivos : Proceso::where('status', null)->get();
 
-      return view('dashboard', compact('insumos', 'clientes', 'vehiculos', 'procesosCount', 'procesosActivos', 'procesosCompletados', 'efectividad', 'finanzas', 'agendamientosCalendar'));
+      return view('dashboard', compact('clientes', 'vehiculos', 'procesosCount', 'procesosActivos', 'procesosCompletados', 'efectividad', 'finanzas', 'agendamientosCalendar'));
     }
 
     /**

@@ -85,7 +85,7 @@ class Repuesto extends Model
      */
     public function anio()
     {
-      return number_format($this->anio, 0, ',', '.');
+      return $this->anio;
     }
 
     /**

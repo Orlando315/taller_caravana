@@ -24,8 +24,8 @@
             </div>
 
             <div class="form-group">
-              <label class="control-label" for="tienda">Tienda: *</label>
-              <input id="tienda" class="form-control{{ $errors->has('tienda') ? ' is-invalid' : '' }}" type="text" name="tienda"  value="{{ old('tienda') }}" placeholder="Tienda" required>
+              <label class="control-label" for="proveedor">Proveedor: *</label>
+              <input id="proveedor" class="form-control{{ $errors->has('proveedor') ? ' is-invalid' : '' }}" type="text" name="proveedor"  value="{{ old('proveedor') }}" placeholder="Proveedor" required>
             </div>
 
             <div class="form-group">

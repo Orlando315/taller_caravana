@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Proceso - '.config('app.name'))
+@section('title', 'Servicio - '.config('app.name'))
 
 @section('brand')
-  <a class="navbar-brand" href="{{ route('admin.proceso.index') }}"> Procesos </a>
+  <a class="navbar-brand" href="{{ route('admin.proceso.index') }}"> Servicios </a>
 @endsection
 
 @section('content')
@@ -311,7 +311,7 @@
                       <th scope="col" class="text-center">#</th>
                       <th scope="col" class="text-center">Descripción</th>
                       <th scope="col" class="text-center">Observación</th>
-                      <th scope="col" class="text-center">Referencia</th>
+                      <th scope="col" class="text-center">Valor referencial</th>
                       @if(Auth::user()->isAdmin())
                       <th scope="col" class="text-center">Acción</th>
                       @endif
@@ -578,7 +578,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="delModalLabel">Eliminar Proceso</h4>
+          <h4 class="modal-title" id="delModalLabel">Eliminar Servicio</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -589,7 +589,7 @@
               @csrf
               @method('DELETE')
 
-              <p class="text-center">¿Esta seguro de eliminar este Proceso?</p><br>
+              <p class="text-center">¿Esta seguro de eliminar este Servicio?</p><br>
 
               <center>
                 <button class="btn btn-fill btn-danger" type="submit">Eliminar</button>
@@ -618,8 +618,8 @@
                 @csrf
                 @method('PUT')
 
-                <h5 class="text-center">¿Esta seguro que desea marcar este Proceso como <strong>Completo</strong>?</h5>
-                <p class="text-center text-muted">No se podrán hacer modificaciones a la información de este Proceso.</p>
+                <h5 class="text-center">¿Esta seguro que desea marcar este Servicio como <strong>Completo</strong>?</h5>
+                <p class="text-center text-muted">No se podrán hacer modificaciones a la información de este Servicio.</p>
                 <p class="text-center text-muted">Esta acción no se puede deshacer.</p>
 
                 <center>

@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Proceso - '.config('app.name'))
+@section('title', 'Servicio - '.config('app.name'))
 
 @section('brand')
-  <a class="navbar-brand" href="{{ route('proceso.index') }}"> Procesos </a>
+  <a class="navbar-brand" href="{{ route('proceso.index') }}"> Servicios </a>
 @endsection
 
 @section('content')

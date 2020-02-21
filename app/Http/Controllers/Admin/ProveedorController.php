@@ -45,7 +45,7 @@ class ProveedorController extends Controller
     {
       $this->authorize('create', Proveedor::class);
       $this->validate($request, [
-        'tienda' => 'required',
+        'proveedor' => 'required',
         'vendedor' => 'required',
         'direccion' => 'required',
         'email' => 'required|email|unique:proveedores,email',
@@ -54,7 +54,8 @@ class ProveedorController extends Controller
         'descuento' => 'nullable|numeric|min:0',
       ]);
 
-      $proveedor = new Proveedor($request->all());
+      $proveedor = new Proveedor($request->except('proveedor'));
+      $proveedor->tienda = $request->proveedor;
 
       if(Auth::user()->proveedores()->save($proveedor)){
         return redirect()->route('admin.proveedor.show', ['proveedor' => $proveedor->id])->with([
@@ -107,7 +108,7 @@ class ProveedorController extends Controller
     {
       $this->authorize('update', $proveedor);
       $this->validate($request, [
-        'tienda' => 'required',
+        'proveedor' => 'required',
         'vendedor' => 'required',
         'direccion' => 'required',
         'telefono_local' => 'nullable|max:15',
@@ -116,7 +117,8 @@ class ProveedorController extends Controller
         'descuento' => 'nullable|numeric|min:0',
       ]);
 
-      $proveedor->fill($request->all());
+      $proveedor->fill($request->except('proveedor'));
+      $proveedor->tienda = $request->proveedor;
 
       if($proveedor->save()){
         return redirect()->route('admin.proveedor.show', ['proveedor' => $proveedor->id])->with([

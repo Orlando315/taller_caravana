@@ -53,7 +53,7 @@
             <li class="nav-item{{ $currentRoute == 'admin.procesos' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('admin.proceso.index') }}">
                 <i class="fa fa-tasks"></i>
-                <p>Procesos</p>
+                <p>Servicios</p>
               </a>
             </li>
 
@@ -166,8 +166,8 @@
                   
                   @if(Auth::user()->isAdmin())
                   <li class="nav-item">
-                    <a href="{{ route('admin.proceso.create') }}" class="nav-link" rel="tooltip" title="Iniciar proceso">
-                      <i class="fa fa-plus" aria-hidden="true"></i> Iniciar proceso
+                    <a href="{{ route('admin.proceso.create') }}" class="nav-link" rel="tooltip" title="Nuevo servicio">
+                      <i class="fa fa-plus" aria-hidden="true"></i> Nuevo servicio
                     </a>
                   </li>
                   @endif

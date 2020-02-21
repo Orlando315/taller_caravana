@@ -26,7 +26,7 @@
             <thead>
               <tr>
                 <th scope="col" class="text-center">#</th>
-                <th scope="col" class="text-center">Tienda</th>
+                <th scope="col" class="text-center">Proveedor</th>
                 <th scope="col" class="text-center">Vendedor</th>
                 <th scope="col" class="text-center">Email</th>
                 <th scope="col" class="text-center">Telf. Local</th>

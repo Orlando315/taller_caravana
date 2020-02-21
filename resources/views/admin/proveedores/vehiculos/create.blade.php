@@ -16,7 +16,7 @@
         <div class="card-body">
           <form action="{{ route('admin.proveedor.vehiculo.store', ['proveedor' => $proveedor->id]) }}" method="POST">
             @csrf
-            <h4>Agregar Vehículo</h4>
+            <h4>Agregar Vehículos</h4>
 
             <div class="form-group">
               <label class="control-label" for="proveedor">Proveedor: *</label>

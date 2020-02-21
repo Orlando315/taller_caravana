@@ -29,9 +29,11 @@
             <li class="nav-item">
               <a class="nav-link" id="tab3-tab" href="#tab3" role="tab" data-toggle="tab" aria-controls="tab3" aria-selected="false">Modelos ({{ $modelos->count() }})</a>
             </li>
+            <!--
             <li class="nav-item">
               <a class="nav-link" id="tab4-tab" href="#tab4" role="tab" data-toggle="tab" aria-controls="tab4" aria-selected="false">Años ({{ $anios->count() }})</a>
             </li>
+            -->
           </ul>
           <div class="tab-content">
             <div id="tab1" class="tab-pane fade pt-2 show active" role="tabpanel" aria-labelledby="tab1-tab">
@@ -140,7 +142,7 @@
                 </tbody>
               </table>  
             </div><!-- .tab-pane -->
-
+            <!--
             <div id="tab4" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab4-tab" aria-expanded="false">
               @if(Auth::user()->isAdmin())
               <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('admin.vehiculo.anio.create') }}">
@@ -170,8 +172,9 @@
                     </tr>
                   @endforeach
                 </tbody>
-              </table>  
-            </div><!-- .tab-pane -->
+              </table>
+            -->
+            <!--</div>--><!-- .tab-pane -->
           </div><!-- .tab-content -->
         </div><!-- .card-body -->
       </div>
