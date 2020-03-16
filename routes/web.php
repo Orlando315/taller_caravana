@@ -29,8 +29,10 @@ Route::group(['middleware' => 'auth'], function (){
   /* --- Vehiculo --- */
   Route::resource('vehiculo', 'VehiculoController');
 
-  /* --- Procesos --- */
-  Route::resource('proceso', 'ProcesoController')
+  /* --- Servicio (Anteriormente -> Procesos) --- */
+  Route::resource('servicio', 'ProcesoController')
+        ->parameters(['servicio' => 'proceso'])
+        ->names('proceso')
         ->only(['index', 'show']);
 
   /* --- Cotizacion --- */
@@ -90,9 +92,11 @@ Route::group(['middleware' => 'auth'], function (){
     /* --- Repuestos --- */
     Route::resource('repuesto', 'RepuestoController');
 
-    /* --- Procesos --- */
-    Route::put('proceso/{proceso}/status', 'ProcesoController@status')->name('proceso.status');
-    Route::resource('proceso', 'ProcesoController');
+    /* --- Servicio (Anteriormente -> Procesos) --- */
+    Route::put('servicio/{proceso}/status', 'ProcesoController@status')->name('proceso.status');
+    Route::resource('servicio', 'ProcesoController')
+          ->parameters(['servicio' => 'proceso'])
+          ->names('proceso');
     
     /* --- Agendamientos --- */
     Route::get('agendamiento/create/{proceso}', 'AgendamientoController@create')->name('agendamiento.create');
