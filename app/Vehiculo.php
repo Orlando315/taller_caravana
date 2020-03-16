@@ -27,7 +27,8 @@ class Vehiculo extends Model
       'patentes',
       'color',
       'km',
-      'vin'
+      'vin',
+      'motor',
     ];
 
     /**
@@ -103,5 +104,13 @@ class Vehiculo extends Model
     public function vehiculo()
     {
       return $this->marca->marca.' - '.$this->modelo->modelo.' ('.$this->anio->anio.')';
+    }
+
+    /**
+     * Obtener el atributo formateado
+     */
+    public function motor()
+    {
+      return number_format(($this->motor / 1000), 1, '.', ',');
     }
 }

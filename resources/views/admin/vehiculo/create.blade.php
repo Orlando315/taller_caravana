@@ -77,7 +77,13 @@
             <div class="form-group">
               <label class="control-label" for="km">Km:</label>
               <input id="km" class="form-control{{ $errors->has('km') ? ' is-invalid' : '' }}" type="number" name="km" min="0" max="9999999" step="0.01" value="{{ old('km') }}" placeholder="Km">
-              <small class="help-block text-muted">Solo números.</small>
+              <small class="text-muted">Solo números.</small>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="motor">Motor (cc):</label>
+              <input id="motor" class="form-control{{ $errors->has('motor') ? ' is-invalid' : '' }}" type="number" name="motor" min="0" max="9999" step="1" value="{{ old('motor') }}" placeholder="Motor">
+              <small class="text-muted">Solo números.</small>
             </div>
 
             @if(count($errors) > 0)

@@ -52,7 +52,7 @@
           </p>
           <hr>
 
-          <strong>Vin</strong>
+          <strong>VIN</strong>
           <p class="text-muted">
             {{ $vehiculo->vin ?? 'N/A' }}
           </p>
@@ -75,6 +75,12 @@
           <strong>Km</strong>
           <p class="text-muted">
             {{ $vehiculo->km() ?? 'N/A' }}
+          </p>
+          <hr>
+
+          <strong>Motor</strong>
+          <p class="text-muted" title="{{ $vehiculo->motor }} cc">
+            {{ $vehiculo->motor ? $vehiculo->motor() : 'N/A' }}
           </p>
           <hr>
 

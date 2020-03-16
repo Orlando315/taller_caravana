@@ -64,12 +64,13 @@ class VehiculosController extends Controller
         'patentes' => 'required|string|max:50',
         'color' => 'nullable|string|max:50',
         'km' => 'nullable|numeric|min:0|max:9999999',
-        'vin' => 'required|string|max:50'
+        'vin' => 'required|string|max:50',
+        'motor' => 'nullable|integer|min:0|max:9999',
       ]);
 
       $modelo = VehiculosModelo::findOrFail($request->modelo);
 
-      $vehiculo = new Vehiculo($request->only(['patentes', 'color', 'km', 'vin']));
+      $vehiculo = new Vehiculo($request->only(['patentes', 'color', 'km', 'vin', 'motor']));
       $vehiculo->cliente_id = $request->cliente;
       $vehiculo->vehiculo_marca_id = $modelo->vehiculo_marca_id;
       $vehiculo->vehiculo_modelo_id = $modelo->id;
@@ -142,12 +143,13 @@ class VehiculosController extends Controller
         'patentes' => 'required|string|max:50',
         'color' => 'nullable|string|max:50',
         'km' => 'nullable|numeric|min:0|max:9999999',
-        'vin' => 'required|string|max:50'
+        'vin' => 'required|string|max:50',
+        'motor' => 'nullable|integer|min:0|max:9999',
       ]);
 
       $modelo = VehiculosModelo::findOrFail($request->modelo);
 
-      $vehiculo->fill($request->only(['patentes', 'color', 'km', 'vin']));
+      $vehiculo->fill($request->only(['patentes', 'color', 'km', 'vin', 'motor']));
       $vehiculo->cliente_id = $request->cliente;
       $vehiculo->vehiculo_marca_id = $modelo->vehiculo_marca_id;
       $vehiculo->vehiculo_modelo_id = $modelo->id;

@@ -62,6 +62,12 @@
           </p>
           <hr>
 
+          <strong>Motor</strong>
+          <p class="text-muted" title="{{ $vehiculo->motor }} cc">
+            {{ $vehiculo->motor ? $vehiculo->motor() ? 'N/A' }}
+          </p>
+          <hr>
+
           <strong>Patentes</strong>
           <p class="text-muted">
             {{ $vehiculo->patentes ?? 'N/A' }}

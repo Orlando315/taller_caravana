@@ -199,6 +199,11 @@
                 <small class="help-block text-muted">Solo números.</small>
               </div>
 
+              <div class="form-group">
+                <label class="control-label" for="motor">Motor (cc):</label>
+                <input id="motor" class="form-control{{ $errors->has('motor') ? ' is-invalid' : '' }}" type="number" name="motor" min="0" max="9999" step="1" value="{{ old('motor') }}" placeholder="Motor">
+                <small class="text-muted">Solo números.</small>
+              </div>
 
               <div class="alert alert-dismissible alert-danger alert-option" role="alert" style="display: none">
                 <strong class="text-center">Ha ocurrido un error</strong> 

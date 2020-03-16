@@ -81,6 +81,12 @@
               <small class="help-block text-muted">Solo números.</small>
             </div>
 
+            <div class="form-group">
+              <label class="control-label" for="motor">Motor <span class="text-lowercase">(cc)</span>:</label>
+              <input id="motor" class="form-control{{ $errors->has('motor') ? ' is-invalid' : '' }}" type="number" name="motor" min="0" max="9999" step="1" value="{{ old('motor', $vehiculo->motor) }}" placeholder="Motor">
+              <small class="text-muted">Solo números.</small>
+            </div>
+
             @if(count($errors) > 0)
             <div class="alert alert-danger alert-important">
               <ul class="m-0">

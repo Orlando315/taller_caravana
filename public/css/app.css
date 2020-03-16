@@ -330,7 +330,13 @@ button:disabled:hover{
   background-color: #cfcfca;
 }
 
-/* FIX */
-body.modal-open .main-panel{
-  z-index: 1050;
+/* FIX backdrop modal en responsive */
+@media (max-width: 991px){
+  body .main-panel{
+    -webkit-transform: none;
+    -moz-transform: none;
+    -o-transform: none;
+    -ms-transform: none;
+    transform: none !important;
+  }  
 }
