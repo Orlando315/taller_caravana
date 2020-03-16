@@ -145,5 +145,9 @@ Route::group(['middleware' => 'auth'], function (){
     /* --- Configurations --- */
     Route::get('configurations', 'ConfigurationsControllers@edit')->name('configurations.edit');
     Route::patch('configurations', 'ConfigurationsControllers@update')->name('configurations.update');
+
+    /* --- Finanzas --- */
+    Route::get('finanzas', 'ConsultaController@finanzas')->name('consulta.finanzas.index');
+    Route::post('finanzas', 'ConsultaController@getFinanzas')->name('consulta.finanzas.get');
   });
 });

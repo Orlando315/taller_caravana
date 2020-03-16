@@ -284,17 +284,17 @@ class Proceso extends Model
       foreach ($procesos as $proceso) {
         $segundos += $proceso->created_at->diffInSeconds($proceso->updated_at);
       }
-      $efectividadSegundos = ($segundos / $proceso->count());
+      $efectividadSegundos = ($procesos->count() > 0 ? ($segundos / $procesos->count()) : 0);
       return \Carbon\Carbon::now()->subSeconds($efectividadSegundos)->diffForHumans(\Carbon\Carbon::now(), true, true, 5);
     }
 
     /**
      * Verificar si hay Inspecion y mostrarlo como badge
      */
-    public static function finanzas()
+    public static function finanzas($desde = null, $hasta = null)
     {
-      $from = \Carbon\Carbon::now()->startOfMonth();
-      $to = $from->copy()->endOfMonth();
+      $from = new \Carbon\Carbon($desde) ?? \Carbon\Carbon::now()->startOfMonth();
+      $to = new \Carbon\Carbon($hasta) ?? $from->copy()->endOfMonth();
 
       $procesos = Proceso::whereBetween('created_at', [$from->toDateTimeString(), $to->toDateTimeString()])
                           ->has('situacion')

@@ -32,6 +32,7 @@
   filter: alpha(opacity=0);
   visibility: hidden;
 }
+.datepicker.dropdown-menu,
 .card-dropdown-tabs .show.dropdown-menu{
   opacity: 1;
   visibility: visible;
@@ -327,4 +328,9 @@ button:disabled:hover{
 .bootstrap-switch.bootstrap-switch-off .bootstrap-switch-warning,
 .bootstrap-switch.bootstrap-switch-off .bootstrap-switch-success{
   background-color: #cfcfca;
+}
+
+/* FIX */
+body.modal-open .main-panel{
+  z-index: 1050;
 }
