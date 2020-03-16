@@ -32,6 +32,15 @@ class Vehiculo extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+      'km' => 'decimal:2',
+    ];
+
+    /**
      * The "booting" method of the model.
      *
      * @return void

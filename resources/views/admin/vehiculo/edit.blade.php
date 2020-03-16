@@ -47,16 +47,19 @@
             </div>
 
             <div class="form-group">
-              <label class="control-label" for="modelo">Modelos: *</label>
-              <select id="modelo" class="form-control" name="modelo" required>
+              <label class="control-label" for="marca">Marca: *</label>
+              <select id="marca" class="form-control" name="marca" required>
                 <option value="">Seleccione...</option>
                 @foreach($marcas as $marca)
-                  <optgroup label="{{ $marca->marca }}">
-                    @foreach($marca->modelos as $modelo)
-                      <option value="{{ $modelo->id }}" {{ old('modelo') == $modelo->id ? 'selected' : ($vehiculo->vehiculo_modelo_id == $modelo->id ? 'selected' : '') }}>{{ $modelo->modelo }}</option>
-                    @endforeach
-                  </optgroup>
+                  <option value="{{ $marca->id }}" {{ old('marca') == $marca->id ? 'selected' : ($marca->id == $vehiculo->vehiculo_marca_id ? 'selected' : '') }}>{{ $marca->marca }}</option>
                 @endforeach
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="modelo">Modelo: *</label>
+              <select id="modelo" class="form-control" name="modelo" disabled required>
+                <option value="">Seleccione...</option>
               </select>
             </div>
 
@@ -236,6 +239,36 @@
       $('#cliente, #marca, #modelo, #año').select2({
         placeholder: 'Seleccione...',
       });
+
+      $('#marca').on('change',function () {
+        let marca = $(this).val()
+
+        if(!marca){ return false }
+
+        $.ajax({
+          type: 'POST',
+          url: `{{ route("vehiculo.marca.modelos") }}/${marca}/modelos`,
+          data: {
+            _token: '{{ csrf_token() }}'
+          },
+          cache: false,
+          dataType: 'json',
+        })
+        .done(function (modelos) {
+          $('#modelo').html('<option value="">Seleccione...</option>');
+          $.each(modelos, function(k, modelo){
+            let selected = modelo.id == @json($vehiculo->vehiculo_modelo_id) ? 'selected' : ''
+            $('#modelo').append(`<option value="${modelo.id}" ${selected}>${modelo.modelo}</option>`)
+          })
+
+          $('#modelo').prop('disabled', false)
+        })
+        .fail(function () {
+          $('#modelo').prop('disabled', true)
+        })
+      })
+
+      $('#marca').change()
 
       // Agregar cliente
       $('#cliente-form').submit(function(e){

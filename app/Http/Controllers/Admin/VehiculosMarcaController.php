@@ -148,16 +148,4 @@ class VehiculosMarcaController extends Controller
               'flash_important' => true
             ]);
     }
-
-    /**
-     * Obtener los Modelos de la Marca especificada
-     *
-     * @param  \App\VehiculosMarca  $marca
-     * @return \Illuminate\Http\Response
-     */
-    public function modelos(VehiculosMarca $marca)
-    {
-      $this->authorize('view', $marca);
-      return response()->json($marca->modelos()->select(['id', 'modelo', 'vehiculo_marca_id'])->get());
-    }
 }

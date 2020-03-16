@@ -41,6 +41,10 @@ Route::group(['middleware' => 'auth'], function (){
   Route::resource('cotizacion', 'CotizacionController')
         ->only(['show']);
 
+  /* --- Obtener los Modelos de la Marca especificada ---*/
+  Route::post('vehiculo/marca/', 'ModelosByMarcaController@index')->name('vehiculo.marca.modelos');
+  Route::post('vehiculo/marca/{marca}/modelos', 'ModelosByMarcaController@modelos');
+
   /* --- Admin --- */
   Route::prefix('/admin')->name('admin.')->namespace('Admin')->middleware('role:staff')->group(function(){
     /* --- Users --- */
@@ -73,7 +77,6 @@ Route::group(['middleware' => 'auth'], function (){
     Route::resource('vehiculo/anio', 'VehiculosAnioController', ['names' => 'vehiculo.anio']);
 
     /* --- Vehiculo Marca --- */
-    Route::post('vehiculo/marca/{marca}/modelos', 'VehiculosMarcaController@modelos');
     Route::resource('vehiculo/marca', 'VehiculosMarcaController', ['names' => 'vehiculo.marca']);
 
     /* --- Vehiculo Modelo --- */
