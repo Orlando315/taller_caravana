@@ -30,7 +30,7 @@
                 <th scope="col" class="text-center">Foto</th>
                 <th scope="col" class="text-center">Nro. OEM</th>
                 <th scope="col" class="text-center">Marca OEM</th>
-                <th scope="col" class="text-center">Modelo</th>
+                <th scope="col" class="text-center">Vehículo</th>
               </tr>
             </thead>
             <tbody>

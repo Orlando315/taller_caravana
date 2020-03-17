@@ -340,3 +340,20 @@ button:disabled:hover{
     transform: none !important;
   }  
 }
+
+/* FIX custom-file */
+.custom-file-label,
+.custom-file-label::after{
+  padding: 8px 12px;
+  font-size: 1rem !important;
+  text-transform: none !important;
+}
+.custom-file-label{
+  height: 40px;
+  color: #DDDDDD !important;
+  border: 1px solid #E3E3E3;
+}
+.custom-file-label::after{
+  content: 'Buscar';
+  height: calc(1.5em + .90rem);
+}

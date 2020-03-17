@@ -37,18 +37,6 @@
                   <table class="table table-striped table-sm">
                     <tbody>
                       <tr>
-                        <th>Nro. parte:</th>
-                        <td>{{ $repuesto->nro_parte }}</td>
-                      </tr>
-                      <tr>
-                        <th>Nro. OEM:</th>
-                        <td>{{ $repuesto->nro_oem }}</td>
-                      </tr>
-                      <tr>
-                        <th>Marca OEM:</th>
-                        <td>{{ $repuesto->marca_oem }}</td>
-                      </tr>
-                      <tr>
                         <th>Marca:</th>
                         <td>{{ $repuesto->marca->marca }}</td>
                       </tr>
@@ -62,7 +50,7 @@
                       </tr>
                       <tr>
                         <th>Motor:</th>
-                        <td>{{ $repuesto->motor }}</td>
+                        <td>{{ $repuesto->motor() }}</td>
                       </tr>
                       <tr>
                         <th>Sistema:</th>
@@ -73,25 +61,21 @@
                         <td>{{ $repuesto->componente }}</td>
                       </tr>
                       <tr>
+                        <th>Nro. parte:</th>
+                        <td>{{ $repuesto->nro_parte }}</td>
+                      </tr>
+                      <tr>
+                        <th>Nro. OEM:</th>
+                        <td>{{ $repuesto->nro_oem }}</td>
+                      </tr>
+                      <tr>
+                        <th>Marca OEM:</th>
+                        <td>{{ $repuesto->marca_oem }}</td>
+                      </tr>
+                      <tr>
                         <th>Procedencia:</th>
                         <td>{{ $repuesto->procedencia() }}</td>
                       </tr>
-                      <tr>
-                        <th>Venta:</th>
-                        <td>{{ $repuesto->venta() }}</td>
-                      </tr>
-                      @if($repuesto->procedencia == 'nacional' || $repuesto->procedencia == 'internacional')
-                      <tr>
-                        <th>Envio:</th>
-                        <td>{{ $repuesto->envio() }}</td>
-                      </tr>
-                      @endif
-                      @if($repuesto->procedencia == 'internacional')
-                      <tr>
-                        <th>Aduana:</th>
-                        <td>{{ $repuesto->aduana() }}</td>
-                      </tr>
-                      @endif
                     </tbody>
                   </table>
                 </div>
@@ -102,36 +86,53 @@
                   <table class="table table-striped table-sm">
                     <tbody>
                       <tr>
-                        <th>Costo:</th>
-                        <td>{{ $repuesto->extra->costo() ?? 'N/A' }}</td>
-                      </tr>
-                      <tr>
-                        <th>Envio 1:</th>
-                        <td>{{ $repuesto->extra->envio1() ?? 'N/A' }}</td>
-                      </tr>
-                      <tr>
-                        <th>Envio 2:</th>
-                        <td>{{ $repuesto->extra->envio2() ?? 'N/A' }}</td>
-                      </tr>
-                      <tr>
-                        <th>Gastos casilla:</th>
-                        <td>{{ $repuesto->extra->casilla() ?? 'N/A' }}</td>
-                      </tr>
-                      <tr>
-                        <th>Impuestos:</th>
-                        <td>{{ $repuesto->extra->impuestos() ?? 'N/A' }}</td>
-                      </tr>
-                      <tr>
-                        <th>Gastos generales:</th>
-                        <td>{{ $repuesto->extra->generales() ?? 'N/A' }}</td>
-                      </tr>
-                      <tr>
-                        <th>Costo tramitación:</th>
-                        <td>{{ $repuesto->extra->tramitacion() ?? 'N/A' }}</td>
-                      </tr>
-                      <tr>
                         <th>Moneda:</th>
-                        <td>{{ $repuesto->extra->moneda() ?? 'N/A' }}</td>
+                        <td>{{ $repuesto->extra->moneda() }}</td>
+                      </tr>
+                      <tr>
+                        <th>Costo:</th>
+                        <td class="text-right">{{ $repuesto->extra->costo() ?? 'N/A' }}</td>
+                      </tr>
+                      @if($repuesto->isNacional())
+                      <tr>
+                        <th>Envio:</th>
+                        <td class="text-right">{{ $repuesto->envio() }}</td>
+                      </tr>
+                      @endif
+                      @if($repuesto->isInternacional())
+                        <tr>
+                          <th>Envio 1:</th>
+                          <td class="text-right">{{ $repuesto->extra->envio1() ?? 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Envio 2:</th>
+                          <td class="text-right">{{ $repuesto->extra->envio2() ?? 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Gastos casilla:</th>
+                          <td class="text-right">{{ $repuesto->extra->casilla() ?? 'N/A' }}</td>
+                        </tr>
+
+                        <tr>
+                          <th>Impuestos{!! $repuesto->isInternacional() ? ' <small>('.$repuesto->extra->impuestosTipo().')</small>' : '' !!}:</th>
+                          <td class="text-right">{{ $repuesto->extra->impuestos() ?? 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                          <th>Costo tramitación:</th>
+                          <td class="text-right">{{ $repuesto->extra->tramitacion() ?? 'N/A' }}</td>
+                        </tr>
+                      @endif
+                      <tr>
+                        <th>Gastos generales{!! $repuesto->isInternacional() ? ' <small>('.$repuesto->extra->generales().'%)</small>' : '' !!}:</th>
+                        <td class="text-right">{{ $repuesto->isInternacional() ? $repuesto->extra->generalesTotal() : $repuesto->extra->generales() }}</td>
+                      </tr>
+                      <tr>
+                        <th>Costo total:</th>
+                        <td class="text-right">{{ $repuesto->extra->costoTotal() }}</td>
+                      </tr>
+                      <tr>
+                        <th>Venta:</th>
+                        <td class="text-right">{{ $repuesto->venta() }}</td>
                       </tr>
                     </tbody>
                   </table>

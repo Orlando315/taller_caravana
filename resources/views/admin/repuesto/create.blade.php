@@ -2,11 +2,6 @@
 
 @section('title', 'Repuestos - '.config('app.name'))
 
-@section('head')
-  <!-- fileinput -->
-  <link rel="stylesheet" type="text/css" href="{{ asset('js/plugins/fileinput/fileinput.min.css')}}">
-@endsection
-
 @section('brand')
   <a class="navbar-brand" href="{{ route('admin.repuesto.index') }}"> Repuestos </a>
 @endsection
@@ -16,7 +11,7 @@
   @include('partials.flash')
 
   <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="col-md-12">
       <div class="card">
         <div class="card-body">
           <form action="{{ route('admin.repuesto.store') }}" method="POST" enctype="multipart/form-data">
@@ -25,139 +20,263 @@
             <h4>Agregar Repuesto</h4>
             
             <fieldset>
-              <legend>Repuesto</legend>
-
-              <div class="form-group">
-                <label class="control-label" for="nro_parte">Nro. parte: *</label>
-                <input id="nro_parte" class="form-control{{ $errors->has('nro_parte') ? ' is-invalid' : '' }}" type="text" name="nro_parte" maxlength="50" value="{{ old('nro_parte') }}" placeholder="Nro. parte" required>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="nro_oem">Nro. OEM: *</label>
-                <input id="nro_oem" class="form-control{{ $errors->has('nro_oem') ? ' is-invalid' : '' }}" type="text" name="nro_oem" maxlength="50" value="{{ old('nro_oem') }}" placeholder="Nro. OEM" required>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="marca_oem">Marca OEM: *</label>
-                <input id="marca_oem" class="form-control{{ $errors->has('marca_oem') ? ' is-invalid' : '' }}" type="text" name="marca_oem" maxlength="50" value="{{ old('marca_oem') }}" placeholder="Marca OEM" required>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="año">Año: *</label>
-                <input id="año" class="form-control{{ $errors->has('año') ? ' is-invalid' : '' }}" type="number" name="año" min="0" step="1" max="9999" value="{{ old('año') }}" placeholder="Año" required>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="marca">Marca: *</label>
-                <select id="marca" class="form-control" name="marca" required>
-                  <option value="">Seleccione...</option>
-                  @foreach($marcas as $marca)
-                    <option value="{{ $marca->id }}" {{ old('marca') == $marca->id ? 'selected' : '' }}>{{ $marca->marca }}</option>
-                  @endforeach
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="modelo">Modelo: *</label>
-                <select id="modelo" class="form-control" name="modelo" required disabled>
-                  <option value="">Seleccione...</option>
-                  @foreach($marca->modelos as $modelo)
-                    <option value="{{ $modelo->id }}" {{ old('modelo') == $modelo->id ? 'selected' : '' }}>{{ $modelo->modelo }}</option>
-                  @endforeach
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="motor">Motor: *</label>
-                <input id="motor" class="form-control{{ $errors->has('motor') ? ' is-invalid' : '' }}" type="text" name="motor" maxlength="50" value="{{ old('motor') }}" placeholder="Motor" required>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="sistema">Sistema: *</label>
-                <input id="sistema" class="form-control{{ $errors->has('sistema') ? ' is-invalid' : '' }}" type="text" name="sistema" maxlength="50" value="{{ old('sistema') }}" placeholder="Sistema" required>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="componente">Componente: *</label>
-                <input id="componente" class="form-control{{ $errors->has('componente') ? ' is-invalid' : '' }}" type="text" name="componente" maxlength="50" value="{{ old('componente') }}" placeholder="Componente" required>
-              </div>
-
-              <div id="foto-group" class="form-group">
-                <label for="foto">Foto:</label>
-                <div class="file-loading">
-                  <input id="foto" type="file" name="foto" data-msg-placeholder="Seleccionar..." accept="image/jpeg,image/png" multiple>
+              <legend>Datos del Repuesto</legend>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="marca">Marca: *</label>
+                    <select id="marca" class="form-control" name="marca" required>
+                      <option value="">Seleccione...</option>
+                      @foreach($marcas as $marca)
+                        <option value="{{ $marca->id }}" {{ old('marca') == $marca->id ? 'selected' : '' }}>{{ $marca->marca }}</option>
+                      @endforeach
+                    </select>
+                  </div>
                 </div>
-                <small class="text-muted">Tamaño máximo 12 MB</small>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="modelo">Modelo: *</label>
+                    <select id="modelo" class="form-control" name="modelo" required disabled>
+                      <option value="">Seleccione...</option>
+                      @foreach($marca->modelos as $modelo)
+                        <option value="{{ $modelo->id }}" {{ old('modelo') == $modelo->id ? 'selected' : '' }}>{{ $modelo->modelo }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="año">Año: *</label>
+                    <input id="año" class="form-control{{ $errors->has('año') ? ' is-invalid' : '' }}" type="number" name="año" min="0" step="1" max="9999" value="{{ old('año') }}" placeholder="Año" required>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="motor">Motor (cc): *</label>
+                    <input id="motor" class="form-control{{ $errors->has('motor') ? ' is-invalid' : '' }}" type="number" min="0" max="9999" name="motor" value="{{ old('motor') }}" placeholder="Motor" required>
+                    <small class="text-muted">Solo números</small>
+                  </div>
+                </div>
               </div>
 
-              <div class="form-group">
-                <label class="control-label" for="procedencia">Tipo: *</label>
-                <select id="procedencia" class="form-control" name="procedencia" required>
-                  <option>Selecciona...</option>
-                  <option value="local" {{ old('procedencia') == 'local' ? 'selected' : '' }}>Local</option>
-                  <option value="nacional" {{ old('procedencia') == 'nacional' ? 'selected' : '' }}>Nacional</option>
-                  <option value="internacional" {{ old('procedencia') == 'internacional' ? 'selected' : '' }}>Internacional</option>
-                </select>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="sistema">Sistema: *</label>
+                    <input id="sistema" class="form-control{{ $errors->has('sistema') ? ' is-invalid' : '' }}" type="text" name="sistema" maxlength="50" value="{{ old('sistema') }}" placeholder="Sistema" required>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="componente">Componente: *</label>
+                    <input id="componente" class="form-control{{ $errors->has('componente') ? ' is-invalid' : '' }}" type="text" name="componente" maxlength="50" value="{{ old('componente') }}" placeholder="Componente" required>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="nro_parte">Nro. parte: *</label>
+                    <input id="nro_parte" class="form-control{{ $errors->has('nro_parte') ? ' is-invalid' : '' }}" type="text" name="nro_parte" maxlength="50" value="{{ old('nro_parte') }}" placeholder="Nro. parte" required>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="nro_oem">Nro. OEM: *</label>
+                    <input id="nro_oem" class="form-control{{ $errors->has('nro_oem') ? ' is-invalid' : '' }}" type="text" name="nro_oem" maxlength="50" value="{{ old('nro_oem') }}" placeholder="Nro. OEM" required>
+                  </div>
+                </div>
               </div>
 
-              <div class="form-group">
-                <label class="control-label" for="venta">Precio de venta:</label>
-                <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="venta" maxlength="50" value="{{ old('venta') }}" placeholder="Venta">
-              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="marca_oem">Marca OEM: *</label>
+                    <input id="marca_oem" class="form-control{{ $errors->has('marca_oem') ? ' is-invalid' : '' }}" type="text" name="marca_oem" maxlength="50" value="{{ old('marca_oem') }}" placeholder="Marca OEM" required>
+                  </div>
+                </div>
 
-              <div class="form-group envio">
-                <label class="control-label" for="envio">Envio:</label>
-                <input id="envio" class="form-control{{ $errors->has('envio') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio" maxlength="50" value="{{ old('envio') }}" placeholder="Envio">
-              </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="foto">Foto:</label>
+                    <div class="custom-file">
+                      <input id="foto" class="custom-file-input" type="file" name="foto" lang="es" accept="image/jpeg,image/png">
+                      <label class="custom-file-label" for="foto">Selecionar...</label>
+                    </div>
+                    <small class="text-muted">Tamaño máximo 12 MB</small>
+                  </div>
+                </div>
 
-              <div class="form-group aduana">
-                <label class="control-label" for="aduana">Aduana:</label>
-                <input id="aduana" class="form-control{{ $errors->has('aduana') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="aduana" maxlength="50" value="{{ old('aduana') }}" placeholder="Aduana">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="procedencia">Procedencia: *</label>
+                    <select id="procedencia" class="form-control" name="procedencia" required>
+                      <option>Seleccione...</option>
+                      <option value="local" {{ old('procedencia') == 'local' ? 'selected' : '' }}>Local</option>
+                      <option value="nacional" {{ old('procedencia') == 'nacional' ? 'selected' : '' }}>Nacional</option>
+                      <option value="internacional" {{ old('procedencia') == 'internacional' ? 'selected' : '' }}>Internacional</option>
+                    </select>
+                  </div>
+                </div>
               </div>
             </fieldset>
-            
-            <fieldset>
-              <legend>Extras</legend>
-              
-              <div class="form-group">
-                <label class="control-label" for="costo">Costo:</label>
-                <input id="costo" class="form-control{{ $errors->has('costo') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="costo" maxlength="50" value="{{ old('costo') }}" placeholder="Costo">
+
+            <fieldset id="field-local" style="display: none">
+              <legend>Local</legend>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="moneda-local">Moneda: *</label>
+                    <select id="moneda-local" class="custom-select" name="moneda" required>
+                      <option value="">Seleccione...</option>
+                      <option value="peso" {{ old('moneda', 'peso') == 'peso' ? 'selected' : '' }}>Peso chileno</option>
+                      <option value="dolar" {{ old('moneda', 'peso') == 'dolar' ? 'selected' : '' }}>Dólar</option>
+                      <option value="euro" {{ old('moneda', 'peso') == 'euro' ? 'selected' : '' }}>Euro</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="costo">Costo:</label>
+                    <input id="costo" class="form-control{{ $errors->has('costo') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="costo" maxlength="50" value="{{ old('costo') }}" placeholder="Costo">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="generales">Gastos generales:</label>
+                    <input id="generales" class="form-control{{ $errors->has('generales') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="generales" maxlength="50" value="{{ old('generales') }}" placeholder="Gastos generales">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="venta">Precio de venta: *</label>
+                    <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="venta" maxlength="50" value="{{ old('venta') }}" placeholder="Venta" required>
+                  </div>
+                </div>
               </div>
+            </fieldset>
 
-              <div class="form-group">
-                <label class="control-label" for="envio1">Envio 1:</label>
-                <input id="envio1" class="form-control{{ $errors->has('envio1') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio1" maxlength="50" value="{{ old('envio1') }}" placeholder="Envio 1">
+            <fieldset id="field-nacional" style="display: none">
+              <legend>Nacional</legend>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="moneda-nacional">Moneda: *</label>
+                    <select id="moneda-nacional" class="custom-select" name="moneda" required>
+                      <option value="">Seleccione...</option>
+                      <option value="peso" {{ old('moneda', 'peso') == 'peso' ? 'selected' : '' }}>Peso chileno</option>
+                      <option value="dolar" {{ old('moneda', 'peso') == 'dolar' ? 'selected' : '' }}>Dólar</option>
+                      <option value="euro" {{ old('moneda', 'peso') == 'euro' ? 'selected' : '' }}>Euro</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="costo">Costo:</label>
+                    <input id="costo" class="form-control{{ $errors->has('costo') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="costo" value="{{ old('costo') }}" placeholder="Costo">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="generales">Gastos generales:</label>
+                    <input id="generales" class="form-control{{ $errors->has('generales') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="generales" value="{{ old('generales') }}" placeholder="Gastos generales">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="envio">Envio:</label>
+                    <input id="envio" class="form-control{{ $errors->has('envio') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio" value="{{ old('envio') }}" placeholder="Envio">
+                  </div>
+                </div>
               </div>
-
-              <div class="form-group">
-                <label class="control-label" for="envio2">Envio 2:</label>
-                <input id="envio2" class="form-control{{ $errors->has('envio2') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio2" maxlength="50" value="{{ old('envio2') }}" placeholder="Envio 2">
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="venta">Precio de venta: *</label>
+                    <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="venta" value="{{ old('venta') }}" placeholder="Venta" required>
+                  </div>
+                </div>
               </div>
+            </fieldset>
 
-              <div class="form-group">
-                <label class="control-label" for="casilla">Gastos casilla:</label>
-                <input id="casilla" class="form-control{{ $errors->has('casilla') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="casilla" maxlength="50" value="{{ old('casilla') }}" placeholder="Gastos casilla">
+            <fieldset id="field-internacional" style="display: none">
+              <legend>Internacional</legend>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="moneda-internacional">Moneda: *</label>
+                    <select id="moneda-internacional" class="custom-select" name="moneda" required>
+                      <option value="">Seleccione...</option>
+                      <option value="peso" {{ old('moneda', 'dolar') == 'peso' ? 'selected' : '' }}>Peso chileno</option>
+                      <option value="dolar" {{ old('moneda', 'dolar') == 'dolar' ? 'selected' : '' }}>Dólar</option>
+                      <option value="euro" {{ old('moneda', 'dolar') == 'euro' ? 'selected' : '' }}>Euro</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="costo">Costo:</label>
+                    <input id="costo" class="form-control{{ $errors->has('costo') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="costo" value="{{ old('costo') }}" placeholder="Costo">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="envio1">Envio 1:</label>
+                    <input id="envio1" class="form-control{{ $errors->has('envio1') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio1" value="{{ old('envio1') }}" placeholder="Envio 1">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="envio2">Envio 2:</label>
+                    <input id="envio2" class="form-control{{ $errors->has('envio2') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio2" value="{{ old('envio2') }}" placeholder="Envio 2">
+                  </div>
+                </div>
               </div>
-
-
-              <div class="form-group">
-                <label class="control-label" for="impuestos">Impuestos:</label>
-                <input id="impuestos" class="form-control{{ $errors->has('impuestos') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="impuestos" maxlength="50" value="{{ old('impuestos') }}" placeholder="Impuestos">
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="casilla">Gastos casilla:</label>
+                    <input id="casilla" class="form-control{{ $errors->has('casilla') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="casilla" value="{{ old('casilla') }}" placeholder="Gastos casilla">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label">Impuestos:</label>
+                    <div class="custom-control custom-radio">
+                      <input type="radio" id="impuestos-25" name="impuestos" class="custom-control-input" value="25">
+                      <label class="custom-control-label" for="impuestos-25">25% del FOB</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                      <input type="radio" id="impuestos-19" name="impuestos" class="custom-control-input" value="19">
+                      <label class="custom-control-label" for="impuestos-19">19% del FOB</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="gasto-general-internacional">Gastos generales:</label>
+                    <select id="gasto-general-internacional" class="custom-select" name="generales">
+                      <option value="">Seleccione...</option>
+                      <option value="0" {{ old('generales') == '0' ? 'selected' : '' }}>0%</option>
+                      <option value="15" {{ old('generales') == '15' ? 'selected' : '' }}>15%</option>
+                      <option value="20" {{ old('generales') == '20' ? 'selected' : '' }}>20%</option>
+                      <option value="25" {{ old('generales') == '25' ? 'selected' : '' }}>25%</option>
+                      <option value="30" {{ old('generales') == '30' ? 'selected' : '' }}>30%</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="tramitacion">Costo tramitación:</label>
+                    <input id="tramitacion" class="form-control{{ $errors->has('tramitacion') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="tramitacion" maxlength="50" value="{{ old('tramitacion') }}" placeholder="Costo tramitación">
+                  </div>
+                </div>
               </div>
-
-              <div class="form-group">
-                <label class="control-label" for="generales">Gastos generales:</label>
-                <input id="generales" class="form-control{{ $errors->has('generales') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="generales" maxlength="50" value="{{ old('generales') }}" placeholder="Gastos generales">
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="tramitacion">Costo tramitación:</label>
-                <input id="tramitacion" class="form-control{{ $errors->has('tramitacion') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="tramitacion" maxlength="50" value="{{ old('tramitacion') }}" placeholder="Costo tramitación">
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="moneda">Moneda:</label>
-                <input id="moneda" class="form-control{{ $errors->has('moneda') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="moneda" maxlength="50" value="{{ old('moneda') }}" placeholder="Moneda">
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="venta">Precio de venta: *</label>
+                    <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="venta" value="{{ old('venta') }}" placeholder="Venta" required>
+                  </div>
+                </div>
               </div>
             </fieldset>
 
@@ -183,10 +302,6 @@
 @endsection
 
 @section('scripts')
-  <!-- fileinput -->
-  <script type="text/javascript" src="{{asset('js/plugins/fileinput/fileinput.min.js')}}"></script>
-  <script type="text/javascript" src="{{asset('js/plugins/fileinput/locales/es.js')}}"></script>
-
   <script type="text/javascript">
     $(document).ready(function () {
       $('#marca, #modelo, #procedencia').select2({
@@ -210,7 +325,8 @@
         .done(function (modelos) {
           $('#modelo').html('<option value="">Seleccione...</option>');
           $.each(modelos, function(k, modelo){
-            $('#modelo').append(`<option value="${modelo.id}">${modelo.modelo}</option>`)
+            let selected = modelo.id == @json(old('modelo')) ? 'selected' : ''
+            $('#modelo').append(`<option value="${modelo.id}" ${selected}>${modelo.modelo}</option>`)
           })
 
           $('#modelo').prop('disabled', false)
@@ -222,41 +338,22 @@
 
       $('#marca').change()
 
-      $('#foto').fileinput({
-        overwriteInitial: false,
-        showUpload: false,
-        maxFileSize: 12000,
-        dropZoneEnabled: false,
-        browseClass: 'btn btn-success',
-        browseLabel: 'Seleccionar',
-        browseIcon: '<i class="fa fa-image"></i>',
-        allowedFileExtensions: ['jpg', 'png', 'jpeg'],
-        language: 'es',
-        showCancel: false,
-        showRemove: false,
-        fileActionSettings: {
-          showRemove: false,
-          showZoom: false,
-        },
-        focusCaptionOnBrowse: false,
-        focusCaptionOnClear: false,
-        layoutTemplates: {
-          fileIcon: '<i class="ft-image"></i>',
-        }
-      });
-
-      $('#foto-group').on('click', '.file-caption-name', function () {
-        $('#foto').click()
-      })
-
       $('#procedencia').change(function () {
         let procedencia = $(this).val()
 
-        $('.envio').toggle(procedencia != 'local')
-        $('.aduana').toggle(procedencia == 'internacional')
+        $('#field-local').toggle(procedencia == 'local').prop('disabled', !(procedencia == 'local'))
+        $('#field-nacional').toggle(procedencia == 'nacional').prop('disabled', !(procedencia == 'nacional'))
+        $('#field-internacional').toggle(procedencia == 'internacional').prop('disabled', !(procedencia == 'internacional'))
       })
 
       $('#procedencia').change()
+      
+      $('.custom-file-input').change(function(e){
+        let files = e.target.files;
+        let id = $(this).attr('id')
+
+        $(this).siblings(`label[for="${id}"]`).text(files[0].name);
+      });
     })
   </script>
 @endsection

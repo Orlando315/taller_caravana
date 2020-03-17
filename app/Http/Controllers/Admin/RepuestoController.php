@@ -47,26 +47,26 @@ class RepuestoController extends Controller
     {
       $this->authorize('create', Repuesto::class);
       $this->validate($request, [
+        'modelo' => 'required',
+        'año' => 'required|integer',
+        'motor' => 'required|integer|min:0|max:9999',
+        'sistema' => 'required|string|max:50',
+        'componente' => 'required|string|max:50',
         'nro_parte' => 'required|string|max:50',
         'nro_oem' => 'required|string|max:50',
         'marca_oem' => 'required|string|max:50',
-        'año' => 'required|integer',
-        'modelo' => 'required',
-        'motor' => 'required|string|max:50',
-        'sistema' => 'required|string|max:50',
-        'componente' => 'required|string|max:50',
         'foto' => 'nullable|image|max:12000|mimes:jpeg,jpg,png',
         'procedencia' => 'required|in:local,nacional,internacional',
-        'envio' => 'nullable|numeric|min:0|max:99999999',
-        'aduana' => 'nullable|numeric|min:0|max:99999999',
+        'moneda' => 'nullable|in:peso,dolar,euro',
         'costo' => 'nullable|numeric|min:0|max:99999999',
+        'generales' => 'nullable|numeric|min:0|max:99999999',
+        'venta' => 'required|numeric|min:0|max:99999999',
+        'envio' => 'nullable|numeric|min:0|max:99999999',
         'envio1' => 'nullable|numeric|min:0|max:99999999',
         'envio2' => 'nullable|numeric|min:0|max:99999999',
         'casilla' => 'nullable|numeric|min:0|max:99999999',
         'impuestos' => 'nullable|numeric|min:0|max:99999999',
-        'generales' => 'nullable|numeric|min:0|max:99999999',
         'tramitacion' => 'nullable|numeric|min:0|max:99999999',
-        'moneda' => 'nullable|numeric|min:0|max:99999999',
       ]);
 
       $modelo = VehiculosModelo::findOrFail($request->modelo);
@@ -91,6 +91,8 @@ class RepuestoController extends Controller
 
         // Guardar extras
         $repuesto->extra()->save($extra);
+        $repuesto->calculateCostoTotal();
+        $repuesto->push();
 
         return redirect()->route('admin.repuesto.show', ['repuesto' => $repuesto->id])->with([
                 'flash_message' => 'Repuesto agregado exitosamente.',
@@ -145,26 +147,26 @@ class RepuestoController extends Controller
     {
       $this->authorize('update', $repuesto);
       $this->validate($request, [
+        'modelo' => 'required',
+        'año' => 'required|integer',
+        'motor' => 'required|integer|min:0|max:9999',
+        'sistema' => 'required|string|max:50',
+        'componente' => 'required|string|max:50',
         'nro_parte' => 'required|string|max:50',
         'nro_oem' => 'required|string|max:50',
         'marca_oem' => 'required|string|max:50',
-        'año' => 'required|integer',
-        'modelo' => 'required',
-        'motor' => 'required|string|max:50',
-        'sistema' => 'required|string|max:50',
-        'componente' => 'required|string|max:50',
         'foto' => 'nullable|image|max:12000|mimes:jpeg,jpg,png',
         'procedencia' => 'required|in:local,nacional,internacional',
-        'envio' => 'nullable|numeric|min:0|max:99999999',
-        'aduana' => 'nullable|numeric|min:0|max:99999999',
+        'moneda' => 'nullable|in:peso,dolar,euro',
         'costo' => 'nullable|numeric|min:0|max:99999999',
+        'generales' => 'nullable|numeric|min:0|max:99999999',
+        'venta' => 'required|numeric|min:0|max:99999999',
+        'envio' => 'nullable|numeric|min:0|max:99999999',
         'envio1' => 'nullable|numeric|min:0|max:99999999',
         'envio2' => 'nullable|numeric|min:0|max:99999999',
         'casilla' => 'nullable|numeric|min:0|max:99999999',
         'impuestos' => 'nullable|numeric|min:0|max:99999999',
-        'generales' => 'nullable|numeric|min:0|max:99999999',
         'tramitacion' => 'nullable|numeric|min:0|max:99999999',
-        'moneda' => 'nullable|numeric|min:0|max:99999999',
       ]);
 
       $modelo = VehiculosModelo::findOrFail($request->modelo);
@@ -190,6 +192,9 @@ class RepuestoController extends Controller
           }
         }
 
+        $repuesto->calculateCostoTotal();
+        $repuesto->push();
+
         return redirect()->route('admin.repuesto.show', ['repuesto' => $repuesto->id])->with([
                 'flash_message' => 'Repuesto modificado exitosamente.',
                 'flash_class' => 'alert-success'
@@ -213,14 +218,14 @@ class RepuestoController extends Controller
     {
       $this->authorize('delete', $repuesto);
       if($repuesto->delete()){
-          if($repuesto->foto){
-            Storage::delete($repuesto->foto);
-          }
+        if($repuesto->foto){
+          Storage::delete($repuesto->foto);
+        }
 
-          return redirect()->route('admin.repuesto.index')->with([
-                  'flash_class'   => 'alert-success',
-                  'flash_message' => 'Repuesto eliminado exitosamente.'
-                ]);
+        return redirect()->route('admin.repuesto.index')->with([
+                'flash_class'   => 'alert-success',
+                'flash_message' => 'Repuesto eliminado exitosamente.'
+              ]);
       }
 
       return redirect()->back()->with([

@@ -30,11 +30,27 @@ class RepuestoExtra extends Model
     ];
 
     /**
+     * Repuesto al que pertenece
+     */
+    public function repuesto()
+    {
+      return $this->belongsTo('App\Repuesto');
+    }
+
+    /**
      * Obtener el atributo formateado
      */
     public function costo()
     {
-      return number_format($this->costo, 2, ',', '.');
+      return $this->costo ? number_format($this->costo, 2, ',', '.') : null;
+    }
+
+    /**
+     * Obtener el atributo formateado
+     */
+    public function costoTotal()
+    {
+      return $this->costo_total ? number_format($this->costo_total, 2, ',', '.') : null;
     }
 
     /**
@@ -42,7 +58,7 @@ class RepuestoExtra extends Model
      */
     public function envio1()
     {
-      return number_format($this->envio1, 2, ',', '.');
+      return $this->envio1 ? number_format($this->envio1, 2, ',', '.') : null;
     }
 
     /**
@@ -50,7 +66,7 @@ class RepuestoExtra extends Model
      */
     public function envio2()
     {
-      return number_format($this->envio2, 2, ',', '.');
+      return $this->envio2 ? number_format($this->envio2, 2, ',', '.') : null;
     }
 
     /**
@@ -58,7 +74,15 @@ class RepuestoExtra extends Model
      */
     public function casilla()
     {
-      return number_format($this->casilla, 2, ',', '.');
+      return $this->casilla ? number_format($this->casilla, 2, ',', '.') : null;
+    }
+
+    /**
+     * Obtener el atributo formateado
+     */
+    public function impuestosTipo()
+    {
+      return $this->impuestos == '19' ? '19% del FOB' : '25% del FOB';
     }
 
     /**
@@ -66,7 +90,9 @@ class RepuestoExtra extends Model
      */
     public function impuestos()
     {
-      return number_format($this->impuestos, 2, ',', '.');
+      $costoBase = $this->costo + $this->envio1 + $this->envio2;
+      $fob = ($costoBase * $this->impuestos) / 100;
+      return $this->impuestos ? number_format($fob, 2, ',', '.') : null;
     }
 
     /**
@@ -74,7 +100,17 @@ class RepuestoExtra extends Model
      */
     public function generales()
     {
-      return number_format($this->generales, 2, ',', '.');
+      // Si es internacional, no se le agregan los decimales
+      $decimales = $this->repuesto->isInternacional() ? 0 : 2;
+      return $this->generales ? number_format($this->generales, $decimales, ',', '.') : null;
+    }
+
+    /**
+     * Obtener el atributo formateado
+     */
+    public function generalesTotal()
+    {
+      return $this->generales_total ? number_format($this->generales_total, 2, ',', '.') : null;
     }
 
     /**
@@ -82,7 +118,7 @@ class RepuestoExtra extends Model
      */
     public function tramitacion()
     {
-      return number_format($this->tramitacion, 2, ',', '.');
+      return $this->tramitacion ? number_format($this->tramitacion, 2, ',', '.') : null;
     }
 
     /**
@@ -90,6 +126,6 @@ class RepuestoExtra extends Model
      */
     public function moneda()
     {
-      return number_format($this->moneda, 2, ',', '.');
+      return ucfirst($this->moneda);
     }
 }

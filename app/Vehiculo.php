@@ -120,6 +120,7 @@ class Vehiculo extends Model
      */
     public function motor()
     {
-      return number_format(($this->motor / 1000), 1, '.', ',');
+      $motor = $this->motor > 0 ? ($this->motor / 1000) : 0;
+      return number_format($motor, 1, '.', ',');
     }
 }

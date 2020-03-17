@@ -34,7 +34,6 @@ class Repuesto extends Model
       'procedencia',
       'venta',
       'envio',
-      'aduana',
     ];
 
     /**
@@ -73,6 +72,30 @@ class Repuesto extends Model
     }
 
     /**
+     * Verificar si el Repuesto es de ua procedencia especifica
+     */
+    public function isLocal()
+    {
+      return $this->procedencia == 'internacional';
+    }
+
+    /**
+     * Verificar si el Repuesto es de ua procedencia especifica
+     */
+    public function isNacional()
+    {
+      return $this->procedencia == 'nacional';
+    }
+
+    /**
+     * Verificar si el Repuesto es de ua procedencia especifica
+     */
+    public function isInternacional()
+    {
+      return $this->procedencia == 'internacional';
+    }
+
+    /**
      * Obtener la url de la foto
      */
     public function getPhoto()
@@ -93,7 +116,7 @@ class Repuesto extends Model
      */
     public function venta()
     {
-      return number_format($this->venta, 2, ',', '.');
+      return $this->venta ? number_format($this->venta, 2, ',', '.') : null;
     }
 
     /**
@@ -101,15 +124,7 @@ class Repuesto extends Model
      */
     public function envio()
     {
-      return number_format($this->envio, 2, ',', '.');
-    }
-
-    /**
-     * Obtener el atributo formateado
-     */
-    public function aduana()
-    {
-      return number_format($this->aduana, 2, ',', '.');
+      return $this->envio ? number_format($this->envio, 2, ',', '.') : null;
     }
 
     /**
@@ -134,5 +149,56 @@ class Repuesto extends Model
     public function descripcion()
     {
       return $this->nro_oem.' | '.$this->marcaModeloAnio();
+    }
+
+    /**
+     * Obtener el atributo formateado
+     */
+    public function motor()
+    {
+      $motor = $this->motor > 0 ? ($this->motor / 1000) : 0;
+      return number_format($motor, 1, '.', ',');
+    }
+
+    /**
+     * Calcular los impuestos del Repuesto (Solo Internacional)
+     */
+    public function calculateCostoTotal()
+    {
+      if($this->isInternacional()){
+        $this->calculateImpuestosTotal();
+        $this->calculateGeneralesTotal();
+      }
+
+      $total = $this->extra->costo;
+
+      if($this->isInternacional()){
+        $total += $this->extra->envio1 + $this->extra->envio2 + $this->extra->casilla + $this->extra->impuestos_total + $this->extra->generales_total + $this->extra->tramitacion;
+      }else{
+        // A los repuestos nacionales se les suma el envio
+        $total += $this->extra->generales + ($this->isNacional() ? $this->envio : 0);
+      }
+
+      $this->extra->costo_total = $total;
+    }
+
+    /**
+     * Calcular los impuestos del Repuesto (Solo Internacional)
+     */
+    protected function calculateImpuestosTotal()
+    {
+      $costoBase = $this->extra->costo + $this->extra->envio1 + $this->extra->envio2;
+      $total = ($costoBase * $this->extra->impuestos) / 100;
+      $this->extra->impuestos_total = $total;
+    }
+
+    /**
+     * Calcular los gastos Generales del Repuesto (Solo Internacional)
+     */
+    protected function calculateGeneralesTotal()
+    {
+      $costoGeneral = $this->extra->costo + $this->extra->envio1 + $this->extra->envio2 + $this->extra->casilla + $this->extra->impuestos_total;
+      $total = ($costoGeneral * $this->extra->generales) / 100;
+      $this->extra->generales_total = $total;
     }
 }
