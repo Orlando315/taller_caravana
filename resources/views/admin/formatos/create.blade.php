@@ -3,7 +3,7 @@
 @section('title', 'Formatos - '.config('app.name'))
 
 @section('brand')
-  <a class="navbar-brand" href="{{ route('admin.formatos.index') }}"> Formatos </a>
+  <a class="navbar-brand" href="{{ route('admin.insumos.index') }}"> Formatos </a>
 @endsection
 
 @section('content')
@@ -35,7 +35,7 @@
             @endif
 
             <div class="form-group text-right">
-              <a class="btn btn-default" href="{{ route('admin.formatos.index') }}"><i class="fa fa-reply"></i> Atras</a>
+              <a class="btn btn-default" href="{{ route('admin.insumos.index') }}"><i class="fa fa-reply"></i> Atras</a>
               <button class="btn btn-primary" type="submit"><i class="fa fa-send"></i> Guardar</button>
             </div>
           </form>

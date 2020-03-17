@@ -19,8 +19,10 @@ class InsumosControllers extends Controller
       $this->authorize('index', Insumo::class);
 
       $insumos = Insumo::with(['tipo', 'formato'])->get();
+      $formatos = InsumoFormato::withCount('insumos')->get();
+      $tipos = InsumoTipo::withCount('insumos')->get();
 
-      return view('admin.insumos.index', compact('insumos'));
+      return view('admin.insumos.index', compact('insumos', 'formatos', 'tipos'));
     }
 
     /**

@@ -3,7 +3,7 @@
 @section('title', 'Tipos - '.config('app.name'))
 
 @section('brand')
-  <a class="navbar-brand" href="{{ route('admin.tipos.index') }}"> Tipos </a>
+  <a class="navbar-brand" href="{{ route('admin.insumos.index') }}"> Tipos </a>
 @endsection
 
 @section('content')

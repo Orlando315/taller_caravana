@@ -153,7 +153,7 @@ class InsumosTiposControllers extends Controller
       }
 
       if($tipo->delete()){
-        return redirect()->route('admin.tipos.index')->with([
+        return redirect()->route('admin.inusmos.index')->with([
                 'flash_class'   => 'alert-success',
                 'flash_message' => 'Tipo eliminado exitosamente.'
               ]);

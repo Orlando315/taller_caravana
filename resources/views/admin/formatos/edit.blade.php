@@ -3,7 +3,7 @@
 @section('title', 'Formatos - '.config('app.name'))
 
 @section('brand')
-  <a class="navbar-brand" href="{{ route('admin.formatos.index') }}"> Formatos </a>
+  <a class="navbar-brand" href="{{ route('admin.insumos.index') }}"> Formatos </a>
 @endsection
 
 @section('content')

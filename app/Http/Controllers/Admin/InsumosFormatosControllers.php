@@ -153,7 +153,7 @@ class InsumosFormatosControllers extends Controller
       }
 
       if($formato->delete()){
-        return redirect()->route('admin.formatos.index')->with([
+        return redirect()->route('admin.insumos.index')->with([
                 'flash_class'   => 'alert-success',
                 'flash_message' => 'Formato eliminado exitosamente.'
               ]);

@@ -3,13 +3,13 @@
 @section('title', 'Tipos - '.config('app.name'))
 
 @section('brand')
-  <a class="navbar-brand" href="{{ route('admin.tipos.index') }}"> Tipos </a>
+  <a class="navbar-brand" href="{{ route('admin.insumos.index') }}"> Tipos </a>
 @endsection
 
 @section('content')
   <div class="row">
     <div class="col-12">
-      <a class="btn btn-default" href="{{ route('admin.tipos.index') }}"><i class="fa fa-reply" aria-hidden="true"></i> Volver</a>
+      <a class="btn btn-default" href="{{ route('admin.insumos.index') }}"><i class="fa fa-reply" aria-hidden="true"></i> Volver</a>
       @if(Auth::user()->isAdmin())
         <a class="btn btn-success" href="{{ route('admin.tipos.edit', ['tipo' => $tipo->id]) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</a>
         <button class="btn btn-fill btn-danger" data-toggle="modal" data-target="#delModal"><i class="fa fa-times" aria-hidden="true"></i> Eliminar</button>

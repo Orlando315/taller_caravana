@@ -92,33 +92,11 @@
               </a>
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="collapse" href="#menu-insumos" aria-expanded="true">
+            <li class="nav-item{{ $currentRoute == 'admin.insumos' ? ' active' : '' }}">
+              <a class="nav-link" href="{{ route('admin.insumos.index') }}">
                 <i class="fa fa-th-large"></i>
-                <p>Insumos <b class="caret"></b></p>
+                <p>Insumos</p>
               </a>
-              <div id="menu-insumos" class="collapse{{ in_array($currentRoute, ['insumos', 'tipos', 'formatos']) ? ' show' : '' }}">
-                <ul class="nav">
-                  <li class="nav-item{{ $currentRoute == 'insumos' ? ' active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.insumos.index') }}">
-                      <span class="sidebar-mini">I</span>
-                      <span class="sidebar-normal">Insumos</span>
-                    </a>
-                  </li>
-                  <li class="nav-item{{ $currentRoute == 'tipos' ? ' active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.tipos.index') }}">
-                      <span class="sidebar-mini">T</span>
-                      <span class="sidebar-normal">Tipos</span>
-                    </a>
-                  </li>
-                  <li class="nav-item{{ $currentRoute == 'formatos' ? ' active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.formatos.index') }}">
-                      <span class="sidebar-mini">F</span>
-                      <span class="sidebar-normal">Formatos</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
             </li>
 
             <li class="nav-item{{ $currentRoute == 'admin.finanzas' ? ' active' : '' }}">
