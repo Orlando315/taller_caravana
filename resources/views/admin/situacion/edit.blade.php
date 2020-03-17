@@ -22,7 +22,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label class="control-label" for="tipo">Tipo: *</label>
-                  <select id="tipo" class="form-control" required>
+                  <select id="tipo" class="custom-select" required>
                     <option value="insumo">Insumos</option>
                     <option value="repuesto">Repuestos</option>
                     <option value="horas">Horas hombre</option>
@@ -43,9 +43,7 @@
                         data-venta="{{ $insumo->stockEnUso->venta }}"
                         data-stock="{{ $insumo->getStock() }}"
                         data-costo="{{ $insumo->stockEnUso->coste }}"
-                      >
-                        {{ $insumo->descripcion() }}
-                      </option>
+                      >{{ $insumo->descripcion() }}</option>
                     @endforeach
                   </select>
                 </div>
@@ -59,10 +57,8 @@
                         data-descripcion="{{ $repuesto->descripcion() }}"
                         data-venta="{{ $repuesto->venta }}"
                         data-stock=""
-                        data-costo="{{ $repuesto->extra->costo }}"
-                      >
-                        {{ $repuesto->descripcion() }}
-                      </option>
+                        data-costo="{{ $repuesto->extra->costo_total }}"
+                      >{{ $repuesto->descripcion() }}</option>
                     @endforeach
                   </select>
                 </div>
@@ -99,6 +95,13 @@
                 </fieldset>
               </div>
             </div><!-- .ol-md-4 -->
+
+            <div id="item-information" class="row" style="display: none">
+              <div class="col-12">
+                <p class="m-0"><strong>Costo total:</strong> <span class="selected-costo"></span></p>
+                <p class="m-0"><strong>Valor venta:</strong> <span class="selected-venta"></span></p>
+              </div>
+            </div>
 
             <center>
               <button class="btn btn-primary btn-fill btn-sm" type="submit"><i class="fa fa-plus"></i> Agregar item</button>
@@ -252,6 +255,10 @@
         $('#repuesto').prop('required', tipo == 'repuesto')
         $('#venta').prop('required', tipo == 'horas')
         $('#set-descuento').prop('disabled', tipo != 'horas')
+
+        $('#item-information').toggle(tipo != 'horas')
+
+        $('.selected-venta,.selected-costo').text('')
       })
 
       $('#tipo').change()
@@ -282,8 +289,8 @@
         if(tipo != 'horas'){
           let value = $(`#${tipo}`).val()
           let option = $(`#${tipo} option[value="${value}"]`)
-          let venta = $(option).data('venta') ? $(option).data('venta') : 0
-          let costo = $(option).data('costo') ? $(option).data('costo') : 0
+          let venta = $(option).data('venta') ? +$(option).data('venta') : 0
+          let costo = $(option).data('costo') ? +$(option).data('costo') : 0
           let totalCosto = (costo * cantidad)
           let total = (venta * cantidad)
 
@@ -295,7 +302,7 @@
           item.utilidad = total - totalCosto
         }else{
           let venta = $('#venta').val()
-          let descuento = $('#descuento').val() ? $('#descuento').val() : 0
+          let descuento = $('#descuento').val() ? +$('#descuento').val() : 0
           let tipoPorcentaje = $('#porcentaje').is(':checked')
           let total = (venta * cantidad)
           let totalDescuento = tipoPorcentaje ? ((total * descuento) / 100) : descuento
@@ -303,7 +310,7 @@
           item.venta = venta
           item.total = total
           item.utilidad = (venta * cantidad)
-          item.descuento.text = tipoPorcentaje ? `${totalDescuento} (${descuento}%)` : totalDescuento
+          item.descuento.text = tipoPorcentaje ? `${totalDescuento.toLocaleString('de-DE')} (${descuento}%)` : totalDescuento.toLocaleString('de-DE')
           item.descuento.tipo = tipoPorcentaje
           item.descuento.cantidad = descuento 
         }
@@ -316,7 +323,17 @@
         $('#porcentaje').prop('checked', false)
       })// Send form
 
-      toggleBtn() 
+      toggleBtn()
+
+      $('#insumo, #repuesto').change(function () {
+        let val = $(this).val(),
+            option = $(this).find(`option[value="${val}"]`),
+            venta = +option.data('venta'),
+            costo = +option.data('costo');
+
+        $('.selected-venta').text(venta.toLocaleString('de-DE'))
+        $('.selected-costo').text(costo.toLocaleString('de-DE'))
+      })
     })
 
     let dato = function(index, dato) {
@@ -331,7 +348,7 @@
                   <input type="hidden" name="datos[${index}][descripcion]" value="${dato.descripcion}">
                 </td>
                 <td class="text-right">
-                  ${dato.venta}
+                  ${dato.venta.toLocaleString('de-DE')}
                   <input type="hidden" name="datos[${index}][valor_venta]" value="${dato.venta}">
                 </td>
                 <td class="text-right">
@@ -339,15 +356,15 @@
                   <input type="hidden" name="datos[${index}][cantidad]" value="${dato.cantidad}">
                 </td>
                 <td class="text-right">
-                  ${dato.total}
+                  ${dato.total.toLocaleString('de-DE')}
                   <input type="hidden" name="datos[${index}][total]" value="${dato.total}">
                 </td>
                 <td class="text-right">
-                  ${dato.costo}
+                  ${dato.costo.toLocaleString('de-DE')}
                   <input type="hidden" name="datos[${index}][costo]" value="${dato.costo}">
                 </td>
                 <td class="text-right">
-                  ${dato.utilidad}
+                  ${dato.utilidad.toLocaleString('de-DE')}
                   <input type="hidden" name="datos[${index}][utilidad]" value="${dato.utilidad}">
                 </td>
                 <td class="text-right">
