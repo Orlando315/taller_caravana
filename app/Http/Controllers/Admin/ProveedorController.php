@@ -81,7 +81,10 @@ class ProveedorController extends Controller
     {
       $this->authorize('view', $proveedor);
 
-      return view('admin.proveedores.show', compact('proveedor'));
+      $vehiculos = $proveedor->vehiculos;
+      $insumos = $proveedor->insumos;
+
+      return view('admin.proveedores.show', compact('proveedor', 'vehiculos', 'insumos'));
     }
 
     /**

@@ -70,6 +70,14 @@ class Insumo extends Model
     }
 
     /**
+     * Relacion con Proveedores
+     */
+    public function proveedores()
+    {
+      return $this->belongsToMany('App\Proveedor', 'stocks')->groupBy('proveedor_id');
+    }
+
+    /**
      * Obtener la url de la foto
      */
     public function getPhoto()

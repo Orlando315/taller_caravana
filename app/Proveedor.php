@@ -59,6 +59,14 @@ class Proveedor extends Model
     }
 
     /**
+     * Relacion con Insumos
+     */
+    public function Insumos()
+    {
+      return $this->belongsToMany('App\Insumo', 'stocks')->groupBy('insumo_id');
+    }
+
+    /**
      * Obtener el atributo formateado
      */
     public function descuento()

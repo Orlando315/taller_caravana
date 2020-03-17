@@ -105,8 +105,9 @@ class InsumosControllers extends Controller
       $this->authorize('view', $insumo);
 
       $stocks = $insumo->stocks()->with('proveedor')->get();
+      $proveedores = $insumo->proveedores;
 
-      return view('admin.insumos.show', compact('insumo', 'stocks'));
+      return view('admin.insumos.show', compact('insumo', 'stocks', 'proveedores'));
     }
 
     /**

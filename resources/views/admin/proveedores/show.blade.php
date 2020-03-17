@@ -80,43 +80,87 @@
 
     <div class="col-md-8">
       <div class="card">
-        <div class="card-header">
-          <h4 class="card-title">Repuestos para</h4>
-          @if(Auth::user()->isAdmin())
-          <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('admin.proveedor.vehiculo.create', ['proveedor' => $proveedor->id]) }}">
-            <i class="fa fa-plus"></i> Agregar vehículos
-          </a>
-          @endif
-        </div>
         <div class="card-body">
-          <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
-            <thead>
-              <tr>
-                <th scope="col" class="text-center">#</th>
-                <th scope="col" class="text-center">Marca</th>
-                <th scope="col" class="text-center">Modelo</th>
-                <th scope="col" class="text-center">Año</th>
-                @if(Auth::user()->isAdmin())
-                <th scope="col" class="text-center">Acción</th>
-                @endif
-              </tr>
-            </thead>
-            <tbody>
-            @foreach($proveedor->vehiculos as $v)
-              <tr>
-                <td scope="row" class="text-center">{{ $loop->iteration }}</td>
-                <td scope="col" class="text-center">{{ $v->marca->marca }}</td>
-                <td scope="col" class="text-center">{{ $v->modelo->modelo }}</td>
-                <td scope="col" class="text-center">{{ $v->anio->anio() }}</td>
-                @if(Auth::user()->isAdmin())
-                <td scope="col" class="text-center">
-                  <button type="button" data-url="{{ route('admin.proveedor.vehiculo.destroy',['id' => $v->id]) }}" class="btn btn-sm btn-fill btn-danger del_vehiculo">X</button>
-                </td>
-                @endif
-              </tr>
-             @endforeach
-            </tbody>
-          </table>
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="tab1-tab" href="#tab1" role="tab" data-toggle="tab" aria-controls="tab1" aria-selected="true">Repuestos para ({{ $vehiculos->count() }})</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="tab2-tab" href="#tab2" role="tab" data-toggle="tab" aria-controls="tab2" aria-selected="false">Insumos ({{ $insumos->count() }})</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div id="tab1" class="tab-pane fade pt-2 show active" role="tabpanel" aria-labelledby="tab1-tab">
+              @if(Auth::user()->isAdmin())
+                <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('admin.proveedor.vehiculo.create', ['proveedor' => $proveedor->id]) }}">
+                  <i class="fa fa-plus"></i> Agregar vehículos
+                </a>
+              @endif
+              
+              <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">Marca</th>
+                    <th scope="col" class="text-center">Modelo</th>
+                    <th scope="col" class="text-center">Año</th>
+                    @if(Auth::user()->isAdmin())
+                    <th scope="col" class="text-center">Acción</th>
+                    @endif
+                  </tr>
+                </thead>
+                <tbody>
+                @foreach($vehiculos as $v)
+                  <tr>
+                    <td scope="row" class="text-center">{{ $loop->iteration }}</td>
+                    <td scope="col" class="text-center">{{ $v->marca->marca }}</td>
+                    <td scope="col" class="text-center">{{ $v->modelo->modelo }}</td>
+                    <td scope="col" class="text-center">{{ $v->anio->anio() }}</td>
+                    @if(Auth::user()->isAdmin())
+                    <td scope="col" class="text-center">
+                      <button type="button" data-url="{{ route('admin.proveedor.vehiculo.destroy',['id' => $v->id]) }}" class="btn btn-sm btn-fill btn-danger del_vehiculo">X</button>
+                    </td>
+                    @endif
+                  </tr>
+                 @endforeach
+                </tbody>
+              </table>
+            </div><!-- .tab-pane -->
+            <div id="tab2" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab2-tab" aria-expanded="false">
+              <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">Nombre</th>
+                    <th scope="col" class="text-center">Foto</th>
+                    <th scope="col" class="text-center">Stock</th>
+                    <th scope="col" class="text-center">Grado</th>
+                    <th scope="col" class="text-center">Tipo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($insumos as $insumo)
+                    <tr>
+                      <td scope="row" class="text-center">{{ $loop->iteration }}</td>
+                      <td>
+                        <a href="{{ route('admin.insumos.show', ['insumo' => $insumo->id] )}}" target="_blank">
+                          {{ $insumo->nombre }}
+                        </a>
+                      </td>
+                      <td class="text-center">
+                        <div class="img-container">
+                          <img class="img-fluid img-thumbnail" src="{{ $insumo->getPhoto($insumo->foto) }}" alt="{{ $insumo->nombre }}" style="max-height: 75px">
+                        </div>
+                      </td>
+                      <td class="text-right">{{ $insumo->getStock(true) }}</td>
+                      <td>{{ $insumo->grado }}</td>
+                      <td>{{ $insumo->tipo->tipo }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div><!-- .tab-pane -->
+          </div><!-- .tab-content -->
         </div><!-- .card-body -->
       </div>
     </div>
