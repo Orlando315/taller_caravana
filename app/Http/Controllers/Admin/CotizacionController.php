@@ -44,7 +44,8 @@ class CotizacionController extends Controller
     {
       $this->authorize('create', [Cotizacion::class, $situacion]);
       $this->validate($request, [
-        'items.*' => 'min:1'
+        'items.*' => 'min:1',
+        'descripcion' => 'nullable|string|max:500',
       ]);
 
       $ids = [];
@@ -55,6 +56,7 @@ class CotizacionController extends Controller
 
       $cotizacion = new Cotizacion([
                       'user_id' => Auth::id(),
+                      'descripcion' => $request->descripcion,
                     ]);
 
       if($situacion->cotizaciones()->save($cotizacion)){
@@ -105,7 +107,9 @@ class CotizacionController extends Controller
      */
     public function edit(Cotizacion $cotizacion)
     {
-        //
+      $this->authorize('update', $cotizacion);
+
+      return view('admin.cotizacion.edit', compact('cotizacion'));
     }
 
     /**
@@ -117,7 +121,25 @@ class CotizacionController extends Controller
      */
     public function update(Request $request, Cotizacion $cotizacion)
     {
-        //
+      $this->authorize('update', $cotizacion);
+      $this->validate($request, [
+        'descripcion' => 'nullable|string|max:500',
+      ]);
+
+      $cotizacion->descripcion = $request->descripcion;
+
+      if($cotizacion->save()){
+        return redirect()->route('admin.cotizacion.show', ['cotizacion' => $cotizacion->id])->with([
+                'flash_message' => 'Cotización modificada exitosamente.',
+                'flash_class' => 'alert-success'
+              ]);
+      }
+
+      return redirect()->back()->withInput()->with([
+              'flash_message' => 'Ha ocurrido un error.',
+              'flash_class' => 'alert-danger',
+              'flash_important' => true
+            ]);
     }
 
     /**

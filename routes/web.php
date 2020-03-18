@@ -133,7 +133,7 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('cotizacion/create/{situacion}', 'CotizacionController@create')->name('cotizacion.create');
     Route::post('cotizacion/{situacion}', 'CotizacionController@store')->name('cotizacion.store');
     Route::resource('cotizacion', 'CotizacionController')
-          ->only(['show', 'destroy']);
+          ->except(['create', 'store']);
 
     /* --- Pagos --- */
     Route::get('pago/create/{cotizacion}', 'PagoController@create')->name('pago.create');

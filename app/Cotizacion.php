@@ -20,6 +20,7 @@ class Cotizacion extends Model
      */
     protected $fillable = [
       'user_id',
+      'descripcion',
       'status'
     ];
 
@@ -88,7 +89,34 @@ class Cotizacion extends Model
     }
 
     /**
-     * Obtener el Total Pagado
+     * Obtener el total de la Utilidad
+     * 
+     * @param \Boolean  $onlyNumbers
+     * @return  mixed
+     */
+    public function utilidad($onlyNumbers = true)
+    {
+      return $this->sumValue('utilidad');
+    }
+
+    /**
+     * Obtener la descripcion limitada a 100 caracteres
+     */
+    public function descripcionShort()
+    {
+      return str_limit($this->descripcion, 100, '...');
+    }
+
+    /**
+     * Obtener la descripcion limitada a 100 caracteres
+     */
+    public function codigo()
+    {
+      return 'COD-'.str_pad($this->id, 8, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * Sumar el valor de la columna dada
      *
      * @param \String   $column
      * @param \Boolean  $onlyNumbers

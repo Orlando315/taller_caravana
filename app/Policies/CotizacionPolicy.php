@@ -50,7 +50,7 @@ class CotizacionPolicy
      */
     public function update(User $user, Cotizacion $cotizacion)
     {
-      return $user->isAdmin() && !$situacion->proceso->status && ($situacion->proceso->etapa == 4 || $situacion->proceso->etapa == 5);
+      return $user->isAdmin() && !$cotizacion->situacion->proceso->status && ($cotizacion->situacion->proceso->etapa == 4 || $cotizacion->situacion->proceso->etapa == 5);
     }
 
     /**
@@ -62,7 +62,7 @@ class CotizacionPolicy
      */
     public function delete(User $user, Cotizacion $cotizacion)
     {
-      return $user->isAdmin() && !$situacion->proceso->status && ($situacion->proceso->etapa == 4 || $situacion->proceso->etapa == 5);
+      return $user->isAdmin() && !$cotizacion->situacion->proceso->status && ($cotizacion->situacion->proceso->etapa == 4 || $cotizacion->situacion->proceso->etapa == 5);
     }
 
     /**

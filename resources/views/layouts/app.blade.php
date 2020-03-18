@@ -110,7 +110,7 @@
             <li class="nav-item{{ $currentRoute == 'proceso' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('proceso.index') }}">
                 <i class="fa fa-tasks"></i>
-                <p>Procesos</p>
+                <p>Servicios</p>
               </a>
             </li>
 

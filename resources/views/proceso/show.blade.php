@@ -310,7 +310,8 @@
                 <thead>
                   <tr>
                     <th class="text-center">#</th>
-                    <th class="text-center">Generada por</th>
+                    <th class="text-center">Código</th>
+                    <th class="text-center">Descripción</th>
                     <th class="text-center">Items</th>
                     <th class="text-center">Total</th>
                     <th class="text-center">Pagado</th>
@@ -324,9 +325,10 @@
                       <td scope="row">{{ $loop->iteration }}</td>
                       <td>
                         <a href="{{ route('cotizacion.show', ['cotizacion' => $cotizacion->id]) }}">
-                          {{ $cotizacion->user->nombre() }} ({{ $cotizacion->user->role() }})
+                          {{ $cotizacion->codigo() }}
                         </a>
                       </td>
+                      <td>{{ $cotizacion->descripcionShort() }}</td>
                       <td class="text-center">{{ $cotizacion->items->count() }}</td>
                       <td class="text-right">{{ $cotizacion->total(false) }}</td>
                       <td class="text-right">{{ $cotizacion->pagado(false) }}</td>
@@ -354,7 +356,7 @@
                       <td scope="row" class="text-center">{{ $loop->iteration }}</td>
                       <td class="text-center">
                         <a href="{{ route('cotizacion.show', ['cotizacion' => $pago->cotizacion_id]) }}">
-                          Cotización #{{ $pago->cotizacion_id }}
+                          {{ $pago->cotizacion->codigo() }}
                         </a>
                       </td>
                       <td class="text-right">{{ $pago->pago() }}</td>

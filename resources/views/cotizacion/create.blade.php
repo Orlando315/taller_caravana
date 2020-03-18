@@ -16,10 +16,17 @@
           <h4>Generar cotización</h4>
           
           <h5 class="text-center">{{ $situacion->proceso->cliente->nombre().' | '.$situacion->proceso->vehiculo->vehiculo() }}</h5>
-          <p class="text-center text-muted">Seleccione los items que deben formar parte de la cotización</p>
 
           <form action="{{ route('cotizacion.store', ['situacion' => $situacion->id]) }}" method="POST">
             @csrf
+            
+            <div class="form-group">
+              <label for="descripcion">Descripción:</label>
+              <textarea id="descripcion" class="form-control" name="descripcion" maxlength="500"></textarea>
+            </div>
+
+            <p class="text-center text-muted">Seleccione los items que deben formar parte de la cotización</p>
+
             <div class="table-responsive">
               <table class="table table-striped table-bordered table-hover table-sm" style="width: 100%">
                 <thead>

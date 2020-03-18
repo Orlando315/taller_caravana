@@ -44,7 +44,8 @@ class CotizacionController extends Controller
     {
       $this->authorize('create', [Cotizacion::class, $situacion]);
       $this->validate($request, [
-        'items.*' => 'min:1'
+        'items.*' => 'min:1',
+        'descripcion' => 'nullable|string|max:500',
       ]);
 
       $ids = [];
@@ -55,6 +56,7 @@ class CotizacionController extends Controller
 
       $cotizacion = new Cotizacion([
                       'user_id' => Auth::id(),
+                      'descripcion' => $request->descripcion,
                     ]);
 
       if($situacion->cotizaciones()->save($cotizacion)){

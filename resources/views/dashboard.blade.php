@@ -112,7 +112,7 @@
                 </div>
                 <div class="col-7">
                   <div class="numbers">
-                    <p class="card-category">Procesos</p>
+                    <p class="card-category">Servicios</p>
                     <h4 class="card-title">{{ $procesosCount }}</h4>
                   </div>
                 </div>
@@ -158,7 +158,7 @@
             </div>
             <div class="card-footer">
               <div class="stats">
-                <i class="fa fa-tasks" aria-hidden="true"></i> En base a {{ $procesosCompletados }} procesos completados
+                <i class="fa fa-tasks" aria-hidden="true"></i> En base a {{ $procesosCompletados }} servicios completados
               </div>
             </div>
           </div>
