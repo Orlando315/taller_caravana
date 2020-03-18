@@ -367,7 +367,13 @@
                   @foreach($proceso->situacion->items as $item)
                     <tr>
                       <td scope="row" class="text-center">{{ $loop->iteration }}</td>
-                      <td>{{ $item->descripcion() }}</td>
+                      <td>
+                        @if($item->type == 'horas')
+                          <a tabindex="0" class="btn btn-simple btn-link" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $item->descripcion }}">{{ $item->titulo() }}</a>
+                        @else
+                          {{ $item->titulo() }}
+                        @endif
+                      </td>
                       <td class="text-right">{{ $item->valorVenta() }}</td>
                       <td class="text-center">{{ $item->cantidad() }}</td>
                       <td class="text-right">{{ $item->total() }}</td>
@@ -741,6 +747,9 @@
       })
 
       $('.link-scroll').click(scrollToTabs)
+
+      // Inicializar popovers
+      $('[data-toggle="popover"]').popover()
     })
 
     function scrollToTabs(e){

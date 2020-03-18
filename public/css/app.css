@@ -265,7 +265,7 @@ button:disabled:hover{
 .krajee-default.file-preview-frame .file-thumbnail-footer .clearfix{
   display: none;
 }
-#foto-group .btn:hover{
+.btn:hover{
   cursor: pointer;
 }
 
@@ -356,4 +356,13 @@ button:disabled:hover{
 .custom-file-label::after{
   content: 'Buscar';
   height: calc(1.5em + .90rem);
+}
+
+.popover-header{
+  margin: 0 !important;
+}
+.btn.btn-simple[data-toggle="popover"]{
+  color: #212529;
+  opacity: 1;
+  text-decoration: underline;
 }

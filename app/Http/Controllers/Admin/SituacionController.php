@@ -45,7 +45,8 @@ class SituacionController extends Controller
     {
       $this->authorize('create', [Situacion::class, $proceso]);
       $this->validate($request, [
-        'datos' => 'required|min:1'
+        'datos' => 'required|min:1',
+        'datos.*.descripcion' => 'nullable|string|max:500',
       ]);
 
       $datos = [];
@@ -124,6 +125,9 @@ class SituacionController extends Controller
     public function update(Request $request, Situacion $situacion)
     {
       $this->authorize('update', $situacion);
+      $this->validate($request, [
+        'dato.*.descripcion' => 'nullable|string|max:500'
+      ]);
       $datos = [];
 
       foreach ($request->datos as $dato) {

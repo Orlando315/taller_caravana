@@ -39,7 +39,7 @@
                     <option value="">Seleccione...</option>
                     @foreach($insumos as $insumo)
                       <option value="{{ $insumo->id }}"
-                        data-descripcion="{{ $insumo->descripcion() }}"
+                        data-titulo="{{ $insumo->descripcion() }}"
                         data-venta="{{ $insumo->stockEnUso->venta }}"
                         data-stock="{{ $insumo->getStock() }}"
                         data-costo="{{ $insumo->stockEnUso->coste }}"
@@ -54,7 +54,7 @@
                     <option value="">Seleccione...</option>
                     @foreach($repuestos as $repuesto)
                       <option value="{{ $repuesto->id }}"
-                        data-descripcion="{{ $repuesto->descripcion() }}"
+                        data-titulo="{{ $repuesto->descripcion() }}"
                         data-venta="{{ $repuesto->venta }}"
                         data-stock=""
                         data-costo="{{ $repuesto->extra->costo_total }}"
@@ -94,12 +94,21 @@
                   </div>
                 </fieldset>
               </div>
-            </div><!-- .ol-md-4 -->
+            </div><!-- .row -->
+
+            <div id="horas-descripcion" class="row">
+              <div class="col-12 pt-0">
+                <div class="form-group m-0">
+                    <label for="descripcion">Descripción:</label>
+                    <textarea id="descripcion" class="form-control" maxlength="500"></textarea>
+                </div>
+              </div>
+            </div>
 
             <div id="item-information" class="row" style="display: none">
               <div class="col-12">
-                <p class="m-0"><strong>Costo total:</strong> <span class="selected-costo"></span></p>
-                <p class="m-0"><strong>Valor venta:</strong> <span class="selected-venta"></span></p>
+                <p class="m-0"><strong>Costo total:</strong> <span class="selected-costo">-</span></p>
+                <p class="m-0"><strong>Valor venta:</strong> <span class="selected-venta">-</span></p>
               </div>
             </div>
 
@@ -136,7 +145,10 @@
 
                       </td>
                       <td>
-                        {{ $item->descripcion() }}
+                        {{ $item->titulo() }}
+                        @if($item->type == 'horas')
+                          <p class="m-0"><small>{{ $item->descripcion }}</small></p>
+                        @endif
                       </td>
                       <td class="text-right">
                         {{ $item->valorVenta() }}
@@ -170,9 +182,13 @@
                           <button class="btn btn-danger btn-fill btn-xs btn-delete" type="button" role="button" data-id="{{ $loop->iteration }}"><i class="fa fa-trash"></i></button>
                         </td>
                         <td>
-                          {{ old('datos.'.$loop->iteration.'.descripcion') }}
+                          {{ old('datos.'.$loop->iteration.'.titulo') }}
+                          @if(old('datos.'.$loop->iteration.'.type') == 'horas')
+                            <p class="m-0"><small>{{ old('datos.'.$loop->iteration.'.descripcion') }}</small></p>
+                          @endif
                           <input type="hidden" name="datos[{{ $loop->iteration }}][item]" value="{{ old('datos.'.$loop->iteration.'.item') }}">
                           <input type="hidden" name="datos[{{ $loop->iteration }}][type]" value="{{ old('datos.'.$loop->iteration.'.type') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][titulo]" value="{{ old('datos.'.$loop->iteration.'.titulo') }}">
                           <input type="hidden" name="datos[{{ $loop->iteration }}][descripcion]" value="{{ old('datos.'.$loop->iteration.'.descripcion') }}">
                         </td>
                         <td class="text-right">
@@ -249,7 +265,7 @@
 
         $('#set-insumo').toggle(tipo == 'insumo')
         $('#set-repuesto').toggle(tipo == 'repuesto')
-        $('#set-horas').toggle(tipo == 'horas')
+        $('#set-horas, #horas-descripcion').toggle(tipo == 'horas')
 
         $('#insumo').prop('required', tipo == 'insumo')
         $('#repuesto').prop('required', tipo == 'repuesto')
@@ -258,7 +274,7 @@
 
         $('#item-information').toggle(tipo != 'horas')
 
-        $('.selected-venta,.selected-costo').text('')
+        $('.selected-venta,.selected-costo').text('-')
       })
 
       $('#tipo').change()
@@ -273,7 +289,8 @@
         let item = {
             item: '',
             type: tipo,
-            descripcion: 'Horas hombre',
+            descripcion: '',
+            titulo: 'Horas hombre',
             venta: 0,
             cantidad: cantidad,
             total: 0,
@@ -295,7 +312,7 @@
           let total = (venta * cantidad)
 
           item.item = value
-          item.descripcion = $(option).data('descripcion')
+          item.titulo = $(option).data('titulo')
           item.venta = venta
           item.total = total
           item.costo = totalCosto
@@ -312,14 +329,15 @@
           item.utilidad = (venta * cantidad)
           item.descuento.text = tipoPorcentaje ? `${totalDescuento.toLocaleString('de-DE')} (${descuento}%)` : totalDescuento.toLocaleString('de-DE')
           item.descuento.tipo = tipoPorcentaje
-          item.descuento.cantidad = descuento 
+          item.descuento.cantidad = descuento
+          item.descripcion = descripcion
         }
 
         let index = ($('.tr-dato').length + 1)
 
         $('#tbody').append(dato(index, item))
 
-        $('#cantidad, #descuento, #venta').val('')
+        $('#cantidad, #descuento, #venta, #descripcion').val('')
         $('#porcentaje').prop('checked', false)
       })// Send form
 
@@ -342,10 +360,11 @@
                   <button class="btn btn-danger btn-fill btn-xs btn-delete" type="button" role="button" data-id="${index}"><i class="fa fa-trash"></i></button>
                 </td>
                 <td>
-                  ${dato.descripcion}
+                  ${dato.titulo}
+                  ${dato.type == 'horas' ? ('<p class="0"><small>'+dato.descripcion+'</small></p>') : ''}
                   <input type="hidden" name="datos[${index}][item]" value="${dato.item}">
                   <input type="hidden" name="datos[${index}][type]" value="${dato.type}">
-                  <input type="hidden" name="datos[${index}][descripcion]" value="${dato.descripcion}">
+                  <input type="hidden" name="datos[${index}][titulo]" value="${dato.titulo}">
                 </td>
                 <td class="text-right">
                   ${dato.venta.toLocaleString('de-DE')}

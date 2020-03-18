@@ -22,6 +22,7 @@ class SituacionItem extends Model
       'insumo_id',
       'repuesto_id',
       'type',
+      'descripcion',
       'valor_venta',
       'cantidad',
       'total',
@@ -84,9 +85,9 @@ class SituacionItem extends Model
     }
 
     /**
-     * Obtener la descripcion
+     * Obtener el Titulo segun el tipo de Item
      */
-    public function descripcion()
+    public function titulo()
     {
       if($this->type == 'horas'){
         return 'Horas hombre';
