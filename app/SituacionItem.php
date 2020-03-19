@@ -93,11 +93,11 @@ class SituacionItem extends Model
         return 'Horas hombre';
       }
 
-      if($this->type == 'insumo'){
-        return $this->insumo->descripcion();
+      if($this->type == 'insumo' || $this->type == 'repuesto'){
+        return $this->{$this->type}->descripcion();
       }
 
-      return $this->repuesto->descripcion();
+      return 'Otros';
     }
 
     /**
@@ -166,5 +166,13 @@ class SituacionItem extends Model
       }
 
       return $this->descuento_type ? (($this->total * $this->descuento)/100).' ('.$this->descuento.'%)' : $this->descuento;
+    }
+
+    /**
+     * Evaluar si el Item necesita usar Popover para mostrar su descripcion
+     */
+    public function hasDescripcion()
+    {
+      return $this->type == 'horas' || $this->type == 'otros';
     }
 }

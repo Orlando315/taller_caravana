@@ -26,6 +26,7 @@
                     <option value="insumo">Insumos</option>
                     <option value="repuesto">Repuestos</option>
                     <option value="horas">Horas hombre</option>
+                    <option value="otros">Otros</option>
                   </select>
                 </div>
               </div>
@@ -61,8 +62,8 @@
                   </select>
                 </div>
 
-                <div id="set-horas" class="form-group" style="display: none">
-                  <label for="venta">Precio de Horas hombre:</label>
+                <div id="set-otros" class="form-group" style="display: none">
+                  <label for="venta">Valor de venta:</label>
                   <input id="venta" class="form-control" type="number" min="0" max="9999999">
                 </div>
               </div><!-- .col-md-5 -->
@@ -94,7 +95,7 @@
               </div>
             </div><!-- .row -->
 
-            <div id="horas-descripcion" class="row">
+            <div id="otros-descripcion" class="row">
               <div class="col-12 pt-0">
                 <div class="form-group m-0">
                     <label for="descripcion">Descripción:</label>
@@ -142,7 +143,7 @@
                         </td>
                         <td>
                           {{ old('datos.'.$loop->iteration.'.titulo') }}
-                          @if(old('datos.'.$loop->iteration.'.type') == 'horas')
+                          @if(old('datos.'.$loop->iteration.'.type') == 'horas' || old('datos.'.$loop->iteration.'.type') == 'otros')
                             <p class="m-0"><small>{{ old('datos.'.$loop->iteration.'.descripcion') }}</small></p>
                           @endif
                           <input type="hidden" name="datos[{{ $loop->iteration }}][item]" value="{{ old('datos.'.$loop->iteration.'.item') }}">
@@ -224,14 +225,18 @@
 
         $('#set-insumo').toggle(tipo == 'insumo')
         $('#set-repuesto').toggle(tipo == 'repuesto')
-        $('#set-horas, #horas-descripcion').toggle(tipo == 'horas')
+        $('#set-otros, #otros-descripcion').toggle(tipo == 'horas' || tipo == 'otros')
 
         $('#insumo').prop('required', tipo == 'insumo')
         $('#repuesto').prop('required', tipo == 'repuesto')
-        $('#venta').prop('required', tipo == 'horas')
+        $('#venta').prop('required', tipo == 'horas' || tipo == 'otros')
         $('#set-descuento').prop('disabled', tipo != 'horas')
 
-        $('#item-information').toggle(tipo != 'horas')
+        $('#item-information').toggle(tipo == 'insumo' || tipo == 'repuesto')
+
+        if(tipo == 'insumo' || tipo == 'repuesto'){
+          $(`#${tipo}`).val(null).trigger('change');
+        }
 
         $('.selected-venta,.selected-costo').text('-')
       })
@@ -244,17 +249,27 @@
         $('#btn-cotizacion').prop('disabled', false)
 
         let tipo = $('#tipo').val();
+        let useSelect  = (tipo == 'insumo' || tipo == 'repuesto')
+
+        // Solo cuando es Insumo o Repuesto
+        let value = useSelect ? $(`#${tipo}`).val() : null
+        let option = useSelect ? $(`#${tipo} option[value="${value}"]`) : null
+
         let cantidad = $('#cantidad').val()
+        let venta = (useSelect && $(option).data('venta')) ? +$(option).data('venta') : +$('#venta').val()
+        let total = (venta * cantidad)
+        let costo = (useSelect && $(option).data('costo')) ? (+$(option).data('costo') * cantidad) : 0
+        let utilidad = 0
         let item = {
-            item: '',
+            item: useSelect ? value : '',
             type: tipo,
-            descripcion: '',
-            titulo: 'Horas hombre',
-            venta: 0,
+            descripcion: $('#descripcion').val(),
+            titulo: useSelect ? $(option).data('titulo') : ( tipo == 'horas' ? 'Horas hombre' : 'Otros'),
+            venta: venta,
             cantidad: cantidad,
-            total: 0,
-            costo: 0,
-            utilidad: 0,
+            total: total,
+            costo: costo,
+            utilidad: useSelect ? (total - costo) : (venta * cantidad),
             descuento: {
               text: '',
               tipo: '',
@@ -262,35 +277,14 @@
             }
           }
 
-        if(tipo != 'horas'){
-          let value = $(`#${tipo}`).val()
-          let option = $(`#${tipo} option[value="${value}"]`)
-          let venta = $(option).data('venta') ? +$(option).data('venta') : 0
-          let costo = $(option).data('costo') ? +$(option).data('costo') : 0
-          let totalCosto = (costo * cantidad)
-          let total = (venta * cantidad)
-
-          item.item = value
-          item.titulo = $(option).data('titulo')
-          item.venta = venta
-          item.total = total
-          item.costo = totalCosto
-          item.utilidad = total - totalCosto
-        }else{
-          let venta = $('#venta').val()
+        if(tipo == 'horas'){
           let descuento = $('#descuento').val() ? +$('#descuento').val() : 0
           let tipoPorcentaje = $('#porcentaje').is(':checked')
-          let total = (venta * cantidad)
           let totalDescuento = tipoPorcentaje ? ((total * descuento) / 100) : descuento
-          let descripcion = $('#descripcion').val()
 
-          item.venta = venta
-          item.total = total
-          item.utilidad = (venta * cantidad)
           item.descuento.text = tipoPorcentaje ? `${totalDescuento.toLocaleString('de-DE')} (${descuento}%)` : totalDescuento.toLocaleString('de-DE')
           item.descuento.tipo = tipoPorcentaje
           item.descuento.cantidad = descuento
-          item.descripcion = descripcion
         }
 
         let index = ($('.tr-dato').length + 1)

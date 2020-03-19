@@ -46,6 +46,7 @@ class SituacionController extends Controller
       $this->authorize('create', [Situacion::class, $proceso]);
       $this->validate($request, [
         'datos' => 'required|min:1',
+        'dato.*.type' => 'required|in:insumo,repuesto,horas,otros',
         'datos.*.descripcion' => 'nullable|string|max:500',
       ]);
 
@@ -126,6 +127,7 @@ class SituacionController extends Controller
     {
       $this->authorize('update', $situacion);
       $this->validate($request, [
+        'dato.*.type' => 'required|in:insumo,repuesto,horas,otros',
         'dato.*.descripcion' => 'nullable|string|max:500'
       ]);
       $datos = [];

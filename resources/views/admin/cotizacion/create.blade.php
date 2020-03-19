@@ -56,7 +56,7 @@
                     <tr>
                       <td scope="row">{{ $loop->iteration }}</td>
                       <td>
-                        @if($item->type == 'horas')
+                        @if($item->hasDescripcion())
                           <a tabindex="0" class="btn btn-simple btn-link" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $item->descripcion }}">{{ $item->titulo() }}</a>
                         @else
                           {{ $item->titulo() }}
