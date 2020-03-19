@@ -96,11 +96,8 @@ class CotizacionController extends Controller
       $this->authorize('view', $cotizacion);
 
       $pagos = $cotizacion->pagos;
-      $repuestos = $cotizacion->getItemsByType('repuesto')->get();
-      $insumos = $cotizacion->getItemsByType('insumo')->get();
-      $horas = $cotizacion->getItemsByType()->get();      
 
-      return view('admin.cotizacion.show', compact('cotizacion', 'pagos', 'repuestos', 'insumos', 'horas'));
+      return view('admin.cotizacion.show', compact('cotizacion', 'pagos'));
     }
 
     /**

@@ -33,7 +33,7 @@ class VehiculosAnio extends Model
       parent::boot();
       static::addGlobalScope(new TallerScope);
       static::addGlobalScope(function (Builder $query ){
-        $query->orderBy('anio', 'asc');
+        $query->orderBy('anio', 'desc');
       });
     }
 
