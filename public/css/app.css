@@ -159,6 +159,9 @@ button:disabled:hover{
 .table-sm td, .table-sm th{
   padding: .3rem !important;
 }
+.table-sm td.p-0, .table-sm th.p-0{
+  padding: 0 !important;
+}
 .sidebar .nav .nav-item .nav-link{
   margin: 5px 15px 0px 10px;
   padding: 10px 15px;

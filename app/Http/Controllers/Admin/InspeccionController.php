@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\{Auth, Storage};
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\{Inspeccion, Proceso};
+use PDF;
 
 class InspeccionController extends Controller
 {
@@ -178,5 +179,18 @@ class InspeccionController extends Controller
     public function destroy(Inspeccion $inspeccion)
     {
         //
+    }
+
+    /**
+     * Descargar PDF
+     *
+     * @param  \App\Inspeccion  $inspeccion
+     * @return \Illuminate\Http\Response
+     */
+    public function pdf(Inspeccion $inspeccion)
+    {
+      $pdf = PDF::loadView('admin.inspeccion.pdf', compact('inspeccion'));
+
+      return $pdf->download('Hoja de inspección.pdf');
     }
 }

@@ -14,6 +14,7 @@
         <a class="btn btn-success" href="{{ route('admin.cotizacion.edit', ['cotizacion' => $cotizacion->id]) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</a>
         <button class="btn btn-fill btn-danger" data-toggle="modal" data-target="#delModal"><i class="fa fa-times" aria-hidden="true"></i> Eliminar</button>
       @endif
+      <a class="btn btn-danger" href="{{ route('admin.cotizacion.pdf', ['cotizacion' => $cotizacion->id]) }}"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Descargar PDF</a>
     </div>
   </div>
   
@@ -145,17 +146,17 @@
               </ul>
               <div class="tab-content">
                 <div id="tab1" class="tab-pane fade show active pt-2" role="tabpanel" aria-labelledby="tab1-tab">
-                  <table id="pagos" class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
+                  <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
                     <thead>
                       <tr>
                         <th class="text-center">#</th>
                         <th class="text-center">Items / Descripción</th>
-                        <th class="text-center">Valor venta</th>
-                        <th class="text-center">Cantidad</th>
-                        <th class="text-center">Valor final</th>
                         <th class="text-center">Precio costo</th>
                         <th class="text-center">Utilidad</th>
                         <th class="text-center">Decuento</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-center">Valor venta</th>
+                        <th class="text-center">Valor final</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -169,24 +170,39 @@
                               {{ $item->titulo() }}
                             @endif
                           </td>
-                          <td class="text-right">{{ $item->valorVenta() }}</td>
-                          <td class="text-center">{{ $item->cantidad() }}</td>
-                          <td class="text-right">{{ $item->total() }}</td>
                           <td class="text-right">{{ $item->costo() }}</td>
                           <td class="text-right">{{ $item->utilidad() }}</td>
                           <td class="text-right">{{ $item->descuentoText() }}</td>
+                          <td class="text-center">{{ $item->cantidad() }}</td>
+                          <td class="text-right">{{ $item->valorVenta() }}</td>
+                          <td class="text-right">{{ $item->total() }}</td>
                         </tr>
                       @endforeach
                     </tbody>
                     <tfoot>
                       <tr>
                         <th colspan="2"></th>
-                        <th class="text-right">{{ $cotizacion->sumValue('valor_venta') }}</th>
-                        <th class="text-center">{{ $cotizacion->sumValue('cantidad', false, 0) }}</th>
-                        <th class="text-right">{{ $cotizacion->sumValue('total') }}</th>
                         <th class="text-right">{{ $cotizacion->sumValue('costo') }}</th>
                         <th class="text-right">{{ $cotizacion->sumValue('utilidad') }}</th>
                         <th class="text-right">{{ $cotizacion->sumValue('total_descuento') }}</th>
+                        <th class="text-center">{{ $cotizacion->sumValue('cantidad', false, 0) }}</th>
+                        <th class="text-right">{{ $cotizacion->sumValue('valor_venta') }}</th>
+                        <th class="text-right">{{ $cotizacion->sumValue('total') }}</th>
+                      </tr>
+                      <tr>
+                        <td colspan="6"></td>
+                        <th class="text-right">NETO</th>
+                        <td class="text-right">{{ $cotizacion->neto() }}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="6"></td>
+                        <td class="text-right"><strong>IVA</strong></td>
+                        <td class="text-right">{{ $cotizacion->iva() }}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="6"></td>
+                        <td class="text-right"><strong>TOTAL</strong></td>
+                        <td class="text-right">{{ $cotizacion->total() }}</td>
                       </tr>
                     </tfoot>
                   </table>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\{Cotizacion, Situacion, SituacionItem};
+use PDF;
 
 class CotizacionController extends Controller
 {
@@ -134,5 +135,21 @@ class CotizacionController extends Controller
     public function destroy(Cotizacion $cotizacion)
     {
         //
+    }
+
+    /**
+     * Descargar PDF
+     *
+     * @param  \App\Cotizacion  $cotizacion
+     * @return \Illuminate\Http\Response
+     */
+    public function pdf(Cotizacion $cotizacion)
+    {
+      $repuestos = $cotizacion->getItemsByType('repuesto')->get();
+      $insumos = $cotizacion->getItemsByType('insumo')->get();
+      $horas = $cotizacion->getItemsByType()->get();
+      
+      $pdf = PDF::loadView('cotizacion.pdf', compact('cotizacion', 'repuestos', 'insumos', 'horas'));
+      return $pdf->download('Cotización.pdf');
     }
 }

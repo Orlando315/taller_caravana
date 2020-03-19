@@ -66,11 +66,42 @@ class Cotizacion extends Model
     }
 
     /**
-     * Obtener el Total del costo de los Items
+     * Obtener los Items por tipo
+     * 
+     * @param \String  $type
+     */
+    public function getItemsByType($type = 'horas')
+    {
+      return $this->situacionItems()->where('type', $type);
+    }
+
+    /**
+     * Obtener el Total Neto del costo de los Items
+     */
+    public function neto($onlyNumbers = false)
+    {
+      $total = $this->situacionItems->sum('total');
+
+      return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
+    }
+
+    /**
+     * Calcular el Iva de la Cotizacion
+     */
+    public function iva($onlyNumbers = false)
+    {
+      $neto = $this->neto(true);
+      $iva = ($neto * 19) / 100;
+
+      return $onlyNumbers ? $iva : number_format($iva, 2, ',', '.');
+    }
+
+    /**
+     * Obtener el Total del costo de los Items + IVA
      */
     public function total($onlyNumbers = false)
     {
-      $total = $this->situacionItems->sum('total');
+      $total = $this->neto(true) + $this->iva(true);
 
       return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
     }
@@ -121,11 +152,16 @@ class Cotizacion extends Model
      * @param \String   $column
      * @param \Boolean  $onlyNumbers
      * @param \Integer  $decimals
+     * @param  mixed  $type  false | string
      * @return  mixed
      */
-    public function sumValue($column, $onlyNumbers = false, $decimals = 2)
+    public function sumValue($column, $onlyNumbers = false, $decimals = 2, $type = false)
     {
-      $total = $this->situacionItems->sum($column);
+      $total = $this->situacionItems
+                    ->when($type, function ($query, $type){
+                      return $query->where('type', $type);
+                    })
+                    ->sum($column);
 
       return $onlyNumbers ? $total : number_format($total, $decimals, ',', '.');
     }

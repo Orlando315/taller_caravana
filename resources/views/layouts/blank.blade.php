@@ -33,9 +33,8 @@
     @yield('head', '')
   </head>
   <body>
-      @yield('content')
+    @yield('content')
 
-      @yield('scripts')
-    </div>
+    @yield('scripts')
   </body>
 </html>

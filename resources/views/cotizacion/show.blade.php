@@ -9,7 +9,8 @@
 @section('content')
   <div class="row">
     <div class="col-12">
-      <a class="btn btn-default" href="{{ route('proceso.show', ['proceso' => $cotizacion->situacion->proceso_id]) }}"><i class="fa fa-reply" aria-hidden="true"></i> Volver</a>
+      <a class="btn btn-default" href="{{ route('proceso.show', ['proceso' => $cotizacion->situacion->proceso_id]) }}"><i class="fa fa-reply" aria-hidden="true"></i> Volver</a>      
+      <a class="btn btn-danger" href="{{ route('cotizacion.pdf', ['cotizacion' => $cotizacion->id]) }}"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Descargar PDF</a>
     </div>
   </div>
   
@@ -150,6 +151,21 @@
                         <th class="text-right">{{ $cotizacion->sumValue('valor_venta', false) }}</th>
                         <th class="text-center">{{ $cotizacion->sumValue('cantidad', false, 0) }}</th>
                         <th class="text-right">{{ $cotizacion->sumValue('total', false) }}</th>
+                      </tr>
+                      <tr>
+                        <td colspan="3"></td>
+                        <th class="text-right">NETO</th>
+                        <td class="text-right">{{ $cotizacion->neto() }}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="3"></td>
+                        <td class="text-right"><strong>IVA</strong></td>
+                        <td class="text-right">{{ $cotizacion->iva() }}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="3"></td>
+                        <td class="text-right"><strong>TOTAL</strong></td>
+                        <td class="text-right">{{ $cotizacion->total() }}</td>
                       </tr>
                     </tfoot>
                   </table>

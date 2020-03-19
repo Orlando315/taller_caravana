@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function (){
   Route::post('cotizacion/{situacion}', 'CotizacionController@store')->name('cotizacion.store');
   Route::resource('cotizacion', 'CotizacionController')
         ->only(['show']);
+  Route::get('cotizacion/{cotizacion}/pdf', 'CotizacionController@pdf')->name('cotizacion.pdf');
 
   /* --- Obtener los Modelos de la Marca especificada ---*/
   Route::post('vehiculo/marca/', 'ModelosByMarcaController@index')->name('vehiculo.marca.modelos');
@@ -134,6 +135,7 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('cotizacion/{situacion}', 'CotizacionController@store')->name('cotizacion.store');
     Route::resource('cotizacion', 'CotizacionController')
           ->except(['create', 'store']);
+    Route::get('cotizacion/{cotizacion}/pdf', 'CotizacionController@pdf')->name('cotizacion.pdf');
 
     /* --- Pagos --- */
     Route::get('pago/create/{cotizacion}', 'PagoController@create')->name('pago.create');
@@ -146,6 +148,7 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('inspeccion/{proceso}', 'InspeccionController@store')->name('inspeccion.store');
     Route::resource('inspeccion', 'InspeccionController')
           ->only(['edit', 'update', 'destroy']);
+    Route::get('inspeccion/{inspeccion}/pdf', 'InspeccionController@pdf')->name('inspeccion.pdf');
     Route::get('inspeccion/foto', 'InspeccionFotoController@index')->name('inspeccion.foto.index');
     Route::delete('inspeccion/foto/{foto}', 'InspeccionFotoController@destroy')->name('inspeccion.foto.destroy');
 

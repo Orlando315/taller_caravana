@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\{Cotizacion, Situacion, SituacionItem};
+use PDF;
 
 class CotizacionController extends Controller
 {
@@ -95,8 +96,11 @@ class CotizacionController extends Controller
       $this->authorize('view', $cotizacion);
 
       $pagos = $cotizacion->pagos;
+      $repuestos = $cotizacion->getItemsByType('repuesto')->get();
+      $insumos = $cotizacion->getItemsByType('insumo')->get();
+      $horas = $cotizacion->getItemsByType()->get();      
 
-      return view('admin.cotizacion.show', compact('cotizacion', 'pagos'));
+      return view('admin.cotizacion.show', compact('cotizacion', 'pagos', 'repuestos', 'insumos', 'horas'));
     }
 
     /**
@@ -170,5 +174,21 @@ class CotizacionController extends Controller
               'flash_message'   => 'Ha ocurrido un error.',
               'flash_important' => true
             ]);
+    }
+
+    /**
+     * Descargar PDF
+     *
+     * @param  \App\Cotizacion  $cotizacion
+     * @return \Illuminate\Http\Response
+     */
+    public function pdf(Cotizacion $cotizacion)
+    {
+      $repuestos = $cotizacion->getItemsByType('repuesto')->get();
+      $insumos = $cotizacion->getItemsByType('insumo')->get();
+      $horas = $cotizacion->getItemsByType()->get();
+      
+      $pdf = PDF::loadView('admin.cotizacion.pdf', compact('cotizacion', 'repuestos', 'insumos', 'horas'));
+      return $pdf->download('Cotización.pdf');
     }
 }

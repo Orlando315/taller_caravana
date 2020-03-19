@@ -471,6 +471,9 @@
                   <i class="fa fa-pencil"></i> Modificar inspección
                 </a>
               @endif
+              <a class="btn btn-danger btn-fill btn-xs mb-2" href="{{ route('admin.inspeccion.pdf', ['inspeccion' => $proceso->inspeccion->id]) }}">
+                <i class="fa fa-file-pdf-o"></i> Descargar PDF
+              </a>
               <div class="row">
                 @foreach($proceso->inspeccion->fotos as $foto)
                   <div class="col-sm-4 col-md-2 mb-2">
