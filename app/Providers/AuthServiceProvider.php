@@ -5,9 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Policies\{UserPolicy, InsumoTipoPolicy, InsumoFormatoPolicy, InsumoPolicy, ConfigurationPolicy, PreevaluacionPolicy, PagoPolicy, AgendamientoPolicy, SituacionPolicy, CotizacionPolicy, InspeccionPolicy};
-use App\Policies\{ProveedorPolicy, RepuestoPolicy, VehiculoPolicy, VehiculoAnioPolicy, VehiculoMarcaPolicy, VehiculoModeloPolicy, ClientePolicy, ProcesoPolicy};
+use App\Policies\{ProveedorPolicy, RepuestoPolicy, VehiculoPolicy, VehiculoAnioPolicy, VehiculoMarcaPolicy, VehiculoModeloPolicy, ClientePolicy, ProcesoPolicy, ImprevistoPolicy};
 use App\{User, InsumoTipo, InsumoFormato, Insumo, Configuration, Preevaluacion, Pago, Agendamiento, Situacion, Cotizacion, Inspeccion, Proveedor, Repuesto};
-use App\{Vehiculo, VehiculosAnio, VehiculosMarca, VehiculosModelo, Cliente, Proceso};
+use App\{Vehiculo, VehiculosAnio, VehiculosMarca, VehiculosModelo, Cliente, Proceso, CotizacionImprevisto};
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -36,6 +36,7 @@ class AuthServiceProvider extends ServiceProvider
         VehiculosModelo::class => VehiculoModeloPolicy::class,
         Cliente::class => ClientePolicy::class,
         Proceso::class => ProcesoPolicy::class,
+        CotizacionImprevisto::class => ImprevistoPolicy::class,
     ];
 
     /**

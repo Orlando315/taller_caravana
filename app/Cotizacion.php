@@ -66,6 +66,14 @@ class Cotizacion extends Model
     }
 
     /**
+     * Obtener los Imprevistos
+     */
+    public function imprevistos()
+    {
+      return $this->hasMany('App\CotizacionImprevisto');
+    }
+
+    /**
      * Obtener los Items por tipo
      * 
      * @param \String  $type
@@ -107,6 +115,16 @@ class Cotizacion extends Model
     }
 
     /**
+     * Obtener el Total de los Imprevisstos
+     */
+    public function totalImprevistos($onlyNumbers = false)
+    {
+      $total = $this->imprevistos()->sum('monto');
+
+      return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
+    }
+
+    /**
      * Obtener el Total Pagado
      * 
      * @param \Boolean  $onlyNumbers
@@ -127,7 +145,9 @@ class Cotizacion extends Model
      */
     public function utilidad($onlyNumbers = true)
     {
-      return $this->sumValue('utilidad');
+      $total = $this->sumValue('utilidad', true) - $this->totalImprevistos(true);
+
+      return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
     }
 
     /**

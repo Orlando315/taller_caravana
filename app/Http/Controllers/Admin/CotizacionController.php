@@ -96,8 +96,9 @@ class CotizacionController extends Controller
       $this->authorize('view', $cotizacion);
 
       $pagos = $cotizacion->pagos;
+      $imprevistos = $cotizacion->imprevistos;
 
-      return view('admin.cotizacion.show', compact('cotizacion', 'pagos'));
+      return view('admin.cotizacion.show', compact('cotizacion', 'pagos', 'imprevistos'));
     }
 
     /**

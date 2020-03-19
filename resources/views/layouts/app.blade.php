@@ -206,7 +206,7 @@
         </nav>
         
         <!-- End Navbar -->
-        <div class="content">
+        <div class="content py-3 px-0">
           <div class="container-fluid">
 
             @yield('content')

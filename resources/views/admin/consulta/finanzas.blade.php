@@ -64,7 +64,7 @@
             <li class="list-group-item" rel="tooltip" title="Pagos pendientes por cotizaciones abiertas">
               Pagos pendientes: <span id="pendientes">-</span>
             </li>
-            <li class="list-group-item" rel="tooltip" title="Utilidades por cotizaciones cerrdas">
+            <li class="list-group-item" rel="tooltip" title="Utilidades por cotizaciones cerradas">
               Total utilidades: <span id="utilidades">-</span>
             </li>
           </ul>

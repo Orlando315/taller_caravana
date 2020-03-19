@@ -67,9 +67,15 @@
           </p>
           <hr>
 
+          <strong>Imprevistos</strong>
+          <p class="text-muted">
+            {{ $cotizacion->totalImprevistos() }}
+          </p>
+          <hr>
+
           <strong>Utilidad</strong>
           <p class="text-muted">
-            {{ $cotizacion->utilidad() }}
+            {{ $cotizacion->utilidad(false) }}
           </p>
           <hr>
 
@@ -92,7 +98,7 @@
       <div class="row">
         <div class="col-md-4">
           <div class="card card-stats">
-            @if(Auth::user()->isAdmin() && !$cotizacion->situacion->proceso->status)
+            @if(Auth::user()->isAdmin() && !$cotizacion->situacion->proceso->status && !$cotizacion->hasPagos())
             <a href="{{ route('admin.pago.create', ['cotizacion' => $cotizacion->id]) }}" title="Agregar pago">
             @else
             <a class="link-pagos" href="#" title="Ver pagos">
@@ -141,7 +147,10 @@
                   <a class="nav-link active" id="tab1-tab" href="#tab1" role="tab" data-toggle="tab" aria-controls="tab1" aria-selected="true"><i class="fa fa-list-alt"></i> Items</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="tab2-tab" href="#tab2" role="tab" data-toggle="tab" aria-controls="tab2" aria-selected="false"><i class="fa fa-credit-card"></i> Pagos</a>
+                  <a class="nav-link" id="tab2-tab" href="#tab2" role="tab" data-toggle="tab" aria-controls="tab2" aria-selected="false"><i class="fa fa-exclamation"></i> Imprevistos</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="tab3-tab" href="#tab3" role="tab" data-toggle="tab" aria-controls="tab3" aria-selected="false"><i class="fa fa-credit-card"></i> Pagos</a>
                 </li>
               </ul>
               <div class="tab-content">
@@ -209,6 +218,58 @@
                 </div><!-- .tab-pane -->
 
                 <div id="tab2" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab2-tab">
+                  @if(!$cotizacion->situacion->proceso->status)
+                    <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('admin.imprevisto.create', ['cotizacion' => $cotizacion->id]) }}">
+                      <i class="fa fa-plus"></i> Agregar imprevisto
+                    </a>
+                  @endif
+
+                  <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="text-center">#</th>
+                        <th scope="col" class="text-center">Tipo</th>
+                        <th scope="col" class="text-center">Descripción</th>
+                        <th scope="col" class="text-center">Monto</th>
+                        <th scope="col" class="text-center">Fecha</th>
+                        @if(Auth::user()->isAdmin())
+                          <th scope="col" class="text-center">Acción</th>
+                        @endif
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($imprevistos as $imprevisto)
+                        <tr>
+                          <td scope="row" class="text-center">{{ $loop->iteration }}</td>
+                          <td>{{ $imprevisto->tipo() }}</td>
+                          <td>{{ $imprevisto->descripcion }}</td>
+                          <td class="text-right">{{ $imprevisto->monto() }}</td>
+                          <td class="text-center">{{ $imprevisto->created_at->format('d-m-Y') }}</td>
+                          @if(Auth::user()->isAdmin())
+                            <td class="text-center">
+                              @if(!$cotizacion->situacion->proceso->status)
+                                <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $imprevisto->id }}" data-toggle="modal" data-type="imprevisto" data-target="#delElementoModal">
+                                  <i class="fa fa-times"></i>
+                                </button>
+                              @endif
+                            </td>
+                          @endif
+                        </tr>
+                      @endforeach
+                    </tbody>
+                    @if($imprevistos->count() > 0)
+                    <tfoot>
+                      <tr>
+                        <td colspan="3"></td>
+                        <th class="text-right">{{ $cotizacion->totalImprevistos() }}</th>
+                        <td colspan="2"></td>
+                      </tr>
+                    </tfoot>
+                    @endif
+                  </table>
+                </div><!-- .tab-pane -->
+
+                <div id="tab3" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab3-tab">
                   @if(!$cotizacion->status && !$cotizacion->situacion->proceso->status)
                     <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('admin.pago.create', ['cotizacion' => $cotizacion->id]) }}">
                       <i class="fa fa-plus"></i> Agregar pago
@@ -235,7 +296,7 @@
                           @if(Auth::user()->isAdmin())
                           <td class="text-center">
                             @if(!$cotizacion->status && !$cotizacion->situacion->proceso->status)
-                              <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $pago->id }}" data-toggle="modal"  data-target="#delPagoModal">
+                              <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $pago->id }}" data-toggle="modal" data-type="pago" data-target="#delElementoModal">
                                 <i class="fa fa-times"></i>
                               </button>
                             @endif
@@ -284,23 +345,23 @@
   </div>
   @endif
   
-  @if(Auth::user()->isAdmin() && !$cotizacion->status && !$cotizacion->situacion->proceso->status)
-    <div id="delPagoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delPagoModalLabel">
+  @if(Auth::user()->isAdmin() && !$cotizacion->situacion->proceso->status)
+    <div id="delElementoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delElementoModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="delPagoModalLabel">Eliminar Pago</h4>
+            <h4 class="modal-title" id="delElementoModalLabel"></h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <div class="row justify-content-md-center">
-              <form id="delPago" class="col-md-8" action="#" method="POST">
+              <form id="delElemento" class="col-md-12" action="#" method="POST">
                 @csrf
                 @method('DELETE')
 
-                <p class="text-center">¿Esta seguro de eliminar este Pago?</p><br>
+                <p class="text-center">¿Esta seguro de eliminar este <span id="elemento-type"></span>?</p><br>
 
                 <center>
                   <button class="btn btn-fill btn-danger" type="submit">Eliminar</button>
@@ -327,11 +388,17 @@
         }, 500);
       })
 
-      @if(Auth::user()->isAdmin() && !$cotizacion->status && !$cotizacion->situacion->proceso->status)
-        $('#delPagoModal').on('show.bs.modal', function (e) {
-          let id = $(e.relatedTarget).data('id')
+      @if(Auth::user()->isAdmin() && !$cotizacion->situacion->proceso->status)
+        $('#delElementoModal').on('show.bs.modal', function (e) {
+          let id = $(e.relatedTarget).data('id'),
+              type = $(e.relatedTarget).data('type')
 
-          $('#delPago').attr('action', '{{ route("admin.pago.index") }}/'+id)
+          let url = (type == 'pago' ? '{{ route("admin.pago.index") }}/' : '{{ route("admin.imprevisto.index") }}/') + id;
+          let title = type.charAt(0).toUpperCase() + type.slice(1)
+
+          $('#elemento-type').text(title)
+          $('#delElementoModalLabel').text(`Eliminar ${title}`)
+          $('#delElemento').attr('action', url)
         })
       @endif
 

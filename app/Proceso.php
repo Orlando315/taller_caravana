@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Scopes\TallerScope;
+use App\CotizacionImprevisto;
 
 class Proceso extends Model
 {
@@ -162,6 +163,15 @@ class Proceso extends Model
     public function cotizaciones()
     {
       return $this->hasManyThrough('App\Cotizacion', 'App\Situacion');
+    }
+
+    /**
+     * Obtener los Imprevistos
+     */
+    public function imprevistos()
+    {
+      $ids = $this->cotizaciones()->pluck('cotizaciones.id');
+      return CotizacionImprevisto::whereIn('cotizacion_id', $ids);
     }
 
     /**

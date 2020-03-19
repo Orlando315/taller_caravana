@@ -268,12 +268,15 @@
               <a class="nav-link" id="tab3-tab" href="#tab3" role="tab" data-toggle="tab" aria-controls="tab3" aria-selected="false"><i class="fa fa-calculator"></i> Cotizaciones</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="tab4-tab" href="#tab4" role="tab" data-toggle="tab" aria-controls="tab4" aria-selected="false"><i class="fa fa-credit-card"></i> Pagos</a>
+              <a class="nav-link" id="tab4-tab" href="#tab4" role="tab" data-toggle="tab" aria-controls="tab4" aria-selected="false"><i class="fa fa-exclamation"></i> Imprevistos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="tab5-tab" href="#tab5" role="tab" data-toggle="tab" aria-controls="tab5" aria-selected="false"><i class="fa fa-credit-card"></i> Pagos</a>
             </li>
             @endif
             @if($proceso->inspeccion)
             <li class="nav-item">
-              <a class="nav-link" id="tab5-tab" href="#tab5" role="tab" data-toggle="tab" aria-controls="tab5" aria-selected="false"><i class="fa fa-list"></i> Inspección</a>
+              <a class="nav-link" id="tab6-tab" href="#tab6" role="tab" data-toggle="tab" aria-controls="tab6" aria-selected="false"><i class="fa fa-list"></i> Inspección</a>
             </li>
             @endif
           </ul>
@@ -441,6 +444,36 @@
               <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
                 <thead>
                   <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Cotización</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Monto</th>
+                    <th scope="col">Fecha</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($imprevistos as $imprevisto)
+                    <tr>
+                      <td scope="row" class="text-center">{{ $loop->iteration }}</td>
+                      <td>
+                        <a href="{{ route('admin.cotizacion.show', ['cotizacion' => $imprevisto->cotizacion_id]) }}">
+                          {{ $imprevisto->cotizacion->codigo() }}
+                        </a>
+                      </td>
+                      <td>{{ $imprevisto->tipo() }}</td>
+                      <td>{{ $imprevisto->descripcion }}</td>
+                      <td class="text-right">{{ $imprevisto->monto() }}</td>
+                      <td class="text-center">{{ $imprevisto->created_at->format('d-m-Y') }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div><!-- .tab-pane -->
+            <div id="tab5" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab5-tab" aria-expanded="false">
+              <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
+                <thead>
+                  <tr>
                     <th scope="col" class="text-center">#</th>
                     <th scope="col" class="text-center">Cotización</th>
                     <th scope="col" class="text-center">Pago</th>
@@ -465,7 +498,7 @@
             </div><!-- .tab-pane -->
             @endif
             @if($proceso->inspeccion)
-            <div id="tab5" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab5-tab">
+            <div id="tab6" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab6-tab">
               @if( !$proceso->status && $proceso->inspeccion && Auth::user()->isAdmin())
                 <a class="btn btn-success btn-fill btn-xs mb-2" href="{{ route('admin.inspeccion.edit', ['inspeccion' => $proceso->inspeccion->id]) }}">
                   <i class="fa fa-pencil"></i> Modificar inspección

@@ -137,7 +137,7 @@
               <ul class="list-group list-group-flush">
                 <li class="list-group-item" rel="tooltip" title="Total de ventas">Total ventas: {{ number_format($finanzas['ventas'], 2,',', '.') }} </li>
                 <li class="list-group-item" rel="tooltip" title="Pagos pendientes por cotizaciones abiertas">Pagos pendientes: {{ number_format($finanzas['pendiente'], 2,',', '.') }} </li>
-                <li class="list-group-item" rel="tooltip" title="Utilidades por cotizaciones cerrdas">Total utilidades: {{ number_format($finanzas['utilidades'], 2,',', '.') }} </li>
+                <li class="list-group-item" rel="tooltip" title="Utilidades por cotizaciones cerradas">Total utilidades: {{ number_format($finanzas['utilidades'], 2,',', '.') }} </li>
               </ul>
             </div>
             <div class="card-footer">

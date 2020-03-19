@@ -137,6 +137,12 @@ Route::group(['middleware' => 'auth'], function (){
           ->except(['create', 'store']);
     Route::get('cotizacion/{cotizacion}/pdf', 'CotizacionController@pdf')->name('cotizacion.pdf');
 
+    /* --- Cotizacion - Imprevistos --- */
+    Route::get('imprevisto/create/{cotizacion}', 'CotizacionImprevistoController@create')->name('imprevisto.create');
+    Route::post('imprevisto/{cotizacion}', 'CotizacionImprevistoController@store')->name('imprevisto.store');
+    Route::resource('imprevisto', 'CotizacionImprevistoController')
+          ->only(['index', 'destroy']);
+
     /* --- Pagos --- */
     Route::get('pago/create/{cotizacion}', 'PagoController@create')->name('pago.create');
     Route::post('pago/{cotizacion}', 'PagoController@store')->name('pago.store');
