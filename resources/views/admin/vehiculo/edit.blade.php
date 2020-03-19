@@ -34,19 +34,6 @@
             </div>
 
             <div class="form-group">
-              <label class="control-label" for="año">Año: *</label>
-              <select id="año" class="form-control" name="año" required>
-                <option value="">Seleccione...</option>
-                @foreach($anios as $anio)
-                  <option value="{{ $anio->id }}" {{ old('anio') == $anio->id ? 'selected' : ($anio->id == $vehiculo->vehiculo_anio_id ? 'selected' : '') }}>{{ $anio->anio() }}</option>
-                @endforeach
-              </select>
-              <button class="btn btn-simple btn-link btn-sm" type="button" data-toggle="modal" data-target="#optionModal">
-                <i class="fa fa-plus" aria-hidden="true"></i> Agregar año
-              </button>
-            </div>
-
-            <div class="form-group">
               <label class="control-label" for="marca">Marca: *</label>
               <select id="marca" class="form-control" name="marca" required>
                 <option value="">Seleccione...</option>
@@ -64,7 +51,26 @@
             </div>
 
             <div class="form-group">
-              <label class="control-label" for="vin">Vin:</label>
+              <label class="control-label" for="año">Año: *</label>
+              <select id="año" class="form-control" name="año" required>
+                <option value="">Seleccione...</option>
+                @foreach($anios as $anio)
+                  <option value="{{ $anio->id }}" {{ old('anio') == $anio->id ? 'selected' : ($anio->id == $vehiculo->vehiculo_anio_id ? 'selected' : '') }}>{{ $anio->anio() }}</option>
+                @endforeach
+              </select>
+              <button class="btn btn-simple btn-link btn-sm" type="button" data-toggle="modal" data-target="#optionModal">
+                <i class="fa fa-plus" aria-hidden="true"></i> Agregar año
+              </button>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="motor">Motor <span class="text-lowercase">(cc)</span>:</label>
+              <input id="motor" class="form-control{{ $errors->has('motor') ? ' is-invalid' : '' }}" type="number" name="motor" min="0" max="9999" step="1" value="{{ old('motor', $vehiculo->motor) }}" placeholder="Motor">
+              <small class="text-muted">Solo números.</small>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="vin">VIN:</label>
               <input id="vin" class="form-control{{ $errors->has('vin') ? ' is-invalid' : '' }}" type="text" name="vin" maxlength="50" value="{{ old('vin', $vehiculo->vin) }}" placeholder="Vin">
             </div>
 
@@ -82,12 +88,6 @@
               <label class="control-label" for="km">Km:</label>
               <input id="km" class="form-control{{ $errors->has('km') ? ' is-invalid' : '' }}" type="number" name="km" min="0" max="9999999" step="0.01" value="{{ old('km', $vehiculo->km) }}" placeholder="Km">
               <small class="help-block text-muted">Solo números.</small>
-            </div>
-
-            <div class="form-group">
-              <label class="control-label" for="motor">Motor <span class="text-lowercase">(cc)</span>:</label>
-              <input id="motor" class="form-control{{ $errors->has('motor') ? ' is-invalid' : '' }}" type="number" name="motor" min="0" max="9999" step="1" value="{{ old('motor', $vehiculo->motor) }}" placeholder="Motor">
-              <small class="text-muted">Solo números.</small>
             </div>
 
             @if(count($errors) > 0)

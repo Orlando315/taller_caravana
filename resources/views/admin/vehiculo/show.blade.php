@@ -52,29 +52,11 @@
           </p>
           <hr>
 
-          <strong>VIN</strong>
-          <p class="text-muted">
-            {{ $vehiculo->vin ?? 'N/A' }}
-          </p>
-          <hr>
-
           <strong>Año</strong>
           <p class="text-muted">
             <a href="{{ route('admin.vehiculo.anio.show', ['anio' => $vehiculo->vehiculo_anio_id]) }}">
               {{ $vehiculo->anio->anio() }}
             </a>
-          </p>
-          <hr>
-
-          <strong>Color</strong>
-          <p class="text-muted">
-            {{ $vehiculo->color ?? 'N/A' }}
-          </p>
-          <hr>
-
-          <strong>Km</strong>
-          <p class="text-muted">
-            {{ $vehiculo->km() ?? 'N/A' }}
           </p>
           <hr>
 
@@ -84,10 +66,28 @@
           </p>
           <hr>
 
+          <strong>VIN</strong>
+          <p class="text-muted">
+            {{ $vehiculo->vin ?? 'N/A' }}
+          </p>
+          <hr>
+
+          <strong>Color</strong>
+          <p class="text-muted">
+            {{ $vehiculo->color ?? 'N/A' }}
+          </p>
+          <hr>
+
           <strong>Patentes</strong>
           <p class="text-muted">
             {{ $vehiculo->patentes ?? 'N/A' }}
           </p>
+
+          <strong>Km</strong>
+          <p class="text-muted">
+            {{ $vehiculo->km() ?? 'N/A' }}
+          </p>
+          <hr>
 
         </div>
         <div class="card-footer text-center">

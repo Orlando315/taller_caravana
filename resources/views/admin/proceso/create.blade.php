@@ -155,16 +155,6 @@
               @csrf
 
               <div class="form-group">
-                <label class="control-label" for="año">Año: *</label>
-                <select id="año" class="form-control" name="año" required style="width: 100%">
-                  <option value="">Seleccione...</option>
-                  @foreach($anios as $anio)
-                    <option value="{{ $anio->id }}" {{ old('anio') == $anio->id ? 'selected' : '' }}>{{ $anio->anio() }}</option>
-                  @endforeach
-                </select>
-              </div>
-
-              <div class="form-group">
                 <label class="control-label" for="marca">Marca: *</label>
                 <select id="marca" class="form-control" name="marca" required style="width: 100%">
                   <option value="">Seleccione...</option>
@@ -185,7 +175,23 @@
               </div>
 
               <div class="form-group">
-                <label class="control-label" for="vin">Vin: *</label>
+                <label class="control-label" for="año">Año: *</label>
+                <select id="año" class="form-control" name="año" required style="width: 100%">
+                  <option value="">Seleccione...</option>
+                  @foreach($anios as $anio)
+                    <option value="{{ $anio->id }}" {{ old('anio') == $anio->id ? 'selected' : '' }}>{{ $anio->anio() }}</option>
+                  @endforeach
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="motor">Motor (cc):</label>
+                <input id="motor" class="form-control{{ $errors->has('motor') ? ' is-invalid' : '' }}" type="number" name="motor" min="0" max="9999" step="1" value="{{ old('motor') }}" placeholder="Motor">
+                <small class="text-muted">Solo números.</small>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="vin">VIN: *</label>
                 <input id="vin" class="form-control{{ $errors->has('vin') ? ' is-invalid' : '' }}" type="text" name="vin" maxlength="50" value="{{ old('vin') }}" placeholder="Vin" required>
               </div>
 
@@ -205,11 +211,6 @@
                 <small class="help-block text-muted">Solo números.</small>
               </div>
 
-              <div class="form-group">
-                <label class="control-label" for="motor">Motor (cc):</label>
-                <input id="motor" class="form-control{{ $errors->has('motor') ? ' is-invalid' : '' }}" type="number" name="motor" min="0" max="9999" step="1" value="{{ old('motor') }}" placeholder="Motor">
-                <small class="text-muted">Solo números.</small>
-              </div>
 
               <div class="alert alert-dismissible alert-danger alert-option" role="alert" style="display: none">
                 <strong class="text-center">Ha ocurrido un error</strong> 

@@ -122,8 +122,8 @@
                     <th scope="col" class="text-center">#</th>
                     <th scope="col" class="text-center">Marca</th>
                     <th scope="col" class="text-center">Modelo</th>
-                    <th scope="col" class="text-center">Color</th>
                     <th scope="col" class="text-center">Año</th>
+                    <th scope="col" class="text-center">Color</th>
                     <th scope="col" class="text-center">Patentes</th>
                     <th scope="col" class="text-center">Agregado</th>
                   </tr>
@@ -138,8 +138,8 @@
                         </a>
                       </td>
                       <td>{{ $d->modelo->modelo }}</td>
-                      <td>{{ $d->color }}</td>
                       <td>{{ $d->anio->anio() }}</td>
+                      <td>{{ $d->color }}</td>
                       <td>{{ $d->patentes }}</td>
                       <td>{{ $d->createdAt() }}</td>
                     </tr>

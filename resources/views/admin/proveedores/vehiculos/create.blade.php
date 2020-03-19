@@ -24,16 +24,6 @@
             </div>
 
             <div class="form-group">
-              <label class="control-label" for="año">Año: *</label>
-              <select name="año" class="form-control" id="año" required>
-                <option>Selecciona...</option>
-                @foreach($anios as $anio)
-                  <option value="{{ $anio->id }}" {{ old('año') == $anio->id ? 'selected' : '' }}>{{ $anio->anio }}</option>
-                @endforeach
-              </select>
-            </div>
-
-            <div class="form-group">
               <label class="control-label" for="modelos">Modelos: *</label>
               <select id="modelos" class="form-control" name="modelos[]" multiple="multiple" required>
                 <option>Selecciona...</option>
@@ -43,6 +33,16 @@
                       <option value="{{ $modelo->id }}" {{ old('modelo') == $modelo->id ? 'selected' : '' }}>{{ $modelo->modelo }}</option>
                     @endforeach
                   </optgroup>
+                @endforeach
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="año">Año: *</label>
+              <select name="año" class="form-control" id="año" required>
+                <option>Selecciona...</option>
+                @foreach($anios as $anio)
+                  <option value="{{ $anio->id }}" {{ old('año') == $anio->id ? 'selected' : '' }}>{{ $anio->anio }}</option>
                 @endforeach
               </select>
             </div>
