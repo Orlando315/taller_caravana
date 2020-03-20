@@ -78,11 +78,13 @@ class Insumo extends Model
     }
 
     /**
-     * Obtener la url de la foto
+     * Obtener la url de la foto solicitada
+     *
+     * @param   string $type
      */
-    public function getPhoto()
+    public function getPhoto($type)
     {
-      return asset('storage/'.$this->foto);
+      return asset($this->{$type} ? 'storage/'.$this->{$type} : 'images/default.jpg');
     }
 
     /**

@@ -56,10 +56,10 @@ class InsumosControllers extends Controller
         'grado' => 'required|alpha_num|max:50',
         'tipo' => 'required',
         'formato' => 'required',
-        'foto' => 'required|file|mimes:jpeg,jpg,png',
-        'descripcion' => 'required|string|max:255',
-        'factura' => 'required|integer',
-        'foto_factura' => 'required|file|mimes:jpeg,jpg,png',
+        'foto' => 'nullable|file|mimes:jpeg,jpg,png',
+        'descripcion' => 'nullable|string|max:255',
+        'factura' => 'nullable|integer',
+        'foto_factura' => 'nullable|file|mimes:jpeg,jpg,png',
         'minimo' => 'nullable|numeric|min:0|max:99999999',
       ]);
 
@@ -74,12 +74,21 @@ class InsumosControllers extends Controller
 
       if($insumo->save()){
         $directory = $insumo->user_id.'/'.$insumo->id;
-        if(!Storage::exists($directory)){
+        if(($request->hasFile('foto') || $request->hasFile('foto_factura')) && !Storage::exists($directory)){
           Storage::makeDirectory($directory);
         }
-        $insumo->foto = $request->foto->store($directory);
-        $insumo->foto_factura = $request->foto_factura->store($directory);
-        $insumo->save();
+
+        if($request->hasFile('foto')){
+          $insumo->foto = $request->foto->store($directory);
+        }
+
+        if($request->hasFile('foto_factura')){
+          $insumo->foto_factura = $request->foto_factura->store($directory);
+        }
+
+        if($request->hasFile('foto') || $request->hasFile('foto_factura')){
+          $insumo->save();
+        }
 
         return redirect()->route('admin.insumos.show', ['insumo' => $insumo->id])->with([
                 'flash_message' => 'Insumo agregado exitosamente.',
@@ -144,8 +153,8 @@ class InsumosControllers extends Controller
         'tipo' => 'required',
         'formato' => 'required',
         'foto' => 'nullable|file|mimes:jpeg,jpg,png',
-        'descripcion' => 'required|string|max:255',
-        'factura' => 'required|integer',
+        'descripcion' => 'nullable|string|max:255',
+        'factura' => 'nullable|integer',
         'foto_factura' => 'nullable|file|mimes:jpeg,jpg,png',
         'minimo' => 'nullable|numeric|min:0|max:99999999',
       ]);
@@ -159,7 +168,7 @@ class InsumosControllers extends Controller
 
       if($insumo->save()){
         $directory = $insumo->user_id.'/'.$insumo->id;
-        if(!Storage::exists($directory)){
+        if(($request->hasFile('foto') || $request->hasFile('foto_factura')) && !Storage::exists($directory)){
           Storage::makeDirectory($directory);
         }
 
@@ -174,7 +183,7 @@ class InsumosControllers extends Controller
         }
 
         if($request->has('foto') || $request->has('foto_factura')){
-          $insumo->save(); 
+          $insumo->save();
         }
 
         return redirect()->route('admin.insumos.show', ['insumo' => $insumo->id])->with([

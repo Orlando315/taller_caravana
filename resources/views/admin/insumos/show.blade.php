@@ -36,7 +36,7 @@
           <div class="row">
             <div class="col-md-3 text-center">
               <figure class="figure w-100 m-0">
-                <img src="{{ $insumo->getPhoto($insumo->foto) }}" class="figure-img img-thumbnail img-fluid m-0" alt="{{ $insumo->nombre }}" style="max-height: 150px;">
+                <img src="{{ $insumo->getPhoto('foto') }}" class="figure-img img-thumbnail img-fluid m-0" alt="{{ $insumo->nombre }}" style="max-height: 150px;">
               </figure>
             </div>
             <div class="col-md-9">
@@ -49,14 +49,16 @@
                     {{ $insumo->grado }} |
                     <a href="{{ route('admin.formatos.show', ['formato' => $insumo->formato_id]) }}">{{ $insumo->formato->formato }}</a>
                   </small>
-                  <p class="m-0">{{ $insumo->descripcion }}</p>
+                  <p class="m-0">{{ $insumo->descripcion ?? 'N/A' }}</p>
                 </div>
                 <div class="col-md-5">
                   <h4 class="m-0">
                     Factura
+                    @if($insumo->foto_factura)
                     <button class="btn btn-link btn-info btn-xs" data-toggle="modal" data-target="#facturaModal"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    @endif
                   </h4>
-                  <p class="m-0"># {{ $insumo->factura }}</p>
+                  <p class="m-0"># {{ $insumo->factura ?? 'N/A' }}</p>
                   <p class="m-0">Coste: {{ optional($insumo->stockEnUso)->coste() ?? 'N/A' }}</p>
                   <p class="m-0">Venta: {{ optional($insumo->StockEnUso)->venta() ?? 'N/A' }}</p>
                 </div>
@@ -179,28 +181,30 @@
       </div>
     </div>
   </div>
-
-  <div id="facturaModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="facturaModalLabel">
-    <div class="modal-dialog dialog-top" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="facturaModalLabel">Factura</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row justify-content-md-center">
-            <div class="col-md-10 text-center">
-              <figure class="figure w-100 m-0">
-                <img src="{{ $insumo->getPhoto($insumo->foto_factura) }}" class="figure-img img-thumbnail img-fluid m-0" alt="{{ $insumo->nombre }}" style="max-height: 70vh;">
-              </figure>
+  
+  @if($insumo->foto_factura)
+    <div id="facturaModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="facturaModalLabel">
+      <div class="modal-dialog dialog-top" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="facturaModalLabel">Factura</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row justify-content-md-center">
+              <div class="col-md-10 text-center">
+                <figure class="figure w-100 m-0">
+                  <img src="{{ $insumo->getPhoto('foto_factura') }}" class="figure-img img-thumbnail img-fluid m-0" alt="{{ $insumo->nombre }}" style="max-height: 70vh;">
+                </figure>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  @endif
 
   @if(Auth::user()->isAdmin())
     <div id="delModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delModalLabel">
