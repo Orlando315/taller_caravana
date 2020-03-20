@@ -47,10 +47,18 @@ class VehiculosMarcaController extends Controller
       $marca = new VehiculosMarca($request->all());
 
       if(Auth::user()->marcas()->save($marca)){
+        if($request->ajax()){
+          return response()->json(['response' => true, 'option' => ['id' => $marca->id, 'option' => $marca->marca]]);
+        }
+
         return redirect()->route('admin.vehiculo.marca.show', ['marca' => $marca->id])->with([
                 'flash_message' => 'Marca agregada exitosamente.',
                 'flash_class' => 'alert-success'
               ]);
+      }
+
+      if($request->ajax()){
+        return response()->json(['response' => false]);
       }
 
       return redirect()->route('admin.vehiculo.marca.create')->withInput()->with([

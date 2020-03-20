@@ -11,7 +11,7 @@
   @include('partials.flash')
 
   <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="col-md-12">
       <div class="card">
         <div class="card-body">
           <form action="{{ route('admin.vehiculo.store') }}" method="POST">
@@ -19,77 +19,100 @@
 
             <h4>Agregar Vehículo</h4>
 
-            <div class="form-group">
-              <label class="control-label" for="cliente">Cliente: *</label>
-              <select id="cliente" class="form-control" name="cliente" required>
-                <option value="">Seleccione...</option>
-                @foreach($clientes as $c)
-                  <option value="{{ $c->id }}" {{ old('cliente') == $c->id ? 'selected' : (optional($cliente)->id == $c->id ? 'selected' : '') }}>{{ $c->nombre() }}</option>
-                @endforeach
-              </select>
-              <button class="btn btn-simple btn-link btn-sm" type="button" data-toggle="modal" data-target="#clienteModal">
-                <i class="fa fa-plus" aria-hidden="true"></i> Agregar Cliente
-              </button>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="cliente">Cliente: *</label>
+                  <select id="cliente" class="form-control" name="cliente" required>
+                    <option value="">Seleccione...</option>
+                    @foreach($clientes as $c)
+                      <option value="{{ $c->id }}" {{ old('cliente') == $c->id ? 'selected' : (optional($cliente)->id == $c->id ? 'selected' : '') }}>{{ $c->nombre() }}</option>
+                    @endforeach
+                  </select>
+                  <button class="btn btn-simple btn-link btn-sm" type="button" data-toggle="modal" data-target="#clienteModal">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Agregar Cliente
+                  </button>
+                </div>
+              </div>
             </div>
-
-            <div class="form-group">
-              <label class="control-label" for="marca">Marca: *</label>
-              <select id="marca" class="form-control" name="marca" required>
-                <option value="">Seleccione...</option>
-                @foreach($marcas as $marca)
-                  <option value="{{ $marca->id }}" {{ old('marca') == $marca->id ? 'selected' : '' }}>{{ $marca->marca }}</option>
-                @endforeach
-              </select>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="marca">Marca: *</label>
+                  <select id="marca" class="form-control" name="marca" required>
+                    <option value="">Seleccione...</option>
+                    @foreach($marcas as $marca)
+                      <option value="{{ $marca->id }}" {{ old('marca') == $marca->id ? 'selected' : '' }}>{{ $marca->marca }}</option>
+                    @endforeach
+                  </select>
+                  <button class="btn btn-simple btn-link btn-sm" type="button" data-toggle="modal" data-target="#optionModal" data-option="marca">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Agregar marca
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="modelo">Modelo: *</label>
+                  <select id="modelo" class="form-control" name="modelo" required disabled>
+                    <option value="">Seleccione...</option>
+                    @foreach($marca->modelos as $modelo)
+                      <option value="{{ $modelo->id }}" {{ old('modelo') == $modelo->id ? 'selected' : '' }}>{{ $modelo->modelo }}</option>
+                    @endforeach
+                  </select>
+                  <button class="btn btn-simple btn-link btn-sm btn-modelo" type="button" data-toggle="modal" data-target="#optionModal" data-option="modelo" disabled>
+                    <i class="fa fa-plus" aria-hidden="true"></i> Agregar modelo
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-3">
+                
+                <div class="form-group">
+                  <label class="control-label" for="año">Año: *</label>
+                  <select id="año" class="form-control" name="año" required>
+                    <option value="">Seleccione...</option>
+                    @foreach($anios as $anio)
+                      <option value="{{ $anio->id }}" {{ old('anio') == $anio->id ? 'selected' : '' }}>{{ $anio->anio() }}</option>
+                    @endforeach
+                  </select>
+                  <button class="btn btn-simple btn-link btn-sm" type="button" data-toggle="modal" data-target="#optionModal" data-option="año">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Agregar año
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="motor">Motor (cc):</label>
+                  <input id="motor" class="form-control{{ $errors->has('motor') ? ' is-invalid' : '' }}" type="number" name="motor" min="0" max="9999" step="1" value="{{ old('motor') }}" placeholder="Motor">
+                  <small class="text-muted">Solo números.</small>
+                </div>
+              </div>
             </div>
-
-            <div class="form-group">
-              <label class="control-label" for="modelo">Modelo: *</label>
-              <select id="modelo" class="form-control" name="modelo" required disabled>
-                <option value="">Seleccione...</option>
-                @foreach($marca->modelos as $modelo)
-                  <option value="{{ $modelo->id }}" {{ old('modelo') == $modelo->id ? 'selected' : '' }}>{{ $modelo->modelo }}</option>
-                @endforeach
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label class="control-label" for="año">Año: *</label>
-              <select id="año" class="form-control" name="año" required>
-                <option value="">Seleccione...</option>
-                @foreach($anios as $anio)
-                  <option value="{{ $anio->id }}" {{ old('anio') == $anio->id ? 'selected' : '' }}>{{ $anio->anio() }}</option>
-                @endforeach
-              </select>
-              <button class="btn btn-simple btn-link btn-sm" type="button" data-toggle="modal" data-target="#optionModal">
-                <i class="fa fa-plus" aria-hidden="true"></i> Agregar año
-              </button>
-            </div>
-
-            <div class="form-group">
-              <label class="control-label" for="motor">Motor (cc):</label>
-              <input id="motor" class="form-control{{ $errors->has('motor') ? ' is-invalid' : '' }}" type="number" name="motor" min="0" max="9999" step="1" value="{{ old('motor') }}" placeholder="Motor">
-              <small class="text-muted">Solo números.</small>
-            </div>
-
-            <div class="form-group">
-              <label class="control-label" for="vin">VIN: *</label>
-              <input id="vin" class="form-control{{ $errors->has('vin') ? ' is-invalid' : '' }}" type="text" name="vin" maxlength="50" value="{{ old('vin') }}" placeholder="Vin" required>
-            </div>
-
-            <div class="form-group">
-              <label class="control-label" for="color">Color:</label>
-              <input id="color" class="form-control{{ $errors->has('color') ? ' is-invalid' : '' }}" type="text" name="color" maxlength="50" value="{{ old('color') }}" placeholder="Color">
-            </div>
-
-            <div class="form-group">
-              <label class="control-label" for="patentes">Patentes: *</label>
-              <input id="patentes" class="form-control{{ $errors->has('patentes') ? ' is-invalid' : '' }}" type="text" name="patentes" maxlength="50" value="{{ old('patentes') }}" placeholder="Patentes" required>
-            </div>
-
-            <div class="form-group">
-              <label class="control-label" for="km">Km:</label>
-              <input id="km" class="form-control{{ $errors->has('km') ? ' is-invalid' : '' }}" type="number" name="km" min="0" max="9999999" step="0.01" value="{{ old('km') }}" placeholder="Km">
-              <small class="text-muted">Solo números.</small>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="vin">VIN: *</label>
+                  <input id="vin" class="form-control{{ $errors->has('vin') ? ' is-invalid' : '' }}" type="text" name="vin" maxlength="50" value="{{ old('vin') }}" placeholder="Vin" required>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="color">Color:</label>
+                  <input id="color" class="form-control{{ $errors->has('color') ? ' is-invalid' : '' }}" type="text" name="color" maxlength="50" value="{{ old('color') }}" placeholder="Color">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="patentes">Patentes: *</label>
+                  <input id="patentes" class="form-control{{ $errors->has('patentes') ? ' is-invalid' : '' }}" type="text" name="patentes" maxlength="50" value="{{ old('patentes') }}" placeholder="Patentes" required>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="km">Km:</label>
+                  <input id="km" class="form-control{{ $errors->has('km') ? ' is-invalid' : '' }}" type="number" name="km" min="0" max="9999999" step="0.01" value="{{ old('km') }}" placeholder="Km">
+                  <small class="text-muted">Solo números.</small>
+                </div>
+              </div>
             </div>
 
             @if(count($errors) > 0)
@@ -195,20 +218,37 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="optionModalLabel">Agregar Año</h4>
+          <h4 class="modal-title" id="optionModalLabel"></h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <div class="row justify-content-md-center">
-            <form id="option-form" class="col-md-8" action="{{ route('admin.vehiculo.anio.store') }}" method="POST">
+            <form id="option-form" class="col-md-8" action="#" method="POST">
               @csrf
 
-              <div class="form-group">
-                <label id="option-label" class="control-label">Año: *</label>
-                <input class="form-control" type="number" name="año" min="1900" max="2100" required>
-              </div>
+              <fieldset id="set-año" style="display: none" disabled>
+                <div class="form-group">
+                  <label class="control-label" for="option-anio">Año: </label>
+                  <input id="option-anio" class="form-control" type="text" name="año" maxlength="20" required>
+                </div>
+              </fieldset>
+
+              <fieldset id="set-marca" style="display: none" disabled>
+                <div class="form-group">
+                  <label class="control-label" for="option-marca">Marca: *</label>
+                  <input id="option-marca" class="form-control" type="text" name="marca" maxlength="50" placeholder="Marca" required>
+                </div>
+              </fieldset>
+
+              <fieldset id="set-modelo" style="display: none" disabled>
+                <input id="option-marca-modelo" type="hidden" name="marca" value="">
+                <div class="form-group">
+                  <label class="control-label" for="option-modelo">Modelo: *</label>
+                  <input id="option-modelo" class="form-control" type="text" name="modelo" maxlength="50" required>
+                </div>
+              </fieldset>
 
               <div class="alert alert-dismissible alert-danger alert-option" role="alert" style="display: none">
                 <strong class="text-center">Ha ocurrido un error</strong> 
@@ -245,7 +285,11 @@
       $('#marca').on('change',function () {
         let marca = $(this).val()
 
-        if(!marca){ return false }
+        if(!marca){
+          $('.btn-modelo').prop('disabled', true); 
+          return false
+        }
+        $('.btn-modelo').prop('disabled', false)
 
         $.ajax({
           type: 'POST',
@@ -259,7 +303,8 @@
         .done(function (modelos) {
           $('#modelo').html('<option value="">Seleccione...</option>');
           $.each(modelos, function(k, modelo){
-            $('#modelo').append(`<option value="${modelo.id}">${modelo.modelo}</option>`)
+            let selected = modelo.id == @json(old('modelo')) ? 'selected' : ''
+            $('#modelo').append(`<option value="${modelo.id}" ${selected}>${modelo.modelo}</option>`)
           })
 
           $('#modelo').prop('disabled', false)
@@ -307,7 +352,7 @@
         })
       })
 
-      // Agregar año
+      // Agregar año, marca, modelo
       $('#option-form').submit(function(e){
         e.preventDefault()
 
@@ -315,7 +360,8 @@
         $('#option-form-errors').empty()
 
         let form = $(this),
-            action = form.attr('action');
+            action = form.attr('action'),
+            value = $('#option').val();
 
         $.ajax({
           type: 'POST',
@@ -325,9 +371,9 @@
         })
         .done(function (data) {
           if(data.response == true){
-            $(`#año`).append(`<option value="${data.anio.id}">${data.anio.anio}</option`)
-            $(`#año`).val(data.anio.id)
-            $(`#año`).trigger('change')
+            $(`#${option}`).append(`<option value="${data.option.id}">${data.option.option}</option`)
+            $(`#${option}`).val(data.option.id)
+            $(`#${option}`).trigger('change')
             $('#option-form')[0].reset()
             $('#optionModal').modal('hide')
           }else{
@@ -341,6 +387,27 @@
         .always(function () {
           $('#option-submit').prop('disabled', false)
         })
+      })
+
+      $('#optionModal').on('show.bs.modal', function(e){
+        let btn = $(e.relatedTarget)
+        option = btn.data('option')
+
+        let label = option.charAt(0).toUpperCase() + option.slice(1)
+        let url = option == 'año' ? '{{ route("admin.vehiculo.anio.store") }}' : (option == 'marca' ? '{{ Route("admin.vehiculo.marca.store") }}' : '{{ Route("admin.vehiculo.modelo.store") }}')
+
+        $('#set-año, #set-marca, #set-modelo').toggle(false)
+        $('#set-año, #set-marca, #set-modelo').prop('disabled', true)
+        $(`#set-${option}`).show()
+        $(`#set-${option}`).prop('disabled', false)
+
+        if(option == 'modelo'){
+          $('#option-marca-modelo').val($('#marca').val())
+        }
+
+        $('#option-form').attr('action', url)
+        $('#option-label').text(`${label}: *`)
+        $('#optionModalLabel').text(`Agregar ${label}`)
       })
     })
 

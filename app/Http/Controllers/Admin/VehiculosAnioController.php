@@ -48,7 +48,7 @@ class VehiculosAnioController extends Controller
 
       if(Auth::user()->anios()->save($anio)){
         if($request->ajax()){
-          return response()->json(['response' => true, 'anio' => ['id' => $anio->id, 'anio' => $anio->anio()]]);
+          return response()->json(['response' => true, 'option' => ['id' => $anio->id, 'option' => $anio->anio]]);
         }
 
         return redirect()->route('admin.vehiculo.anio.show', ['anio' => $anio->id])->with([

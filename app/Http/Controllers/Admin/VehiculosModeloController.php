@@ -51,10 +51,18 @@ class VehiculosModeloController extends Controller
       $modelo->vehiculo_marca_id = $request->marca;
 
       if(Auth::user()->modelos()->save($modelo)){
+        if($request->ajax()){
+          return response()->json(['response' => true, 'option' => ['id' => $modelo->id, 'option' => $modelo->modelo]]);
+        }
+
         return redirect()->route('admin.vehiculo.modelo.show', ['modelo' => $modelo->id])->with([
                 'flash_message' => 'Modelo agregado exitosamente.',
                 'flash_class' => 'alert-success'
               ]);
+      }
+
+      if($request->ajax()){
+        return response()->json(['response' => false]);
       }
 
       return redirect()->route('admin.vehiculo.modelo.create')->withInput()->with([

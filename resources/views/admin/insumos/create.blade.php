@@ -128,42 +128,42 @@
       </div>
     </div>
   </div>
-</div>
 
-<div id="optionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="optionModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="optionModalLabel"></h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row justify-content-md-center">
-          <div class="col-md-8">
-            <div class="alert alert-dismissible alert-danger alert-option" role="alert" style="display: none">
-              <strong class="text-center">Ha ocurrido un error</strong> 
+  <div id="optionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="optionModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="optionModalLabel"></h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row justify-content-md-center">
+            <div class="col-md-8">
+              <div class="alert alert-dismissible alert-danger alert-option" role="alert" style="display: none">
+                <strong class="text-center">Ha ocurrido un error</strong> 
 
-              <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
-                <span aria-hidden="true">&times;</span>
-              </button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
             </div>
+
+            <form id="option-form" class="col-md-8" action="#" method="POST">
+              @csrf
+
+              <div class="form-group">
+                <label id="option-label" class="control-label" for="option"></label>
+                <input id="option" class="form-control" type="text" name="option" maxlength="50" required>
+              </div>
+
+              <center>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button id="option-submit" class="btn btn-fill btn-primary" type="submit">Guardar</button>
+              </center>
+            </form>
           </div>
-
-          <form id="option-form" class="col-md-8" action="#" method="POST">
-            @csrf
-
-            <div class="form-group">
-              <label id="option-label" class="control-label" for="option"></label>
-              <input id="option" class="form-control" type="text" name="option" maxlength="50" required>
-            </div>
-
-            <center>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-              <button id="option-submit" class="btn btn-fill btn-primary" type="submit">Guardar</button>
-            </center>
-          </form>
         </div>
       </div>
     </div>

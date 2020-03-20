@@ -82,12 +82,12 @@
           <p class="text-muted">
             {{ $vehiculo->patentes ?? 'N/A' }}
           </p>
+          <hr>
 
           <strong>Km</strong>
           <p class="text-muted">
             {{ $vehiculo->km() ?? 'N/A' }}
           </p>
-          <hr>
 
         </div>
         <div class="card-footer text-center">
