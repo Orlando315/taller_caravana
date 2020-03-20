@@ -223,6 +223,6 @@ class Cotizacion extends Model
      */
     public function status()
     {
-      return $this->status ? '<span class="badge badge-success">Pago</span>' : '<span class="badge badge-secondary">Pendiente</span>';
+      return $this->status ? '<span class="badge badge-success">Pagado</span>' : '<span class="badge badge-secondary">Pendiente</span>';
     }
 }
