@@ -270,34 +270,100 @@
             
             @if($proceso->situacion)
             <div id="tab2" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab2-tab">
-              <table id="cotizaciones" class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
-                <thead>
-                  <tr>
-                    <th class="text-center">#</th>
-                    <th class="text-center">Items / Descripción</th>
-                    <th class="text-center">Valor venta</th>
-                    <th class="text-center">Cantidad</th>
-                    <th class="text-center">Valor final</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($proceso->situacion->items as $item)
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-sm font-small m-0" style="width: 100%">
+                  <tbody>
                     <tr>
-                      <td scope="row" class="text-center">{{ $loop->iteration }}</td>
-                      <td>
-                        @if($item->hasDescripcion())
-                          <a tabindex="0" class="btn btn-simple btn-link" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $item->descripcion }}">{{ $item->titulo() }}</a>
-                        @else
-                          {{ $item->titulo() }}
-                        @endif
-                      </td>
-                      <td class="text-right">{{ $item->valorVenta() }}</td>
-                      <td class="text-center">{{ $item->cantidad() }}</td>
-                      <td class="text-right">{{ $item->total() }}</td>
+                      <td colspan="4">REPUESTOS</td>
                     </tr>
-                  @endforeach
-                </tbody>
-              </table>  
+                    <tr>
+                      <th>DETALLE</th>
+                      <th>CANT</th>
+                      <th>PRECIO</th>
+                      <th>TOTAL</th>
+                    </tr>
+                    @foreach($situacionRepuestos as $repuesto)
+                      <tr>
+                        <td>{{ $repuesto->titulo() }}</td>
+                        <td class="text-center">{{ $repuesto->cantidad() }}</td>
+                        <td class="text-right">{{ $repuesto->valorVenta() }}</td>
+                        <td class="text-right">{{ $repuesto->total() }}</td>
+                      </tr>
+                    @endforeach
+                    <tr>
+                      <td colspan="2"></td>
+                      <td class="text-right"><strong>SUB TOTAL</strong></td>
+                      <td class="text-right">{{ $proceso->situacion->sumValue('total', false, 2, 'repuesto') }}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="4">LIBRICANTES E INSUMOS</td>
+                    </tr>
+                    <tr>
+                      <th>DETALLE</th>
+                      <th>CANT</th>
+                      <th>PRECIO</th>
+                      <th>TOTAL</th>
+                    </tr>
+                    @foreach($situacionInsumos as $insumo)
+                      <tr>
+                        <td>{{ $insumo->titulo() }}</td>
+                        <td class="text-center">{{ $insumo->cantidad() }}</td>
+                        <td class="text-right">{{ $insumo->valorVenta() }}</td>
+                        <td class="text-right">{{ $insumo->total() }}</td>
+                      </tr>
+                    @endforeach
+                    <tr>
+                      <td colspan="2"></td>
+                      <td class="text-right"><strong>SUB TOTAL</strong></td>
+                      <td class="text-right">{{ $proceso->situacion->sumValue('total', false, 2, 'insumo') }}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="4">MANO DE OBRA</td>
+                    </tr>
+                    <tr>
+                      <th>DETALLE</th>
+                      <th>CANT</th>
+                      <th>PRECIO</th>
+                      <th>TOTAL</th>
+                    </tr>
+                    @foreach($situacionHoras as $hora)
+                      <tr>
+                        <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $hora->descripcion ?? 'N/A' }}">{{ $hora->titulo() }}</a></td>
+                        <td class="text-center">{{ $hora->cantidad() }}</td>
+                        <td class="text-right">{{ $hora->valorVenta() }}</td>
+                        <td class="text-right">{{ $hora->total() }}</td>
+                      </tr>
+                    @endforeach
+                    <tr>
+                      <td colspan="2"></td>
+                      <td class="text-right"><strong>SUB TOTAL</strong></td>
+                      <td class="text-right">{{ $proceso->situacion->sumValue('total', false, 2, 'horas') }}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="4">OTROS</td>
+                    </tr>
+                    <tr>
+                      <th>DETALLE</th>
+                      <th>CANT</th>
+                      <th>PRECIO</th>
+                      <th>TOTAL</th>
+                    </tr>
+                    @foreach($situacionOtros as $otro)
+                      <tr>
+                        <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $otro->descripcion ?? 'N/A' }}">{{ $otro->titulo() }}</a></td>
+                        <td class="text-center">{{ $otro->cantidad() }}</td>
+                        <td class="text-right">{{ $otro->valorVenta() }}</td>
+                        <td class="text-right">{{ $otro->total() }}</td>
+                      </tr>
+                    @endforeach
+                    <tr>
+                      <td colspan="2"></td>
+                      <td class="text-right"><strong>SUB TOTAL</strong></td>
+                      <td class="text-right">{{ $proceso->situacion->sumValue('total', false, 2, 'otros') }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div><!-- .tab-pane -->
 
             <div id="tab3" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab3-tab" aria-expanded="false">

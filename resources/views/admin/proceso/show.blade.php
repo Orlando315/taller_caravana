@@ -268,9 +268,6 @@
               <a class="nav-link" id="tab3-tab" href="#tab3" role="tab" data-toggle="tab" aria-controls="tab3" aria-selected="false"><i class="fa fa-calculator"></i> Cotizaciones</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="tab4-tab" href="#tab4" role="tab" data-toggle="tab" aria-controls="tab4" aria-selected="false"><i class="fa fa-exclamation"></i> Imprevistos</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" id="tab5-tab" href="#tab5" role="tab" data-toggle="tab" aria-controls="tab5" aria-selected="false"><i class="fa fa-credit-card"></i> Pagos</a>
             </li>
             @endif
@@ -350,53 +347,184 @@
               </a>
               @endif
 
-              <table id="cotizaciones" class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
-                <thead>
-                  <tr>
-                    <th class="text-center">#</th>
-                    <th class="text-center">Items / Descripción</th>
-                    <th class="text-center">Valor venta</th>
-                    <th class="text-center">Cantidad</th>
-                    <th class="text-center">Valor final</th>
-                    <th class="text-center">Precio costo</th>
-                    <th class="text-center">Utilidad</th>
-                    <th class="text-center">Decuento</th>
-                    @if(Auth::user()->isAdmin())
-                    <th class="text-center">Acción</th>
-                    @endif
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($proceso->situacion->items as $item)
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-sm font-small m-0" style="width: 100%">
+                  <tbody>
                     <tr>
-                      <td scope="row" class="text-center">{{ $loop->iteration }}</td>
-                      <td>
-                        @if($item->hasDescripcion())
-                          <a tabindex="0" class="btn btn-simple btn-link" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $item->descripcion }}">{{ $item->titulo() }}</a>
-                        @else
-                          {{ $item->titulo() }}
-                        @endif
-                      </td>
-                      <td class="text-right">{{ $item->valorVenta() }}</td>
-                      <td class="text-center">{{ $item->cantidad() }}</td>
-                      <td class="text-right">{{ $item->total() }}</td>
-                      <td class="text-right">{{ $item->costo() }}</td>
-                      <td class="text-right">{{ $item->utilidad() }}</td>
-                      <td class="text-right">{{ $item->descuentoText() }}</td>
+                      <td colspan="{{ Auth::user()->isAdmin() ? '8' : '7' }}">REPUESTOS</td>
+                    </tr>
+                    <tr>
+                      <th>DETALLE</th>
+                      <th>PRECIO COSTO</th>
+                      <th>UTILIDAD</th>
+                      <th>DESCUENTO</th>
+                      <th>CANT</th>
+                      <th>PRECIO</th>
+                      <th>TOTAL</th>
                       @if(Auth::user()->isAdmin())
-                      <td class="text-center">
-                        @if(!$proceso->status && !$item->status)
-                        <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $item->id }}" data-type="item" data-toggle="modal"  data-target="#delSituacionModal">
-                          <i class="fa fa-times"></i>
-                        </button>
-                        @endif
-                      </td>
+                      <th class="text-center">ACCIÓN</th>
                       @endif
                     </tr>
-                  @endforeach
-                </tbody>
-              </table>
-              
+                    @foreach($situacionRepuestos as $repuesto)
+                      <tr>
+                        <td>{{ $repuesto->titulo() }}</td>
+                        <td class="text-right">{{ $repuesto->costo() }}</td>
+                        <td class="text-right">{{ $repuesto->utilidad() }}</td>
+                        <td class="text-right"></td>
+                        <td class="text-center">{{ $repuesto->cantidad() }}</td>
+                        <td class="text-right">{{ $repuesto->valorVenta() }}</td>
+                        <td class="text-right">{{ $repuesto->total() }}</td>
+                        @if(Auth::user()->isAdmin())
+                        <td class="text-center">
+                          @if(!$proceso->status && !$repuesto->status)
+                          <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $repuesto->id }}" data-type="item" data-toggle="modal"  data-target="#delSituacionModal">
+                            <i class="fa fa-times"></i>
+                          </button>
+                          @endif
+                        </td>
+                        @endif
+                      </tr>
+                    @endforeach
+                    <tr>
+                      <td colspan="5"></td>
+                      <td class="text-right"><strong>SUB TOTAL</strong></td>
+                      <td class="text-right">{{ $proceso->situacion->sumValue('total', false, 2, 'repuesto') }}</td>
+                      @if(Auth::user()->isAdmin())
+                      <td></td>
+                      @endif
+                    </tr>
+                    <tr>
+                      <td colspan="{{ Auth::user()->isAdmin() ? '8' : '7' }}">LIBRICANTES E INSUMOS</td>
+                    </tr>
+                    <tr>
+                      <th>DETALLE</th>
+                      <th>PRECIO COSTO</th>
+                      <th>UTILIDAD</th>
+                      <th>DESCUENTO</th>
+                      <th>CANT</th>
+                      <th>PRECIO</th>
+                      <th>TOTAL</th>
+                      @if(Auth::user()->isAdmin())
+                      <th class="text-center">ACCIÓN</th>
+                      @endif
+                    </tr>
+                    @foreach($situacionInsumos as $insumo)
+                      <tr>
+                        <td>{{ $insumo->titulo() }}</td>
+                        <td class="text-right">{{ $insumo->costo() }}</td>
+                        <td class="text-right">{{ $insumo->utilidad() }}</td>
+                        <td class="text-right"></td>
+                        <td class="text-center">{{ $insumo->cantidad() }}</td>
+                        <td class="text-right">{{ $insumo->valorVenta() }}</td>
+                        <td class="text-right">{{ $insumo->total() }}</td>
+                        @if(Auth::user()->isAdmin())
+                        <td class="text-center">
+                          @if(!$proceso->status && !$insumo->status)
+                          <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $insumo->id }}" data-type="item" data-toggle="modal"  data-target="#delSituacionModal">
+                            <i class="fa fa-times"></i>
+                          </button>
+                          @endif
+                        </td>
+                        @endif
+                      </tr>
+                    @endforeach
+                    <tr>
+                      <td colspan="5"></td>
+                      <td class="text-right"><strong>SUB TOTAL</strong></td>
+                      <td class="text-right">{{ $proceso->situacion->sumValue('total', false, 2, 'insumo') }}</td>
+                      @if(Auth::user()->isAdmin())
+                      <td></td>
+                      @endif
+                    </tr>
+                    <tr>
+                      <td colspan="{{ Auth::user()->isAdmin() ? '8' : '7' }}">MANO DE OBRA</td>
+                    </tr>
+                    <tr>
+                      <th>DETALLE</th>
+                      <th>PRECIO COSTO</th>
+                      <th>UTILIDAD</th>
+                      <th>DESCUENTO</th>
+                      <th>CANT</th>
+                      <th>PRECIO</th>
+                      <th>TOTAL</th>
+                      @if(Auth::user()->isAdmin())
+                      <th class="text-center">ACCIÓN</th>
+                      @endif
+                    </tr>
+                    @foreach($situacionHoras as $hora)
+                      <tr>
+                        <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $hora->descripcion ?? 'N/A' }}">{{ $hora->titulo() }}</a></td>
+                        <td class="text-right">{{ $hora->costo() }}</td>
+                        <td class="text-right">{{ $hora->utilidad() }}</td>
+                        <td class="text-right">{{ $hora->descuentoText() }}</td>
+                        <td class="text-center">{{ $hora->cantidad() }}</td>
+                        <td class="text-right">{{ $hora->valorVenta() }}</td>
+                        <td class="text-right">{{ $hora->total() }}</td>
+                        @if(Auth::user()->isAdmin())
+                        <td class="text-center">
+                          @if(!$proceso->status && !$hora->status)
+                          <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $hora->id }}" data-type="item" data-toggle="modal"  data-target="#delSituacionModal">
+                            <i class="fa fa-times"></i>
+                          </button>
+                          @endif
+                        </td>
+                        @endif
+                      </tr>
+                    @endforeach
+                    <tr>
+                      <td colspan="5"></td>
+                      <td class="text-right"><strong>SUB TOTAL</strong></td>
+                      <td class="text-right">{{ $proceso->situacion->sumValue('total', false, 2, 'horas') }}</td>
+                      @if(Auth::user()->isAdmin())
+                      <td></td>
+                      @endif
+                    </tr>
+                    <tr>
+                      <td colspan="{{ Auth::user()->isAdmin() ? '8' : '7' }}">OTROS</td>
+                    </tr>
+                    <tr>
+                      <th>DETALLE</th>
+                      <th>PRECIO COSTO</th>
+                      <th>UTILIDAD</th>
+                      <th>DESCUENTO</th>
+                      <th>CANT</th>
+                      <th>PRECIO</th>
+                      <th>TOTAL</th>
+                      @if(Auth::user()->isAdmin())
+                      <th class="text-center">ACCIÓN</th>
+                      @endif
+                    </tr>
+                    @foreach($situacionOtros as $otro)
+                      <tr>
+                        <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $otro->descripcion ?? 'N/A' }}">{{ $otro->titulo() }}</a></td>
+                        <td class="text-right">{{ $otro->costo() }}</td>
+                        <td class="text-right">{{ $otro->utilidad() }}</td>
+                        <td class="text-right">{{ $otro->descuentoText() }}</td>
+                        <td class="text-center">{{ $otro->cantidad() }}</td>
+                        <td class="text-right">{{ $otro->valorVenta() }}</td>
+                        <td class="text-right">{{ $otro->total() }}</td>
+                        @if(Auth::user()->isAdmin())
+                        <td class="text-center">
+                          @if(!$proceso->status && !$otro->status)
+                          <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $otro->id }}" data-type="item" data-toggle="modal"  data-target="#delSituacionModal">
+                            <i class="fa fa-times"></i>
+                          </button>
+                          @endif
+                        </td>
+                        @endif
+                      </tr>
+                    @endforeach
+                    <tr>
+                      <td colspan="5"></td>
+                      <td class="text-right"><strong>SUB TOTAL</strong></td>
+                      <td class="text-right">{{ $proceso->situacion->sumValue('total', false, 2, 'otros') }}</td>
+                      @if(Auth::user()->isAdmin())
+                      <td></td>
+                      @endif
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div><!-- .tab-pane -->
             <div id="tab3" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab3-tab" aria-expanded="false">
               @if( !$proceso->status && ($proceso->etapa == 4 || $proceso->etapa == 5) && Auth::user()->isAdmin())
@@ -432,39 +560,9 @@
                       <td class="text-center">{{ $cotizacion->items->count() }}</td>
                       <td class="text-right">{{ $cotizacion->total(false) }}</td>
                       <td class="text-right">{{ $cotizacion->pagado(false) }}</td>
-                      <td class="text-right">{{ $cotizacion->utilidad() }}</td>
+                      <td class="text-right">{{ $cotizacion->utilidad(false) }}</td>
                       <td class="text-center">{{ $cotizacion->created_at->format('d-m-Y H:i:s') }}</td>
                       <td class="text-center">{!! $cotizacion->status() !!}</td>
-                    </tr>
-                  @endforeach
-                </tbody>
-              </table>
-            </div><!-- .tab-pane -->
-            <div id="tab4" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab4-tab" aria-expanded="false">
-              <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Cotización</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Monto</th>
-                    <th scope="col">Fecha</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($imprevistos as $imprevisto)
-                    <tr>
-                      <td scope="row" class="text-center">{{ $loop->iteration }}</td>
-                      <td>
-                        <a href="{{ route('admin.cotizacion.show', ['cotizacion' => $imprevisto->cotizacion_id]) }}">
-                          {{ $imprevisto->cotizacion->codigo() }}
-                        </a>
-                      </td>
-                      <td>{{ $imprevisto->tipo() }}</td>
-                      <td>{{ $imprevisto->descripcion }}</td>
-                      <td class="text-right">{{ $imprevisto->monto() }}</td>
-                      <td class="text-center">{{ $imprevisto->created_at->format('d-m-Y') }}</td>
                     </tr>
                   @endforeach
                 </tbody>

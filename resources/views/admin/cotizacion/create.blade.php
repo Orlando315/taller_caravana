@@ -28,17 +28,19 @@
             <p class="text-center text-muted">Seleccione los items que deben formar parte de la cotización</p>
 
             <div class="table-responsive">
-              <table class="table table-striped table-bordered table-hover table-sm" style="width: 100%">
-                <thead>
+              <table class="table table-striped table-bordered table-hover table-sm font-small" style="width: 100%">
+                <tbody>
                   <tr>
-                    <th class="text-center">#</th>
-                    <th class="text-center">Items / Descripción</th>
-                    <th class="text-center">Valor venta</th>
-                    <th class="text-center">Cantidad</th>
-                    <th class="text-center">Valor final</th>
-                    <th class="text-center">Precio costo</th>
-                    <th class="text-center">Utilidad</th>
-                    <th class="text-center">Decuento</th>
+                    <td colspan="8">REPUESTOS</td>
+                  </tr>
+                  <tr>
+                    <th>DETALLE</th>
+                    <th>PRECIO COSTO</th>
+                    <th>UTILIDAD</th>
+                    <th>DESCUENTO</th>
+                    <th>CANT</th>
+                    <th>PRECIO</th>
+                    <th>TOTAL</th>
                     <td class="text-center">
                       <div class="form-group m-0">
                         <div class="form-check only-check">
@@ -48,32 +50,137 @@
                           </label>
                         </div>
                       </div>
-                    </th>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  @foreach($items as $item)
+                  @foreach($repuestos as $repuesto)
                     <tr>
-                      <td scope="row">{{ $loop->iteration }}</td>
-                      <td>
-                        @if($item->hasDescripcion())
-                          <a tabindex="0" class="btn btn-simple btn-link" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $item->descripcion }}">{{ $item->titulo() }}</a>
-                        @else
-                          {{ $item->titulo() }}
-                        @endif
-                      </td>
-                      <td class="text-right">{{ $item->valorVenta() }}</td>
-                      <td class="text-center">{{ $item->cantidad() }}</td>
-                      <td class="text-right">{{ $item->total() }}</td>
-                      <td class="text-right">{{ $item->costo() }}</td>
-                      <td class="text-right">{{ $item->utilidad() }}</td>
-                      <td class="text-right">{{ $item->descuentoText() }}</td>
+                      <td>{{ $repuesto->titulo() }}</td>
+                      <td class="text-right">{{ $repuesto->costo() }}</td>
+                      <td class="text-right">{{ $repuesto->utilidad() }}</td>
+                      <td class="text-right"></td>
+                      <td class="text-center">{{ $repuesto->cantidad() }}</td>
+                      <td class="text-right">{{ $repuesto->valorVenta() }}</td>
+                      <td class="text-right">{{ $repuesto->total() }}</td>
                       <td class="text-center">
-                        @if(!$item->status)
+                        @if(!$repuesto->status)
                         <div class="form-group m-0">
                           <div class="form-check only-check">
                             <label class="form-check-label">
-                              <input class="form-check-input items-check" type="checkbox" name="items[]" value="{{ $item->id }}">
+                              <input class="form-check-input items-check" type="checkbox" name="items[]" value="{{ $repuesto->id }}">
+                              <span class="form-check-sign"></span>
+                            </label>
+                          </div>
+                        </div>
+                        @else
+                          -
+                        @endif
+                      </td>
+                    </tr>
+                  @endforeach
+                  <tr>
+                    <td colspan="8">LIBRICANTES E INSUMOS</td>
+                  </tr>
+                  <tr>
+                    <th>DETALLE</th>
+                    <th>PRECIO COSTO</th>
+                    <th>UTILIDAD</th>
+                    <th>DESCUENTO</th>
+                    <th>CANT</th>
+                    <th>PRECIO</th>
+                    <th>TOTAL</th>
+                    <th></th>
+                  </tr>
+                  @foreach($insumos as $insumo)
+                    <tr>
+                      <td>{{ $insumo->titulo() }}</td>
+                      <td class="text-right">{{ $insumo->costo() }}</td>
+                      <td class="text-right">{{ $insumo->utilidad() }}</td>
+                      <td class="text-right"></td>
+                      <td class="text-center">{{ $insumo->cantidad() }}</td>
+                      <td class="text-right">{{ $insumo->valorVenta() }}</td>
+                      <td class="text-right">{{ $insumo->total() }}</td>
+                      <td class="text-center">
+                        @if(!$insumo->status)
+                        <div class="form-group m-0">
+                          <div class="form-check only-check">
+                            <label class="form-check-label">
+                              <input class="form-check-input items-check" type="checkbox" name="items[]" value="{{ $insumo->id }}">
+                              <span class="form-check-sign"></span>
+                            </label>
+                          </div>
+                        </div>
+                        @else
+                          -
+                        @endif
+                      </td>
+                    </tr>
+                  @endforeach
+                  <tr>
+                    <td colspan="8">MANO DE OBRA</td>
+                  </tr>
+                  <tr>
+                    <th>DETALLE</th>
+                    <th>PRECIO COSTO</th>
+                    <th>UTILIDAD</th>
+                    <th>DESCUENTO</th>
+                    <th>CANT</th>
+                    <th>PRECIO</th>
+                    <th>TOTAL</th>
+                    <th></th>
+                  </tr>
+                  @foreach($horas as $hora)
+                    <tr>
+                      <td><a tabindex="0" class="btn btn-simple btn-link" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $hora->descripcion ?? 'N/A' }}">{{ $hora->titulo() }}</a></td>
+                      <td class="text-right">{{ $hora->costo() }}</td>
+                      <td class="text-right">{{ $hora->utilidad() }}</td>
+                      <td class="text-right">{{ $hora->descuentoText() }}</td>
+                      <td class="text-center">{{ $hora->cantidad() }}</td>
+                      <td class="text-right">{{ $hora->valorVenta() }}</td>
+                      <td class="text-right">{{ $hora->total() }}</td>
+                      <td class="text-center">
+                        @if(!$hora->status)
+                        <div class="form-group m-0">
+                          <div class="form-check only-check">
+                            <label class="form-check-label">
+                              <input class="form-check-input items-check" type="checkbox" name="items[]" value="{{ $hora->id }}">
+                              <span class="form-check-sign"></span>
+                            </label>
+                          </div>
+                        </div>
+                        @else
+                          -
+                        @endif
+                      </td>
+                    </tr>
+                  @endforeach
+                  <tr>
+                    <td colspan="8">OTROS</td>
+                  </tr>
+                  <tr>
+                    <th>DETALLE</th>
+                    <th>PRECIO COSTO</th>
+                    <th>UTILIDAD</th>
+                    <th>DESCUENTO</th>
+                    <th>CANT</th>
+                    <th>PRECIO</th>
+                    <th>TOTAL</th>
+                    <th></th>
+                  </tr>
+                  @foreach($otros as $otro)
+                    <tr>
+                      <td><a tabindex="0" class="btn btn-simple btn-link" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $otro->descripcion ?? 'N/A' }}">{{ $otro->titulo() }}</a></td>
+                      <td class="text-right">{{ $otro->costo() }}</td>
+                      <td class="text-right">{{ $otro->utilidad() }}</td>
+                      <td class="text-right">{{ $otro->descuentoText() }}</td>
+                      <td class="text-center">{{ $otro->cantidad() }}</td>
+                      <td class="text-right">{{ $otro->valorVenta() }}</td>
+                      <td class="text-right">{{ $otro->total() }}</td>
+                      <td class="text-center">
+                        @if(!$otro->status)
+                        <div class="form-group m-0">
+                          <div class="form-check only-check">
+                            <label class="form-check-label">
+                              <input class="form-check-input items-check" type="checkbox" name="items[]" value="{{ $otro->id }}">
                               <span class="form-check-sign"></span>
                             </label>
                           </div>

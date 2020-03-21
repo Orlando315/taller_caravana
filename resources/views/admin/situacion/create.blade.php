@@ -121,47 +121,37 @@
           <form action="{{ route('admin.situacion.store', ['proceso' => $proceso->id]) }}" method="POST">
             @csrf
             <div class="table-responsive">
-              <table class="table table-striped table-sm table-bordered">
+              <table class="table table-striped table-bordered table-hover table-sm font-small m-0" style="width: 100%">
                 <thead>
                   <tr>
-                    <th class="text-center">-</th>
-                    <th class="text-center">Items / Descripción</th>
-                    <th class="text-center">Valor venta</th>
-                    <th class="text-center">Cantidad</th>
-                    <th class="text-center">Valor final</th>
-                    <th class="text-center">Precio costo</th>
-                    <th class="text-center">Utilidad</th>
-                    <th class="text-center">Decuento</th>
+                    <td colspan="8">REPUESTOS</td>
+                  </tr>
+                  <tr>
+                    <th style="width: 5%"></th>
+                    <th style="width: 40%">DETALLE</th>
+                    <th style="width: 10%">PRECIO COSTO</th>
+                    <th style="width: 10%">UTILIDAD</th>
+                    <th style="width: 10%">DESCUENTO</th>
+                    <th style="width: 5%">CANT</th>
+                    <th style="width: 10%">PRECIO</th>
+                    <th style="width: 10%">TOTAL</th>
                   </tr>
                 </thead>
-                <tbody id="tbody">
+                <tbody id="tbody-repuesto">
                   @if(old('datos'))
                     @foreach(old('datos') as $dato)
+                      @continue(old('datos.'.$loop->iteration.'.type') != 'repuesto')
+                      
                       <tr id="tr-{{ $loop->iteration }}" class="tr-dato">
                         <td>
                           <button class="btn btn-danger btn-fill btn-xs btn-delete" type="button" role="button" data-id="{{ $loop->iteration }}"><i class="fa fa-trash"></i></button>
                         </td>
                         <td>
                           {{ old('datos.'.$loop->iteration.'.titulo') }}
-                          @if(old('datos.'.$loop->iteration.'.type') == 'horas' || old('datos.'.$loop->iteration.'.type') == 'otros')
-                            <p class="m-0"><small>{{ old('datos.'.$loop->iteration.'.descripcion') }}</small></p>
-                          @endif
                           <input type="hidden" name="datos[{{ $loop->iteration }}][item]" value="{{ old('datos.'.$loop->iteration.'.item') }}">
                           <input type="hidden" name="datos[{{ $loop->iteration }}][type]" value="{{ old('datos.'.$loop->iteration.'.type') }}">
                           <input type="hidden" name="datos[{{ $loop->iteration }}][titulo]" value="{{ old('datos.'.$loop->iteration.'.titulo') }}">
                           <input type="hidden" name="datos[{{ $loop->iteration }}][descripcion]" value="{{ old('datos.'.$loop->iteration.'.descripcion') }}">
-                        </td>
-                        <td class="text-right">
-                          {{ old('datos.'.$loop->iteration.'.valor_venta') }}
-                          <input type="hidden" name="datos[{{ $loop->iteration }}][valor_venta]" value="{{ old('datos.'.$loop->iteration.'.valor_venta') }}">
-                        </td>
-                        <td class="text-right">
-                          {{ old('datos.'.$loop->iteration.'.cantidad') }}
-                          <input type="hidden" name="datos[{{ $loop->iteration }}][cantidad]" value="{{ old('datos.'.$loop->iteration.'.cantidad') }}">
-                        </td>
-                        <td class="text-right">
-                          {{ old('datos.'.$loop->iteration.'.total') }}
-                          <input type="hidden" name="datos[{{ $loop->iteration }}][total]" value="{{ old('datos.'.$loop->iteration.'.total') }}">
                         </td>
                         <td class="text-right">
                           {{ old('datos.'.$loop->iteration.'.costo') }}
@@ -176,6 +166,212 @@
                           <input type="hidden" name="datos[{{ $loop->iteration }}][descuento_text]" value="{{ old('datos.'.$loop->iteration.'.descuento_text') }}">
                           <input type="hidden" name="datos[{{ $loop->iteration }}][descuento_type]" value="{{ old('datos.'.$loop->iteration.'.descuento_type') }}">
                           <input type="hidden" name="datos[{{ $loop->iteration }}][descuento]" value="{{ old('datos.'.$loop->iteration.'.descuento') }}">
+                        </td>
+                        <td class="text-center">
+                          {{ old('datos.'.$loop->iteration.'.cantidad') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][cantidad]" value="{{ old('datos.'.$loop->iteration.'.cantidad') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.valor_venta') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][valor_venta]" value="{{ old('datos.'.$loop->iteration.'.valor_venta') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.total') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][total]" value="{{ old('datos.'.$loop->iteration.'.total') }}">
+                        </td>
+                      </tr>
+                    @endforeach
+                  @endif
+                </tbody>
+              </table>
+
+              <table class="table table-striped table-bordered table-hover table-sm font-small m-0" style="width: 100%">
+                <thead>
+                  <tr>
+                    <td colspan="8">LIBRICANTES E INSUMOS</td>
+                  </tr>
+                  <tr>
+                    <th style="width: 5%"></th>
+                    <th style="width: 40%">DETALLE</th>
+                    <th style="width: 10%">PRECIO COSTO</th>
+                    <th style="width: 10%">UTILIDAD</th>
+                    <th style="width: 10%">DESCUENTO</th>
+                    <th style="width: 5%">CANT</th>
+                    <th style="width: 10%">PRECIO</th>
+                    <th style="width: 10%">TOTAL</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-insumo">
+                  @if(old('datos'))
+                    @foreach(old('datos') as $dato)
+                      @continue(old('datos.'.$loop->iteration.'.type') != 'insumo')
+                      
+                      <tr id="tr-{{ $loop->iteration }}" class="tr-dato">
+                        <td>
+                          <button class="btn btn-danger btn-fill btn-xs btn-delete" type="button" role="button" data-id="{{ $loop->iteration }}"><i class="fa fa-trash"></i></button>
+                        </td>
+                        <td>
+                          {{ old('datos.'.$loop->iteration.'.titulo') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][item]" value="{{ old('datos.'.$loop->iteration.'.item') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][type]" value="{{ old('datos.'.$loop->iteration.'.type') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][titulo]" value="{{ old('datos.'.$loop->iteration.'.titulo') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][descripcion]" value="{{ old('datos.'.$loop->iteration.'.descripcion') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.costo') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][costo]" value="{{ old('datos.'.$loop->iteration.'.costo') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.utilidad') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][utilidad]" value="{{ old('datos.'.$loop->iteration.'.utilidad') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.descuento_text') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][descuento_text]" value="{{ old('datos.'.$loop->iteration.'.descuento_text') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][descuento_type]" value="{{ old('datos.'.$loop->iteration.'.descuento_type') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][descuento]" value="{{ old('datos.'.$loop->iteration.'.descuento') }}">
+                        </td>
+                        <td class="text-center">
+                          {{ old('datos.'.$loop->iteration.'.cantidad') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][cantidad]" value="{{ old('datos.'.$loop->iteration.'.cantidad') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.valor_venta') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][valor_venta]" value="{{ old('datos.'.$loop->iteration.'.valor_venta') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.total') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][total]" value="{{ old('datos.'.$loop->iteration.'.total') }}">
+                        </td>
+                      </tr>
+                    @endforeach
+                  @endif
+                </tbody>
+              </table>
+
+              <table class="table table-striped table-bordered table-hover table-sm font-small m-0" style="width: 100%">
+                <thead>
+                  <tr>
+                    <td colspan="8">MANO DE OBRA</td>
+                  </tr>
+                  <tr>
+                    <th style="width: 5%"></th>
+                    <th style="width: 40%">DETALLE</th>
+                    <th style="width: 10%">PRECIO COSTO</th>
+                    <th style="width: 10%">UTILIDAD</th>
+                    <th style="width: 10%">DESCUENTO</th>
+                    <th style="width: 5%">CANT</th>
+                    <th style="width: 10%">PRECIO</th>
+                    <th style="width: 10%">TOTAL</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-horas">
+                  @if(old('datos'))
+                    @foreach(old('datos') as $dato)
+                      @continue(old('datos.'.$loop->iteration.'.type') != 'horas')
+                      
+                      <tr id="tr-{{ $loop->iteration }}" class="tr-dato">
+                        <td>
+                          <button class="btn btn-danger btn-fill btn-xs btn-delete" type="button" role="button" data-id="{{ $loop->iteration }}"><i class="fa fa-trash"></i></button>
+                        </td>
+                        <td>
+                          {{ old('datos.'.$loop->iteration.'.titulo') }}
+                          <p class="m-0"><small>{{ old('datos.'.$loop->iteration.'.descripcion') }}</small></p>
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][item]" value="{{ old('datos.'.$loop->iteration.'.item') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][type]" value="{{ old('datos.'.$loop->iteration.'.type') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][titulo]" value="{{ old('datos.'.$loop->iteration.'.titulo') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][descripcion]" value="{{ old('datos.'.$loop->iteration.'.descripcion') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.costo') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][costo]" value="{{ old('datos.'.$loop->iteration.'.costo') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.utilidad') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][utilidad]" value="{{ old('datos.'.$loop->iteration.'.utilidad') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.descuento_text') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][descuento_text]" value="{{ old('datos.'.$loop->iteration.'.descuento_text') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][descuento_type]" value="{{ old('datos.'.$loop->iteration.'.descuento_type') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][descuento]" value="{{ old('datos.'.$loop->iteration.'.descuento') }}">
+                        </td>
+                        <td class="text-center">
+                          {{ old('datos.'.$loop->iteration.'.cantidad') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][cantidad]" value="{{ old('datos.'.$loop->iteration.'.cantidad') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.valor_venta') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][valor_venta]" value="{{ old('datos.'.$loop->iteration.'.valor_venta') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.total') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][total]" value="{{ old('datos.'.$loop->iteration.'.total') }}">
+                        </td>
+                      </tr>
+                    @endforeach
+                  @endif
+                </tbody>
+              </table>
+
+              <table class="table table-striped table-bordered table-hover table-sm font-small" style="width: 100%">
+                <thead>
+                  <tr>
+                    <td colspan="8">OTROS</td>
+                  </tr>
+                  <tr>
+                    <th style="width: 5%"></th>
+                    <th style="width: 40%">DETALLE</th>
+                    <th style="width: 10%">PRECIO COSTO</th>
+                    <th style="width: 10%">UTILIDAD</th>
+                    <th style="width: 10%">DESCUENTO</th>
+                    <th style="width: 5%">CANT</th>
+                    <th style="width: 10%">PRECIO</th>
+                    <th style="width: 10%">TOTAL</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-otros">
+                  @if(old('datos'))
+                    @foreach(old('datos') as $dato)
+                      @continue(old('datos.'.$loop->iteration.'.type') != 'otros')
+                      
+                      <tr id="tr-{{ $loop->iteration }}" class="tr-dato">
+                        <td>
+                          <button class="btn btn-danger btn-fill btn-xs btn-delete" type="button" role="button" data-id="{{ $loop->iteration }}"><i class="fa fa-trash"></i></button>
+                        </td>
+                        <td>
+                          {{ old('datos.'.$loop->iteration.'.titulo') }}
+                          <p class="m-0"><small>{{ old('datos.'.$loop->iteration.'.descripcion') }}</small></p>
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][item]" value="{{ old('datos.'.$loop->iteration.'.item') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][type]" value="{{ old('datos.'.$loop->iteration.'.type') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][titulo]" value="{{ old('datos.'.$loop->iteration.'.titulo') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][descripcion]" value="{{ old('datos.'.$loop->iteration.'.descripcion') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.costo') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][costo]" value="{{ old('datos.'.$loop->iteration.'.costo') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.utilidad') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][utilidad]" value="{{ old('datos.'.$loop->iteration.'.utilidad') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.descuento_text') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][descuento_text]" value="{{ old('datos.'.$loop->iteration.'.descuento_text') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][descuento_type]" value="{{ old('datos.'.$loop->iteration.'.descuento_type') }}">
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][descuento]" value="{{ old('datos.'.$loop->iteration.'.descuento') }}">
+                        </td>
+                        <td class="text-center">
+                          {{ old('datos.'.$loop->iteration.'.cantidad') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][cantidad]" value="{{ old('datos.'.$loop->iteration.'.cantidad') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.valor_venta') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][valor_venta]" value="{{ old('datos.'.$loop->iteration.'.valor_venta') }}">
+                        </td>
+                        <td class="text-right">
+                          {{ old('datos.'.$loop->iteration.'.total') }}
+                          <input type="hidden" name="datos[{{ $loop->iteration }}][total]" value="{{ old('datos.'.$loop->iteration.'.total') }}">
                         </td>
                       </tr>
                     @endforeach
@@ -212,7 +408,7 @@
         placeholder: 'Seleccione...',
       });
 
-      $('#tbody').on('click', '.btn-delete', deleteRow)
+      $('tbody[id^="tbody-"]').on('click', '.btn-delete', deleteRow)
 
       $('#porcentaje').change(function (){ 
         let check = $(this).is(':checked')
@@ -289,7 +485,7 @@
 
         let index = ($('.tr-dato').length + 1)
 
-        $('#tbody').append(dato(index, item))
+        $(`#tbody-${tipo}`).append(dato(index, item))
 
         $('#cantidad, #descuento, #venta, #descripcion').val('')
         $('#porcentaje').prop('checked', false)
@@ -322,18 +518,6 @@
                   <input type="hidden" name="datos[${index}][descripcion]" value="${dato.descripcion}">
                 </td>
                 <td class="text-right">
-                  ${dato.venta.toLocaleString('de-DE')}
-                  <input type="hidden" name="datos[${index}][valor_venta]" value="${dato.venta}">
-                </td>
-                <td class="text-right">
-                  ${dato.cantidad}
-                  <input type="hidden" name="datos[${index}][cantidad]" value="${dato.cantidad}">
-                </td>
-                <td class="text-right">
-                  ${dato.total.toLocaleString('de-DE')}
-                  <input type="hidden" name="datos[${index}][total]" value="${dato.total}">
-                </td>
-                <td class="text-right">
                   ${dato.costo.toLocaleString('de-DE')}
                   <input type="hidden" name="datos[${index}][costo]" value="${dato.costo}">
                 </td>
@@ -346,6 +530,18 @@
                   <input type="hidden" name="datos[${index}][descuento_text]" value="${dato.descuento.text}">
                   <input type="hidden" name="datos[${index}][descuento_type]" value="${dato.descuento.tipo}">
                   <input type="hidden" name="datos[${index}][descuento]" value="${dato.descuento.cantidad}">
+                </td>
+                <td class="text-center">
+                  ${dato.cantidad}
+                  <input type="hidden" name="datos[${index}][cantidad]" value="${dato.cantidad}">
+                </td>
+                <td class="text-right">
+                  ${dato.venta.toLocaleString('de-DE')}
+                  <input type="hidden" name="datos[${index}][valor_venta]" value="${dato.venta}">
+                </td>
+                <td class="text-right">
+                  ${dato.total.toLocaleString('de-DE')}
+                  <input type="hidden" name="datos[${index}][total]" value="${dato.total}">
                 </td>
               </tr>`
     }

@@ -70,6 +70,16 @@ class Situacion extends Model
     }
 
     /**
+     * Obtener los Items por tipo
+     * 
+     * @param \String  $type
+     */
+    public function getItemsByType($type = 'horas')
+    {
+      return $this->items()->where('type', $type);
+    }
+
+    /**
      * Obtener el Total de los Items
      * 
      * @param \Boolean  $onlyNumbers
@@ -91,5 +101,25 @@ class Situacion extends Model
     {
       $total = $this->items->sum('utilidad');
       return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
+    }
+
+    /**
+     * Sumar el valor de la columna dada de los Items
+     *
+     * @param \String   $column
+     * @param \Boolean  $onlyNumbers
+     * @param \Integer  $decimals
+     * @param  mixed  $type  false | string
+     * @return  mixed
+     */
+    public function sumValue($column, $onlyNumbers = false, $decimals = 2, $type = false)
+    {
+      $total = $this->items
+                    ->when($type, function ($query, $type){
+                      return $query->where('type', $type);
+                    })
+                    ->sum($column);
+
+      return $onlyNumbers ? $total : number_format($total, $decimals, ',', '.');
     }
 }

@@ -29,9 +29,13 @@ class CotizacionController extends Controller
     public function create(Situacion $situacion)
     {
       $this->authorize('create', [Cotizacion::class, $situacion]);
-      $items = $situacion->items;
 
-      return view('admin.cotizacion.create', compact('situacion', 'items'));
+      $repuestos = $situacion->getItemsByType('repuesto')->get();
+      $insumos = $situacion->getItemsByType('insumo')->get();
+      $horas = $situacion->getItemsByType()->get();
+      $otros = $situacion->getItemsByType('otros')->get();
+
+      return view('admin.cotizacion.create', compact('situacion', 'repuestos', 'insumos', 'horas', 'otros'));
     }
 
     /**
@@ -97,8 +101,12 @@ class CotizacionController extends Controller
 
       $pagos = $cotizacion->pagos;
       $imprevistos = $cotizacion->imprevistos;
+      $repuestos = $cotizacion->getItemsByType('repuesto')->get();
+      $insumos = $cotizacion->getItemsByType('insumo')->get();
+      $horas = $cotizacion->getItemsByType()->get();
+      $otros = $cotizacion->getItemsByType('otros')->get();
 
-      return view('admin.cotizacion.show', compact('cotizacion', 'pagos', 'imprevistos'));
+      return view('admin.cotizacion.show', compact('cotizacion', 'pagos', 'imprevistos', 'repuestos', 'insumos', 'horas', 'otros'));
     }
 
     /**

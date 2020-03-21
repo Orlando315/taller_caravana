@@ -112,8 +112,12 @@ class SituacionController extends Controller
       $this->authorize('update', $situacion);
       $insumos = Insumo::has('stockEnUso')->with('stockEnUso')->get();
       $repuestos = Repuesto::all();
+      $situacionRepuestos = $situacion->getItemsByType('repuesto')->get();
+      $situacionInsumos = $situacion->getItemsByType('insumo')->get();
+      $situacionHoras = $situacion->getItemsByType()->get();
+      $situacionOtros = $situacion->getItemsByType('otros')->get();
 
-      return view('admin.situacion.edit', compact('situacion', 'insumos', 'repuestos'));
+      return view('admin.situacion.edit', compact('situacion', 'insumos', 'repuestos', 'situacionRepuestos', 'situacionInsumos', 'situacionHoras', 'situacionOtros'));
     }
 
     /**

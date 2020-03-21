@@ -86,9 +86,14 @@ class ProcesoController extends Controller
       $preevaluaciones = $proceso->preevaluaciones;
       $preevaluacionesFotos = $proceso->preevaluacionFotos;
       $pagos = $proceso->pagos;
-      $imprevistos = $proceso->imprevistos()->get();
+      $proceso->load('situacion.items');
 
-      return view('admin.proceso.show', compact('proceso', 'preevaluaciones', 'preevaluacionesFotos', 'pagos', 'imprevistos'));
+      $situacionRepuestos = $proceso->situacion->getItemsByType('repuesto')->get();
+      $situacionInsumos = $proceso->situacion->getItemsByType('insumo')->get();
+      $situacionHoras = $proceso->situacion->getItemsByType()->get();
+      $situacionOtros = $proceso->situacion->getItemsByType('otros')->get();
+
+      return view('admin.proceso.show', compact('proceso', 'preevaluaciones', 'preevaluacionesFotos', 'pagos', 'situacionRepuestos', 'situacionInsumos', 'situacionHoras', 'situacionOtros'));
     }
 
     /**
