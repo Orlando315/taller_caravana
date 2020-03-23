@@ -209,6 +209,30 @@
                           <td class="text-right"><strong>SUB TOTAL</strong></td>
                           <td class="text-right">{{ $cotizacion->sumValue('total', false, 2, 'otros') }}</td>
                         </tr>
+                        @if($imprevistosCliente->count() > 0)
+                          <tr>
+                            <td colspan="4">COSTOS EXTRA</td>
+                          </tr>
+                          <tr>
+                            <th>DETALLE</th>
+                            <th>CANT</th>
+                            <th>PRECIO</th>
+                            <th>TOTAL</th>
+                          </tr>
+                          @foreach($imprevistosCliente as $imprevistoCliente)
+                            <tr>
+                              <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $imprevistoCliente->descripcion ?? 'N/A' }}">{{ $imprevistoCliente->tipo() }}</a></td>
+                              <td></td>
+                              <td class="text-right">{{ $imprevistoCliente->monto() }}</td>
+                              <td class="text-right">{{ $imprevistoCliente->monto() }}</td>
+                            </tr>
+                          @endforeach
+                          <tr>
+                            <td colspan="2"></td>
+                            <td class="text-right"><strong>SUB TOTAL</strong></td>
+                            <td class="text-right">{{ $cotizacion->sumImprevistos('cliente') }}</td>
+                          </tr>
+                        @endif
                         <tr>
                           <td colspan="2"></td>
                           <td class="text-right"><strong>NETO</strong></td>

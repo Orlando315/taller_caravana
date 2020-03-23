@@ -84,11 +84,11 @@ class Cotizacion extends Model
     }
 
     /**
-     * Obtener el Total Neto del costo de los Items
+     * Obtener el Total Neto del costo de los Items + los costos extas Imprevistos
      */
     public function neto($onlyNumbers = false)
     {
-      $total = $this->situacionItems->sum('total');
+      $total = $this->situacionItems->sum('total') + $this->sumImprevistos('cliente', false, true);
 
       return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
     }
@@ -117,9 +117,13 @@ class Cotizacion extends Model
     /**
      * Obtener el Total de los Imprevisstos
      */
-    public function totalImprevistos($onlyNumbers = false)
+    public function totalImprevistos($asume = 'taller', $onlyNumbers = false)
     {
-      $total = $this->imprevistos()->sum('monto');
+      $total = $this->imprevistos()
+                    ->when($asume, function ($query, $asume){
+                      return $query->where('asumido', $asume);
+                    })
+                    ->sum('monto');
 
       return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
     }
@@ -145,7 +149,7 @@ class Cotizacion extends Model
      */
     public function utilidad($onlyNumbers = true)
     {
-      $total = $this->sumValue('utilidad', true) - $this->totalImprevistos(true);
+      $total = $this->sumValue('utilidad', true) - $this->totalImprevistos('taller', true);
 
       return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
     }
@@ -224,5 +228,37 @@ class Cotizacion extends Model
     public function status()
     {
       return $this->status ? '<span class="badge badge-success">Pagado</span>' : '<span class="badge badge-secondary">Pendiente</span>';
+    }
+
+    /**
+     * Obtener los CotizacionImprevisto por el tipo
+     * 
+     * @param  String  $asumido
+     * @param  mixed  $tipo  string | bool
+     * @return  mixed
+     */
+    public function getImprevistos($asumido, $tipo = false)
+    {
+      return $this->imprevistos()
+                  ->where('asumido', $asumido)
+                  ->when($tipo, function ($query, $tipo){
+                    return $query->where('tipo', $tipo);
+                  });
+    }
+
+    /**
+     * Sumar el monto de los Imprevistos
+     *
+     * @param  String   $asumido
+     * @param  String   $tipo
+     * @param \Boolean  $onlyNumbers
+     * @return  mixed
+     */
+    public function sumImprevistos($asumido, $tipo = false, $onlyNumbers = false)
+    {
+      $total = $this->getImprevistos($asumido, $tipo)
+                    ->sum('monto');
+
+      return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
     }
 }

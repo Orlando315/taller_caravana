@@ -99,12 +99,33 @@ class CotizacionController extends Controller
 
       $this->authorize('view', $cotizacion);
       $pagos = $cotizacion->pagos;
+      // Items
       $repuestos = $cotizacion->getItemsByType('repuesto')->get();
       $insumos = $cotizacion->getItemsByType('insumo')->get();
       $horas = $cotizacion->getItemsByType()->get();
       $otros = $cotizacion->getItemsByType('otros')->get();
+      $imprevistosCliente = $cotizacion->getImprevistos('cliente')->orderBy('tipo', 'desc')->get();
+      // Imprevistos
+      $imprevistosRepuestos = $cotizacion->getImprevistos('taller', 'repuesto')->get();
+      $imprevistosInsumos = $cotizacion->getImprevistos('taller', 'insumo')->get();
+      $imprevistosHoras = $cotizacion->getImprevistos('taller', 'horas')->get();
+      $imprevistosTerceros = $cotizacion->getImprevistos('taller', 'terceros')->get();
+      $imprevistosOtros = $cotizacion->getImprevistos('taller', 'otros')->get();
 
-      return view('cotizacion.show', compact('cotizacion', 'pagos', 'repuestos', 'insumos', 'horas', 'otros'));
+      return view('cotizacion.show', compact(
+                                            'cotizacion',
+                                            'pagos',
+                                            'repuestos',
+                                            'insumos',
+                                            'horas',
+                                            'otros',
+                                            'imprevistosCliente',
+                                            'imprevistosRepuestos',
+                                            'imprevistosInsumos',
+                                            'imprevistosHoras',
+                                            'imprevistosTerceros',
+                                            'imprevistosOtros'
+                                          ));
     }
 
     /**
@@ -152,8 +173,10 @@ class CotizacionController extends Controller
       $repuestos = $cotizacion->getItemsByType('repuesto')->get();
       $insumos = $cotizacion->getItemsByType('insumo')->get();
       $horas = $cotizacion->getItemsByType()->get();
+      $otros = $cotizacion->getItemsByType()->get();
+      $imprevistosCliente = $cotizacion->getImprevistos('cliente')->orderBy('tipo', 'desc')->get();
       
-      $pdf = PDF::loadView('cotizacion.pdf', compact('cotizacion', 'repuestos', 'insumos', 'horas'));
+      $pdf = PDF::loadView('cotizacion.pdf', compact('cotizacion', 'repuestos', 'insumos', 'horas', 'otros', 'imprevistosCliente'));
       return $pdf->download('Cotización.pdf');
     }
 }

@@ -90,6 +90,52 @@
         <td class="text-right border-right-0">{{ $cotizacion->sumValue('total', false, 2, 'horas') }}</td>
       </tr>
       <tr>
+        <td colspan="4">OTROS</td>
+      </tr>
+      <tr>
+        <td class="border-top-0 border-left-0"><strong>DETALLE</strong></td>
+        <td class="border-top-0 border-left-0"><strong>CANT</strong></td>
+        <td class="border-top-0 border-left-0"><strong>PRECIO</strong></td>
+        <td class="border-0"><strong>TOTAL</strong></td>
+      </tr>
+      @foreach($otros as $otro)
+        <tr>
+          <td><small>{{ $otro->descripcion ?? 'N/A' }}</small></td>
+          <td class="text-center">{{ $otro->cantidad() }}</td>
+          <td class="text-right">{{ $otro->valorVenta() }}</td>
+          <td class="text-right">{{ $otro->total() }}</td>
+        </tr>
+      @endforeach
+      <tr>
+        <td colspan="2" class="border-0"></td>
+        <td class="text-right"><strong>SUB TOTAL</strong></td>
+        <td class="text-right border-right-0">{{ $cotizacion->sumValue('total', false, 2, 'horas') }}</td>
+      </tr>
+      @if($imprevistosCliente->count() > 0)
+        <tr>
+          <td colspan="4">COSTOS EXTRAS</td>
+        </tr>
+        <tr>
+          <td class="border-top-0 border-left-0"><strong>DETALLE</strong></td>
+          <td class="border-top-0 border-left-0"><strong>CANT</strong></td>
+          <td class="border-top-0 border-left-0"><strong>PRECIO</strong></td>
+          <td class="border-0"><strong>TOTAL</strong></td>
+        </tr>
+        @foreach($imprevistosCliente as $imprevisto)
+          <tr>
+            <td><small>{{ $imprevisto->descripcion ?? 'N/A' }}</small></td>
+            <td class="text-center"></td>
+            <td class="text-right"></td>
+            <td class="text-right">{{ $imprevisto->monto() }}</td>
+          </tr>
+        @endforeach
+        <tr>
+          <td colspan="2" class="border-0"></td>
+          <td class="text-right"><strong>SUB TOTAL</strong></td>
+          <td class="text-right border-right-0">{{ $cotizacion->sumImprevistos('cliente') }}</td>
+        </tr>
+      @endif
+      <tr>
         <td colspan="2" class="border-0"></td>
         <td class="text-right"><strong>NETO</strong></td>
         <td class="text-right border-right-0">{{ $cotizacion->neto() }}</td>

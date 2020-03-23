@@ -45,9 +45,10 @@ class CotizacionImprevistoController extends Controller
         'tipo' => 'required|string|in:horas,repuesto,insumo,terceros,otros',
         'descripcion' => 'required|string|max:500',
         'monto' => 'required|numeric|min:1|max:999999999',
+        'asumido' => 'required|in:taller,cliente',
       ]);
 
-      $imprevisto = new CotizacionImprevisto($request->only(['tipo', 'descripcion', 'monto']));
+      $imprevisto = new CotizacionImprevisto($request->only(['tipo', 'descripcion', 'monto', 'asumido']));
 
       if($cotizacion->imprevistos()->save($imprevisto)){
         return redirect()->route('admin.cotizacion.show', ['cotizacion' => $cotizacion->id])->with([
@@ -101,9 +102,10 @@ class CotizacionImprevistoController extends Controller
         'tipo' => 'required|string|in:horas,repuesto,insumo,terceros,otros',
         'descripcion' => 'required|string|max:500',
         'monto' => 'required|numeric|min:1|max:999999999',
+        'asumido' => 'required|in:taller,cliente',
       ]);
 
-      $imprevisto->fill($request->only(['tipo', 'descripcion', 'monto']));
+      $imprevisto->fill($request->only(['tipo', 'descripcion', 'monto', 'asumido']));
 
       if($imprevisto->save()){
         return redirect()->route('admin.cotizacion.show', ['cotizacion' => $imprevisto->cotizacion_id])->with([

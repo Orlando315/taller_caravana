@@ -22,6 +22,7 @@ class CotizacionImprevisto extends Model
       'tipo',
       'descripcion',
       'monto',
+      'asumido',
     ];
 
     /**
@@ -44,7 +45,7 @@ class CotizacionImprevisto extends Model
         case 'repuesto':
           $tipo = 'Repuestos';
           break;
-        case 'isumo':
+        case 'insumo':
           $tipo = 'Insumos';
           break;
         case 'terceros':

@@ -20,6 +20,14 @@
             <h4>Editar Imprevisto</h4>
 
             <div class="form-group">
+              <label class="control-label" for="asumido">Asumido por: *</label>
+              <select id="asumido" class="custom-select" name="asumido" required>
+                <option value="taller"{{ old('asumido') == 'taller' ? ' selected' : '' }}>Taller (Perdida)</option>
+                <option value="cliente"{{ old('asumido') == 'cliente' ? ' selected' : '' }}>Cliente</option>
+              </select>
+            </div>
+
+            <div class="form-group">
               <label class="control-label" for="tipoo">Tipo: *</label>
               <select id="tipoo" class="custom-select{{ $errors->has('tipoo') ? ' is-invalid' : '' }}" name="tipo" required>
                 <option value="">Seleccione...</option>

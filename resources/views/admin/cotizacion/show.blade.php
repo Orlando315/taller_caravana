@@ -270,6 +270,36 @@
                           <td class="text-right"><strong>SUB TOTAL</strong></td>
                           <td class="text-right">{{ $cotizacion->sumValue('total', false, 2, 'otros') }}</td>
                         </tr>
+                        @if($imprevistosCliente->count() > 0)
+                          <tr>
+                            <td colspan="7">COSTOS EXTRA</td>
+                          </tr>
+                          <tr>
+                            <th>DETALLE</th>
+                            <th>PRECIO COSTO</th>
+                            <th>UTILIDAD</th>
+                            <th>DESCUENTO</th>
+                            <th>CANT</th>
+                            <th>PRECIO</th>
+                            <th>TOTAL</th>
+                          </tr>
+                          @foreach($imprevistosCliente as $imprevistoCliente)
+                            <tr>
+                              <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $imprevistoCliente->descripcion ?? 'N/A' }}">{{ $imprevistoCliente->tipo() }}</a></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td class="text-right">{{ $imprevistoCliente->monto() }}</td>
+                              <td class="text-right">{{ $imprevistoCliente->monto() }}</td>
+                            </tr>
+                          @endforeach
+                          <tr>
+                            <td colspan="5"></td>
+                            <td class="text-right"><strong>SUB TOTAL</strong></td>
+                            <td class="text-right">{{ $cotizacion->sumImprevistos('cliente') }}</td>
+                          </tr>
+                        @endif
                         <tr>
                           <td colspan="5"></td>
                           <td class="text-right"><strong>NETO</strong></td>
@@ -296,50 +326,180 @@
                       <i class="fa fa-plus"></i> Agregar imprevisto
                     </a>
                   @endif
-
-                  <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
-                    <thead>
-                      <tr>
-                        <th scope="col" class="text-center">#</th>
-                        <th scope="col" class="text-center">Tipo</th>
-                        <th scope="col" class="text-center">Descripción</th>
-                        <th scope="col" class="text-center">Monto</th>
-                        <th scope="col" class="text-center">Fecha</th>
-                        @if(Auth::user()->isAdmin())
-                          <th scope="col" class="text-center">Acción</th>
-                        @endif
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @foreach($imprevistos as $imprevisto)
+                  
+                  <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover table-sm font-small m-0" style="width: 100%">
+                      <tbody>
                         <tr>
-                          <td scope="row" class="text-center">{{ $loop->iteration }}</td>
-                          <td>{{ $imprevisto->tipo() }}</td>
-                          <td>{{ $imprevisto->descripcion }}</td>
-                          <td class="text-right">{{ $imprevisto->monto() }}</td>
-                          <td class="text-center">{{ $imprevisto->created_at->format('d-m-Y') }}</td>
+                          <td colspan="{{Auth::user()->isAdmin() ? '3' : 2 }}">REPUESTOS</td>
+                        </tr>
+                        <tr>
+                          <th>DESCRIPCIÓN</th>
+                          <th>MONTO</th>
                           @if(Auth::user()->isAdmin())
-                            <td class="text-center">
-                              @if(!$cotizacion->situacion->proceso->status)
-                                <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $imprevisto->id }}" data-toggle="modal" data-type="imprevisto" data-target="#delElementoModal">
-                                  <i class="fa fa-times"></i>
-                                </button>
-                              @endif
-                            </td>
+                            <th>ACCIÓN</th>
                           @endif
                         </tr>
-                      @endforeach
-                    </tbody>
-                    @if($imprevistos->count() > 0)
-                    <tfoot>
-                      <tr>
-                        <td colspan="3"></td>
-                        <th class="text-right">{{ $cotizacion->totalImprevistos() }}</th>
-                        <td colspan="2"></td>
-                      </tr>
-                    </tfoot>
-                    @endif
-                  </table>
+                        @foreach($imprevistosRepuestos as $repuesto)
+                          <tr>
+                            <td>{{ $repuesto->descripcion }}</td>
+                            <td class="text-right">{{ $repuesto->monto() }}</td>
+                            @if(Auth::user()->isAdmin())
+                              <td class="text-center">
+                                @if(!$cotizacion->situacion->proceso->status)
+                                  <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $repuesto->id }}" data-toggle="modal" data-type="imprevisto" data-target="#delElementoModal">
+                                    <i class="fa fa-times"></i>
+                                  </button>
+                                @endif
+                              </td>
+                            @endif
+                          </tr>
+                        @endforeach
+                        <tr>
+                          <td class="text-right"><strong>SUB TOTAL</strong></td>
+                          <td class="text-right">{{ $cotizacion->sumImprevistos('taller', 'repuesto') }}</td>
+                          @if(Auth::user()->isAdmin())
+                            <td></td>
+                          @endif
+                        </tr>
+                        <tr>
+                          <td colspan="{{Auth::user()->isAdmin() ? '3' : 2 }}">INSUMOS</td>
+                        </tr>
+                        <tr>
+                          <th>DESCRIPCIÓN</th>
+                          <th>MONTO</th>
+                          @if(Auth::user()->isAdmin())
+                            <th>ACCIÓN</th>
+                          @endif
+                        </tr>
+                        @foreach($imprevistosInsumos as $insumo)
+                          <tr>
+                            <td>{{ $insumo->descripcion }}</td>
+                            <td class="text-right">{{ $insumo->monto() }}</td>
+                            @if(Auth::user()->isAdmin())
+                              <td class="text-center">
+                                @if(!$cotizacion->situacion->proceso->status)
+                                  <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $insumo->id }}" data-toggle="modal" data-type="imprevisto" data-target="#delElementoModal">
+                                    <i class="fa fa-times"></i>
+                                  </button>
+                                @endif
+                              </td>
+                            @endif
+                          </tr>
+                        @endforeach
+                        <tr>
+                          <td class="text-right"><strong>SUB TOTAL</strong></td>
+                          <td class="text-right">{{ $cotizacion->sumImprevistos('taller', 'insumo') }}</td>
+                          @if(Auth::user()->isAdmin())
+                            <td></td>
+                          @endif
+                        </tr>
+                        <tr>
+                          <td colspan="{{Auth::user()->isAdmin() ? '3' : 2 }}">HORAS HOMBRE</td>
+                        </tr>
+                        <tr>
+                          <th>DESCRIPCIÓN</th>
+                          <th>MONTO</th>
+                          @if(Auth::user()->isAdmin())
+                            <th>ACCIÓN</th>
+                          @endif
+                        </tr>
+                        @foreach($imprevistosHoras as $hora)
+                          <tr>
+                            <td>{{ $hora->descripcion }}</td>
+                            <td class="text-right">{{ $hora->monto() }}</td>
+                            @if(Auth::user()->isAdmin())
+                              <td class="text-center">
+                                @if(!$cotizacion->situacion->proceso->status)
+                                  <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $hora->id }}" data-toggle="modal" data-type="imprevisto" data-target="#delElementoModal">
+                                    <i class="fa fa-times"></i>
+                                  </button>
+                                @endif
+                              </td>
+                            @endif
+                          </tr>
+                        @endforeach
+                        <tr>
+                          <td class="text-right"><strong>SUB TOTAL</strong></td>
+                          <td class="text-right">{{ $cotizacion->sumImprevistos('taller', 'horas') }}</td>
+                          @if(Auth::user()->isAdmin())
+                            <td></td>
+                          @endif
+                        </tr>
+                        <tr>
+                          <td colspan="{{Auth::user()->isAdmin() ? '3' : 2 }}">SERVICIOS DE TERCEROS</td>
+                        </tr>
+                        <tr>
+                          <th>DESCRIPCIÓN</th>
+                          <th>MONTO</th>
+                          @if(Auth::user()->isAdmin())
+                            <th>ACCIÓN</th>
+                          @endif
+                        </tr>
+                        @foreach($imprevistosTerceros as $tercero)
+                          <tr>
+                            <td>{{ $tercero->descripcion }}</td>
+                            <td class="text-right">{{ $tercero->monto() }}</td>
+                            @if(Auth::user()->isAdmin())
+                              <td class="text-center">
+                                @if(!$cotizacion->situacion->proceso->status)
+                                  <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $tercero->id }}" data-toggle="modal" data-type="imprevisto" data-target="#delElementoModal">
+                                    <i class="fa fa-times"></i>
+                                  </button>
+                                @endif
+                              </td>
+                            @endif
+                          </tr>
+                        @endforeach
+                        <tr>
+                          <td class="text-right"><strong>SUB TOTAL</strong></td>
+                          <td class="text-right">{{ $cotizacion->sumImprevistos('taller', 'terceros') }}</td>
+                          @if(Auth::user()->isAdmin())
+                            <td></td>
+                          @endif
+                        </tr>
+                        <tr>
+                          <td colspan="{{Auth::user()->isAdmin() ? '3' : 2 }}">OTROS</td>
+                        </tr>
+                        <tr>
+                          <th>DESCRIPCIÓN</th>
+                          <th>MONTO</th>
+                          @if(Auth::user()->isAdmin())
+                            <th>ACCIÓN</th>
+                          @endif
+                        </tr>
+                        @foreach($imprevistosOtros as $otro)
+                          <tr>
+                            <td>{{ $otro->descripcion }}</td>
+                            <td class="text-right">{{ $otro->monto() }}</td>
+                            @if(Auth::user()->isAdmin())
+                              <td class="text-center">
+                                @if(!$cotizacion->situacion->proceso->status)
+                                  <button class="btn btn-danger btn-sm btn-fill btn-delete" data-id="{{ $otro->id }}" data-toggle="modal" data-type="imprevisto" data-target="#delElementoModal">
+                                    <i class="fa fa-times"></i>
+                                  </button>
+                                @endif
+                              </td>
+                            @endif
+                          </tr>
+                        @endforeach
+                        <tr>
+                          <td class="text-right"><strong>SUB TOTAL</strong></td>
+                          <td class="text-right">{{ $cotizacion->sumImprevistos('taller', 'otros') }}</td>
+                          @if(Auth::user()->isAdmin())
+                            <td></td>
+                          @endif
+                        </tr>
+                        <tr>
+                          <td class="text-right"><strong>TOTAL</strong></td>
+                          <td class="text-right">{{ $cotizacion->sumImprevistos('taller') }}</td>
+                          @if(Auth::user()->isAdmin())
+                            <td></td>
+                          @endif
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div><!-- .tab-pane -->
 
                 <div id="tab3" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab3-tab">
