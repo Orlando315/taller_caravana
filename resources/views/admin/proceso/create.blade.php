@@ -105,15 +105,7 @@
                 <input id="direccion" class="form-control{{ $errors->has('direccion') ? ' is-invalid' : '' }}" type="text" name="direccion" maxlength="150" value="{{ old('direccion') }}" placeholder="Dirección">
               </div>
 
-              <div class="form-group">
-                <label class="control-label" for="contraseña">Contraseña: *</label>
-                <input id="contraseña" class="form-control{{ $errors->has('contraseña') ? ' is-invalid' : '' }}" type="password" name="contraseña" maxlength="30" placeholder="Contraseña" required>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label" for="contraseña_confirmation">Confirmar contraseña: *</label>
-                <input id="contraseña_confirmation" class="form-control{{ $errors->has('contraseña_confirmation') ? ' is-invalid' : '' }}" type="password" name="contraseña_confirmation" maxlength="30" placeholder="Confirmar contraseña" required>
-              </div>
+              <p class="text-muted text-center">La contraseña del cliente será el RUT, sin contar el último dígito.</p>
 
               <div class="alert alert-dismissible alert-danger alert-option" role="alert" style="display: none">
                 <strong class="text-center">Ha ocurrido un error</strong> 

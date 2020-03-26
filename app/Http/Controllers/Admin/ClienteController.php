@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\{Cliente, User};
 
 class ClienteController extends Controller
@@ -51,12 +52,11 @@ class ClienteController extends Controller
         'email' => 'required|email|unique:users,email',
         'telefono' => 'required|string|max:15',
         'direccion' => 'nullable|string|max:150',
-        'contraseña' => 'required|string|confirmed'
       ]);
 
       $user = new User($request->only(['nombres', 'apellidos', 'email']));
       $user->user_id = Auth::id();
-      $user->password = bcrypt($request->input('contraseña'));
+      $user->password = bcrypt(Str::before($request->rut, '-'));
       $cliente = new Cliente($request->only(['rut', 'direccion', 'telefono']));
       $cliente->taller = Auth::id();
 
