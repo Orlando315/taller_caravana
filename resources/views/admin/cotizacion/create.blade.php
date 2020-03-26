@@ -22,7 +22,17 @@
             
             <div class="form-group">
               <label for="descripcion">Descripción:</label>
-              <textarea id="descripcion" class="form-control" name="descripcion" maxlength="500"></textarea>
+              <textarea id="descripcion" class="form-control" name="descripcion" maxlength="500">{{ old('descripcion') }}</textarea>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="descuento">Descuento:</label>
+                  <input id="descuento" class="form-control" type="number" min="0" max="999999999" name="descuento" value="{{ old('descuento') }}">
+                  <small class="text-muted">Solo números</small>
+                </div>
+              </div>
             </div>
 
             <p class="text-center text-muted">Seleccione los items que deben formar parte de la cotización</p>
@@ -66,7 +76,7 @@
                         <div class="form-group m-0">
                           <div class="form-check only-check">
                             <label class="form-check-label">
-                              <input class="form-check-input items-check" type="checkbox" name="items[]" value="{{ $repuesto->id }}">
+                              <input class="form-check-input items-check" type="checkbox" name="items[]" value="{{ $repuesto->id }}" data-total="{{ $repuesto->total }}">
                               <span class="form-check-sign"></span>
                             </label>
                           </div>
@@ -104,7 +114,7 @@
                         <div class="form-group m-0">
                           <div class="form-check only-check">
                             <label class="form-check-label">
-                              <input class="form-check-input items-check" type="checkbox" name="items[]" value="{{ $insumo->id }}">
+                              <input class="form-check-input items-check" type="checkbox" name="items[]" value="{{ $insumo->id }}" data-total="{{ $insumo->total }}">
                               <span class="form-check-sign"></span>
                             </label>
                           </div>
@@ -142,7 +152,7 @@
                         <div class="form-group m-0">
                           <div class="form-check only-check">
                             <label class="form-check-label">
-                              <input class="form-check-input items-check" type="checkbox" name="items[]" value="{{ $hora->id }}">
+                              <input class="form-check-input items-check" type="checkbox" name="items[]" value="{{ $hora->id }}" data-total="{{ $hora->total }}">
                               <span class="form-check-sign"></span>
                             </label>
                           </div>
@@ -180,7 +190,7 @@
                         <div class="form-group m-0">
                           <div class="form-check only-check">
                             <label class="form-check-label">
-                              <input class="form-check-input items-check" type="checkbox" name="items[]" value="{{ $otro->id }}">
+                              <input class="form-check-input items-check" type="checkbox" name="items[]" value="{{ $otro->id }}" data-total="{{ $otro->total }}">
                               <span class="form-check-sign"></span>
                             </label>
                           </div>
@@ -192,6 +202,32 @@
                     </tr>
                   @endforeach
                 </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="5"></td>
+                    <td class="text-right"><strong>SUBTOTAL</strong></td>
+                    <td class="text-right table-subtotal"></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td colspan="5"></td>
+                    <td class="text-right"><strong>DESCUENTO</strong></td>
+                    <td class="text-right table-descuento"></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td colspan="5"></td>
+                    <td class="text-right"><strong>IVA</strong></td>
+                    <td class="text-right table-iva"></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td colspan="5"></td>
+                    <td class="text-right"><strong>TOTAL</strong></td>
+                    <td class="text-right table-total"></td>
+                    <td></td>
+                  </tr>
+                </tfoot>
               </table>
             </div>
 
@@ -224,10 +260,17 @@
       $('#todos').click( function() {
         $('.items-check').prop('checked', this.checked)
         toggleBtn()
+        calculateTotales()
       })
 
       $('.items-check').click( function() {
         checkStates()
+      })
+
+      $('#descuento').change(function() {
+        let descuento = +$(this).val()
+        $('.table-descuento').text(descuento.toLocaleString('de-DE'))
+        calculateTotales()
       })
 
       // Inicializar popovers
@@ -240,10 +283,29 @@
 
       $('#todos').prop('checked', (allcheckCount == checkedCount))
       toggleBtn()
+      calculateTotales()
     }
 
     function toggleBtn(){
       $('#btn-cotizacion').prop('disabled', !($('.items-check:checked').length > 0))
+    }
+
+    function calculateTotales(){
+      let descuento = +$('#descuento').val()
+      let subtotal  = 0
+
+      $.each($('.items-check:checked'), function(k, item){
+        subtotal += +$(item).data('total')
+      })
+
+      let subtotalWithDescuento = (subtotal > 0) ? (subtotal - descuento) : 0
+      let iva = (subtotal > 0) ? ((subtotalWithDescuento * 19) / 100) : 0
+      let total = (subtotal > 0) ? (subtotalWithDescuento + iva) : 0
+
+      $('.table-subtotal').text(subtotal.toLocaleString('de-DE'))
+      $('.table-descuento').text(descuento.toLocaleString('de-DE'))
+      $('.table-iva').text(iva.toLocaleString('de-DE'))
+      $('.table-total').text(total.toLocaleString('de-DE'))
     }
   </script>
 @endsection

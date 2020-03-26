@@ -21,6 +21,7 @@ class Cotizacion extends Model
     protected $fillable = [
       'user_id',
       'descripcion',
+      'descuento',
       'status'
     ];
 
@@ -98,18 +99,18 @@ class Cotizacion extends Model
      */
     public function iva($onlyNumbers = false)
     {
-      $neto = $this->neto(true);
+      $neto = $this->neto(true) - $this->descuento;
       $iva = ($neto * 19) / 100;
 
       return $onlyNumbers ? $iva : number_format($iva, 2, ',', '.');
     }
 
     /**
-     * Obtener el Total del costo de los Items + IVA
+     * Obtener el Total del costo de los Items - descuento + IVA 
      */
     public function total($onlyNumbers = false)
     {
-      $total = $this->neto(true) + $this->iva(true);
+      $total = $this->neto(true) - $this->descuento(true) + $this->iva(true);
 
       return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
     }
@@ -152,6 +153,17 @@ class Cotizacion extends Model
       $total = $this->sumValue('utilidad', true) - $this->totalImprevistos('taller', true);
 
       return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
+    }
+
+    /**
+     * Obtener el descuento de la cotizacion
+     * 
+     * @param \Boolean  $onlyNumbers
+     * @return  mixed  string | float
+     */
+    public function descuento($onlyNumbers = false)
+    {
+      return $onlyNumbers ? $this->descuento : number_format(($this->descuento ?? 0), 2, ',', '.');
     }
 
     /**

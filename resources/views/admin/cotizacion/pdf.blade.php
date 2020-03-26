@@ -140,6 +140,13 @@
         <td class="text-right"><strong>NETO</strong></td>
         <td class="text-right border-right-0">{{ $cotizacion->neto() }}</td>
       </tr>
+      @if($cotizacion->descuento)
+        <tr>
+          <td colspan="2" class="border-0"></td>
+          <td class="text-right"><strong>DESCUENTO</strong></td>
+          <td class="text-right border-right-0">{{ $cotizacion->descuento() }}</td>
+        </tr>
+      @endif
       <tr>
         <td colspan="2" class="border-0"></td>
         <td class="text-right"><strong>IVA</strong></td>
