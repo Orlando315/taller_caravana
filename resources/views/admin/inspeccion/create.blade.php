@@ -32,10 +32,20 @@
               </div>
               <small class="text-muted">Hasta 6 fotos de 12 MB c/u</small>
             </div>
-
-            <div class="form-group">
-              <label class="control-label" for="combustible">Combustible: </label>
-              <input id="combustible" class="form-control{{ $errors->has('combustible') ? ' is-invalid' : '' }}" type="number" step="0.1" min="0" max="99999999" name="combustible" value="{{ old('combustible') }}" placeholder="Combustible">
+            
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="combustible">Combustible: </label>
+                  <select id="combustible" class="custom-select{{ $errors->has('combustible') ? ' is-invalid' : '' }}" name="combustible" required>
+                    <option value="0"{{ old('combustible') == '0' ? ' selected' : ''}}>0</option>
+                    <option value="1/4"{{ old('combustible') == '1/4' ? ' selected' : ''}}>1/4</option>
+                    <option value="1/2"{{ old('combustible') == '1/2' ? ' selected' : ''}}>1/2</option>
+                    <option value="3/4"{{ old('combustible') == '3/4' ? ' selected' : ''}}>3/4</option>
+                    <option value="Full"{{ old('combustible') == 'Full' ? ' selected' : ''}}>Full</option>
+                  </select>
+                </div>
+              </div>
             </div>
 
             <div class="row">

@@ -76,9 +76,9 @@ class InspeccionPolicy
      * @param  \App\Inspeccion  $inspeccion
      * @return mixed
      */
-    public function restore(User $user, Inspeccion $inspeccion)
+    public function status(User $user, Inspeccion $inspeccion)
     {
-        //
+      return $user->isCliente() && $user->cliente->id == $inspeccion->proceso->cliente_id;
     }
 
     /**
@@ -88,8 +88,8 @@ class InspeccionPolicy
      * @param  \App\Inspeccion  $inspeccion
      * @return mixed
      */
-    public function forceDelete(User $user, Inspeccion $inspeccion)
+    public function pdf(User $user, Inspeccion $inspeccion)
     {
-        //
+      return $user->isCliente() && $user->cliente->id == $inspeccion->proceso->cliente_id;
     }
 }

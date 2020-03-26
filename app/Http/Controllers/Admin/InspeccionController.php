@@ -45,6 +45,7 @@ class InspeccionController extends Controller
       $this->validate($request, [
         'fotos' => 'nullable|max:6',
         'fotos.*' => 'nullable|image|max:12000|mimes:jpeg,jpg,png',
+        'combustible' => 'string',
       ]);
 
       $inspeccion = new Inspeccion([
@@ -78,8 +79,11 @@ class InspeccionController extends Controller
           $inspeccion->fotos()->createMany($fotos);
         }
 
+        // Enviar email al Cliente para que evalue la Inspeccion
+        $inspeccion->sendEmailStatusRequest();
+
         return redirect()->route('admin.proceso.show', ['proceso' => $proceso->id])->with([
-                'flash_message' => 'Inspección de recepción agregada exitosamente.',
+                'flash_message' => 'Inspección de recepción agregada exitosamente. Se ha enviado una notificación al Cliente para su aprobación.',
                 'flash_class' => 'alert-success'
               ]);
       }
@@ -128,9 +132,14 @@ class InspeccionController extends Controller
       $this->validate($request, [
         'fotos' => 'nullable|max:'.(6 - $inspeccion->fotos->count()),
         'fotos.*' => 'nullable|image|max:12000|mimes:jpeg,jpg,png',
+        'combustible' => 'string',
       ]);
 
       $inspeccion->fill($request->only(['combustible', 'observacion']));
+
+      if(!$inspeccion->isPending()){
+        $inspeccion->aprobado = null;
+      }
 
       foreach($inspeccion->getFillable() as $attribute) {
         if(!in_array($attribute, ['taller', 'combustible', 'observacion'])){
@@ -157,8 +166,11 @@ class InspeccionController extends Controller
           $inspeccion->fotos()->createMany($fotos);
         }
 
+        // Enviar email al Cliente para que evalue la Inspeccion
+        $inspeccion->sendEmailStatusRequest();
+
         return redirect()->route('admin.proceso.show', ['proceso' => $inspeccion->proceso_id])->with([
-                'flash_message' => 'Inspección de recepción modificada exitosamente.',
+                'flash_message' => 'Inspección de recepción modificada exitosamente. Se ha enviado una notificación al Cliente para su aprobación.',
                 'flash_class' => 'alert-success'
               ]);
       }

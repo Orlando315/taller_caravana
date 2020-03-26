@@ -434,7 +434,11 @@
             </div><!-- .tab-pane -->
             @endif
             @if($proceso->inspeccion)
-            <div id="tab5" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab5-tab">
+            <div id="tab5" class="tab-pane fade pt-2" role="tabpanel" aria-labelledby="tab5-tab">              
+              <button class="btn btn-success btn-fill btn-xs mb-2" data-toggle="modal" data-target="#statusModal"><i class="fa fa-pencil" aria-hidden="true"></i> Modificar status</button>
+              <a class="btn btn-danger btn-fill btn-xs mb-2" href="{{ route('inspeccion.pdf', ['inspeccion' => $proceso->inspeccion->id]) }}">
+                <i class="fa fa-file-pdf-o"></i> Descargar PDF
+              </a>
               <div class="row">
                 @foreach($proceso->inspeccion->fotos as $foto)
                   <div class="col-sm-4 col-md-2 mb-2">
@@ -449,13 +453,19 @@
                 @endforeach
               </div>
               <div class="mt-2 table-responsive">
-                <p class="text-muted">
-                  <span class="text-dark"><strong>Combustible:</strong></span> {{ $proceso->inspeccion->combustible() }}
+                <p class="text-muted m-0">
+                  <strong class="text-dark">Combustible:</strong> {{ $proceso->inspeccion->combustible }}
                 </p>
-                <p class="text-muted">
-                  <span class="text-dark"><strong>observación:</strong></span> {{ $proceso->inspeccion->observacion }}
+                <p class="text-muted m-0">
+                  <strong class="text-dark">Observación:</strong> {{ $proceso->inspeccion->observacion }}
                 </p>
-                <table class="table table-sm" style="width: 100%">
+                <p class="m-0">
+                  <strong class="text-dark">Estatus:</strong> {!! $proceso->inspeccion->status() !!}
+                </p>
+                <p class="text-muted m-0">
+                  <strong class="text-dark">Comentarios del cliente:</strong> {{ $proceso->inspeccion->comentarios ?? 'N/A' }}
+                </p>
+                <table class="table table-sm mt-2" style="width: 100%">
                   <tbody>
                     <tr>
                       <td>Radio</td>
@@ -544,7 +554,7 @@
     <div class="modal-dialog modal-lg dialog-top" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="delElementModalLabel">Imagen</h4>
+          <h4 class="modal-title" id="statusModalLabel">Imagen</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -555,6 +565,66 @@
           <center>
             <button type="button" class="btn btn-flat btn-secondary" data-dismiss="modal">Cerrar</button>
           </center>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="statusModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="statusModalLabel">Cambiar Estatus</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row justify-content-md-center">
+            <form id="status" class="col-md-12" action="{{ route('inspeccion.status', ['inspeccion' => $proceso->inspeccion->id]) }}" method="POST">
+              @csrf
+              @method('PATCH')
+
+              @if($proceso->inspeccion->isPending())
+                <div class="form-group">
+                  <label class="w-100">Seleccionar estatus:</label>
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input id="aprobar" class="custom-control-input" type="radio" name="estatus" value="aprobado" required>
+                    <label class="custom-control-label" for="aprobar">Aprobar</label>
+                  </div>
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input id="recahzar" class="custom-control-input" type="radio" name="estatus" value="rechazado" required>
+                    <label class="custom-control-label" for="recahzar">Recahzar</label>
+                  </div>
+                  <p class="text-center">
+                    <small class="text-muted">
+                      Al aprobar la inspección usted esta de acuerdo con todos los puntos expresados en ella. Puede dejar comentarios adicionales o comunicarse con nosotros ante cualquier duda. De rechazar la inspección, indique en la opción de comentarios la razón del rechazo.
+                    </small>
+                  </p>
+                </div>
+              @endif
+
+              <div class="form-group">
+                <label for="comentarios">Comentarios: </label>
+                <textarea id="comentarios" class="form-control" type="text" maxlength="500" name="comentarios">{{ old('comentarios', $proceso->inspeccion->comentarios) }}</textarea>
+              </div>
+
+              @if(count($errors) > 0)
+                <div class="alert alert-danger alert-important">
+                  <ul class="m-0">
+                    @foreach($errors->all() as $error)
+                      <li>{{ $error }}</li>
+                    @endforeach
+                  </ul>
+                </div>
+              @endif
+
+              <center>
+                <button class="btn btn-fill btn-primary" type="submit">Enviar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              </center>
+            </form>
+          </div>
         </div>
       </div>
     </div>

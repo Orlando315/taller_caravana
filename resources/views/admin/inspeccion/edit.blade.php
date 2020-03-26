@@ -12,32 +12,41 @@
 @endsection
 
 @section('content')
-  <div class="container">
 
-    @include('partials.flash')
+  @include('partials.flash')
 
-    <div class="row justify-content-center">
-      <div class="col-md-10">
-        <div class="card">
-          <div class="card-body">
-            <form action="{{ route('admin.inspeccion.update', ['inspeccion' => $inspeccion->id]) }}" method="POST" enctype="multipart/form-data">
-              @csrf
-              @method('PUT')
-              <h4>Editar Inspección de recepción</h4>
-              
-              <h5 class="text-center">{{ $inspeccion->proceso->cliente->nombre().' | '.$inspeccion->proceso->vehiculo->vehiculo() }}</h5>
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-body">
+          <form action="{{ route('admin.inspeccion.update', ['inspeccion' => $inspeccion->id]) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <h4>Editar Inspección de recepción</h4>
+            
+            <h5 class="text-center">{{ $inspeccion->proceso->cliente->nombre().' | '.$inspeccion->proceso->vehiculo->vehiculo() }}</h5>
 
-              <div id="foto-group" class="form-group">
-                <label for="fotos">Fotos:</label>
-                <div class="file-loading">
-                  <input id="fotos" type="file" name="fotos[]" data-msg-placeholder="Seleccionar..." accept="image/jpeg,image/png" multiple>
-                </div>
-                <small class="text-muted">Hasta 6 fotos de 12 MB c/u</small>
+            <div id="foto-group" class="form-group">
+              <label for="fotos">Fotos:</label>
+              <div class="file-loading">
+                <input id="fotos" type="file" name="fotos[]" data-msg-placeholder="Seleccionar..." accept="image/jpeg,image/png" multiple>
               </div>
+              <small class="text-muted">Hasta 6 fotos de 12 MB c/u</small>
+            </div>
 
-            <div class="form-group">
-              <label class="control-label" for="combustible">Combustible: </label>
-              <input id="combustible" class="form-control{{ $errors->has('combustible') ? ' is-invalid' : '' }}" type="number" step="0.1" min="0" max="99999999" name="combustible" value="{{ old('combustible', $inspeccion->combustible) }}" placeholder="Combustible">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="combustible">Combustible: </label>
+                  <select id="combustible" class="custom-select{{ $errors->has('combustible') ? ' is-invalid' : '' }}" name="combustible" required>
+                    <option value="0"{{ old('combustible', $inspeccion->combustible) == '0' ? ' selected' : ''}}>0</option>
+                    <option value="1/4"{{ old('combustible', $inspeccion->combustible) == '1/4' ? ' selected' : ''}}>1/4</option>
+                    <option value="1/2"{{ old('combustible', $inspeccion->combustible) == '1/2' ? ' selected' : ''}}>1/2</option>
+                    <option value="3/4"{{ old('combustible', $inspeccion->combustible) == '3/4' ? ' selected' : ''}}>3/4</option>
+                    <option value="Full"{{ old('combustible', $inspeccion->combustible) == 'Full' ? ' selected' : ''}}>Full</option>
+                  </select>
+                </div>
+              </div>
             </div>
 
             <div class="row">
@@ -245,22 +254,21 @@
               <textarea id="observacion" class="form-control{{ $errors->has('observacion') ? ' is-invalid' : '' }}" name="observacion" maxlength="250">{{ old('observacion', $inspeccion->observacion) }}</textarea>
             </div>
 
-              @if(count($errors) > 0)
-              <div class="alert alert-danger alert-important">
-                <ul>
-                  @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                  @endforeach
-                </ul>
-              </div>
-              @endif
+            @if(count($errors) > 0)
+            <div class="alert alert-danger alert-important">
+              <ul>
+                @foreach($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+            @endif
 
-              <div class="form-group text-right">
-                <a class="btn btn-default" href="{{ route('admin.proceso.show', ['proceso' => $inspeccion->proceso->id]) }}"><i class="fa fa-reply"></i> Atras</a>
-                <button class="btn btn-primary" type="submit"><i class="fa fa-send"></i> Guardar</button>
-              </div>
-            </form>
-          </div>
+            <div class="form-group text-right">
+              <a class="btn btn-default" href="{{ route('admin.proceso.show', ['proceso' => $inspeccion->proceso->id]) }}"><i class="fa fa-reply"></i> Atras</a>
+              <button class="btn btn-primary" type="submit"><i class="fa fa-send"></i> Guardar</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

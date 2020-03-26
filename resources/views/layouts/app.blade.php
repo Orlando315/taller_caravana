@@ -102,7 +102,7 @@
             <li class="nav-item{{ $currentRoute == 'admin.finanzas' ? ' active' : '' }}">
               <a class="nav-link" href="{{ route('admin.consulta.finanzas.index') }}">
                 <i class="fa fa-search"></i>
-                <p>Consultar finnazas</p>
+                <p>Consultar finazas</p>
               </a>
             </li>
             @else

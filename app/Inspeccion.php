@@ -2,11 +2,15 @@
 
 namespace App;
 
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use App\Scopes\TallerScope;
+use App\Notifications\AprobarInspeccion;
 
 class Inspeccion extends Model
 {
+    use Notifiable;
+
     /**
      * The table associated with the model.
      *
@@ -55,6 +59,7 @@ class Inspeccion extends Model
      * @var array
      */
     protected $casts = [
+      'aprobado' => 'boolean',
       'radio' => 'boolean',
       'antena' => 'boolean',
       'pisos_delanteros' => 'boolean',
@@ -120,14 +125,6 @@ class Inspeccion extends Model
     }
 
     /**
-     * Obtener el atributo formatead
-     */
-    public function combustible()
-    {
-      return number_format($this->combustible, 1, ',', '.');
-    }
-
-    /**
      * Obtener las Fotos como assets
      */
     public function fotosAsAssets()
@@ -138,5 +135,44 @@ class Inspeccion extends Model
                   ->map(function ($foto, $key){
                     return asset('storage/'.$foto);
                   });
+    }
+
+    /**
+     * Badge status
+     */
+    public function status()
+    {
+      if(is_null($this->aprobado)){
+        return '<span class="badge badge-secondary">Esperando aprobación del cliente</span>';
+      }
+
+      return $this->aprobado ? '<span class="badge badge-success">Aprobado por el cliente</span>' : '<span class="badge badge-danger">Rechazado</span>';
+    }
+
+    /**
+     * Evaluar si la Inspeccion esta pendiendo de Aprobacion o Rechazo del Cliente
+     */
+    public function isPending()
+    {
+      return is_null($this->aprobado);
+    }
+
+    /**
+     * Route notifications for the mail channel.
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return string
+     */
+    public function routeNotificationForMail($notification)
+    {
+      return $this->proceso->cliente->user->email;
+    }
+
+    /**
+     * Notificar al Cliente que se ha creardo / modificado una Inspeccion y debe ser Aprobada o Rechazada
+     */
+    public function sendEmailStatusRequest()
+    {
+      $this->notify(new AprobarInspeccion($this));
     }
 }

@@ -12,7 +12,7 @@
       <a class="btn btn-default" href="{{ route('admin.proceso.index') }}"><i class="fa fa-reply" aria-hidden="true"></i> Volver</a>
       @if(Auth::user()->isAdmin())
         @if(!$proceso->status)
-          <button class="btn btn-fill btn-warning" data-toggle="modal" data-target="#statusModal"><i class="fa fa-check" aria-hidden="true"></i> Completado</button>
+          <button class="btn btn-fill btn-warning" data-toggle="modal" data-target="#statusModal"><i class="fa fa-check" aria-hidden="true"></i> Marcar como Completado</button>
         @endif
         <button class="btn btn-fill btn-danger" data-toggle="modal" data-target="#delModal"><i class="fa fa-times" aria-hidden="true"></i> Eliminar</button>
       @endif
@@ -626,13 +626,19 @@
                 @endforeach
               </div>
               <div class="mt-2 table-responsive">
-                <p class="text-muted">
-                  <span class="text-dark"><strong>Combustible:</strong></span> {{ $proceso->inspeccion->combustible() }}
+                <p class="text-muted m-0">
+                  <strong class="text-dark">Combustible:</strong> {{ $proceso->inspeccion->combustible }}
                 </p>
-                <p class="text-muted">
-                  <span class="text-dark"><strong>observación:</strong></span> {{ $proceso->inspeccion->observacion }}
+                <p class="text-muted m-0">
+                  <strong class="text-dark">Observación:</strong> {{ $proceso->inspeccion->observacion }}
                 </p>
-                <table class="table table-sm" style="width: 100%">
+                <p class="m-0">
+                  <strong class="text-dark">Estatus:</strong> {!! $proceso->inspeccion->status() !!}
+                </p>
+                <p class="text-muted m-0">
+                  <strong class="text-dark">Comentarios del cliente:</strong> {{ $proceso->inspeccion->comentarios ?? 'N/A' }}
+                </p>
+                <table class="table table-sm mt-2" style="width: 100%">
                   <tbody>
                     <tr>
                       <td>Radio</td>

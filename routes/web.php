@@ -35,6 +35,10 @@ Route::group(['middleware' => 'auth'], function (){
         ->names('proceso')
         ->only(['index', 'show']);
 
+  /* --- Inspeccion --- */
+  Route::patch('inspeccion/{inspeccion}/status', 'InspeccionController@status')->name('inspeccion.status');
+  Route::get('inspeccion/{inspeccion}/pdf', 'InspeccionController@pdf')->name('inspeccion.pdf');
+
   /* --- Cotizacion --- */
   Route::get('cotizacion/create/{situacion}', 'CotizacionController@create')->name('cotizacion.create');
   Route::post('cotizacion/{situacion}', 'CotizacionController@store')->name('cotizacion.store');
