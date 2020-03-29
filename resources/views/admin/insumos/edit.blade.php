@@ -66,8 +66,8 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="control-label" for="grado">Grado: *</label>
-                  <input id="grado" class="form-control{{ $errors->has('grado') ? ' is-invalid' : '' }}" type="text" name="grado" maxlength="50" value="{{ old('grado', $insumo->grado) }}" placeholder="Grado" required>
+                  <label class="control-label" for="grado">Grado:</label>
+                  <input id="grado" class="form-control{{ $errors->has('grado') ? ' is-invalid' : '' }}" type="text" name="grado" maxlength="50" value="{{ old('grado', $insumo->grado) }}" placeholder="Grado">
                 </div>
               </div>
               <div class="col-md-3">

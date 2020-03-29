@@ -82,7 +82,7 @@ class Insumo extends Model
      *
      * @param   string $type
      */
-    public function getPhoto($type)
+    public function getPhoto($type = 'foto')
     {
       return asset($this->{$type} ? 'storage/'.$this->{$type} : 'images/default.jpg');
     }

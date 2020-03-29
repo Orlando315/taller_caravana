@@ -46,7 +46,7 @@
                   <small class="text-muted">
                     {{ $insumo->marca }} |
                     <a href="{{ route('admin.tipos.show', ['tipo' => $insumo->tipo_id]) }}">{{ $insumo->tipo->tipo }}</a> |
-                    {{ $insumo->grado }} |
+                    {{ $insumo->grado ?? 'N/A' }} |
                     <a href="{{ route('admin.formatos.show', ['formato' => $insumo->formato_id]) }}">{{ $insumo->formato->formato }}</a>
                   </small>
                   <p class="m-0">{{ $insumo->descripcion ?? 'N/A' }}</p>

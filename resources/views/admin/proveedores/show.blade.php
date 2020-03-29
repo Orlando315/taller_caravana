@@ -54,13 +54,13 @@
 
           <strong>Teléfono Celular</strong>
           <p class="text-muted">
-            {{ $proveedor->telefono_celular }}
+            {{ $proveedor->telefono_celular ?? 'N/A' }}
           </p>
           <hr>
 
           <strong>Teléfono Local</strong>
           <p class="text-muted">
-            {{ $proveedor->telefono_local }}
+            {{ $proveedor->telefono_local ?? 'N/A' }}
           </p>
           <hr>
 

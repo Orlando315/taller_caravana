@@ -53,7 +53,7 @@ class InsumosControllers extends Controller
       $this->validate($request, [
         'nombre' => 'required|string|max:50',
         'marca' => 'required|string|max:50',
-        'grado' => 'required|alpha_num|max:50',
+        'grado' => 'nullable|string|max:50',
         'tipo' => 'required',
         'formato' => 'required',
         'foto' => 'nullable|file|mimes:jpeg,jpg,png',
@@ -149,7 +149,7 @@ class InsumosControllers extends Controller
       $this->validate($request, [
         'nombre' => 'required|string|max:50',
         'marca' => 'required|string|max:50',
-        'grado' => 'required|alpha_num|max:50',
+        'grado' => 'nullable|string|max:50',
         'tipo' => 'required',
         'formato' => 'required',
         'foto' => 'nullable|file|mimes:jpeg,jpg,png',

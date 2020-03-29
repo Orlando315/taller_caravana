@@ -88,10 +88,10 @@ class ProcesoController extends Controller
       $pagos = $proceso->pagos;
       $proceso->load('situacion.items');
 
-      $situacionRepuestos = $proceso->situacion->getItemsByType('repuesto')->get();
-      $situacionInsumos = $proceso->situacion->getItemsByType('insumo')->get();
-      $situacionHoras = $proceso->situacion->getItemsByType()->get();
-      $situacionOtros = $proceso->situacion->getItemsByType('otros')->get();
+      $situacionRepuestos = $proceso->situacion ? $proceso->situacion->getItemsByType('repuesto')->get() : [];
+      $situacionInsumos = $proceso->situacion ? $proceso->situacion->getItemsByType('insumo')->get() : [];
+      $situacionHoras = $proceso->situacion ? $proceso->situacion->getItemsByType()->get() : [];
+      $situacionOtros = $proceso->situacion ? $proceso->situacion->getItemsByType('otros')->get() : [];
 
       return view('admin.proceso.show', compact('proceso', 'preevaluaciones', 'preevaluacionesFotos', 'pagos', 'situacionRepuestos', 'situacionInsumos', 'situacionHoras', 'situacionOtros'));
     }

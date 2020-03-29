@@ -21,7 +21,7 @@
 
             <div class="form-group ">
               <label class="control-label" for="pago">Pago: *</label>
-              <input id="pago" class="form-control{{ $errors->has('pago') ? ' is-invalid' : '' }}" type="number" step="0.01" min="1" max="{{ $cotizacion->porPagar() }}" name="pago" value="{{ old('pago') }}" placeholder="Pago" required>
+              <input id="pago" class="form-control{{ $errors->has('pago') ? ' is-invalid' : '' }}" type="number" step="0.01" min="1" max="{{ $cotizacion->porPagar() }}" name="pago" value="{{ old('pago', str_replace(',', '.', $cotizacion->porPagar())) }}" placeholder="Pago" required>
             </div>
       
             @if(count($errors) > 0)

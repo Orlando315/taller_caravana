@@ -81,7 +81,7 @@
                     </div>
                   </td>
                   <td class="text-right">{{ $insumo->getStock(true) }}</td>
-                  <td>{{ $insumo->grado }}</td>
+                  <td>{{ $insumo->grado ?? 'N/A' }}</td>
                   <td>{{ $insumo->tipo->tipo }}</td>
                 </tr>
               @endforeach

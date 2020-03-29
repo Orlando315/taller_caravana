@@ -39,12 +39,12 @@
             </div>
             
             <div class="form-group">
-              <label class="control-label" for="telefono_local">Teléfono Local: *</label>
+              <label class="control-label" for="telefono_local">Teléfono Local:</label>
               <input id="telefono_local" class="form-control{{ $errors->has('telefono_local') ? ' is-invalid' : '' }}" type="text" name="telefono_local" maxlength="15" value="{{ old('telefono_local') }}" placeholder="Teléfono Local">
             </div>
 
             <div class="form-group">
-              <label class="control-label" for="telefono_celular">Teléfono Celular: *</label>
+              <label class="control-label" for="telefono_celular">Teléfono Celular:</label>
               <input id="telefono_celular" class="form-control{{ $errors->has('telefono_celular') ? ' is-invalid' : '' }}" type="text" name="telefono_celular" maxlength="15" value="{{ old('telefono_celular') }}" placeholder="Teléfono Celular">
             </div>
 

@@ -47,7 +47,7 @@ class PagoController extends Controller
     {
       $this->authorize('create', [Pago::class, $cotizacion]);
       $this->validate($request, [
-        'pago' => 'required|numeric|min:1|max:'.$cotizacion->porPagar(),
+        'pago' => 'required|numeric|min:1|max:'.str_replace(',', '.', $cotizacion->porPagar()),
       ]);
 
       $pago = new Pago([
