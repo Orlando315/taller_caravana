@@ -59,6 +59,14 @@ class Proveedor extends Model
     }
 
     /**
+     * Obtener las Marcas del Proveedor
+     */
+    public function marcas()
+    {
+      return $this->belongsToMany('App\VehiculosMarca','proveedores_vehiculos', 'proveedor_id', 'vehiculo_marca_id')->withTimestamps();
+    }
+
+    /**
      * Relacion con Insumos
      */
     public function Insumos()
