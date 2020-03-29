@@ -28,10 +28,10 @@ class ProveedorVehiculoController extends Controller
     public function create(Proveedor $proveedor)
     {
       $this->authorize('update', $proveedor);
-      $marcas = VehiculosMarca::all();
-      $anios = VehiculosAnio::all();
+      $ids = $proveedor->vehiculos()->pluck('vehiculo_marca_id')->toArray();
+      $marcas = VehiculosMarca::whereNotIn('id', $ids)->get();
 
-      return view('admin.proveedores.vehiculos.create', ['proveedor' => $proveedor,'marcas' => $marcas, 'anios' => $anios]);
+      return view('admin.proveedores.vehiculos.create', compact('proveedor', 'marcas'));
     }
 
     /**
@@ -45,28 +45,12 @@ class ProveedorVehiculoController extends Controller
     {
       $this->authorize('update', $proveedor);
       $this->validate($request, [
-        'modelos' => 'required',
-        'año' => 'required',
+        'marcas' => 'required',
       ]);
 
-      $vehiculos = [];
-
-      foreach ($request->modelos as $id) {
-        $modelo = VehiculosModelo::find($id);
-
-        if($modelo){
-          $vehiculos[] = [
-                        'taller' => Auth::id(),
-                        'vehiculo_anio_id' => $request->input('año'),
-                        'vehiculo_marca_id' => $modelo->vehiculo_marca_id,
-                        'vehiculo_modelo_id' => $modelo->id,
-                      ];
-        }
-      }
-
-      if($proveedor->vehiculos()->createMany($vehiculos)){
+      if($proveedor->marcas()->attach($request->marcas, ['taller' => Auth::id()])){
         return redirect()->route('admin.proveedor.show', ['proveedor' => $proveedor->id])->with([
-                'flash_message' => 'Vehículo agregado exitosamente.',
+                'flash_message' => 'Marcas agregadas exitosamente.',
                 'flash_class' => 'alert-success'
               ]);
       }
@@ -124,7 +108,7 @@ class ProveedorVehiculoController extends Controller
       if($vehiculo->delete()){
           return redirect()->back()->with([
                   'flash_class'   => 'alert-success',
-                  'flash_message' => 'Vehículo eliminado exitosamente.'
+                  'flash_message' => 'Marca eliminada exitosamente.'
                 ]);
       }
 

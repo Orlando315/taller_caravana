@@ -83,7 +83,7 @@
         <div class="card-body">
           <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" id="tab1-tab" href="#tab1" role="tab" data-toggle="tab" aria-controls="tab1" aria-selected="true">Repuestos para ({{ $vehiculos->count() }})</a>
+              <a class="nav-link active" id="tab1-tab" href="#tab1" role="tab" data-toggle="tab" aria-controls="tab1" aria-selected="true">Repuestos para ({{ $marcas->count() }})</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" id="tab2-tab" href="#tab2" role="tab" data-toggle="tab" aria-controls="tab2" aria-selected="false">Insumos ({{ $insumos->count() }})</a>
@@ -93,7 +93,7 @@
             <div id="tab1" class="tab-pane fade pt-2 show active" role="tabpanel" aria-labelledby="tab1-tab">
               @if(Auth::user()->isAdmin())
                 <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('admin.proveedor.vehiculo.create', ['proveedor' => $proveedor->id]) }}">
-                  <i class="fa fa-plus"></i> Agregar vehículos
+                  <i class="fa fa-plus"></i> Agregar marcas
                 </a>
               @endif
               
@@ -102,23 +102,21 @@
                   <tr>
                     <th scope="col" class="text-center">#</th>
                     <th scope="col" class="text-center">Marca</th>
-                    <th scope="col" class="text-center">Modelo</th>
-                    <th scope="col" class="text-center">Año</th>
                     @if(Auth::user()->isAdmin())
                     <th scope="col" class="text-center">Acción</th>
                     @endif
                   </tr>
                 </thead>
                 <tbody>
-                @foreach($vehiculos as $v)
+                @foreach($marcas as $m)
                   <tr>
                     <td scope="row" class="text-center">{{ $loop->iteration }}</td>
-                    <td scope="col" class="text-center">{{ $v->marca->marca }}</td>
-                    <td scope="col" class="text-center">{{ $v->modelo->modelo }}</td>
-                    <td scope="col" class="text-center">{{ $v->anio->anio() }}</td>
+                    <td class="text-center">{{ $m->marca->marca }}</td>
                     @if(Auth::user()->isAdmin())
-                    <td scope="col" class="text-center">
-                      <button type="button" data-url="{{ route('admin.proveedor.vehiculo.destroy',['id' => $v->id]) }}" class="btn btn-sm btn-fill btn-danger del_vehiculo">X</button>
+                    <td class="text-center">
+                      <button type="button" data-url="{{ route('admin.proveedor.vehiculo.destroy', ['id' => $m->id]) }}" class="btn btn-sm btn-fill btn-danger del_vehiculo">
+                        <i class="fa fa-times"></i>
+                      </button>
                     </td>
                     @endif
                   </tr>
@@ -149,7 +147,7 @@
                       </td>
                       <td class="text-center">
                         <div class="img-container">
-                          <img class="img-fluid img-thumbnail" src="{{ $insumo->getPhoto($insumo->foto) }}" alt="{{ $insumo->nombre }}" style="max-height: 75px">
+                          <img class="img-fluid img-thumbnail" src="{{ $insumo->getPhoto('foto') }}" alt="{{ $insumo->nombre }}" style="max-height: 75px">
                         </div>
                       </td>
                       <td class="text-right">{{ $insumo->getStock(true) }}</td>
@@ -199,18 +197,18 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="delModalVehiculoLabel">Eliminar Vehículo</h4>
+          <h4 class="modal-title" id="delModalVehiculoLabel">Eliminar Marca</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <div class="row justify-content-md-center">
-            <form class="col-md-8" id="form_delete_vehiculo" method="POST">
+            <form class="col-md-10" id="form_delete_vehiculo" method="POST">
               @csrf
               @method('DELETE')
 
-              <p class="text-center">¿Esta seguro de eliminar este Vehículo?</p><br>
+              <p class="text-center">¿Esta seguro de eliminar esta Marca?</p><br>
 
               <center>
                 <button class="btn btn-fill btn-danger" type="submit">Eliminar</button>
