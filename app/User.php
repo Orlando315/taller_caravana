@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-      'user_id', 'nombres', 'apellidos', 'email', 'password', 'status'
+      'user_id', 'role', 'nombres', 'apellidos', 'email', 'password', 'status'
     ];
 
     /**
@@ -136,7 +136,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Obtener el nombre del Role del User
+     * Obtener el Taller al que pertenece el User
      */
     public function taller(){
       return $this->belongsTo('App\User', 'user_id');

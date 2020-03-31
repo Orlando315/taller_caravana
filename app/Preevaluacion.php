@@ -44,7 +44,7 @@ class Preevaluacion extends Model
     protected static function boot()
     {
       parent::boot();
-      static::addGlobalScope(new TallerScope);
+      // static::addGlobalScope(new TallerScope);
     }
 
     /**

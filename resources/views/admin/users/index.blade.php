@@ -15,11 +15,11 @@
       <div class="card">
         <div class="card-header">
           <h4 class="card-title">
-            <i class="fa fa-users"></i> Jefes de taller ({{ $jefes->count() }})
+            <i class="fa fa-users"></i> Usuarios ({{ $users->count() }})
           </h4>
           @if(Auth::user()->isAdmin())
           <a class="btn btn-primary btn-fill btn-xs mb-2" href="{{ route('admin.users.create') }}">
-            <i class="fa fa-plus"></i> Agregar Jefe de taller
+            <i class="fa fa-plus"></i> Agregar Usuario
           </a>
           @endif
         </div>
@@ -31,21 +31,23 @@
                 <th scope="col" class="text-center">Email</th>
                 <th scope="col" class="text-center">Nombres</th>
                 <th scope="col" class="text-center">Apellidos</th>
+                <th scope="col" class="text-center">Role</th>
                 <th scope="col" class="text-center">Agregado</th>
               </tr>
             </thead>
             <tbody class="text-center">
-              @foreach($jefes as $d)
+              @foreach($users as $user)
                 <tr>
                   <td scope="row" class="text-center">{{ $loop->iteration }}</td>
                   <td>
-                    <a href="{{ route('admin.users.show', ['user' => $d->id] )}}">
-                      {{ $d->email }}
+                    <a href="{{ route('admin.users.show', ['user' => $user->id] )}}">
+                      {{ $user->email }}
                     </a>
                   </td>
-                  <td>{{ $d->nombres }}</td>
-                  <td>{{ $d->apellidos }}</td>
-                  <td>{{ $d->created_at->format('d-m-Y H:i:s') }}</td>
+                  <td>{{ $user->nombres }}</td>
+                  <td>{{ $user->apellidos }}</td>
+                  <td>{{ $user->role() }}</td>
+                  <td>{{ $user->created_at->format('d-m-Y H:i:s') }}</td>
                 </tr>
               @endforeach
             </tbody>

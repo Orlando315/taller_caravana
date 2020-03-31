@@ -17,7 +17,15 @@
           <form action="{{ route('admin.users.store') }}" method="POST">
             @csrf
 
-            <h4>Agregar Jefe de taller</h4>
+            <h4>Agregar usuario</h4>
+
+            <div class="form-group">
+              <label class="control-label" for="role">Role: *</label>
+              <select id="role" class="custom-select" name="role" required>
+                <option value="jefe"{{ old('role') == 'jefe' ? ' selected' : '' }}>Jefe de taller</option>
+                <option value="admin"{{ old('role') == 'admin' ? ' selected' : '' }}>Administrador</option>
+              </select>
+            </div>
 
             <div class="form-group">
               <label class="control-label" for="nombres">Nombres: *</label>

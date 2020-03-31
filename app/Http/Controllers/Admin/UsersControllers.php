@@ -18,9 +18,9 @@ class UsersControllers extends Controller
     {
       $this->authorize('index', User::class);
 
-      $jefes = Auth::user()->isAdmin() ? Auth::user()->jefes : Auth::user()->taller->jefes;
+      $users = Auth::user()->isAdmin() ? Auth::user()->users : Auth::user()->taller->users;
 
-      return view('admin.users.index', compact('admins', 'jefes'));
+      return view('admin.users.index', compact('admins', 'users'));
     }
 
     /**
@@ -47,14 +47,14 @@ class UsersControllers extends Controller
       $this->authorize('create', User::class);
 
       $this->validate($request, [
+        'role' => 'required|in:jefe,admin',
         'nombres' => 'required|string|max:50',
         'apellidos' => 'nullable|string|max:50',
         'email' => 'required|email|unique:users,email',
         'password' => 'required|confirmed|min:6|max:50',
       ]);
 
-      $user = new User($request->only(['nombres', 'apellidos', 'email']));
-      $user->role = 'jefe';
+      $user = new User($request->only(['nombres', 'apellidos', 'email', 'role']));
       $user->password = bcrypt($request->password);
 
       if(Auth::user()->users()->save($user)){
@@ -109,12 +109,13 @@ class UsersControllers extends Controller
       $this->authorize('update', $user);
 
       $this->validate($request, [
+        'role' => 'required|in:jefe,admin',
         'nombres' => 'required|string|max:50',
         'apellidos' => 'nullable|string|max:50',
         'email' => 'required|email|unique:users,email,' . $user->id . ',id',
       ]);
 
-      $user->fill($request->only(['nombres', 'apellidos', 'email']));
+      $user->fill($request->only(['nombres', 'apellidos', 'email', 'role']));
 
       if($user->save()){
         return redirect()->route('admin.users.show', ['user' => $user->id])->with([

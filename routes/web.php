@@ -14,7 +14,7 @@
 Route::view('/', 'auth.login');
 Route::view('login', 'auth.login');
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 /* --- Solo usuarios autenticados --- */
 Route::group(['middleware' => 'auth'], function (){

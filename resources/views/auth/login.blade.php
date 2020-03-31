@@ -46,10 +46,6 @@
       <button type="submit" class="btn btn-primary btn-fill btn-block">
         Login
       </button>
-      <p class="text-center" style="margin: 15px 0 0 0">
-        ¿No posees una cuenta?
-        <a href="{{ route('register') }}" title="Registro">Registrate</a>
-      </p>
       <p class="text-center">
         ¿Olvidaste tu contraseña?
         <a href="{{ route('password.request') }}" title="Recuperar contraseña">Recuperar</a>

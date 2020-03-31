@@ -43,7 +43,7 @@
 
           <strong>Apellidos</strong>
           <p class="text-muted">
-            {{ $user->apellidos }}
+            {{ $user->apellidos ?? 'N/A' }}
           </p>
           <hr>
 

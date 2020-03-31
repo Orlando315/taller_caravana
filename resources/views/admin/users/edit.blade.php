@@ -21,6 +21,14 @@
             <h4>Editar Usuario</h4>
 
             <div class="form-group">
+              <label class="control-label" for="role">Role: *</label>
+              <select id="role" class="custom-select" name="role" required>
+                <option value="jefe"{{ old('role', $user->role) == 'jefe' ? ' selected' : '' }}>Jefe de taller</option>
+                <option value="admin"{{ old('role', $user->role) == 'admin' ? ' selected' : '' }}>Administrador</option>
+              </select>
+            </div>
+
+            <div class="form-group">
               <label class="control-label" for="nombres">Nombres: *</label>
               <input id="nombres" class="form-control{{ $errors->has('nombres') ? ' is-invalid' : '' }}" type="text" name="nombres" maxlength="50" value="{{ old('nombres') ?? $user->nombres }}" placeholder="Nombres" required>
             </div>

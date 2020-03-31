@@ -49,8 +49,7 @@ class Insumo extends Model
     protected static function boot()
     {
       parent::boot();
-
-      static::addGlobalScope(new UserScope);
+      // static::addGlobalScope(new UserScope);
     }
 
     /**
