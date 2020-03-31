@@ -48,7 +48,7 @@ class ProveedorController extends Controller
         'proveedor' => 'required',
         'vendedor' => 'required',
         'direccion' => 'required',
-        'email' => 'required|email|unique:proveedores,email',
+        'email' => 'nullable|email|unique:proveedores,email',
         'telefono_local' => 'nullable|max:15',
         'telefono_celular' => 'nullable|max:15',
         'descuento' => 'nullable|numeric|min:0',
@@ -116,7 +116,7 @@ class ProveedorController extends Controller
         'direccion' => 'required',
         'telefono_local' => 'nullable|max:15',
         'telefono_celular' => 'nullable|max:15',
-        'email' => 'required|email|unique:proveedores,email,' . $proveedor->id . ',id',
+        'email' => 'nullable|email|unique:proveedores,email,' . $proveedor->id . ',id',
         'descuento' => 'nullable|numeric|min:0',
       ]);
 

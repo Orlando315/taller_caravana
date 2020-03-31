@@ -30,7 +30,7 @@
         <div class="card-body">
           <strong>Email</strong>
           <p class="text-muted">
-            {{ $proveedor->email }}
+            {{ $proveedor->email ?? 'N/A' }}
           </p>
           <hr>
 

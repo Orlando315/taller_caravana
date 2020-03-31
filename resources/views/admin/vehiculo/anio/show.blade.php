@@ -56,7 +56,7 @@
                 <th scope="col" class="text-center">Marca</th>
                 <th scope="col" class="text-center">Modelo</th>
                 <th scope="col" class="text-center">Color</th>
-                <th scope="col" class="text-center">Patentes</th>
+                <th scope="col" class="text-center">Patente</th>
                 <th scope="col" class="text-center">Agregado</th>
               </tr>
             </thead>

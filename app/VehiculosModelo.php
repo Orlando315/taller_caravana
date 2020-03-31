@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\{Model, Builder};
 use App\Scopes\TallerScope;
 
 class VehiculosModelo extends Model
@@ -32,6 +32,9 @@ class VehiculosModelo extends Model
     {
       parent::boot();
       // static::addGlobalScope(new TallerScope);
+      static::addGlobalScope(function (Builder $query ){
+        $query->orderBy('modelo', 'asc');
+      });
     }
 
     /**

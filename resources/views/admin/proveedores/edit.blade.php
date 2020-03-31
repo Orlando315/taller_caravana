@@ -20,8 +20,8 @@
             <h4>Editar Proveedor</h4>
 
             <div class="form-group">
-              <label class="control-label" for="email">Email: *</label>
-              <input id="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" type="email" name="email"  value="{{ old('email', $proveedor->email) }}" placeholder="Email" value="{{ $proveedor->email }}" required>
+              <label class="control-label" for="email">Email:</label>
+              <input id="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" type="email" name="email"  value="{{ old('email', $proveedor->email) }}" placeholder="Email" value="{{ $proveedor->email }}">
             </div>
 
             <div class="form-group">

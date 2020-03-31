@@ -19,8 +19,8 @@
             <h4>Agregar Proveedor</h4>
 
             <div class="form-group">
-              <label class="control-label" for="email">Email: *</label>
-              <input id="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" type="email" name="email"  value="{{ old('email') }}" placeholder="Email" required>
+              <label class="control-label" for="email">Email:</label>
+              <input id="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" type="email" name="email"  value="{{ old('email') }}" placeholder="Email">
             </div>
 
             <div class="form-group">

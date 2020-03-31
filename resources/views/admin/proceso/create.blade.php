@@ -193,8 +193,8 @@
               </div>
 
               <div class="form-group">
-                <label class="control-label" for="patentes">Patentes: *</label>
-                <input id="patentes" class="form-control{{ $errors->has('patentes') ? ' is-invalid' : '' }}" type="text" name="patentes" maxlength="50" value="{{ old('patentes') }}" placeholder="Patentes" required>
+                <label class="control-label" for="patente">Patente: *</label>
+                <input id="patente" class="form-control{{ $errors->has('patente') ? ' is-invalid' : '' }}" type="text" name="patente" maxlength="50" value="{{ old('patente') }}" placeholder="Patentes" required>
               </div>
 
               <div class="form-group">

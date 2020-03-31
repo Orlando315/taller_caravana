@@ -30,7 +30,7 @@
                 <th scope="col" class="text-center">Modelo</th>
                 <th scope="col" class="text-center">Color</th>
                 <th scope="col" class="text-center">Año</th>
-                <th scope="col" class="text-center">Patentes</th>
+                <th scope="col" class="text-center">Patente</th>
               </tr>
             </thead>
             <tbody>

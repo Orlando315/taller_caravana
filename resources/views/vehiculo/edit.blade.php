@@ -74,8 +74,8 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="control-label" for="patentes">Patentes: *</label>
-                  <input id="patentes" class="form-control{{ $errors->has('patentes') ? ' is-invalid' : '' }}" type="text" name="patentes" maxlength="50" value="{{ old('patentes', $vehiculo->patentes) }}" placeholder="Patentes" required>
+                  <label class="control-label" for="patente">Patente: *</label>
+                  <input id="patente" class="form-control{{ $errors->has('patente') ? ' is-invalid' : '' }}" type="text" name="patente" maxlength="50" value="{{ old('patente', $vehiculo->patentes) }}" placeholder="Patente" required>
                 </div>
               </div>
               <div class="col-md-3">

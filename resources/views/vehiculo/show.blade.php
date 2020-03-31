@@ -62,7 +62,7 @@
           </p>
           <hr>
 
-          <strong>Patentes</strong>
+          <strong>Patente</strong>
           <p class="text-muted">
             {{ $vehiculo->patentes ?? 'N/A' }}
           </p>
