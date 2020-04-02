@@ -15,8 +15,9 @@
         background-color: #fff;
         font-size: .6rem;
       }
-      h4{
+      p.text-title{
         font-family: "Segoe UI",sans-serif !important;
+        font-size: 24px;
       }
       .text-center,
       td.text-center{
@@ -35,12 +36,12 @@
               <img src="{{ asset('images/logo.png') }}" alt="" width="150">
             </td>
             <td class="border-0 align-bottom text-right">
-              <h4 class="text-muted m-0" style="font-family: sans-serif;">@yield('documento')</h4>
+              <p class="text-muted m-0 text-title">@yield('documento')</p>
             </td>
           </tr>
           <tr>
             <td>
-              <h4 class="text-center text-muted">Automotora La Tirana</h4>
+              <p class="text-center text-muted m-0 text-title">Automotora La Tirana</p>
               <p class="text-center">
                 <small>
                   Servicio automotriz especializado</br>
