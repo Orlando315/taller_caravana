@@ -1,4 +1,4 @@
-.modal-header{
+f.modal-header{
   border-bottom: 1px solid rgba(0,0,0,.125) !important;
 }
 
@@ -348,6 +348,10 @@ button:disabled:hover{
 }
 
 /* FIX custom-file */
+.custom-file{
+  overflow: hidden;
+  height: calc(1.5em + .75rem + 4px);
+}
 .custom-file-label,
 .custom-file-label::after{
   padding: 8px 12px;

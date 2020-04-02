@@ -25,8 +25,7 @@ class Insumo extends Model
       'tipo_id',
       'grado',
       'formato_id',
-      'descripcion', 
-      'factura',
+      'descripcion',
       'minimo'
     ];
 
@@ -77,13 +76,11 @@ class Insumo extends Model
     }
 
     /**
-     * Obtener la url de la foto solicitada
-     *
-     * @param   string $type
+     * Obtener la url de la foto
      */
-    public function getPhoto($type = 'foto')
+    public function getPhoto()
     {
-      return asset($this->{$type} ? 'storage/'.$this->{$type} : 'images/default.jpg');
+      return asset($this->foto ? 'storage/'.$this->foto : 'images/default.jpg');
     }
 
     /**

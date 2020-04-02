@@ -58,8 +58,6 @@ class InsumosControllers extends Controller
         'formato' => 'required',
         'foto' => 'nullable|file|mimes:jpeg,jpg,png',
         'descripcion' => 'nullable|string|max:255',
-        'factura' => 'nullable|integer',
-        'foto_factura' => 'nullable|file|mimes:jpeg,jpg,png',
         'minimo' => 'nullable|numeric|min:0|max:99999999',
       ]);
 
@@ -74,19 +72,12 @@ class InsumosControllers extends Controller
 
       if($insumo->save()){
         $directory = $insumo->user_id.'/'.$insumo->id;
-        if(($request->hasFile('foto') || $request->hasFile('foto_factura')) && !Storage::exists($directory)){
+        if($request->hasFile('foto') && !Storage::exists($directory)){
           Storage::makeDirectory($directory);
         }
 
         if($request->hasFile('foto')){
           $insumo->foto = $request->foto->store($directory);
-        }
-
-        if($request->hasFile('foto_factura')){
-          $insumo->foto_factura = $request->foto_factura->store($directory);
-        }
-
-        if($request->hasFile('foto') || $request->hasFile('foto_factura')){
           $insumo->save();
         }
 
@@ -154,8 +145,6 @@ class InsumosControllers extends Controller
         'formato' => 'required',
         'foto' => 'nullable|file|mimes:jpeg,jpg,png',
         'descripcion' => 'nullable|string|max:255',
-        'factura' => 'nullable|integer',
-        'foto_factura' => 'nullable|file|mimes:jpeg,jpg,png',
         'minimo' => 'nullable|numeric|min:0|max:99999999',
       ]);
 
@@ -168,21 +157,13 @@ class InsumosControllers extends Controller
 
       if($insumo->save()){
         $directory = $insumo->user_id.'/'.$insumo->id;
-        if(($request->hasFile('foto') || $request->hasFile('foto_factura')) && !Storage::exists($directory)){
+        if($request->hasFile('foto') && !Storage::exists($directory)){
           Storage::makeDirectory($directory);
         }
 
         if($request->has('foto')){
           Storage::delete($insumo->foto);
-          $insumo->foto = $request->foto->store($directory); 
-        }
-
-        if($request->has('foto_factura')){
-          Storage::delete($insumo->foto_factura);
-          $insumo->foto_factura = $request->foto_factura->store($directory);
-        }
-
-        if($request->has('foto') || $request->has('foto_factura')){
+          $insumo->foto = $request->foto->store($directory);
           $insumo->save();
         }
 

@@ -29,6 +29,7 @@ class Stock extends Model
       'coste',
       'venta',
       'stock',
+      'factura',
     ];
 
     /**
@@ -94,5 +95,13 @@ class Stock extends Model
     public function stock()
     {
       return number_format($this->stock, 0, ',', '.');
+    }
+
+    /**
+     * Obtener la url de la foto de la factura
+     */
+    public function getPhotoFactura()
+    {
+      return asset($this->foto_factura ? 'storage/'.$this->foto_factura : 'images/default.jpg');
     }
 }

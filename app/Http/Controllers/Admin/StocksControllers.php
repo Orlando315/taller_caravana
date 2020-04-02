@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\{Stock, Insumo, Proveedor};
@@ -48,12 +49,24 @@ class StocksControllers extends Controller
         'coste' => 'required|numeric|min:0||max:99999999',
         'venta' => 'required|numeric|min:0||max:99999999|gt:coste',
         'stock' => 'nullable|integer|min:0|max:99999999',
+        'factura' => 'nullable|string|max:50',
+        'foto_factura' => 'nullable|file|mimes:jpeg,jpg,png',
       ]);
 
-      $stock = new Stock($request->only(['coste', 'venta', 'stock']));
+      $stock = new Stock($request->only(['coste', 'venta', 'stock', 'factura']));
       $stock->proveedor_id = $request->proveedor;
 
       if($insumo->stocks()->save($stock)){
+        $directory = $insumo->user_id.'/'.$insumo->id;
+        if($request->hasFile('foto_factura') && !Storage::exists($directory)){
+          Storage::makeDirectory($directory);
+        }
+
+        if($request->hasFile('foto_factura')){
+          $stock->foto_factura = $request->foto_factura->store($directory);
+          $stock->save();
+        }
+
         return redirect()->route('admin.insumos.show', ['insumo' => $insumo->id])->with([
                 'flash_message' => 'Stock agregado exitosamente.',
                 'flash_class' => 'alert-success'
@@ -94,11 +107,23 @@ class StocksControllers extends Controller
         'coste' => 'required|numeric|min:0||max:99999999',
         'venta' => 'required|numeric|min:0||max:99999999|gt:coste',
         'stock' => 'nullable|integer|min:0|max:99999999',
+        'factura' => 'nullable|string|max:50',
+        'foto_factura' => 'nullable|file|mimes:jpeg,jpg,png',
       ]);
 
-      $stock->fill($request->only(['coste', 'venta', 'stock']));
+      $stock->fill($request->only(['coste', 'venta', 'stock', 'factura']));
 
       if($stock->save()){
+        $directory = $stock->insumo->user_id.'/'.$stock->insumo->id;
+        if($request->hasFile('foto_factura') && !Storage::exists($directory)){
+          Storage::makeDirectory($directory);
+        }
+
+        if($request->has('foto_factura')){
+          Storage::delete($stock->foto_factura);
+          $stock->foto_factura = $request->foto_factura->store($directory);
+        }
+
         return redirect()->route('admin.insumos.show', ['insumo' => $stock->insumo_id])->with([
                 'flash_message' => 'Stock modificado exitosamente.',
                 'flash_class' => 'alert-success'

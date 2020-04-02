@@ -52,13 +52,6 @@
                   <p class="m-0">{{ $insumo->descripcion ?? 'N/A' }}</p>
                 </div>
                 <div class="col-md-5">
-                  <h4 class="m-0">
-                    Factura
-                    @if($insumo->foto_factura)
-                    <button class="btn btn-link btn-info btn-xs" data-toggle="modal" data-target="#facturaModal"><i class="fa fa-search" aria-hidden="true"></i></button>
-                    @endif
-                  </h4>
-                  <p class="m-0"># {{ $insumo->factura ?? 'N/A' }}</p>
                   <p class="m-0">Coste: {{ optional($insumo->stockEnUso)->coste() ?? 'N/A' }}</p>
                   <p class="m-0">Venta: {{ optional($insumo->StockEnUso)->venta() ?? 'N/A' }}</p>
                 </div>
@@ -110,6 +103,7 @@
                     <th scope="col" class="text-center">Coste</th>
                     <th scope="col" class="text-center">Venta</th>
                     <th scope="col" class="text-center">Stock</th>
+                    <th scope="col" class="text-center">Factura</th>
                     <th scope="col" class="text-center">Agregado</th>
                     @if(Auth::user()->isAdmin())
                       <th scope="col" class="text-center">Acción</th>
@@ -128,6 +122,15 @@
                       <td class="text-right">{{ $stock->coste() }}</td>
                       <td class="text-right">{{ $stock->venta() }}</td>
                       <td class="text-right">{{ $stock->stock() }}</td>
+                      <td>
+                        @if($stock->foto_factura)
+                          <a class="btn btn-simple btn-link p-0" role="button" data-toggle="modal" data-target="#facturaModal" data-factura="{{ $stock->getPhotoFactura() }}">
+                            {{ $stock->factura ? '#'.$stock->factura : 'N/A' }}
+                          </a>
+                        @else
+                          {{ $stock->factura ? '#'.$stock->factura : 'N/A' }}
+                        @endif
+                      </td>
                       <td class="text-center">{{ $stock->created_at->format('d-m-Y H:i:s') }}</td>
                       @if(Auth::user()->isAdmin())
                         <td class="text-center">
@@ -182,29 +185,27 @@
     </div>
   </div>
   
-  @if($insumo->foto_factura)
-    <div id="facturaModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="facturaModalLabel">
-      <div class="modal-dialog dialog-top" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" id="facturaModalLabel">Factura</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="row justify-content-md-center">
-              <div class="col-md-10 text-center">
-                <figure class="figure w-100 m-0">
-                  <img src="{{ $insumo->getPhoto('foto_factura') }}" class="figure-img img-thumbnail img-fluid m-0" alt="{{ $insumo->nombre }}" style="max-height: 70vh;">
-                </figure>
-              </div>
+  <div id="facturaModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="facturaModalLabel">
+    <div class="modal-dialog dialog-top" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="facturaModalLabel">Factura</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row justify-content-md-center">
+            <div class="col-md-10 text-center">
+              <figure class="figure w-100 m-0">
+                <img id="foto-factura" src="#" class="figure-img img-thumbnail img-fluid m-0" alt="Foto de la factura" style="max-height: 70vh;">
+              </figure>
             </div>
           </div>
         </div>
       </div>
     </div>
-  @endif
+  </div>
 
   @if(Auth::user()->isAdmin())
     <div id="delModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="delModalLabel">
@@ -266,15 +267,21 @@
 @endsection
 
 @section('scripts')
-  @if(Auth::user()->isAdmin())
   <script type="text/javascript">
     $(document).ready(function() {
+      @if(Auth::user()->isAdmin())
       $('#delStockModal').on('show.bs.modal', function (e) {
         let id = $(e.relatedTarget).data('id')
 
         $('#del-stock').attr('action', '{{ route("admin.insumos.stock.index") }}/'+id)
       })
+      @endif
+
+      $('#facturaModal').on('show.bs.modal', function (e) {
+        let photo = $(e.relatedTarget).data('factura')
+
+        $('#foto-factura').attr('src', photo)
+      })
     })
   </script>
-  @endif
 @endsection

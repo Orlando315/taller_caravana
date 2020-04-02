@@ -81,29 +81,14 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="control-label" for="factura"># factura:</label>
-                  <input id="factura" class="form-control{{ $errors->has('factura') ? ' is-invalid' : '' }}" type="text" name="factura" pattern="[0-9]+" maxlength="50" value="{{ old('factura', $insumo->factura) }}" placeholder="# Factura">
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="control-label" for="foto_factura">Foto de la factura:</label>
-                  <div class="custom-file">
-                    <input id="foto_factura" class="custom-file-input{{ $errors->has('foto_factura') ? ' is-invalid' : '' }}" type="file" name="foto_factura" lang="es" data-browse="Elegir" accept="image/jpeg,image/png">
-                    <label class="custom-file-label" for="foto_factura">Seleccionar</label>
-                  </div>
+                  <label class="control-label" for="minimo">Stock mínimo:</label>
+                  <input id="minimo" class="form-control{{ $errors->has('minimo') ? ' is-invalid' : '' }}" type="number" name="minimo" min="1" max="9999999999" value="{{ old('minimo', $insumo->minimo) }}" placeholder="Stock mínimo">
                 </div>
               </div>
             </div>
 
             <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="control-label" for="minimo">Stock mínimo:</label>
-                  <input id="minimo" class="form-control{{ $errors->has('minimo') ? ' is-invalid' : '' }}" type="number" name="minimo" min="1" max="9999999999" value="{{ old('minimo', $insumo->minimo) }}" placeholder="Stock mínimo">
-                </div>                  
-              </div>
-              <div class="col-md-9">
+              <div class="col-md-6">
                 <div class="form-group">
                   <label class="control-label" for="decripcion">Descripción:</label>
                   <textarea id="decripcion" class="form-control{{ $errors->has('descripcion') ? ' is-invalid' : '' }}" type="text" name="descripcion">{{ old('descripcion', $insumo->descripcion) }}</textarea>
