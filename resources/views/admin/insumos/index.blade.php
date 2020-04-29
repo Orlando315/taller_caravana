@@ -58,7 +58,7 @@
                       </td>
                       <td class="text-center">
                         <div class="img-container">
-                          <img class="img-fluid img-thumbnail" src="{{ $insumo->getPhoto('foto') }}" alt="{{ $insumo->nombre }}" style="max-height: 75px">
+                          <img class="img-fluid img-thumbnail" src="{{ $insumo->getPhoto() }}" alt="{{ $insumo->nombre }}" style="max-height: 75px">
                         </div>
                       </td>
                       <td class="text-right">{{ $insumo->getStock(true) }}</td>

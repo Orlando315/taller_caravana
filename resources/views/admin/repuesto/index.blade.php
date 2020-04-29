@@ -44,7 +44,7 @@
                   </td>
                   <td class="text-center">
                     <div class="img-container">
-                      <img class="img-fluid img-thumbnail" src="{{ $repuesto->getPhoto($repuesto->foto) }}" alt="{{ $repuesto->nro_parte }}" style="max-height: 75px">
+                      <img class="img-fluid img-thumbnail" src="{{ $repuesto->getPhoto() }}" alt="{{ $repuesto->nro_parte }}" style="max-height: 75px">
                     </div>
                   </td>
                   <td>{{ $repuesto->nro_oem }}</td>

@@ -36,7 +36,7 @@
           <div class="row">
             <div class="col-md-3 text-center">
               <figure class="figure w-100 m-0">
-                <img src="{{ $insumo->getPhoto('foto') }}" class="figure-img img-thumbnail img-fluid m-0" alt="{{ $insumo->nombre }}" style="max-height: 150px;">
+                <img src="{{ $insumo->getPhoto() }}" class="figure-img img-thumbnail img-fluid m-0" alt="{{ $insumo->nombre }}" style="max-height: 150px;">
               </figure>
             </div>
             <div class="col-md-9">

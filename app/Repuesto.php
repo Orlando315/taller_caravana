@@ -100,7 +100,7 @@ class Repuesto extends Model
      */
     public function getPhoto()
     {
-      return asset('storage/'.$this->foto);
+      return asset($this->foto ? 'storage/'.$this->foto : 'images/default.jpg');
     }
 
     /**
