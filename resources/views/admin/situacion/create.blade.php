@@ -32,9 +32,31 @@
               </div>
             </div>
 
+            <div class="row set-repuesto">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="search-marca">Marca: *</label>
+                  <select id="search-marca" class="form-control" style="width: 100%">
+                    <option value="">Seleccione...</option>
+                    @foreach($marcas as $marca)
+                      <option value="{{ $marca->id }}" {{ old('marca') == $marca->id ? 'selected' : '' }}>{{ $marca->marca }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="search-modelo">Modelo: *</label>
+                  <select id="search-modelo" class="form-control" disabled style="width: 100%">
+                    <option value="">Seleccione...</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
             <div class="row">
               <div class="col-md-5">
-                <div id="set-insumo" class="form-group">
+                <div class="form-group set-insumo">
                   <label for="insumo">Insumo:</label>
                   <select id="insumo" class="form-control" name="">
                     <option value="">Seleccione...</option>
@@ -48,7 +70,7 @@
                   </select>
                 </div>
 
-                <div id="set-repuesto" class="form-group" style="display: none;">
+                <div class="form-group set-repuesto" style="display: none;">
                   <label for="repuesto">Repuesto:</label>
                   <select id="repuesto" class="form-control" style="width: 100%">
                     <option value="">Seleccione...</option>
@@ -65,7 +87,7 @@
                   </button>
                 </div>
 
-                <div id="set-otros" class="form-group" style="display: none">
+                <div class="form-group set-otros" style="display: none">
                   <label for="venta">Valor de venta:</label>
                   <input id="venta" class="form-control" type="number" min="0" max="9999999">
                 </div>
@@ -112,6 +134,12 @@
                 <p class="m-0"><strong>Costo total:</strong> <span class="selected-costo">-</span></p>
                 <p class="m-0"><strong>Valor venta:</strong> <span class="selected-venta">-</span></p>
               </div>
+            </div>
+
+
+            <div class="alert alert-danger alert-important" style="display: none">
+              <ul class="m-0 form-errors-search-repuesto">
+              </ul>
             </div>
 
             <center>
@@ -416,8 +444,6 @@
           <form id="repuesto-form" action="{{ route('admin.repuesto.store') }}" method="POST">
             <input id="cliente-vehiculo" type="hidden" name="cliente">
             @csrf
-
-            <h4>Agregar Repuesto</h4>
           
             <fieldset>
               <legend>Datos del Repuesto</legend>
@@ -703,9 +729,9 @@
       $('#tipo').change(function () {
         let tipo = $(this).val()
 
-        $('#set-insumo').toggle(tipo == 'insumo')
-        $('#set-repuesto').toggle(tipo == 'repuesto')
-        $('#set-otros, #otros-descripcion').toggle(tipo == 'horas' || tipo == 'otros')
+        $('.set-insumo').toggle(tipo == 'insumo')
+        $('.set-repuesto').toggle(tipo == 'repuesto')
+        $('.set-otros, #otros-descripcion').toggle(tipo == 'horas' || tipo == 'otros')
 
         $('#insumo').prop('required', tipo == 'insumo')
         $('#repuesto').prop('required', tipo == 'repuesto')
@@ -808,27 +834,7 @@
 
         if(!marca){ return false }
 
-        $.ajax({
-          type: 'POST',
-          url: `{{ route("vehiculo.marca.modelos") }}/${marca}/modelos`,
-          data: {
-            _token: '{{ csrf_token() }}'
-          },
-          cache: false,
-          dataType: 'json',
-        })
-        .done(function (modelos) {
-          $('#modelo').html('<option value="">Seleccione...</option>');
-          $.each(modelos, function(k, modelo){
-            let selected = modelo.id == @json(old('modelo')) ? 'selected' : ''
-            $('#modelo').append(`<option value="${modelo.id}" ${selected}>${modelo.modelo}</option>`)
-          })
-
-          $('#modelo').prop('disabled', false)
-        })
-        .fail(function () {
-          $('#modelo').prop('disabled', true)
-        })
+        searchModelos(marca, '#modelo', '.form-errors-repuesto');
       })
 
       $('#marca').change()
@@ -854,14 +860,9 @@
         btn.prop('disabled', true);
         alert.hide();
 
-        $.ajax({
-          type: 'POST',
-          url: action,
-          data: form.serialize(),
-          cache: false,
-          dataType: 'json',
-        })
-        .done(function (data) {
+        let data = form.serialize();
+
+        let done = function (data) {
           if(data.response){
             let option = `<option value="${data.repuesto.id}"
                             data-titulo="${data.repuesto.descripcion}"
@@ -878,16 +879,53 @@
           }else{
             showErrors(['Ha ocurrido un error.'])
           }
-        })
-        .fail(function (data) {
+        };
+
+        let fail = function (data) {
           showErrors(data.responseJSON.errors)
-        })
-        .always(function () {
+        };
+
+        let always = function () {
           btn.prop('disabled', false)
-        })
+        };
+
+
+        sendRequest(action, data, done, fail);
       })
+
+      // Filtrar repuestos
+      $('#search-marca, #search-modelo').select2({
+        placeholder: 'Seleccione...',
+        allowClear: true,
+      });
+
+      $('#search-marca').on('change',function () {
+        let marca = $(this).val()
+
+        // Buscar Modelos de la Marca
+        if(marca){
+          searchModelos(marca, '#search-modelo', '.form-errors-search-repuesto');
+        }else{
+          $('#search-modelo').empty()
+          $('#search-modelo').prop('disabled', true)
+        }
+
+        // Buscar repuestos
+        searchRepuestos(marca ? marca : null)
+      })
+
+      $('#search-marca').change()
+
+      $('#search-modelo').on('change',function () {
+        let marca = $('#search-marca').val(),
+            modelo = $(this).val();
+
+        // Buscar repuestos
+        searchRepuestos((marca ? marca : null), (modelo ? modelo : null))
+      })// Filtrar repuestos
     }) // DOM Ready
 
+    // Informacion del Item que sera agregado a la hija de situacion
     let dato = function(index, dato) {
       return `<tr id="tr-${index}" class="tr-dato">
                 <td>
@@ -955,6 +993,79 @@
       })
 
       $(ul).parent().show().delay(7000).hide('slow');
+    }
+
+    // Buscar los Modelos por la marca especificada
+    function searchModelos(marca, field, list)
+    {
+      let data = {
+        '_token': '{{ csrf_token() }}'
+      };
+
+      let done = function (modelos) {
+        $(field).html('<option value="">Seleccione...</option>');
+        $.each(modelos, function(k, modelo){
+          let selected = modelo.id == @json(old('modelo')) ? 'selected' : ''
+          $(field).append(`<option value="${modelo.id}" ${selected}>${modelo.modelo}</option>`)
+        })
+
+        $(field).prop('disabled', false)
+      };
+
+      let fail = function (response) {
+        $(field).prop('disabled', true)
+        showErrors(response.responseJSON.errors, list)
+      };
+
+      sendRequest(`{{ route("vehiculo.marca.modelos") }}/${marca}/modelos`, data, done, fail);
+    }
+
+    // Buscar repuestos
+    function searchRepuestos(marca = null, modelo = null){
+      let repuestoField = $('#repuesto');
+      repuestoField.prop('disabled', true)
+
+      let data = {
+            '_token': '{{ csrf_token() }}',
+            'marca': marca,
+            'modelo': modelo,
+          };
+
+      let done = function (repuestos) {
+        repuestoField.html('<option value="">Seleccione...</option>');
+
+        $.each(repuestos, function(k, repuesto){
+          let option = `<option value="${repuesto.id}"
+                          data-titulo="${repuesto.descripcion}"
+                          data-venta="${repuesto.venta}"
+                          data-stock=""
+                          data-costo="${repuesto.costo ?? 0}"
+                        >${repuesto.descripcion}</option>`;
+
+          repuestoField.append(option)
+        })
+        repuestoField.prop('disabled', false)
+      };
+
+      let fail = function (response) {
+        showErrors(response.responseJSON.errors, '.form-errors-search-repuesto')
+      };
+
+      sendRequest('{{ route("admin.repuesto.search") }}', data, done, fail)
+    }
+
+    // Relizar peticiones por ajax
+    function sendRequest(action, data, done, fail, always = null){
+      $.ajax({
+        type: 'POST',
+        url: action,
+        data: data,
+        cache: false,
+        dataType: 'json',
+      })
+      .done(done)
+      .fail(fail)
+      .always(always)
     }
   </script>
 @endsection

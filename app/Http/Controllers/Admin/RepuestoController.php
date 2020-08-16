@@ -251,4 +251,31 @@ class RepuestoController extends Controller
               'flash_important' => true
             ]);
     }
+
+    /**
+     * Buscar repuestos con los parametros especificados
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+      $repuestos = Repuesto::when($request->marca, function ($query, $marca){
+                              return $query->where('vehiculo_marca_id', $marca);
+                            })
+                          ->when($request->modelo, function ($query, $modelo){
+                            return $query->where('vehiculo_modelo_id', $modelo);
+                          })
+                          ->get()
+                          ->map(function ($repuesto, $key) {
+                            return [
+                                    'id' => $repuesto->id,
+                                    'descripcion' => $repuesto->descripcion(),
+                                    'venta' => $repuesto->venta,
+                                    'costo' => $repuesto->extra->costo_total,
+                                  ];
+                          });
+
+      return response()->json($repuestos);
+    }
 }

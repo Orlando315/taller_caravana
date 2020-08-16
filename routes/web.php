@@ -98,6 +98,7 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('proveedor/vehiculo/modelos','ProveedorVehiculoController@search_modelo')->name('proveedor.vehiculo.search.modelo');
 
     /* --- Repuestos --- */
+    Route::post('repuesto/search', 'RepuestoController@search')->name('repuesto.search');
     Route::resource('repuesto', 'RepuestoController');
 
     /* --- Servicio (Anteriormente -> Procesos) --- */

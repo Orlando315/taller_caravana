@@ -43,9 +43,6 @@
                     <label class="control-label" for="modelo">Modelo: *</label>
                     <select id="modelo" class="form-control" name="modelo" required disabled>
                       <option value="">Seleccione...</option>
-                      @foreach($marca->modelos as $modelo)
-                        <option value="{{ $modelo->id }}" {{ old('modelo', $repuesto->vehiculo_modelo_id) == $modelo->id ? 'selected' : '' }}>{{ $modelo->modelo }}</option>
-                      @endforeach
                     </select>
                   </div>
                 </div>
