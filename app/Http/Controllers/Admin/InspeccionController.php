@@ -43,15 +43,17 @@ class InspeccionController extends Controller
     {
       $this->authorize('create', [Inspeccion::class, $proceso]);
       $this->validate($request, [
-        'fotos' => 'nullable|max:6',
-        'fotos.*' => 'nullable|image|max:12000|mimes:jpeg,jpg,png',
+        'fotos' => 'nullable|max:12',
+        'fotos.*' => 'nullable|image|max:5000|mimes:jpeg,jpg,png',
         'combustible' => 'string',
+        'otro' => 'nullable|numeric|min:0|max:999',
       ]);
 
       $inspeccion = new Inspeccion([
                     'taller' => AUth::id(),
                     'combustible' => $request->combustible,
                     'observacion' => $request->observacion,
+                    'otro' => $request->otro,
                     ]);
 
       foreach($inspeccion->getFillable() as $attribute) {
@@ -130,19 +132,20 @@ class InspeccionController extends Controller
     {
       $this->authorize('update', $inspeccion);
       $this->validate($request, [
-        'fotos' => 'nullable|max:'.(6 - $inspeccion->fotos->count()),
-        'fotos.*' => 'nullable|image|max:12000|mimes:jpeg,jpg,png',
+        'fotos' => 'nullable|max:'.(12 - $inspeccion->fotos->count()),
+        'fotos.*' => 'nullable|image|max:5000|mimes:jpeg,jpg,png',
         'combustible' => 'string',
+        'otro' => 'nullable|numeric|min:0|max:999',
       ]);
 
-      $inspeccion->fill($request->only(['combustible', 'observacion']));
+      $inspeccion->fill($request->only(['combustible', 'observacion', 'otro']));
 
       if(!$inspeccion->isPending()){
         $inspeccion->aprobado = null;
       }
 
       foreach($inspeccion->getFillable() as $attribute) {
-        if(!in_array($attribute, ['taller', 'combustible', 'observacion'])){
+        if(!in_array($attribute, ['taller', 'combustible', 'observacion', 'otro'])){
           $inspeccion->{$attribute} = $request->has($attribute) ? ($request->{$attribute} == 'on') : false;
         }
       }
@@ -201,8 +204,8 @@ class InspeccionController extends Controller
      */
     public function pdf(Inspeccion $inspeccion)
     {
-      $pdf = PDF::loadView('admin.inspeccion.pdf', compact('inspeccion'));
+      $pdf = PDF::loadView('inspeccion.pdf', compact('inspeccion'));
 
-      return $pdf->download('Hoja de inspección.pdf');
+      return $pdf->download('Hoja de inspeccion.pdf');
     }
 }

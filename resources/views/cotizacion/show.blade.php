@@ -182,7 +182,7 @@
                         </tr>
                         @foreach($horas as $hora)
                           <tr>
-                            <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $hora->descripcion ?? 'N/A' }}">{{ $hora->titulo() }}</a></td>
+                            <td>{{ $hora->descripcion ?? 'N/A' }}</td>
                             <td class="text-center">{{ $hora->cantidad() }}</td>
                             <td class="text-right">{{ $hora->valorVenta() }}</td>
                             <td class="text-right">{{ $hora->total() }}</td>
@@ -204,7 +204,7 @@
                         </tr>
                         @foreach($otros as $otro)
                           <tr>
-                            <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $otro->descripcion ?? 'N/A' }}">{{ $otro->titulo() }}</a></td>
+                            <td>{{ $otro->descripcion ?? 'N/A' }}</td>
                             <td class="text-center">{{ $otro->cantidad() }}</td>
                             <td class="text-right">{{ $otro->valorVenta() }}</td>
                             <td class="text-right">{{ $otro->total() }}</td>
@@ -227,7 +227,7 @@
                           </tr>
                           @foreach($imprevistosCliente as $imprevistoCliente)
                             <tr>
-                              <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $imprevistoCliente->descripcion ?? 'N/A' }}">{{ $imprevistoCliente->tipo() }}</a></td>
+                              <td>{{ $imprevistoCliente->descripcion ?? 'N/A' }}</td>
                               <td></td>
                               <td class="text-right">{{ $imprevistoCliente->monto() }}</td>
                               <td class="text-right">{{ $imprevistoCliente->monto() }}</td>

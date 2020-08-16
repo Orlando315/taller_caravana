@@ -29,7 +29,7 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label for="descuento">Descuento:</label>
-                  <input id="descuento" class="form-control" type="number" min="0" max="999999999" name="descuento" value="{{ old('descuento') }}">
+                  <input id="descuento" class="form-control" type="number" min="0" step="0.01" max="999999999" name="descuento" value="{{ old('descuento') }}">
                   <small class="text-muted">Solo números</small>
                 </div>
               </div>
@@ -140,7 +140,7 @@
                   </tr>
                   @foreach($horas as $hora)
                     <tr>
-                      <td><a tabindex="0" class="btn btn-simple btn-link" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $hora->descripcion ?? 'N/A' }}">{{ $hora->titulo() }}</a></td>
+                      <td>{{ $hora->descripcion ?? 'N/A' }}</td>
                       <td class="text-right">{{ $hora->costo() }}</td>
                       <td class="text-right">{{ $hora->utilidad() }}</td>
                       <td class="text-right">{{ $hora->descuentoText() }}</td>
@@ -178,7 +178,7 @@
                   </tr>
                   @foreach($otros as $otro)
                     <tr>
-                      <td><a tabindex="0" class="btn btn-simple btn-link" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $otro->descripcion ?? 'N/A' }}">{{ $otro->titulo() }}</a></td>
+                      <td>{{ $otro->descripcion ?? 'N/A' }}</td>
                       <td class="text-right">{{ $otro->costo() }}</td>
                       <td class="text-right">{{ $otro->utilidad() }}</td>
                       <td class="text-right">{{ $otro->descuentoText() }}</td>
@@ -269,6 +269,7 @@
 
       $('#descuento').change(function() {
         let descuento = +$(this).val()
+        descuento = +descuento.toFixed(2)
         $('.table-descuento').text(descuento.toLocaleString('de-DE'))
         calculateTotales()
       })
@@ -301,6 +302,11 @@
       let subtotalWithDescuento = (subtotal > 0) ? (subtotal - descuento) : 0
       let iva = (subtotal > 0) ? ((subtotalWithDescuento * 19) / 100) : 0
       let total = (subtotal > 0) ? (subtotalWithDescuento + iva) : 0
+
+      descuento = +descuento.toFixed(2)
+      subtotal = +subtotal.toFixed(2)
+      iva = +iva.toFixed(2)
+      total = +total.toFixed(2)
 
       $('.table-subtotal').text(subtotal.toLocaleString('de-DE'))
       $('.table-descuento').text(descuento.toLocaleString('de-DE'))

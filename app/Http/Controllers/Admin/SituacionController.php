@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\{Situacion, SituacionItem, Proceso, Insumo, Repuesto};
+use App\{Situacion, SituacionItem, Proceso, Insumo, Repuesto, VehiculosMarca};
 
 class SituacionController extends Controller
 {
@@ -30,8 +30,9 @@ class SituacionController extends Controller
       $this->authorize('create', [Situacion::class, $proceso]);
       $insumos = Insumo::has('stockEnUso')->with('stockEnUso')->get();
       $repuestos = Repuesto::all();
+      $marcas = VehiculosMarca::with('modelos')->get();
 
-      return view('admin.situacion.create', compact('proceso', 'insumos', 'repuestos'));
+      return view('admin.situacion.create', compact('proceso', 'insumos', 'repuestos', 'marcas'));
     }
 
     /**
@@ -112,12 +113,13 @@ class SituacionController extends Controller
       $this->authorize('update', $situacion);
       $insumos = Insumo::has('stockEnUso')->with('stockEnUso')->get();
       $repuestos = Repuesto::all();
+      $marcas = VehiculosMarca::with('modelos')->get();
       $situacionRepuestos = $situacion->getItemsByType('repuesto')->get();
       $situacionInsumos = $situacion->getItemsByType('insumo')->get();
       $situacionHoras = $situacion->getItemsByType()->get();
       $situacionOtros = $situacion->getItemsByType('otros')->get();
 
-      return view('admin.situacion.edit', compact('situacion', 'insumos', 'repuestos', 'situacionRepuestos', 'situacionInsumos', 'situacionHoras', 'situacionOtros'));
+      return view('admin.situacion.edit', compact('situacion', 'insumos', 'repuestos', 'situacionRepuestos', 'situacionInsumos', 'situacionHoras', 'situacionOtros', 'marcas'));
     }
 
     /**

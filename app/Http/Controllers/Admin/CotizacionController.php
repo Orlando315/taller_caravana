@@ -215,10 +215,11 @@ class CotizacionController extends Controller
       $repuestos = $cotizacion->getItemsByType('repuesto')->get();
       $insumos = $cotizacion->getItemsByType('insumo')->get();
       $horas = $cotizacion->getItemsByType()->get();
-      $otros = $cotizacion->getItemsByType()->get();
+      $otros = $cotizacion->getItemsByType('otros')->get();
       $imprevistosCliente = $cotizacion->getImprevistos('cliente')->orderBy('tipo', 'desc')->get();
-      
+      $name = $cotizacion->pdfName();
       $pdf = PDF::loadView('admin.cotizacion.pdf', compact('cotizacion', 'repuestos', 'insumos', 'horas', 'otros', 'imprevistosCliente'));
-      return $pdf->download('Cotización.pdf');
+
+      return $pdf->download($name.'.pdf');
     }
 }

@@ -38,8 +38,6 @@ class Stock extends Model
      * @var array
      */
     protected $casts = [
-      'coste' => 'float',
-      'venta' => 'float',
       'stock' => 'integer',
     ];
 

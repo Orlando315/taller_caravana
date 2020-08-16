@@ -30,7 +30,7 @@
               <div class="file-loading">
                 <input id="fotos" type="file" name="fotos[]" data-msg-placeholder="Seleccionar..." accept="image/jpeg,image/png" multiple>
               </div>
-              <small class="text-muted">Hasta 6 fotos de 12 MB c/u</small>
+              <small class="text-muted">Hasta 12 fotos de 5 MB c/u</small>
             </div>
             
             <div class="row">
@@ -43,7 +43,14 @@
                     <option value="1/2"{{ old('combustible') == '1/2' ? ' selected' : ''}}>1/2</option>
                     <option value="3/4"{{ old('combustible') == '3/4' ? ' selected' : ''}}>3/4</option>
                     <option value="Full"{{ old('combustible') == 'Full' ? ' selected' : ''}}>Full</option>
+                    <option value="Otro"{{ old('combustible') == 'Otro' ? ' selected' : ''}}>Otro</option>
                   </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="otro">Otro: </label>
+                  <input id="otro" class="form-control{{ $errors->has('otro') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="999" name="otro" value="" placeholder="Especificar" disabled>
                 </div>
               </div>
             </div>
@@ -287,9 +294,9 @@
         overwriteInitial: false,
         initialPreviewShowDelete: false,
         showUpload: false,
-        maxFileSize: 12000,
-        initialPreviewCount: 6,
-        maxFileCount: 6,
+        maxFileSize: 5000,
+        initialPreviewCount: 12,
+        maxFileCount: 12,
         validateInitialCount: true,
         dropZoneEnabled: false,
         browseClass: 'btn btn-success',
@@ -317,7 +324,13 @@
       $('#foto-group').on('click', '.file-caption-name', function () {
         $('#fotos').click()
       })
-    })
 
+      $('#combustible').change(function () {
+        let isOtro = $(this).val() == 'Otro';
+        $('#otro').prop('disabled', !isOtro)
+      })
+
+      $('#combustible').change()
+    })
   </script>
 @endsection

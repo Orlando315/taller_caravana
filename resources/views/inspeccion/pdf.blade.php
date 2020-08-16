@@ -21,7 +21,7 @@
   <table class="table table-bordered table-sm m-0" style="width: 100%;">
     <tbody>
       <tr>
-        <td><strong>Combustible:</strong> {{ $inspeccion->combustible }}</td>
+        <td><strong>Combustible:</strong> {{ $inspeccion->combustible }} {{ $inspeccion->combustibleIsOtro() ? '('.$inspeccion->otro.')' : '' }}</td>
         <td><strong>Observación:</strong> {{ $inspeccion->observacion }}</td>
       </tr>
       <tr>

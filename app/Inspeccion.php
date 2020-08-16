@@ -26,6 +26,7 @@ class Inspeccion extends Model
     protected $fillable = [
       'taller',
       'combustible',
+      'otro',
       'observacion',
       'radio',
       'antena',
@@ -174,5 +175,13 @@ class Inspeccion extends Model
     public function sendEmailStatusRequest()
     {
       $this->notify(new AprobarInspeccion($this));
+    }
+
+    /**
+     * Verificar si el Combustible es Otro
+     */
+    public function combustibleIsOtro()
+    {
+      return $this->combustible == 'Otro';
     }
 }

@@ -36,8 +36,6 @@ class Insumo extends Model
      */
     protected $casts = [
       'numero_factura' => 'integer',
-      'valor_coste' => 'float',
-      'valor_venta' => 'float',
     ];
 
     /**

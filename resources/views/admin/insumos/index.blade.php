@@ -40,11 +40,11 @@
                 <thead>
                   <tr>
                     <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">Marca</th>
                     <th scope="col" class="text-center">Nombre</th>
-                    <th scope="col" class="text-center">Foto</th>
-                    <th scope="col" class="text-center">Stock</th>
                     <th scope="col" class="text-center">Grado</th>
-                    <th scope="col" class="text-center">Tipo</th>
+                    <th scope="col" class="text-center">Formato</th>
+                    <th scope="col" class="text-center">Foto</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -53,17 +53,17 @@
                       <td scope="row" class="text-center">{{ $loop->iteration }}</td>
                       <td>
                         <a href="{{ route('admin.insumos.show', ['insumo' => $insumo->id] )}}">
-                          {{ $insumo->nombre }}
+                          {{ $insumo->marca }}
                         </a>
                       </td>
+                      <td>{{ $insumo->nombre }}</td>
+                      <td>{{ $insumo->grado }}</td>
+                      <td>{{ $insumo->formato->formato }}</td>
                       <td class="text-center">
                         <div class="img-container">
                           <img class="img-fluid img-thumbnail" src="{{ $insumo->getPhoto() }}" alt="{{ $insumo->nombre }}" style="max-height: 75px">
                         </div>
                       </td>
-                      <td class="text-right">{{ $insumo->getStock(true) }}</td>
-                      <td>{{ $insumo->grado }}</td>
-                      <td>{{ $insumo->tipo->tipo }}</td>
                     </tr>
                   @endforeach
                 </tbody>

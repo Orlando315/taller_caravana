@@ -33,7 +33,17 @@ class Pago extends Model
     protected static function boot()
     {
       parent::boot();
-      // static::addGlobalScope(new TallerScope);
+    }
+
+    /**
+     * Obtener el atributo formateado
+     *
+     * @param  float  $value
+     * @return float
+     */
+    public function getPagoAttribute($value)
+    {
+      return round($value, 2);
     }
 
     /**

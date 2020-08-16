@@ -53,7 +53,7 @@ class PreevaluacionPolicy
      */
     public function update(User $user, Proceso $proceso)
     {
-      return $user->isAdmin() && ($proceso->hasPreevaluaciones() || $proceso->preevaluaciones->count() <= 12) && !$proceso->status;
+      return $user->isAdmin() && $proceso->etapa >= 2 && ($proceso->hasPreevaluaciones() || $proceso->preevaluaciones->count() <= 12) && !$proceso->status;
     }
 
     /**

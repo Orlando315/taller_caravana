@@ -9,7 +9,7 @@
 @section('content')
   <div class="row">
     <div class="col-12">
-        <a class="btn btn-default" href="{{ route('admin.repuesto.index') }}"><i class="fa fa-reply" aria-hidden="true"></i> Volver</a>
+      <a class="btn btn-default" href="{{ route('admin.repuesto.index') }}"><i class="fa fa-reply" aria-hidden="true"></i> Volver</a>
 
       @if(Auth::user()->isAdmin())
         <a class="btn btn-success" href="{{ route('admin.repuesto.edit', ['repuesto' => $repuesto->id]) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</a>
@@ -61,11 +61,11 @@
                         <td>{{ $repuesto->componente }}</td>
                       </tr>
                       <tr>
-                        <th>Nro. parte:</th>
+                        <th>N° parte:</th>
                         <td>{{ $repuesto->nro_parte }}</td>
                       </tr>
                       <tr>
-                        <th>Nro. OEM:</th>
+                        <th>N° OEM:</th>
                         <td>{{ $repuesto->nro_oem }}</td>
                       </tr>
                       <tr>

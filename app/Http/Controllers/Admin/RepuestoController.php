@@ -94,10 +94,27 @@ class RepuestoController extends Controller
         $repuesto->calculateCostoTotal();
         $repuesto->push();
 
+        if($request->ajax()){
+          return response()
+                  ->json([
+                    'response' =>  true,
+                    'repuesto' => [
+                      'id' => $repuesto->id,
+                      'descripcion' => $repuesto->descripcion(),
+                      'venta' => $repuesto->venta,
+                      'costo' => $repuesto->extra->costo_total,
+                    ]
+                  ]);
+        }
+
         return redirect()->route('admin.repuesto.show', ['repuesto' => $repuesto->id])->with([
                 'flash_message' => 'Repuesto agregado exitosamente.',
                 'flash_class' => 'alert-success'
               ]);
+      }
+
+      if($request->ajax()){
+        return response()->json(['response' => false]);
       }
 
       return redirect()->route('admin.repuesto.create')->withInput()->with([

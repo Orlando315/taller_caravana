@@ -31,7 +31,7 @@
           <hr>
 
           @if($proceso->situacion)
-          <strong>Total</strong>
+          <strong>Total Neto</strong>
           <p class="text-muted">
             {{ $proceso->total(false) }}
           </p>
@@ -328,7 +328,7 @@
                     </tr>
                     @foreach($situacionHoras as $hora)
                       <tr>
-                        <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $hora->descripcion ?? 'N/A' }}">{{ $hora->titulo() }}</a></td>
+                        <td>{{ $hora->descripcion ?? 'N/A' }}</td>
                         <td class="text-center">{{ $hora->cantidad() }}</td>
                         <td class="text-right">{{ $hora->valorVenta() }}</td>
                         <td class="text-right">{{ $hora->total() }}</td>
@@ -350,7 +350,7 @@
                     </tr>
                     @foreach($situacionOtros as $otro)
                       <tr>
-                        <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $otro->descripcion ?? 'N/A' }}">{{ $otro->titulo() }}</a></td>
+                        <td>{{ $otro->descripcion ?? 'N/A' }}</td>
                         <td class="text-center">{{ $otro->cantidad() }}</td>
                         <td class="text-right">{{ $otro->valorVenta() }}</td>
                         <td class="text-right">{{ $otro->total() }}</td>
@@ -454,7 +454,7 @@
               </div>
               <div class="mt-2 table-responsive">
                 <p class="text-muted m-0">
-                  <strong class="text-dark">Combustible:</strong> {{ $proceso->inspeccion->combustible }}
+                  <strong class="text-dark">Combustible:</strong> {{ $proceso->inspeccion->combustible }} {{ $proceso->inspeccion->combustibleIsOtro() ? '('.$proceso->inspeccion->otro.')' : '' }}
                 </p>
                 <p class="text-muted m-0">
                   <strong class="text-dark">Observación:</strong> {{ $proceso->inspeccion->observacion }}

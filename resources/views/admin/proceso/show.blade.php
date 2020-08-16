@@ -279,7 +279,7 @@
           </ul>
           <div class="tab-content">
             <div id="tab1" class="tab-pane fade show active pt-2" role="tabpanel" aria-labelledby="tab1-tab">
-              @if( !$proceso->status && ($preevaluaciones->count() < 12 || $preevaluacionesFotos->count() < 6) && Auth::user()->isAdmin())
+              @if( !$proceso->status && $proceso->etapa >= 2 && ($preevaluaciones->count() < 12 || $preevaluacionesFotos->count() < 6) && Auth::user()->isAdmin())
                 <a class="btn btn-success btn-fill btn-xs mb-2" href="{{ route('admin.preevaluacion.edit', ['proceso' => $proceso->id]) }}">
                   <i class="fa fa-pencil"></i> Modificar pre-evaluación
                 </a>
@@ -453,7 +453,7 @@
                     </tr>
                     @foreach($situacionHoras as $hora)
                       <tr>
-                        <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $hora->descripcion ?? 'N/A' }}">{{ $hora->titulo() }}</a></td>
+                        <td>{{ $hora->descripcion ?? 'N/A' }}</td>
                         <td class="text-right">{{ $hora->costo() }}</td>
                         <td class="text-right">{{ $hora->utilidad() }}</td>
                         <td class="text-right">{{ $hora->descuentoText() }}</td>
@@ -496,7 +496,7 @@
                     </tr>
                     @foreach($situacionOtros as $otro)
                       <tr>
-                        <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $otro->descripcion ?? 'N/A' }}">{{ $otro->titulo() }}</a></td>
+                        <td>{{ $otro->descripcion ?? 'N/A' }}</td>
                         <td class="text-right">{{ $otro->costo() }}</td>
                         <td class="text-right">{{ $otro->utilidad() }}</td>
                         <td class="text-right">{{ $otro->descuentoText() }}</td>
@@ -627,7 +627,7 @@
               </div>
               <div class="mt-2 table-responsive">
                 <p class="text-muted m-0">
-                  <strong class="text-dark">Combustible:</strong> {{ $proceso->inspeccion->combustible }}
+                  <strong class="text-dark">Combustible:</strong> {{ $proceso->inspeccion->combustible }} {{ $proceso->inspeccion->combustibleIsOtro() ? '('.$proceso->inspeccion->otro.')' : '' }}
                 </p>
                 <p class="text-muted m-0">
                   <strong class="text-dark">Observación:</strong> {{ $proceso->inspeccion->observacion }}

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Cotizacion extends Model
 {
@@ -175,11 +176,15 @@ class Cotizacion extends Model
     }
 
     /**
-     * Obtener la descripcion limitada a 100 caracteres
+     * Obtener el codigo de la Cotizacion
+     *
+     * @param  bool  $codeOnly
+     * @return string
      */
-    public function codigo()
+    public function codigo($codeOnly = false)
     {
-      return 'COD-'.str_pad($this->id, 8, '0', STR_PAD_LEFT);
+      $code = str_pad($this->id, 8, '0', STR_PAD_LEFT);
+      return $codeOnly ? $code :  ('COD-'.$code);
     }
 
     /**
@@ -219,7 +224,7 @@ class Cotizacion extends Model
     public function porPagar($onlyNumbers = true)
     {
       $pagado = $this->pagado();
-      $total = ($this->total(true) - $pagado);
+      $total = round($this->total(true) - $pagado, 2);
 
       return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
     }
@@ -272,5 +277,21 @@ class Cotizacion extends Model
                     ->sum('monto');
 
       return $onlyNumbers ? $total : number_format($total, 2, ',', '.');
+    }
+
+    /**
+     * Obtener el nombre usado para el pdf
+     *
+     * @return string
+     */
+    public function pdfName()
+    {
+      $parts = [$this->created_at->format('yymd'), $this->codigo(true)];
+
+      if($this->descripcion){
+        $parts[] = trim(Str::limit($this->descripcion, 15, ''));
+      }
+
+      return implode('-', $parts);
     }
 }

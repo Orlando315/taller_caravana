@@ -45,7 +45,7 @@ class AprobarInspeccion extends Notification
         return (new MailMessage)
               ->subject('Evaluar inspeccicón')
               ->greeting('Saludos '.$this->inspeccion->proceso->cliente->nombre(). '!')
-              ->line('Estas recibiendo este email porque se ha generado una nspección al vehículo: '.$this->inspeccion->proceso->vehiculo->vehiculo().' y es necesario que evalues la inspección.')
+              ->line('Estas recibiendo este email porque se ha generado una inspección al vehículo: '.$this->inspeccion->proceso->vehiculo->vehiculo().' y es necesario que evalues la inspección.')
               ->action('Ver inspección', route('proceso.show', ['proceso' => $this->inspeccion->proceso->id]))
               ->line('Puedes comunicarte con nosotros ante cualquier duda.')
               ->salutation(config('app.name'));

@@ -55,7 +55,7 @@
           </p>
           <hr>
 
-          <strong>Total</strong>
+          <strong>Total Neto</strong>
           <p class="text-muted">
             {{ $cotizacion->total(false) }}
           </p>
@@ -228,7 +228,7 @@
                         </tr>
                         @foreach($horas as $hora)
                           <tr>
-                            <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $hora->descripcion ?? 'N/A' }}">{{ $hora->titulo() }}</a></td>
+                            <td>{{ $hora->descripcion ?? 'N/A' }}</td>
                             <td class="text-right">{{ $hora->costo() }}</td>
                             <td class="text-right">{{ $hora->utilidad() }}</td>
                             <td class="text-right">{{ $hora->descuentoText() }}</td>
@@ -256,7 +256,7 @@
                         </tr>
                         @foreach($otros as $otro)
                           <tr>
-                            <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $otro->descripcion ?? 'N/A' }}">{{ $otro->titulo() }}</a></td>
+                            <td>{{ $otro->descripcion ?? 'N/A' }}</td>
                             <td class="text-right">{{ $otro->costo() }}</td>
                             <td class="text-right">{{ $otro->utilidad() }}</td>
                             <td class="text-right">{{ $otro->descuentoText() }}</td>
@@ -285,7 +285,7 @@
                           </tr>
                           @foreach($imprevistosCliente as $imprevistoCliente)
                             <tr>
-                              <td><a tabindex="0" class="btn btn-simple btn-link p-0" role="button" data-toggle="popover" data-trigger="focus" data-placement="top" title="Descripción" data-content="{{ $imprevistoCliente->descripcion ?? 'N/A' }}">{{ $imprevistoCliente->tipo() }}</a></td>
+                              <td>{{ $imprevistoCliente->descripcion ?? 'N/A' }}</td>
                               <td></td>
                               <td></td>
                               <td></td>

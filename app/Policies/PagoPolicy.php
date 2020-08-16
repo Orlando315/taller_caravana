@@ -66,7 +66,7 @@ class PagoPolicy
      */
     public function delete(User $user, Pago $pago)
     {
-      return $user->isAdmin() && !$pago->$cotizacion->status && !$pago->cotizacion->situacion->proceso->status;
+      return $user->isAdmin() && !$pago->cotizacion->status && !$pago->cotizacion->situacion->proceso->status;
     }
 
     /**

@@ -26,11 +26,11 @@
             <thead>
               <tr>
                 <th scope="col" class="text-center">#</th>
-                <th scope="col" class="text-center">Nro. parte</th>
-                <th scope="col" class="text-center">Foto</th>
-                <th scope="col" class="text-center">Nro. OEM</th>
-                <th scope="col" class="text-center">Marca OEM</th>
-                <th scope="col" class="text-center">Vehículo</th>
+                <th scope="col" class="text-center">Sistema</th>
+                <th scope="col" class="text-center">Componente</th>
+                <th scope="col" class="text-center">Marca</th>
+                <th scope="col" class="text-center">N° de parte</th>
+                <th scope="col" class="text-center">N° de OEM</th>
               </tr>
             </thead>
             <tbody>
@@ -39,17 +39,13 @@
                   <td scope="row" class="text-center">{{ $loop->iteration }}</td>
                   <td>
                     <a href="{{ route('admin.repuesto.show', ['repuesto' => $repuesto->id] )}}">
-                      {{ $repuesto->nro_parte }}
+                      {{ $repuesto->sistema }}
                     </a>
                   </td>
-                  <td class="text-center">
-                    <div class="img-container">
-                      <img class="img-fluid img-thumbnail" src="{{ $repuesto->getPhoto() }}" alt="{{ $repuesto->nro_parte }}" style="max-height: 75px">
-                    </div>
-                  </td>
+                  <td>{{ $repuesto->componente }}</td>
+                  <td>{{ $repuesto->marca->marca }}</td>
+                  <td>{{ $repuesto->nro_parte }}</td>
                   <td>{{ $repuesto->nro_oem }}</td>
-                  <td>{{ $repuesto->marca_oem }}</td>
-                  <td>{{ $repuesto->marcaModeloAnio() }}</td>
                 </tr>
               @endforeach
             </tbody>
