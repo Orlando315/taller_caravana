@@ -39,7 +39,7 @@
                   <select id="search-marca" class="form-control" style="width: 100%">
                     <option value="">Seleccione...</option>
                     @foreach($marcas as $marca)
-                      <option value="{{ $marca->id }}" {{ old('marca') == $marca->id ? 'selected' : '' }}>{{ $marca->marca }}</option>
+                      <option value="{{ $marca->id }}"{{ $proceso->vehiculo->vehiculo_marca_id == $marca->id ? ' selected' : '' }}>{{ $marca->marca }}</option>
                     @endforeach
                   </select>
                 </div>
@@ -454,7 +454,7 @@
                     <select id="marca" class="form-control" name="marca" required style="width: 100%">
                       <option value="">Seleccione...</option>
                       @foreach($marcas as $marca)
-                        <option value="{{ $marca->id }}" {{ old('marca') == $marca->id ? 'selected' : '' }}>{{ $marca->marca }}</option>
+                        <option value="{{ $marca->id }}"{{ $proceso->vehiculo->vehiculo_marca_id == $marca->id ? ' selected' : '' }}>{{ $marca->marca }}</option>
                       @endforeach
                     </select>
                   </div>
@@ -464,9 +464,6 @@
                     <label class="control-label" for="modelo">Modelo: *</label>
                     <select id="modelo" class="form-control" name="modelo" required disabled style="width: 100%">  
                       <option value="">Seleccione...</option>
-                      @foreach($marca->modelos as $modelo)
-                        <option value="{{ $modelo->id }}" {{ old('modelo') == $modelo->id ? 'selected' : '' }}>{{ $modelo->modelo }}</option>
-                      @endforeach
                     </select>
                   </div>
                 </div>
@@ -1005,8 +1002,14 @@
       let done = function (modelos) {
         $(field).html('<option value="">Seleccione...</option>');
         $.each(modelos, function(k, modelo){
-          let selected = modelo.id == @json(old('modelo')) ? 'selected' : ''
-          $(field).append(`<option value="${modelo.id}" ${selected}>${modelo.modelo}</option>`)
+          let found = modelo.id == @json($proceso->vehiculo->vehiculo_modelo_id);
+          let selected = found ? 'selected' : '';
+
+          $(field).append(`<option value="${modelo.id}" ${selected}>${modelo.modelo}</option>`);
+
+          if(found){
+            $(field).change()
+          }
         })
 
         $(field).prop('disabled', false)
