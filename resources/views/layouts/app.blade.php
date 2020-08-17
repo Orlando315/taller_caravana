@@ -189,15 +189,20 @@
                     {{ Auth::user()->email }}
                   </a>
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                      <a class="dropdown-item" href="{{ route('perfil') }}">
-                        <i class="fa fa-user"></i> Mi perfil
+                    <a class="dropdown-item" href="{{ route('perfil') }}">
+                      <i class="fa fa-user"></i> Mi perfil
+                    </a>
+                    @if(Auth::user()->isAdmin())
+                      <a class="dropdown-item" href="{{ route('admin.configurations.edit') }}">
+                        <i class="fa fa-cogs" aria-hidden="true"></i> Configuración
                       </a>
-                      <form action="{{ route('logout') }}" method="POST">
-                        {{ csrf_field() }}
-                        <button class="dropdown-item text-danger" type="submit">
-                          <i class="fa fa-sign-out" aria-hidden="true" style="line-height: 1"></i> Salir
-                        </button>
-                      </form>
+                    @endif
+                    <form action="{{ route('logout') }}" method="POST">
+                      {{ csrf_field() }}
+                      <button class="dropdown-item text-danger" type="submit">
+                        <i class="fa fa-sign-out" aria-hidden="true" style="line-height: 1"></i> Salir
+                      </button>
+                    </form>
                   </div>
                 </li>
               </ul>

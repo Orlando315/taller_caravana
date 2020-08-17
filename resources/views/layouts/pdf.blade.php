@@ -11,9 +11,25 @@
       *, ::after, ::before {
         box-sizing: border-box;
       }
+      @page{
+        margin: 0cm 0cm;
+      }
       body{
         background-color: #fff;
         font-size: .6rem;
+        margin: 2cm 2cm 2.5cm 2cm;
+      }
+      header, footer{
+        position: fixed;
+        left: 0;
+        right: 0;
+        height: 2cm;
+      }
+      header{
+        top: 0;
+      }
+      footer{
+        bottom: 0;
       }
       p.text-title{
         font-family: "Segoe UI",sans-serif !important;
@@ -23,11 +39,26 @@
       td.text-center{
         text-align: center !important;
       }
+      .timbre-container{
+        position: relative;
+        width: 30%;
+        margin: 0 auto;
+        padding-bottom: 0.5cm;
+      }
     </style>
 
     @yield('head', '')
   </head>
   <body>
+    <header class="text-center">
+    </header>
+    <footer class="text-center">
+      @if(Auth::user()->tallerHasTimbre())
+        <div class="timbre-container">
+          <img src="{{ asset('storage/'.Auth::user()->tallerTimbre) }}" alt="Timbre" style="width: auto; height: auto; max-height: 100%; max-width: 100%;">
+        </div>
+      @endif
+    </footer>
     <div class="container">
       <table class="table table-sm border-0" style="width: 100%;">
         <tbody>

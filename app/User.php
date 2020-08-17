@@ -56,6 +56,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Obtener el path del Timbre (Imagen usada en footer de los pdf's)
+     *
+     * @return bool
+     */
+    public function getTallerTimbreAttribute()
+    {
+      return $this->isAdmin() ? $this->configuration->timbre : $this->taller->configuration->timbre;
+    }
+
+    /**
      * Enviar correo para recuperar password
      */
     public function sendPasswordResetNotification($token)
@@ -252,5 +262,19 @@ class User extends Authenticatable
     public function repuestos()
     {
       return $this->hasMany('App\Repuesto', 'taller');
+    }
+
+    /**
+     * Evaluar si el taller tiene un Timbre (Imagen) configurada
+     *
+     * @return bool
+     */
+    public function tallerHasTimbre()
+    {
+      if($this->isCliente() || $this->isJefe()){
+        return !is_null($this->taller->configuration->timbre);
+      }
+
+      return !is_null($this->configuration->timbre);
     }
 }

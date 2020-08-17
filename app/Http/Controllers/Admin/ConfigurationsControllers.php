@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\{Auth, Storage};
 use App\Configuration;
 
 class ConfigurationsControllers extends Controller
@@ -23,18 +23,18 @@ class ConfigurationsControllers extends Controller
         Auth::user()->configuration()->create([]);
       }
 
-      $configuration = Configuration::first();
+      $configuracion = Configuration::first();
 
-      return view('admin.configurations.edit', compact('configuration'));
+      return view('admin.configurations.edit', compact('configuracion'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualizar el precio del dolar
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function dolar(Request $request)
     {
       $this->authorize('update', Configuration::class);
 
@@ -46,17 +46,56 @@ class ConfigurationsControllers extends Controller
       $configuration->dollar = $request->dolar;
 
       if($configuration->save()){
-        return redirect()->route('dashboard')->with([
+        return redirect()->back()->with([
                 'flash_message' => 'Configuración modificada exitosamente.',
                 'flash_class' => 'alert-success'
               ]);
-      }else{
-        return redirect()->route('configurations.edit')->withInput()->with([
-                'flash_message' => 'Ha ocurrido un error.',
-                'flash_class' => 'alert-danger',
-                'flash_important' => true
-              ]);
       }
+
+      return redirect()->back()->withInput()->with([
+              'flash_message' => 'Ha ocurrido un error.',
+              'flash_class' => 'alert-danger',
+              'flash_important' => true
+            ]);
     }
 
+    /**
+     * Actualizar foto de timbre (Usada en el footer de los pdf's)
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function timbre(Request $request)
+    {
+      $this->authorize('update', Configuration::class);
+      $this->validate($request, [
+        'imagen' => 'required|image|mimes:jpeg,png,jpg|max:3000',
+      ]);
+
+      $configuration = Configuration::first();
+      $directory = Auth::id().'/configuracion';
+      $oldTimbre = $configuration->timbre;
+      $configuration->timbre = $request->file('imagen')->store($directory);
+
+      if(!Storage::exists($directory)){
+        Storage::makeDirectory($directory);
+      }
+
+      if($configuration->save()){
+        if(Storage::exists($oldTimbre)){
+          Storage::delete($oldTimbre);
+        }
+
+        return redirect()->back()->with([
+                'flash_message' => 'Configuración modificada exitosamente.',
+                'flash_class' => 'alert-success'
+              ]);
+      }
+
+      return redirect()->back()->with([
+              'flash_message' => 'Ha ocurrido un error.',
+              'flash_class' => 'alert-danger',
+              'flash_important' => true
+            ]);
+    }
 }

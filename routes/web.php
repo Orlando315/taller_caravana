@@ -165,7 +165,8 @@ Route::group(['middleware' => 'auth'], function (){
 
     /* --- Configurations --- */
     Route::get('configurations', 'ConfigurationsControllers@edit')->name('configurations.edit');
-    Route::patch('configurations', 'ConfigurationsControllers@update')->name('configurations.update');
+    Route::patch('configurations/dolar', 'ConfigurationsControllers@dolar')->name('configurations.update.dolar');
+    Route::patch('configurations/timbre', 'ConfigurationsControllers@timbre')->name('configurations.update.timbre');
 
     /* --- Finanzas --- */
     Route::get('finanzas', 'ConsultaController@finanzas')->name('consulta.finanzas.index');
