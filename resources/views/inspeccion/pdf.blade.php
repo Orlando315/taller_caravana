@@ -106,4 +106,18 @@
       </tr>
     </tbody>
   </table>
+
+  <div class="page-break"></div>
+
+  @foreach($inspeccion->fotos->chunk(2) as $chunk)
+    <div class="pdf-row">
+      @foreach($chunk as $foto)
+        <div class="pdf-column">
+          <div class="pdf-image-container">
+            <img src="{{ asset('storage/'.$foto->foto) }}">
+          </div>
+        </div>
+      @endforeach
+    </div>
+  @endforeach
 @endsection

@@ -45,6 +45,42 @@
         margin: 0 auto;
         padding-bottom: 0.5cm;
       }
+      .page-break{
+        page-break-after: always;
+      }
+      .pdf-row{
+        margin: 0;
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 0 1%;
+      }
+      .pdf-row:before,
+      .pdf-row:after{
+        display: table;
+        content: " ";
+      }
+      .pdf-row:after{
+        clear: both;
+      }
+      .pdf-column{
+        position: relative;
+        float: left;
+        min-height: 1px;
+        width: 46%;
+        padding: 0 10px;
+      }
+      .pdf-image-container{
+        position: relative;
+        height: 250px;
+        text-align: center;
+        overflow: hidden;
+      }
+      .pdf-image-container img{
+        width: auto !important;
+        height: auto !important;
+        max-height: 100% !important;
+        max-width: 100% !important;
+      }
     </style>
 
     @yield('head', '')
