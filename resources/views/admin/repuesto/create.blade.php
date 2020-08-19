@@ -28,7 +28,7 @@
                     <select id="marca" class="form-control" name="marca" required>
                       <option value="">Seleccione...</option>
                       @foreach($marcas as $marca)
-                        <option value="{{ $marca->id }}" {{ old('marca') == $marca->id ? 'selected' : '' }}>{{ $marca->marca }}</option>
+                        <option value="{{ $marca->id }}" {{ old('marca', optional($clone)->vehiculo_marca_id) == $marca->id ? 'selected' : '' }}>{{ $marca->marca }}</option>
                       @endforeach
                     </select>
                   </div>
@@ -44,13 +44,13 @@
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="año">Año: *</label>
-                    <input id="año" class="form-control{{ $errors->has('año') ? ' is-invalid' : '' }}" type="number" name="año" min="0" step="1" max="9999" value="{{ old('año') }}" placeholder="Año" required>
+                    <input id="año" class="form-control{{ $errors->has('año') ? ' is-invalid' : '' }}" type="number" name="año" min="0" step="1" max="9999" value="{{ old('año', optional($clone)->anio) }}" placeholder="Año" required>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="motor">Motor (cc): *</label>
-                    <input id="motor" class="form-control{{ $errors->has('motor') ? ' is-invalid' : '' }}" type="number" min="0" max="9999" name="motor" value="{{ old('motor') }}" placeholder="Motor" required>
+                    <input id="motor" class="form-control{{ $errors->has('motor') ? ' is-invalid' : '' }}" type="number" min="0" max="9999" name="motor" value="{{ old('motor', optional($clone)->motor) }}" placeholder="Motor" required>
                     <small class="text-muted">Solo números</small>
                   </div>
                 </div>
@@ -60,25 +60,25 @@
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="sistema">Sistema: *</label>
-                    <input id="sistema" class="form-control{{ $errors->has('sistema') ? ' is-invalid' : '' }}" type="text" name="sistema" maxlength="50" value="{{ old('sistema') }}" placeholder="Sistema" required>
+                    <input id="sistema" class="form-control{{ $errors->has('sistema') ? ' is-invalid' : '' }}" type="text" name="sistema" maxlength="50" value="{{ old('sistema', optional($clone)->sistema) }}" placeholder="Sistema" required>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="componente">Componente: *</label>
-                    <input id="componente" class="form-control{{ $errors->has('componente') ? ' is-invalid' : '' }}" type="text" name="componente" maxlength="50" value="{{ old('componente') }}" placeholder="Componente" required>
+                    <input id="componente" class="form-control{{ $errors->has('componente') ? ' is-invalid' : '' }}" type="text" name="componente" maxlength="50" value="{{ old('componente', optional($clone)->componente) }}" placeholder="Componente" required>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="nro_parte">Nro. parte: *</label>
-                    <input id="nro_parte" class="form-control{{ $errors->has('nro_parte') ? ' is-invalid' : '' }}" type="text" name="nro_parte" maxlength="50" value="{{ old('nro_parte') }}" placeholder="Nro. parte" required>
+                    <label class="control-label" for="nro_parte">N° parte:</label>
+                    <input id="nro_parte" class="form-control{{ $errors->has('nro_parte') ? ' is-invalid' : '' }}" type="text" name="nro_parte" maxlength="50" value="{{ old('nro_parte', optional($clone)->nro_parte) }}" placeholder="N° parte">
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="nro_oem">Nro. OEM: *</label>
-                    <input id="nro_oem" class="form-control{{ $errors->has('nro_oem') ? ' is-invalid' : '' }}" type="text" name="nro_oem" maxlength="50" value="{{ old('nro_oem') }}" placeholder="Nro. OEM" required>
+                    <label class="control-label" for="nro_oem">N° OEM:</label>
+                    <input id="nro_oem" class="form-control{{ $errors->has('nro_oem') ? ' is-invalid' : '' }}" type="text" name="nro_oem" maxlength="50" value="{{ old('nro_oem', optional($clone)->nro_oem) }}" placeholder="N° OEM">
                   </div>
                 </div>
               </div>
@@ -87,7 +87,7 @@
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="marca_oem">Marca OEM: *</label>
-                    <input id="marca_oem" class="form-control{{ $errors->has('marca_oem') ? ' is-invalid' : '' }}" type="text" name="marca_oem" maxlength="50" value="{{ old('marca_oem') }}" placeholder="Marca OEM" required>
+                    <input id="marca_oem" class="form-control{{ $errors->has('marca_oem') ? ' is-invalid' : '' }}" type="text" name="marca_oem" maxlength="50" value="{{ old('marca_oem', optional($clone)->marca_oem) }}" placeholder="Marca OEM" required>
                   </div>
                 </div>
 
@@ -107,9 +107,9 @@
                     <label class="control-label" for="procedencia">Procedencia: *</label>
                     <select id="procedencia" class="form-control" name="procedencia" required>
                       <option>Seleccione...</option>
-                      <option value="local" {{ old('procedencia') == 'local' ? 'selected' : '' }}>Local</option>
-                      <option value="nacional" {{ old('procedencia') == 'nacional' ? 'selected' : '' }}>Nacional</option>
-                      <option value="internacional" {{ old('procedencia') == 'internacional' ? 'selected' : '' }}>Internacional</option>
+                      <option value="local" {{ old('procedencia', optional($clone)->procedencia) == 'local' ? 'selected' : '' }}>Local</option>
+                      <option value="nacional" {{ old('procedencia', optional($clone)->procedencia) == 'nacional' ? 'selected' : '' }}>Nacional</option>
+                      <option value="internacional" {{ old('procedencia', optional($clone)->procedencia) == 'internacional' ? 'selected' : '' }}>Internacional</option>
                     </select>
                   </div>
                 </div>
@@ -124,28 +124,28 @@
                     <label class="control-label" for="moneda-local">Moneda: *</label>
                     <select id="moneda-local" class="custom-select" name="moneda" required>
                       <option value="">Seleccione...</option>
-                      <option value="peso" {{ old('moneda', 'peso') == 'peso' ? 'selected' : '' }}>Peso chileno</option>
-                      <option value="dolar" {{ old('moneda', 'peso') == 'dolar' ? 'selected' : '' }}>Dólar</option>
-                      <option value="euro" {{ old('moneda', 'peso') == 'euro' ? 'selected' : '' }}>Euro</option>
+                      <option value="peso" {{ old('moneda', ($clone ? $clone->extra->moneda : 'peso')) == 'peso' ? 'selected' : '' }}>Peso chileno</option>
+                      <option value="dolar" {{ old('moneda', ($clone ? $clone->extra->moneda : 'peso')) == 'dolar' ? 'selected' : '' }}>Dólar</option>
+                      <option value="euro" {{ old('moneda', ($clone ? $clone->extra->moneda : 'peso')) == 'euro' ? 'selected' : '' }}>Euro</option>
                     </select>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="costo">Costo:</label>
-                    <input id="costo" class="form-control{{ $errors->has('costo') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="costo" maxlength="50" value="{{ old('costo') }}" placeholder="Costo">
+                    <input id="costo" class="form-control{{ $errors->has('costo') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="costo" maxlength="50" value="{{ old('costo', ($clone ? $clone->extra->costo : '')) }}" placeholder="Costo">
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="generales">Gastos generales:</label>
-                    <input id="generales" class="form-control{{ $errors->has('generales') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="generales" maxlength="50" value="{{ old('generales') }}" placeholder="Gastos generales">
+                    <input id="generales" class="form-control{{ $errors->has('generales') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="generales" maxlength="50" value="{{ old('generales', ($clone ? $clone->extra->generales : '')) }}" placeholder="Gastos generales">
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="venta">Precio de venta: *</label>
-                    <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="venta" maxlength="50" value="{{ old('venta') }}" placeholder="Venta" required>
+                    <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="venta" maxlength="50" value="{{ old('venta', optional($clone)->venta) }}" placeholder="Venta" required>
                   </div>
                 </div>
               </div>
@@ -159,28 +159,28 @@
                     <label class="control-label" for="moneda-nacional">Moneda: *</label>
                     <select id="moneda-nacional" class="custom-select" name="moneda" required>
                       <option value="">Seleccione...</option>
-                      <option value="peso" {{ old('moneda', 'peso') == 'peso' ? 'selected' : '' }}>Peso chileno</option>
-                      <option value="dolar" {{ old('moneda', 'peso') == 'dolar' ? 'selected' : '' }}>Dólar</option>
-                      <option value="euro" {{ old('moneda', 'peso') == 'euro' ? 'selected' : '' }}>Euro</option>
+                      <option value="peso" {{ old('moneda', ($clone ? $clone->extra->moneda : 'peso')) == 'peso' ? 'selected' : '' }}>Peso chileno</option>
+                      <option value="dolar" {{ old('moneda', ($clone ? $clone->extra->moneda : 'peso')) == 'dolar' ? 'selected' : '' }}>Dólar</option>
+                      <option value="euro" {{ old('moneda', ($clone ? $clone->extra->moneda : 'peso')) == 'euro' ? 'selected' : '' }}>Euro</option>
                     </select>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="costo">Costo:</label>
-                    <input id="costo" class="form-control{{ $errors->has('costo') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="costo" value="{{ old('costo') }}" placeholder="Costo">
+                    <input id="costo" class="form-control{{ $errors->has('costo') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="costo" value="{{ old('costo', ($clone ? $clone->extra->costo : '')) }}" placeholder="Costo">
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="generales">Gastos generales:</label>
-                    <input id="generales" class="form-control{{ $errors->has('generales') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="generales" value="{{ old('generales') }}" placeholder="Gastos generales">
+                    <input id="generales" class="form-control{{ $errors->has('generales') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="generales" value="{{ old('generales', ($clone ? $clone->extra->generales : '')) }}" placeholder="Gastos generales">
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="envio">Envio:</label>
-                    <input id="envio" class="form-control{{ $errors->has('envio') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio" value="{{ old('envio') }}" placeholder="Envio">
+                    <input id="envio" class="form-control{{ $errors->has('envio') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio" value="{{ old('envio', optional($clone)->envio) }}" placeholder="Envio">
                   </div>
                 </div>
               </div>
@@ -188,7 +188,7 @@
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="venta">Precio de venta: *</label>
-                    <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="venta" value="{{ old('venta') }}" placeholder="Venta" required>
+                    <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="venta" value="{{ old('venta', optional($clone)->venta) }}" placeholder="Venta" required>
                   </div>
                 </div>
               </div>
@@ -202,28 +202,28 @@
                     <label class="control-label" for="moneda-internacional">Moneda: *</label>
                     <select id="moneda-internacional" class="custom-select" name="moneda" required>
                       <option value="">Seleccione...</option>
-                      <option value="peso" {{ old('moneda', 'dolar') == 'peso' ? 'selected' : '' }}>Peso chileno</option>
-                      <option value="dolar" {{ old('moneda', 'dolar') == 'dolar' ? 'selected' : '' }}>Dólar</option>
-                      <option value="euro" {{ old('moneda', 'dolar') == 'euro' ? 'selected' : '' }}>Euro</option>
+                      <option value="peso" {{ old('moneda', ($clone ? $clone->extra->moneda : 'dolar')) == 'peso' ? 'selected' : '' }}>Peso chileno</option>
+                      <option value="dolar" {{ old('moneda', ($clone ? $clone->extra->moneda : 'dolar')) == 'dolar' ? 'selected' : '' }}>Dólar</option>
+                      <option value="euro" {{ old('moneda', ($clone ? $clone->extra->moneda : 'dolar')) == 'euro' ? 'selected' : '' }}>Euro</option>
                     </select>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="costo">Costo:</label>
-                    <input id="costo" class="form-control{{ $errors->has('costo') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="costo" value="{{ old('costo') }}" placeholder="Costo">
+                    <input id="costo" class="form-control{{ $errors->has('costo') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="costo" value="{{ old('costo', ($clone ? $clone->extra->generales : '')) }}" placeholder="Costo">
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="envio1">Envio 1:</label>
-                    <input id="envio1" class="form-control{{ $errors->has('envio1') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio1" value="{{ old('envio1') }}" placeholder="Envio 1">
+                    <input id="envio1" class="form-control{{ $errors->has('envio1') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio1" value="{{ old('envio1', ($clone ? $clone->extra->envio1 : '')) }}" placeholder="Envio 1">
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="envio2">Envio 2:</label>
-                    <input id="envio2" class="form-control{{ $errors->has('envio2') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio2" value="{{ old('envio2') }}" placeholder="Envio 2">
+                    <input id="envio2" class="form-control{{ $errors->has('envio2') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio2" value="{{ old('envio2', ($clone ? $clone->extra->envio2 : '')) }}" placeholder="Envio 2">
                   </div>
                 </div>
               </div>
@@ -231,18 +231,18 @@
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="casilla">Gastos casilla:</label>
-                    <input id="casilla" class="form-control{{ $errors->has('casilla') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="casilla" value="{{ old('casilla') }}" placeholder="Gastos casilla">
+                    <input id="casilla" class="form-control{{ $errors->has('casilla') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="casilla" value="{{ old('casilla', ($clone ? $clone->extra->casilla : '')) }}" placeholder="Gastos casilla">
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label">Impuestos:</label>
                     <div class="custom-control custom-radio">
-                      <input type="radio" id="impuestos-25" name="impuestos" class="custom-control-input" value="25">
+                      <input type="radio" id="impuestos-25" name="impuestos" class="custom-control-input" value="25"{{ ($clone && ($clone->extra->impuestos == 25) ? ' selected' : '') }}>
                       <label class="custom-control-label" for="impuestos-25">25% del FOB</label>
                     </div>
                     <div class="custom-control custom-radio">
-                      <input type="radio" id="impuestos-19" name="impuestos" class="custom-control-input" value="19">
+                      <input type="radio" id="impuestos-19" name="impuestos" class="custom-control-input" value="19"{{ ($clone && ($clone->extra->impuestos == 19) ? ' selected' : '') }}>
                       <label class="custom-control-label" for="impuestos-19">19% del FOB</label>
                     </div>
                   </div>
@@ -252,18 +252,18 @@
                     <label class="control-label" for="gasto-general-internacional">Gastos generales:</label>
                     <select id="gasto-general-internacional" class="custom-select" name="generales">
                       <option value="">Seleccione...</option>
-                      <option value="0" {{ old('generales') == '0' ? 'selected' : '' }}>0%</option>
-                      <option value="15" {{ old('generales') == '15' ? 'selected' : '' }}>15%</option>
-                      <option value="20" {{ old('generales') == '20' ? 'selected' : '' }}>20%</option>
-                      <option value="25" {{ old('generales') == '25' ? 'selected' : '' }}>25%</option>
-                      <option value="30" {{ old('generales') == '30' ? 'selected' : '' }}>30%</option>
+                      <option value="0" {{ old('generales', ($clone ? $clone->extra->generales : '')) == '0' ? 'selected' : '' }}>0%</option>
+                      <option value="15" {{ old('generales', ($clone ? $clone->extra->generales : '')) == '15' ? 'selected' : '' }}>15%</option>
+                      <option value="20" {{ old('generales', ($clone ? $clone->extra->generales : '')) == '20' ? 'selected' : '' }}>20%</option>
+                      <option value="25" {{ old('generales', ($clone ? $clone->extra->generales : '')) == '25' ? 'selected' : '' }}>25%</option>
+                      <option value="30" {{ old('generales', ($clone ? $clone->extra->generales : '')) == '30' ? 'selected' : '' }}>30%</option>
                     </select>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="tramitacion">Costo tramitación:</label>
-                    <input id="tramitacion" class="form-control{{ $errors->has('tramitacion') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="tramitacion" maxlength="50" value="{{ old('tramitacion') }}" placeholder="Costo tramitación">
+                    <input id="tramitacion" class="form-control{{ $errors->has('tramitacion') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="tramitacion" maxlength="50" value="{{ old('tramitacion', ($clone ? $clone->extra->tramitacion : '')) }}" placeholder="Costo tramitación">
                   </div>
                 </div>
               </div>
@@ -271,7 +271,7 @@
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="venta">Precio de venta: *</label>
-                    <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="venta" value="{{ old('venta') }}" placeholder="Venta" required>
+                    <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="venta" value="{{ old('venta', optional($clone)->venta) }}" placeholder="Venta" required>
                   </div>
                 </div>
               </div>
@@ -322,7 +322,7 @@
         .done(function (modelos) {
           $('#modelo').html('<option value="">Seleccione...</option>');
           $.each(modelos, function(k, modelo){
-            let selected = modelo.id == @json(old('modelo')) ? 'selected' : ''
+            let selected = modelo.id == @json(old('modelo', optional($clone)->vehiculo_modelo_id)) ? 'selected' : ''
             $('#modelo').append(`<option value="${modelo.id}" ${selected}>${modelo.modelo}</option>`)
           })
 

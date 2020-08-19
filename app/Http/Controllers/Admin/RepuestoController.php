@@ -31,10 +31,15 @@ class RepuestoController extends Controller
     public function create()
     {
       $this->authorize('create', Repuesto::class);
+      
+      $clone = Repuesto::find(request()->clone);
+      if($clone){
+        $this->authorize('view', $clone); 
+      }
 
-      $marcas = VehiculosMarca::with('modelos')->get();
+      $marcas = VehiculosMarca::all();
 
-      return view('admin.repuesto.create', compact('marcas'));
+      return view('admin.repuesto.create', compact('marcas', 'clone'));
     }
 
     /**
@@ -52,8 +57,8 @@ class RepuestoController extends Controller
         'motor' => 'required|integer|min:0|max:9999',
         'sistema' => 'required|string|max:50',
         'componente' => 'required|string|max:50',
-        'nro_parte' => 'required|string|max:50',
-        'nro_oem' => 'required|string|max:50',
+        'nro_parte' => 'nullable|string|max:50',
+        'nro_oem' => 'nullable|string|max:50',
         'marca_oem' => 'required|string|max:50',
         'foto' => 'nullable|image|max:12000|mimes:jpeg,jpg,png',
         'procedencia' => 'required|in:local,nacional,internacional',
@@ -169,8 +174,8 @@ class RepuestoController extends Controller
         'motor' => 'required|integer|min:0|max:9999',
         'sistema' => 'required|string|max:50',
         'componente' => 'required|string|max:50',
-        'nro_parte' => 'required|string|max:50',
-        'nro_oem' => 'required|string|max:50',
+        'nro_parte' => 'nullable|string|max:50',
+        'nro_oem' => 'nullable|string|max:50',
         'marca_oem' => 'required|string|max:50',
         'foto' => 'nullable|image|max:12000|mimes:jpeg,jpg,png',
         'procedencia' => 'required|in:local,nacional,internacional',

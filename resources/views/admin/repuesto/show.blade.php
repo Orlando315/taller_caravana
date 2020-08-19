@@ -13,6 +13,7 @@
 
       @if(Auth::user()->isAdmin())
         <a class="btn btn-success" href="{{ route('admin.repuesto.edit', ['repuesto' => $repuesto->id]) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</a>
+        <a class="btn btn-default" href="{{ route('admin.repuesto.create', ['clone' => $repuesto->id]) }}"><i class="fa fa-clone" aria-hidden="true"></i> Clonar</a>
         <button class="btn btn-fill btn-danger" data-toggle="modal" data-target="#delModal"><i class="fa fa-times" aria-hidden="true"></i> Eliminar</button>
       @endif
     </div>

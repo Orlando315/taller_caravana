@@ -76,14 +76,14 @@
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="nro_parte">Nro. parte: *</label>
-                    <input id="nro_parte" class="form-control{{ $errors->has('nro_parte') ? ' is-invalid' : '' }}" type="text" name="nro_parte" maxlength="50" value="{{ old('nro_parte', $repuesto->nro_parte) }}" placeholder="Nro. parte" required>
+                    <label class="control-label" for="nro_parte">N° parte:</label>
+                    <input id="nro_parte" class="form-control{{ $errors->has('nro_parte') ? ' is-invalid' : '' }}" type="text" name="nro_parte" maxlength="50" value="{{ old('nro_parte', $repuesto->nro_parte) }}" placeholder="N° parte">
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="nro_oem">Nro. OEM: *</label>
-                    <input id="nro_oem" class="form-control{{ $errors->has('nro_oem') ? ' is-invalid' : '' }}" type="text" name="nro_oem" maxlength="50" value="{{ old('nro_oem', $repuesto->nro_oem) }}" placeholder="Nro. OEM" required>
+                    <label class="control-label" for="nro_oem">N° OEM:</label>
+                    <input id="nro_oem" class="form-control{{ $errors->has('nro_oem') ? ' is-invalid' : '' }}" type="text" name="nro_oem" maxlength="50" value="{{ old('nro_oem', $repuesto->nro_oem) }}" placeholder="N° OEM">
                   </div>
                 </div>
               </div>
