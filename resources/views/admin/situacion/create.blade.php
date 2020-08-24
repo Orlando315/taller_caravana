@@ -78,7 +78,7 @@
                       <option value="{{ $repuesto->id }}"
                         data-titulo="{{ $repuesto->descripcion() }}"
                         data-venta="{{ $repuesto->venta }}"
-                        data-stock=""
+                        data-stock="{{ $repuesto->stock }}"
                         data-costo="{{ $repuesto->extra->costo_total }}">{{ $repuesto->descripcion() }}</option>
                     @endforeach
                   </select>
@@ -133,6 +133,7 @@
               <div class="col-12">
                 <p class="m-0"><strong>Costo total:</strong> <span class="selected-costo">-</span></p>
                 <p class="m-0"><strong>Valor venta:</strong> <span class="selected-venta">-</span></p>
+                <p class="m-0"><strong>Stock disponible:</strong> <span class="selected-stock">-</span></p>
               </div>
             </div>
 
@@ -173,7 +174,7 @@
                     @foreach(old('datos') as $dato)
                       @continue(old('datos.'.$loop->iteration.'.type') != 'repuesto')
                       
-                      <tr id="tr-{{ $loop->iteration }}" class="tr-dato">
+                      <tr id="tr-{{ $loop->iteration }}" class="tr-dato" data-type="repuesto" data-item="old('datos.'.$loop->iteration.'.item')" data-cantidad="{{ old('datos.'.$loop->iteration.'.cantidad') }}">
                         <td>
                           <button class="btn btn-danger btn-fill btn-xs btn-delete" type="button" role="button" data-id="{{ $loop->iteration }}"><i class="fa fa-trash"></i></button>
                         </td>
@@ -237,7 +238,7 @@
                     @foreach(old('datos') as $dato)
                       @continue(old('datos.'.$loop->iteration.'.type') != 'insumo')
                       
-                      <tr id="tr-{{ $loop->iteration }}" class="tr-dato">
+                      <tr id="tr-{{ $loop->iteration }}" class="tr-dato" data-type="insumo" data-item="old('datos.'.$loop->iteration.'.item')" data-cantidad="{{ old('datos.'.$loop->iteration.'.cantidad') }}">
                         <td>
                           <button class="btn btn-danger btn-fill btn-xs btn-delete" type="button" role="button" data-id="{{ $loop->iteration }}"><i class="fa fa-trash"></i></button>
                         </td>
@@ -301,7 +302,7 @@
                     @foreach(old('datos') as $dato)
                       @continue(old('datos.'.$loop->iteration.'.type') != 'horas')
                       
-                      <tr id="tr-{{ $loop->iteration }}" class="tr-dato">
+                      <tr id="tr-{{ $loop->iteration }}" class="tr-dato" data-type="horas" data-item="old('datos.'.$loop->iteration.'.item')" data-cantidad="{{ old('datos.'.$loop->iteration.'.cantidad') }}">
                         <td>
                           <button class="btn btn-danger btn-fill btn-xs btn-delete" type="button" role="button" data-id="{{ $loop->iteration }}"><i class="fa fa-trash"></i></button>
                         </td>
@@ -366,7 +367,7 @@
                     @foreach(old('datos') as $dato)
                       @continue(old('datos.'.$loop->iteration.'.type') != 'otros')
                       
-                      <tr id="tr-{{ $loop->iteration }}" class="tr-dato">
+                      <tr id="tr-{{ $loop->iteration }}" class="tr-dato" data-type="otros" data-item="old('datos.'.$loop->iteration.'.item')" data-cantidad="{{ old('datos.'.$loop->iteration.'.cantidad') }}">
                         <td>
                           <button class="btn btn-danger btn-fill btn-xs btn-delete" type="button" role="button" data-id="{{ $loop->iteration }}"><i class="fa fa-trash"></i></button>
                         </td>
@@ -741,7 +742,7 @@
           $(`#${tipo}`).val(null).trigger('change');
         }
 
-        $('.selected-venta,.selected-costo').text('-')
+        $('.selected-venta,.selected-costo,.selected-stock').text('-');
       })
 
       $('#tipo').change()
@@ -758,9 +759,14 @@
         let value = useSelect ? $(`#${tipo}`).val() : null
         let option = useSelect ? $(`#${tipo} option[value="${value}"]`) : null
 
-        let cantidad = $('#cantidad').val()
-        let venta = (useSelect && $(option).data('venta')) ? $(option).data('venta') : +$('#venta').val()
-        venta = typeof venta == 'number' ? venta : +(venta.replace(',', '.'))
+        let cantidad = $('#cantidad').val();
+        let venta = (useSelect && $(option).data('venta')) ? $(option).data('venta') : +$('#venta').val();
+        venta = typeof venta == 'number' ? venta : +(venta.replace(',', '.'));
+
+        if(useSelect && checkStock(tipo, cantidad, option)){
+          showErrors(['La cantidad ingresada supera el stock disponible actualmente'], '.form-errors-search-repuesto');
+          return false;
+        }
 
         let total = (venta * cantidad)
         let costo = (useSelect && $(option).data('costo')) ? (+$(option).data('costo') * cantidad) : 0
@@ -769,7 +775,7 @@
             item: useSelect ? value : '',
             type: tipo,
             descripcion: $('#descripcion').val(),
-            titulo: useSelect ? $(option).data('titulo') : ( tipo == 'horas' ? 'Horas hombre' : 'Otros'),
+            titulo: useSelect ? $(option).data('titulo') : (tipo == 'horas' ? 'Horas hombre' : 'Otros'),
             venta: venta,
             cantidad: cantidad,
             total: total,
@@ -804,20 +810,23 @@
 
       $('#insumo, #repuesto').change(function () {
         let val = $(this).val();
+        let type = $(this).attr('id');
 
         if(!val){ return false }
 
-        let  option = $(this).find(`option[value="${val}"]`),
+        let option = $(this).find(`option[value="${val}"]`),
             venta = option.data('venta'),
-            costo = option.data('costo');
+            costo = option.data('costo'),
+            stock = getStock(type, option);
 
         if(!venta && !costo){ return; }
 
         numberVenta = +(typeof venta == 'number' ? +(venta.toFixed(2)) : venta.replace(',', '.'));
         numberCosto = +(typeof costo == 'number' ? +(costo.toFixed(2)) : costo.replace(',', '.'));
 
-        $('.selected-venta').text(numberVenta.toLocaleString('de-DE'))
-        $('.selected-costo').text(numberCosto.toLocaleString('de-DE'))
+        $('.selected-venta').text(numberVenta.toLocaleString('de-DE'));
+        $('.selected-costo').text(numberCosto.toLocaleString('de-DE'));
+        $('.selected-stock').text(stock.toLocaleString('de-DE'));
       })
 
       // Repuestos
@@ -864,7 +873,7 @@
             let option = `<option value="${data.repuesto.id}"
                             data-titulo="${data.repuesto.descripcion}"
                             data-venta="${data.repuesto.venta}"
-                            data-stock=""
+                            data-stock="${data.repuesto.stock}"
                             data-costo="${data.repuesto.costo}"
                           >${data.repuesto.descripcion}</option>
                           `;
@@ -885,7 +894,6 @@
         let always = function () {
           btn.prop('disabled', false)
         };
-
 
         sendRequest(action, data, done, fail);
       })
@@ -921,16 +929,22 @@
         searchRepuestos((marca ? marca : null), (modelo ? modelo : null))
       })// Filtrar repuestos
     }) // DOM Ready
+  
+    // Stock de los repuestos
+    const ITEMS_STOCK = {
+      repuesto: {},
+      insumo: {},
+    };
 
     // Informacion del Item que sera agregado a la hija de situacion
     let dato = function(index, dato) {
-      return `<tr id="tr-${index}" class="tr-dato">
+      return `<tr id="tr-${index}" class="tr-dato" data-type="${dato.type}" data-item="${dato.item}" data-cantidad="${dato.cantidad}">
                 <td>
                   <button class="btn btn-danger btn-fill btn-xs btn-delete" type="button" role="button" data-id="${index}"><i class="fa fa-trash"></i></button>
                 </td>
                 <td>
                   ${dato.titulo}
-                  ${dato.type == 'horas' ? ('<p class="0"><small>'+dato.descripcion+'</small></p>') : ''}
+                  ${(dato.type == 'horas' || dato.type == 'otros') ? ('<p class="0"><small>'+dato.descripcion+'</small></p>') : ''}
                   <input type="hidden" name="datos[${index}][item]" value="${dato.item}">
                   <input type="hidden" name="datos[${index}][type]" value="${dato.type}">
                   <input type="hidden" name="datos[${index}][titulo]" value="${dato.titulo}">
@@ -965,11 +979,62 @@
               </tr>`
     }
 
+    // Eliminar elemento añadido a la hoja de situacion
     function deleteRow(){
       let id = $(this).data('id');
+      let tr = $(`#tr-${id}`);
+      let type = tr.data('type');
+      let item = tr.data('item');
+      let cantidad = tr.data('cantidad');
 
-      $(`#tr-${id}`).remove();
-      toggleBtn()
+      if(type == 'insumo' || type == 'repuesto'){
+        let option = $(`option[value="${item}"]`);
+        let stock = getStock(type, option);
+        let result = stock + cantidad;
+        updateStock(type, option, result);
+      }
+
+      tr.remove();
+      toggleBtn();
+    }
+
+    function checkStock(type, cantidad, option){
+      let item = option.val();
+      let stock = getStock(type, option);
+      let result = stock - cantidad;
+
+      if(result < 0){
+        return true;
+      }
+
+      updateStock(type, option, result);
+
+      return false;
+    }
+
+    function getStock(type, option){
+      let item = option.val();
+      let stock = +(option.data('stock') || 0 );
+      stock = typeof stock == 'number' ? stock : +(stock.replace(',', '.'));
+
+      if(ITEMS_STOCK[type].hasOwnProperty(item)){
+        stock = ITEMS_STOCK[type][item];
+      }else{
+        ITEMS_STOCK[type][item] = stock;
+      }
+
+      return stock;
+    }
+
+    function updateStock(type, option, stock){
+      let item = option.val();
+
+      ITEMS_STOCK[type][item] = stock;
+      option.data('stock', stock);
+
+      if(type == 'insumo' || type == 'repuesto'){
+        $(`#${type}`).change();
+      }
     }
 
     function toggleBtn(){
@@ -1004,7 +1069,6 @@
         $.each(modelos, function(k, modelo){
           let found = modelo.id == @json($proceso->vehiculo->vehiculo_modelo_id);
           let selected = found ? 'selected' : '';
-
           $(field).append(`<option value="${modelo.id}" ${selected}>${modelo.modelo}</option>`);
 
           if(found){
@@ -1041,7 +1105,7 @@
           let option = `<option value="${repuesto.id}"
                           data-titulo="${repuesto.descripcion}"
                           data-venta="${repuesto.venta}"
-                          data-stock=""
+                          data-stock="${repuesto.stock}"
                           data-costo="${repuesto.costo ?? 0}"
                         >${repuesto.descripcion}</option>`;
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\SituacionItem;
+use App\{SituacionItem, Situacion};
 
 class SituacionItemController extends Controller
 {
@@ -36,6 +36,11 @@ class SituacionItemController extends Controller
       }
 
       if($item->delete()){
+        if($item->type == 'insumo' || $item->type == 'repuesto'){
+          $id = $item->repuesto_id ?? $item->insumo_id;
+          Situacion::updateStock(['repuesto' => [], 'insumo' => [['id' => $id, 'cantidad' => $item->cantidad]]], true);
+        }
+
         return redirect()->route('admin.proceso.show', ['proceso' => $item->situacion->proceso_id])->with([
                 'flash_class'   => 'alert-success',
                 'flash_message' => 'Item eliminado exitosamente.'

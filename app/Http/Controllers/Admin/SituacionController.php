@@ -52,10 +52,12 @@ class SituacionController extends Controller
       ]);
 
       $datos = [];
+      $updateStock = ['repuesto' => [], 'insumo' => []];
 
       foreach ($request->datos as $dato) {
         if(($dato['type'] == 'insumo' || $dato['type'] == 'repuesto') && isset($dato['item'])){
           $dato["{$dato['type']}_id"] = $dato['item'];
+          $updateStock[$dato['type']][] = ['id' => $dato['item'], 'cantidad' => $dato['cantidad']];
         }
 
         if($dato['type'] == 'horas' && $dato['descuento'] > 0){
@@ -72,6 +74,7 @@ class SituacionController extends Controller
 
       if($proceso->situacion()->save($situacion)){
         if($situacion->items()->createMany($datos)){
+          Situacion::updateStock($updateStock);
           $proceso->etapa = 4;
           $proceso->save();
 
@@ -136,11 +139,14 @@ class SituacionController extends Controller
         'dato.*.type' => 'required|in:insumo,repuesto,horas,otros',
         'dato.*.descripcion' => 'nullable|string|max:500'
       ]);
+
       $datos = [];
+      $updateStock = ['repuesto' => [], 'insumo' => []];
 
       foreach ($request->datos as $dato) {
         if(($dato['type'] == 'insumo' || $dato['type'] == 'repuesto') && isset($dato['item'])){
           $dato["{$dato['type']}_id"] = $dato['item'];
+          $updateStock[$dato['type']][] = ['id' => $dato['item'], 'cantidad' => $dato['cantidad']];
         }
 
         if($dato['type'] == 'horas' && $dato['descuento'] > 0){
@@ -153,6 +159,8 @@ class SituacionController extends Controller
       }
 
       if($situacion->items()->createMany($datos)){
+        Situacion::updateStock($updateStock);
+
         return redirect()->route('admin.proceso.show', ['proceso' => $situacion->proceso_id])->with([
                 'flash_message' => 'Hoja de situación modificada exitosamente.',
                 'flash_class' => 'alert-success'

@@ -19,6 +19,9 @@
             <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('admin.repuesto.create') }}">
               <i class="fa fa-plus"></i> Agregar Repuesto
             </a>
+            <a class="btn btn-primary btn-fill btn-xs mt-2" href="{{ route('admin.repuesto.create.masivo') }}">
+              <i class="fa fa-upload"></i> Carga masiva
+            </a>
           @endif
         </div>
         <div class="card-body">
@@ -39,13 +42,13 @@
                   <td scope="row" class="text-center">{{ $loop->iteration }}</td>
                   <td>
                     <a href="{{ route('admin.repuesto.show', ['repuesto' => $repuesto->id] )}}">
-                      {{ $repuesto->sistema }}
+                      {{ $repuesto->sistema ?? 'N/A' }}
                     </a>
                   </td>
-                  <td>{{ $repuesto->componente }}</td>
+                  <td>{{ $repuesto->componente ?? N/A }}</td>
                   <td>{{ $repuesto->marca->marca }}</td>
-                  <td>{{ $repuesto->nro_parte }}</td>
-                  <td>{{ $repuesto->nro_oem }}</td>
+                  <td>{{ $repuesto->nro_parte ?? 'N/A' }}</td>
+                  <td>{{ $repuesto->nro_oem ?? 'N/A' }}</td>
                 </tr>
               @endforeach
             </tbody>

@@ -96,7 +96,7 @@
                   </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-3">
                   <div class="form-group">
                     <label for="foto">Foto:</label>
                     <div class="custom-file">
@@ -104,6 +104,13 @@
                       <label class="custom-file-label" for="foto">Selecionar...</label>
                     </div>
                     <small class="text-muted">Tamaño máximo 12 MB</small>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="stock">Stock:</label>
+                    <input id="stock" class="form-control{{ $errors->has('stock') ? ' is-invalid' : '' }}" type="number" name="stock" min="0" max="9999" value="{{ old('stock', $repuesto->cantidad) }}" placeholder="Stock">
                   </div>
                 </div>
 
@@ -127,12 +134,16 @@
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="moneda-local">Moneda: *</label>
-                    <select id="moneda-local" class="custom-select" name="moneda" required>
+                    <select id="moneda-local" class="custom-select" name="moneda" data-input-valor="moneda-valor-local" required>
                       <option value="">Seleccione...</option>
-                      <option value="peso" {{ old('moneda', $repuesto->extra->moneda) == 'peso' ? 'selected' : '' }}>Peso chileno</option>
-                      <option value="dolar" {{ old('moneda', $repuesto->extra->moneda) == 'dolar' ? 'selected' : '' }}>Dólar</option>
-                      <option value="euro" {{ old('moneda', $repuesto->extra->moneda) == 'euro' ? 'selected' : '' }}>Euro</option>
+                      <option value="peso"{{ old('moneda', $repuesto->extra->moneda) == 'peso' ? ' selected' : '' }}>Peso chileno</option>
+                      <option value="dolar"{{ old('moneda', $repuesto->extra->moneda) == 'dolar' ? ' selected' : '' }}>Dólar</option>
+                      <option value="euro"{{ old('moneda', $repuesto->extra->moneda) == 'euro' ? ' selected' : '' }}>Euro</option>
                     </select>
+                  </div>
+                  <div class="form-group" style="display: none">
+                    <label class="control-label" for="moneda-valor-local">Especificar valor:</label>
+                    <input id="moneda-valor-local" class="form-control{{ $errors->has('moneda_valor') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="moneda_valor" value="{{ old('moneda_valor', $repuesto->extra->moneda_valor) }}" placeholder="Especificar valor">
                   </div>
                 </div>
                 <div class="col-md-3">
@@ -162,12 +173,16 @@
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="moneda-nacional">Moneda: *</label>
-                    <select id="moneda-nacional" class="custom-select" name="moneda" required>
+                    <select id="moneda-nacional" class="custom-select" name="moneda" data-input-valor="moneda-valor-nacional" required>
                       <option value="">Seleccione...</option>
-                      <option value="peso" {{ old('moneda', $repuesto->extra->moneda) == 'peso' ? 'selected' : '' }}>Peso chileno</option>
-                      <option value="dolar" {{ old('moneda', $repuesto->extra->moneda) == 'dolar' ? 'selected' : '' }}>Dólar</option>
-                      <option value="euro" {{ old('moneda', $repuesto->extra->moneda) == 'euro' ? 'selected' : '' }}>Euro</option>
+                      <option value="peso"{{ old('moneda', $repuesto->extra->moneda) == 'peso' ? ' selected' : '' }}>Peso chileno</option>
+                      <option value="dolar"{{ old('moneda', $repuesto->extra->moneda) == 'dolar' ? ' selected' : '' }}>Dólar</option>
+                      <option value="euro"{{ old('moneda', $repuesto->extra->moneda) == 'euro' ? ' selected' : '' }}>Euro</option>
                     </select>
+                  </div>
+                  <div class="form-group" style="display: none">
+                    <label class="control-label" for="moneda-valor-nacional">Especificar valor:</label>
+                    <input id="moneda-valor-nacional" class="form-control{{ $errors->has('moneda_valor') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="moneda_valor" value="{{ old('moneda_valor', $repuesto->extra->moneda_valor) }}" placeholder="Especificar valor">
                   </div>
                 </div>
                 <div class="col-md-3">
@@ -205,12 +220,16 @@
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="moneda-internacional">Moneda: *</label>
-                    <select id="moneda-internacional" class="custom-select" name="moneda" required>
+                    <select id="moneda-internacional" class="custom-select" name="moneda" data-input-valor="moneda-valor-internacional" required>
                       <option value="">Seleccione...</option>
-                      <option value="peso" {{ old('moneda', $repuesto->extra->moneda) == 'peso' ? 'selected' : '' }}>Peso chileno</option>
-                      <option value="dolar" {{ old('moneda', $repuesto->extra->moneda) == 'dolar' ? 'selected' : '' }}>Dólar</option>
-                      <option value="euro" {{ old('moneda', $repuesto->extra->moneda) == 'euro' ? 'selected' : '' }}>Euro</option>
+                      <option value="peso"{{ old('moneda', $repuesto->extra->moneda) == 'peso' ? ' selected' : '' }}>Peso chileno</option>
+                      <option value="dolar"{{ old('moneda', $repuesto->extra->moneda) == 'dolar' ? ' selected' : '' }}>Dólar</option>
+                      <option value="euro"{{ old('moneda', $repuesto->extra->moneda) == 'euro' ? ' selected' : '' }}>Euro</option>
                     </select>
+                  </div>
+                  <div class="form-group" style="display: none">
+                    <label class="control-label" for="moneda-valor-internacional">Especificar valor:</label>
+                    <input id="moneda-valor-internacional" class="form-control{{ $errors->has('moneda_valor') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="moneda_valor" value="{{ old('moneda_valor', $repuesto->extra->moneda_valor) }}" placeholder="Especificar valor">
                   </div>
                 </div>
                 <div class="col-md-3">
@@ -241,15 +260,17 @@
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label">Impuestos:</label>
-                    <div class="custom-control custom-radio">
-                      <input type="radio" id="impuestos-25" name="impuestos" class="custom-control-input" value="25"{{ $repuesto->extra->impuestos == '25' ? ' checked' : '' }}>
-                      <label class="custom-control-label" for="impuestos-25">25% del FOB</label>
-                    </div>
-                    <div class="custom-control custom-radio">
-                      <input type="radio" id="impuestos-19" name="impuestos" class="custom-control-input" value="19"{{ $repuesto->extra->impuestos == '19' ? ' checked' : '' }}>
-                      <label class="custom-control-label" for="impuestos-19">19% del FOB</label>
-                    </div>
+                    <label class="control-label" for="impuestos">Impuestos:</label>
+                    <select id="impuestos" class="custom-select" name="impuestos">
+                      <option value="">Seleccione...</option>
+                      <option value="0"{{ old('impuestos', $repuesto->extra->impuestos) == '0' ? ' selected' : '' }}>Monto especifico</option>
+                      <option value="19"{{ old('impuestos', $repuesto->extra->impuestos) == '19' ? ' selected' : '' }}>19% del FOB</option>
+                      <option value="25"{{ old('impuestos', $repuesto->extra->impuestos) == '25' ? ' selected' : '' }}>25% del FOB</option>
+                    </select>
+                  </div>
+                  <div class="form-group" style="display: none">
+                    <label class="control-label" for="impuestos_total">Especificar impuestos:</label>
+                    <input id="impuestos_total" class="form-control{{ $errors->has('impuestos_total') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="impuestos_total" value="{{ old('impuestos_total', $repuesto->extra->impuestos_total) }}" placeholder="Especificar">
                   </div>
                 </div>
                 <div class="col-md-3">
@@ -257,12 +278,16 @@
                     <label class="control-label" for="gasto-general-internacional">Gastos generales:</label>
                     <select id="gasto-general-internacional" class="custom-select" name="generales">
                       <option value="">Seleccione...</option>
-                      <option value="0" {{ old('generales', $repuesto->extra->generales) == '0' ? 'selected' : '' }}>0%</option>
-                      <option value="15" {{ old('generales', $repuesto->extra->generales) == '15' ? 'selected' : '' }}>15%</option>
-                      <option value="20" {{ old('generales', $repuesto->extra->generales) == '20' ? 'selected' : '' }}>20%</option>
-                      <option value="25" {{ old('generales', $repuesto->extra->generales) == '25' ? 'selected' : '' }}>25%</option>
-                      <option value="30" {{ old('generales', $repuesto->extra->generales) == '30' ? 'selected' : '' }}>30%</option>
+                      <option value="0"{{ old('generales', $repuesto->extra->generales) == '0' ? ' selected' : '' }}>Monto especifico</option>
+                      <option value="15"{{ old('generales', $repuesto->extra->generales) == '15' ? ' selected' : '' }}>15%</option>
+                      <option value="20"{{ old('generales', $repuesto->extra->generales) == '20' ? ' selected' : '' }}>20%</option>
+                      <option value="25"{{ old('generales', $repuesto->extra->generales) == '25' ? ' selected' : '' }}>25%</option>
+                      <option value="30"{{ old('generales', $repuesto->extra->generales) == '30' ? ' selected' : '' }}>30%</option>
                     </select>
+                  </div>
+                  <div class="form-group" style="display: none">
+                    <label class="control-label" for="generales_total">Especificar gastos generales:</label>
+                    <input id="generales_total" class="form-control{{ $errors->has('generales_total') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="generales_total" value="{{ old('impuestos_total', $repuesto->extra->generales_total) }}" placeholder="Especificar">
                   </div>
                 </div>
                 <div class="col-md-3">
@@ -278,7 +303,7 @@
                     <label class="control-label" for="venta">Precio de venta: *</label>
                     <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="venta" value="{{ old('venta', $repuesto->venta) }}" placeholder="Venta" required>
                   </div>
-                </div>                
+                </div>
               </div>
             </fieldset>
 
@@ -352,10 +377,28 @@
       
       $('.custom-file-input').change(function(e){
         let files = e.target.files;
-        let id = $(this).attr('id')
+        let id = $(this).attr('id');
 
         $(this).siblings(`label[for="${id}"]`).text(files[0].name);
       });
+
+      $('#impuestos').change(function () {
+        $('#impuestos_total').closest('.form-group').toggle($(this).val() == '0');
+      })
+      $('#impuestos').change();
+
+      $('#gasto-general-internacional').change(function () {
+        $('#generales_total').closest('.form-group').toggle($(this).val() == '0');
+      })
+      $('#gasto-general-internacional').change();
+
+      $('#moneda-local, #moneda-valor-nacional, #moneda-internacional').change(function () {
+        let type = $(this).val();
+        let input = $(this).data('input-valor');
+
+        $(`#${input}`).closest('.form-group').toggle(type != 'peso');
+      })
+      $('#moneda-local, #moneda-valor-nacional, #moneda-internacional').change();
     })
   </script>
 @endsection

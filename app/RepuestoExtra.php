@@ -20,13 +20,17 @@ class RepuestoExtra extends Model
      */
     protected $fillable = [
       'costo',
+      'costo_total',
       'envio1',
       'envio2',
       'casilla',
       'impuestos',
+      'impuestos_total',
       'generales',
+      'generales_total',
       'tramitacion',
       'moneda',
+      'moneda_valor',
     ];
 
     /**
@@ -82,7 +86,11 @@ class RepuestoExtra extends Model
      */
     public function impuestosTipo()
     {
-      return $this->impuestos == '19' ? '19% del FOB' : '25% del FOB';
+      if($this->impuestos > 0){
+        return ' ('.$this->impuestos.'% del FOB)';
+      }
+
+      return '';
     }
 
     /**
@@ -90,6 +98,10 @@ class RepuestoExtra extends Model
      */
     public function impuestos()
     {
+      if($this->impuestos == 0){
+        return $this->impuestos_total ? number_format($this->impuestos_total, 2, ',', '.') : null;
+      }
+
       $costoBase = $this->costo + $this->envio1 + $this->envio2;
       $fob = ($costoBase * $this->impuestos) / 100;
       return $this->impuestos ? number_format($fob, 2, ',', '.') : null;
@@ -127,5 +139,13 @@ class RepuestoExtra extends Model
     public function moneda()
     {
       return ucfirst($this->moneda);
+    }
+
+    /**
+     * Obtener el atributo formateado
+     */
+    public function monedaValor()
+    {
+      return $this->moneda_valor ? number_format($this->moneda_valor, 2, ',', '.') : null;
     }
 }

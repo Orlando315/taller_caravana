@@ -60,4 +60,21 @@ class VehiculosMarca extends Model
     {
       return $this->hasMany('App\Vehiculo', 'vehiculo_marca_id');
     }
+
+
+    /**
+     * Obtener las Marcas que tiene Modelos, como un array
+     *
+     * @return array
+     */
+    public static function marcasToArray()
+    {
+      return self::select('id', 'marca')
+                ->has('modelos')
+                ->get()
+                ->mapWithKeys(function($item){
+                  return [$item['id'] => $item['marca']];
+                })
+                ->toArray();
+    }
 }

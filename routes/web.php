@@ -99,6 +99,10 @@ Route::group(['middleware' => 'auth'], function (){
 
     /* --- Repuestos --- */
     Route::post('repuesto/search', 'RepuestoController@search')->name('repuesto.search');
+    Route::get('repuesto/create/masivo', 'RepuestoController@masivo')->name('repuesto.create.masivo');
+    Route::post('repuesto/create/masivo', 'RepuestoController@storeMasivo')->name('repuesto.store.masivo');
+    Route::post('repuesto/create/masivo/upload', 'RepuestoController@upload')->name('repuesto.create.masivo.upload');
+    Route::patch('repuesto/{repuesto}/stock', 'RepuestoController@stock')->name('repuesto.stock');
     Route::resource('repuesto', 'RepuestoController');
 
     /* --- Servicio (Anteriormente -> Procesos) --- */

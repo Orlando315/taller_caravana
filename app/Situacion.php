@@ -122,4 +122,30 @@ class Situacion extends Model
 
       return $onlyNumbers ? $total : number_format($total, $decimals, ',', '.');
     }
+
+    /**
+     * Modificar el stock de los items especificados
+     *
+     * @param  array  $items
+     * @param  bool  $increment
+     */
+    public static function updateStock($items, $increment = false)
+    {
+      $function = $increment ? 'increment' : 'decrement';
+
+      if(count($items['repuesto']) > 0){
+        foreach ($items['repuesto'] as $repuesto) {
+          Repuesto::where('id', $repuesto['id'])
+                  ->$function('stock', $repuesto['cantidad']);
+        }
+      }
+
+      if(count($items['insumo']) > 0){
+        foreach ($items['insumo'] as $insumo) {
+          Insumo::find($insumo['id'])
+                ->stockEnUso
+                ->$function('stock', $insumo['cantidad']);
+        }
+      }
+    }
 }

@@ -23,6 +23,7 @@ class Repuesto extends Model
       'taller',
       'vehiculo_marca_id',
       'vehiculo_modelo_id',
+      'stock',
       'nro_parte',
       'nro_oem',
       'marca_oem',
@@ -187,9 +188,11 @@ class Repuesto extends Model
      */
     protected function calculateImpuestosTotal()
     {
-      $costoBase = $this->extra->costo + $this->extra->envio1 + $this->extra->envio2;
-      $total = ($costoBase * $this->extra->impuestos) / 100;
-      $this->extra->impuestos_total = $total;
+      if($this->impuestos > 0){
+        $costoBase = $this->extra->costo + $this->extra->envio1 + $this->extra->envio2;
+        $total = ($costoBase * $this->extra->impuestos) / 100;
+        $this->extra->impuestos_total = $total;
+      }
     }
 
     /**
@@ -197,8 +200,10 @@ class Repuesto extends Model
      */
     protected function calculateGeneralesTotal()
     {
-      $costoGeneral = $this->extra->costo + $this->extra->envio1 + $this->extra->envio2 + $this->extra->casilla + $this->extra->impuestos_total;
-      $total = ($costoGeneral * $this->extra->generales) / 100;
-      $this->extra->generales_total = $total;
+      if($this->generales > 0){
+        $costoGeneral = $this->extra->costo + $this->extra->envio1 + $this->extra->envio2 + $this->extra->casilla + $this->extra->impuestos_total;
+        $total = ($costoGeneral * $this->extra->generales) / 100;
+        $this->extra->generales_total = $total;
+      }
     }
 }
