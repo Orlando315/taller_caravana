@@ -6,6 +6,11 @@
   <a class="navbar-brand" href="{{ route('admin.proceso.show', ['proceso' => $situacion->proceso_id]) }}"> Cotización </a>
 @endsection
 
+@section('head')
+  <!-- Datepicker -->
+  <link href="{{ asset('js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet"/>
+@endsection
+
 @section('content')
   @include('partials.flash')
 
@@ -31,6 +36,12 @@
                   <label for="descuento">Descuento:</label>
                   <input id="descuento" class="form-control" type="number" min="0" step="0.01" max="999999999" name="descuento" value="{{ old('descuento') }}">
                   <small class="text-muted">Solo números</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="entrega">Fecha de entrega:</label>
+                  <input id="entrega" class="form-control" type="text" name="entrega" vavlue="">
                 </div>
               </div>
             </div>
@@ -253,6 +264,9 @@
 @endsection
 
 @section('scripts')
+  <!-- datepicker -->
+  <script src="{{ asset('js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('js/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js') }}" type="text/javascript"></script>
   <script type="text/javascript">
     $(document).ready(function () {
       toggleBtn()
@@ -276,6 +290,12 @@
 
       // Inicializar popovers
       $('[data-toggle="popover"]').popover()
+
+      $('#entrega').datepicker({
+        format: 'yyyy-mm-dd',
+        language: 'es',
+        autoclose: true,
+      });
     })
 
     function checkStates(){

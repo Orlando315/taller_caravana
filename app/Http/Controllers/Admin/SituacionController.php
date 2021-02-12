@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\{Situacion, SituacionItem, Proceso, Insumo, Repuesto, VehiculosMarca};
+use App\{Situacion, SituacionItem, Proceso, Insumo, Repuesto, VehiculosMarca, InsumoFormato};
 
 class SituacionController extends Controller
 {
@@ -28,11 +28,13 @@ class SituacionController extends Controller
     public function create(Proceso $proceso)
     {
       $this->authorize('create', [Situacion::class, $proceso]);
-      $insumos = Insumo::has('stockEnUso')->with('stockEnUso')->get();
-      $repuestos = Repuesto::all();
-      $marcas = VehiculosMarca::with('modelos')->get();
 
-      return view('admin.situacion.create', compact('proceso', 'insumos', 'repuestos', 'marcas'));
+      $marcas = VehiculosMarca::has('modelos')->get();
+      $insumoMarcas = Insumo::marcas()->get();
+      $insumoGrados = Insumo::grados()->get();
+      $insumoFormatos = InsumoFormato::all();
+
+      return view('admin.situacion.create', compact('proceso', 'marcas', 'insumoMarcas', 'insumoGrados', 'insumoFormatos'));
     }
 
     /**
@@ -114,15 +116,18 @@ class SituacionController extends Controller
     public function edit(Situacion $situacion)
     {
       $this->authorize('update', $situacion);
-      $insumos = Insumo::has('stockEnUso')->with('stockEnUso')->get();
-      $repuestos = Repuesto::all();
-      $marcas = VehiculosMarca::with('modelos')->get();
+
+      $marcas = VehiculosMarca::has('modelos')->get();
+      $insumoMarcas = Insumo::marcas()->get();
+      $insumoGrados = Insumo::grados()->get();
+      $insumoFormatos = InsumoFormato::all();
+
       $situacionRepuestos = $situacion->getItemsByType('repuesto')->get();
       $situacionInsumos = $situacion->getItemsByType('insumo')->get();
       $situacionHoras = $situacion->getItemsByType()->get();
       $situacionOtros = $situacion->getItemsByType('otros')->get();
 
-      return view('admin.situacion.edit', compact('situacion', 'insumos', 'repuestos', 'situacionRepuestos', 'situacionInsumos', 'situacionHoras', 'situacionOtros', 'marcas'));
+      return view('admin.situacion.edit', compact('situacion', 'marcas', 'insumoMarcas', 'insumoGrados', 'insumoFormatos', 'situacionRepuestos', 'situacionInsumos', 'situacionHoras', 'situacionOtros'));
     }
 
     /**

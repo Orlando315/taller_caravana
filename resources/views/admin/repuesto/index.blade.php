@@ -25,13 +25,14 @@
           @endif
         </div>
         <div class="card-body">
-          <table class="table data-table table-striped table-bordered table-hover table-sm" style="width: 100%">
+          <table id="table-respuestos" class="table table-striped table-bordered table-hover table-sm" style="width: 100%">
             <thead>
               <tr>
                 <th scope="col" class="text-center">#</th>
                 <th scope="col" class="text-center">Sistema</th>
                 <th scope="col" class="text-center">Componente</th>
                 <th scope="col" class="text-center">Marca</th>
+                <th scope="col" class="text-center">Modelo</th>
                 <th scope="col" class="text-center">N° de parte</th>
                 <th scope="col" class="text-center">N° de OEM</th>
               </tr>
@@ -47,6 +48,7 @@
                   </td>
                   <td>{{ $repuesto->componente ?? N/A }}</td>
                   <td>{{ $repuesto->marca->marca }}</td>
+                  <td>{{ $repuesto->modelo->modelo }}</td>
                   <td>{{ $repuesto->nro_parte ?? 'N/A' }}</td>
                   <td>{{ $repuesto->nro_oem ?? 'N/A' }}</td>
                 </tr>
@@ -57,4 +59,36 @@
       </div>
     </div>
   </div>
+@endsection
+
+@section('scripts')
+  <script type="text/javascript">
+    $(document).ready(function() {
+      // Setup - add a text input to each footer cell
+      $('#table-respuestos thead tr').clone(true).appendTo('#table-respuestos thead');
+      $('#table-respuestos thead tr:eq(1) th').each( function (i) {
+        if(i == 0){ $(this).html(''); return; }
+
+        let title = $(this).text();
+        $(this).html('<input class="form-control form-control-sm" type="text" placeholder="Buscar '+title+'"/>');
+        $('input', this).on('keyup change', function () {
+          if(table.column(i).search() !== this.value){
+            table
+              .column(i)
+              .search(this.value)
+              .draw();
+          }
+        });
+      });
+
+      let table = $('#table-respuestos').DataTable({
+        responsive: true,
+        language: {
+          url: '{{ asset("js/plugins/datatables/spanish.json") }}'
+        },
+        orderCellsTop: true,
+        fixedHeader: true
+      });
+    });
+  </script>
 @endsection

@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth'], function (){
     Route::patch('users/{user}/password', 'UsersControllers@password')->name('users.password');
 
     /* --- Insumos --- */
+    Route::post('insumo/search', 'InsumosControllers@search')->name('insumo.search');
     Route::resource('insumos', 'InsumosControllers');
     /* --- Stock --- */
     Route::get('insumos/stock/create/{insumo}', 'StocksControllers@create')->name('insumos.stock.create');
@@ -96,6 +97,11 @@ Route::group(['middleware' => 'auth'], function (){
     Route::resource('proveedor/vehiculo', 'ProveedorVehiculoController', ['names' => 'proveedor.vehiculo'])
           ->only(['destroy']);
     Route::post('proveedor/vehiculo/modelos','ProveedorVehiculoController@search_modelo')->name('proveedor.vehiculo.search.modelo');
+
+    /* --- Obtener los Años de los repuestos registrados --- */
+    Route::get('repuesto/anios', 'RepuestoController@anios')->name('repuesto.anios');
+    /* --- Obtener los Motore de los repuestos registrados --- */
+    Route::get('respuesto/motores', 'RepuestoController@motores')->name('repuesto.motores');
 
     /* --- Repuestos --- */
     Route::post('repuesto/search', 'RepuestoController@search')->name('repuesto.search');
@@ -170,6 +176,7 @@ Route::group(['middleware' => 'auth'], function (){
     /* --- Configurations --- */
     Route::get('configurations', 'ConfigurationsControllers@edit')->name('configurations.edit');
     Route::patch('configurations/dolar', 'ConfigurationsControllers@dolar')->name('configurations.update.dolar');
+    Route::patch('configurations/ganancia', 'ConfigurationsControllers@ganancia')->name('configurations.update.ganancia');
     Route::patch('configurations/timbre', 'ConfigurationsControllers@timbre')->name('configurations.update.timbre');
 
     /* --- Finanzas --- */

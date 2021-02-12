@@ -60,6 +60,36 @@ class ConfigurationsControllers extends Controller
     }
 
     /**
+     * Actualizar el precio del dolar
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function ganancia(Request $request)
+    {
+      $this->authorize('update', Configuration::class);
+      $this->validate($request, [
+        'ganancia' => 'nullable|numeric|min:0|max:100'
+      ]);
+
+      $configuration = Configuration::first();
+      $configuration->ganancia = $request->ganancia;
+
+      if($configuration->save()){
+        return redirect()->back()->with([
+                'flash_message' => 'Configuración modificada exitosamente.',
+                'flash_class' => 'alert-success'
+              ]);
+      }
+
+      return redirect()->back()->withInput()->with([
+              'flash_message' => 'Ha ocurrido un error.',
+              'flash_class' => 'alert-danger',
+              'flash_important' => true
+            ]);
+    }
+
+    /**
      * Actualizar foto de timbre (Usada en el footer de los pdf's)
      *
      * @param  \Illuminate\Http\Request  $request

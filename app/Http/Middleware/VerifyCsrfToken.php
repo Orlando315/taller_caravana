@@ -20,5 +20,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
       'admin/repuesto/create/masivo/upload',
+      'admin/repuesto/search',
+      'admin/insumo/search',
     ];
 }

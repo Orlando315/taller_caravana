@@ -209,4 +209,42 @@ class InsumosControllers extends Controller
               ]);
       }
     }
+
+    /**
+     * Buscar insumos con los parametros especificados
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+      $insumos = Insumo::when($request->marca, function ($query, $marca){
+        return $query->where('marca', $marca);
+      })
+      ->when($request->grado, function ($query, $grado){
+        return $query->where('grado', $grado);
+      })
+      ->when($request->formato, function ($query, $formato){
+        return $query->where('formato_id', $formato);
+      })
+      ->has('stockEnUso')
+      ->with(['stockEnUso', 'tipo', 'formato'])
+      ->get()
+      ->map(function ($insumo, $key) {
+        return [
+          'id' => $insumo->id,
+          'descripcion' => $insumo->descripcion(),
+          'venta' => $insumo->stockEnUso->venta,
+          'costo' => $insumo->stockEnUso->coste,
+          'stock' => $insumo->getStock(),
+          'tipo' => $insumo->tipo->tipo,
+          'nombre' => $insumo->nombre,
+          'grado' => $insumo->grado,
+          'formato' => $insumo->formato->formato,
+          'marca' => $insumo->marca,
+        ];
+      });
+
+      return response()->json($insumos);
+    }
 }

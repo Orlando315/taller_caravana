@@ -6,6 +6,11 @@
   <a class="navbar-brand" href="{{ route('admin.cotizacion.show', ['cotizacion' => $cotizacion->id]) }}"> Cotización </a>
 @endsection
 
+@section('head')
+  <!-- Datepicker -->
+  <link href="{{ asset('js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet"/>
+@endsection
+
 @section('content')
   @include('partials.flash')
 
@@ -23,7 +28,16 @@
             
             <div class="form-group">
               <label for="descripcion">Descripción:</label>
-              <textarea id="descripcion" class="form-control" name="descripcion" maxlength="500">{{ $cotizacion->descripcion }}</textarea>
+              <textarea id="descripcion" class="form-control" name="descripcion" maxlength="500">{{ old('descripcion', $cotizacion->descripcion) }}</textarea>
+            </div>
+
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="entrega">Fecha de entrega:</label>
+                  <input id="entrega" class="form-control" type="text" name="entrega" vavlue="{{ old('entrega', $cotizacion->entrega) }}">
+                </div>
+              </div>
             </div>
 
             @if(count($errors) > 0)
@@ -45,4 +59,19 @@
       </div>
     </div>
   </div>
+@endsection
+
+@section('scripts')
+  <!-- datepicker -->
+  <script src="{{ asset('js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('js/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js') }}" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#entrega').datepicker({
+        format: 'yyyy-mm-dd',
+        language: 'es',
+        autoclose: true,
+      });
+    });
+  </script>
 @endsection

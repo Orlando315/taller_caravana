@@ -277,4 +277,13 @@ class User extends Authenticatable
 
       return !is_null($this->configuration->timbre);
     }
+
+    /**
+     * Obtener ganancia de la configuracion
+     * 
+     * @return float
+     */
+    public function getGlobalGanancia(){
+      return $this->isAdmin() ? $this->configuration->ganancia : $this->taller->configuration->ganancia;
+    }
 }

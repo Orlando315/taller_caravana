@@ -52,6 +52,7 @@ class CotizacionController extends Controller
         'items.*' => 'min:1',
         'descripcion' => 'nullable|string|max:500',
         'descuento' => 'nullable|numeric|min:0|max:999999999',
+        'entrega' => 'nullable|date',
       ]);
 
       $ids = [];
@@ -64,6 +65,7 @@ class CotizacionController extends Controller
                       'user_id' => Auth::id(),
                       'descripcion' => $request->descripcion,
                       'descuento' => $request->descuento,
+                      'entrega' => $request->entrega,
                     ]);
 
       if($situacion->cotizaciones()->save($cotizacion)){
@@ -156,9 +158,11 @@ class CotizacionController extends Controller
       $this->authorize('update', $cotizacion);
       $this->validate($request, [
         'descripcion' => 'nullable|string|max:500',
+        'entrega' => 'nullable|date',
       ]);
 
       $cotizacion->descripcion = $request->descripcion;
+      $cotizacion->entrega = $request->entrega;
 
       if($cotizacion->save()){
         return redirect()->route('admin.cotizacion.show', ['cotizacion' => $cotizacion->id])->with([

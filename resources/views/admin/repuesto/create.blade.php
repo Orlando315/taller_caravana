@@ -23,7 +23,7 @@
                   <h4>Agregar Repuesto: <span class="repuesto-title-count">{{ $loop->iteration }}</span></h4>
 
                   <fieldset>
-                    <legend class="title-legend">Datos del repuesto</legend>
+                    <legend class="title-legend">Datos del repuesto:</legend>
                     <div class="row">
                       <div class="col-md-3">
                         <div class="form-group">
@@ -136,7 +136,7 @@
                           </select>
                         </div>
                         <div class="form-group m-0" style="display: none">
-                          <label class="control-label" for="moneda-valor-{{ $index }}">Especificar valor:</label>
+                          <label class="control-label" for="moneda-valor-{{ $index }}">Especificar valor: *</label>
                           <input id="moneda-valor-{{ $index }}" class="form-control{{ $errors->has('repuesto.'.$index.'.moneda_valor') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][moneda_valor]" value="{{ old('repuesto.'.$index.'.moneda_valor', ($clone ? $clone->extra->moneda_valor : '')) }}" placeholder="Especificar valor">
                         </div>
                       </div>
@@ -155,16 +155,16 @@
                           <label class="control-label" for="generales-internacional-{{ $index }}">Gastos generales:</label>
                           <select id="generales-internacional-{{ $index }}" class="custom-select field-internacional-{{ $index }}" name="repuesto[{{ $index }}][generales]" disabled>
                             <option value="">Seleccione...</option>
-                            <option value="0" {{ old('repuesto.'.$index.'.generales', ($clone ? $clone->extra->generales : '')) == '0' ? 'selected' : '' }}>Monto específico</option>
-                            <option value="15" {{ old('repuesto.'.$index.'.generales', ($clone ? $clone->extra->generales : '')) == '15' ? 'selected' : '' }}>15%</option>
-                            <option value="20" {{ old('repuesto.'.$index.'.generales', ($clone ? $clone->extra->generales : '')) == '20' ? 'selected' : '' }}>20%</option>
-                            <option value="25" {{ old('repuesto.'.$index.'.generales', ($clone ? $clone->extra->generales : '')) == '25' ? 'selected' : '' }}>25%</option>
-                            <option value="30" {{ old('repuesto.'.$index.'.generales', ($clone ? $clone->extra->generales : '')) == '30' ? 'selected' : '' }}>30%</option>
+                            <option value="0"{{ old('repuesto.'.$index.'.generales', ($clone ? $clone->extra->generales : '')) == '0' ? ' selected' : '' }}>Monto específico</option>
+                            <option value="15"{{ old('repuesto.'.$index.'.generales', ($clone ? $clone->extra->generales : '')) == '15' ? ' selected' : '' }}>15%</option>
+                            <option value="20"{{ old('repuesto.'.$index.'.generales', ($clone ? $clone->extra->generales : '')) == '20' ? ' selected' : '' }}>20%</option>
+                            <option value="25"{{ old('repuesto.'.$index.'.generales', ($clone ? $clone->extra->generales : '')) == '25' ? ' selected' : '' }}>25%</option>
+                            <option value="30"{{ old('repuesto.'.$index.'.generales', ($clone ? $clone->extra->generales : '')) == '30' ? ' selected' : '' }}>30%</option>
                           </select>
                         </div>
                         <div class="form-group m-0" style="display: none">
-                          <label class="control-label" for="generales-total-{{ $index }}">Especificar gastos generales:</label>
-                          <input id="generales-total-{{ $index }}" class="form-control{{ $errors->has('repuesto.'.$index.'.generales_total') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][generales_total]" value="{{ old('repuesto.'.$index.'.generales_total', ($clone ? $clone->extra->generales_total : '')) }}" placeholder="Especificar">
+                          <label class="control-label" for="generales_total-internacional-{{ $index }}">Especificar gastos generales:</label>
+                          <input id="generales_total-internacional-{{ $index }}" class="form-control{{ $errors->has('repuesto.'.$index.'.generales_total') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][generales_total]" value="{{ old('repuesto.'.$index.'.generales_total', ($clone ? $clone->extra->generales_total : '')) }}" placeholder="Especificar">
                         </div>
                       </div>
                       <div class="col-md-3">
@@ -173,8 +173,8 @@
                           <input id="envio-{{ $index }}" class="form-control field-nacional-{{ $index }}{{ $errors->has('repuesto.'.$index.'.envio') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][envio]" value="{{ old('repuesto.'.$index.'.envio', optional($clone)->envio) }}" placeholder="Envio">
                         </div>
                         <div class="form-group" style="display: none">
-                          <label class="control-label" for="impuestos-{{ $index }}">Impuestos:</label>
-                          <select id="impuestos-{{ $index }}" class="custom-select field-internacional-{{ $index }}" name="repuesto[{{ $index }}][impuestos]">
+                          <label class="control-label" for="impuestos-internacional-{{ $index }}">Impuestos:</label>
+                          <select id="impuestos-internacional-{{ $index }}" class="custom-select field-internacional-{{ $index }}" name="repuesto[{{ $index }}][impuestos]">
                             <option value="">Seleccione...</option>
                             <option value="0"{{ old('repuesto.'.$index.'.impuestos', ($clone ? $clone->extra->impuestos : '')) == '0' ? ' selected' : '' }}>Monto específico</option>
                             <option value="19"{{ old('repuesto.'.$index.'.impuestos', ($clone ? $clone->extra->impuestos : '')) == '19' ? ' selected' : '' }}>19% del FOB</option>
@@ -182,8 +182,8 @@
                           </select>
                         </div>
                         <div class="form-group m-0" style="display: none">
-                          <label class="control-label" for="impuestos-total-{{ $index }}">Especificar impuestos:</label>
-                          <input id="impuestos-total-{{ $index }}" class="form-control{{ $errors->has('repuesto.'.$index.'.impuestos_total') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][impuestos_total]" value="{{ old('repuesto.'.$index.'.impuestos_total', ($clone ? $clone->extra->impuestos_total : '')) }}" placeholder="Especificar">
+                          <label class="control-label" for="impuestos_total-internacional-{{ $index }}">Especificar impuestos:</label>
+                          <input id="impuestos_total-internacional-{{ $index }}" class="form-control{{ $errors->has('repuesto.'.$index.'.impuestos_total') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][impuestos_total]" value="{{ old('repuesto.'.$index.'.impuestos_total', ($clone ? $clone->extra->impuestos_total : '')) }}" placeholder="Especificar">
                         </div>
                       </div>
                     </div>
@@ -191,26 +191,26 @@
                     <div class="row group-field-internacional-{{ $index }}" style="display:none">
                       <div class="col-md-3">
                         <div class="form-group" style="display: none">
-                          <label class="control-label" for="envio1-{{ $index }}">Envio 1:</label>
-                          <input id="envio1-{{ $index }}" class="form-control field-internacional-{{ $index }}{{ $errors->has('repuesto.'.$index.'.envio1') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][envio1]" value="{{ old('repuesto.'.$index.'.envio1', ($clone ? $clone->extra->envio1 : '')) }}" placeholder="Envio 1">
+                          <label class="control-label" for="envio1-internacional-{{ $index }}">Envio 1:</label>
+                          <input id="envio1-internacional-{{ $index }}" class="form-control field-internacional-{{ $index }}{{ $errors->has('repuesto.'.$index.'.envio1') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][envio1]" value="{{ old('repuesto.'.$index.'.envio1', ($clone ? $clone->extra->envio1 : '')) }}" placeholder="Envio 1">
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group" style="display: none">
-                          <label class="control-label" for="envio2">Envio 2:</label>
-                          <input id="envio2" class="form-control field-internacional-{{ $index }}{{ $errors->has('repuesto.'.$index.'.envio2') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][envio2]" value="{{ old('repuesto.'.$index.'.envio2', ($clone ? $clone->extra->envio2 : '')) }}" placeholder="Envio 2">
+                          <label class="control-label" for="envio2-internacional-{{ $index }}">Envio 2:</label>
+                          <input id="envio2-internacional-{{ $index }}" class="form-control field-internacional-{{ $index }}{{ $errors->has('repuesto.'.$index.'.envio2') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][envio2]" value="{{ old('repuesto.'.$index.'.envio2', ($clone ? $clone->extra->envio2 : '')) }}" placeholder="Envio 2">
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group" style="display: none">
-                          <label class="control-label" for="casilla-{{ $index }}">Gastos casilla:</label>
-                          <input id="casilla-{{ $index }}" class="form-control field-internacional-{{ $index }}{{ $errors->has('repuesto.'.$index.'.casilla') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][casilla]" value="{{ old('repuesto.'.$index.'.casilla', ($clone ? $clone->extra->casilla : '')) }}" placeholder="Gastos casilla">
+                          <label class="control-label" for="casilla-internacional-{{ $index }}">Gastos casilla:</label>
+                          <input id="casilla-internacional-{{ $index }}" class="form-control field-internacional-{{ $index }}{{ $errors->has('repuesto.'.$index.'.casilla') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][casilla]" value="{{ old('repuesto.'.$index.'.casilla', ($clone ? $clone->extra->casilla : '')) }}" placeholder="Gastos casilla">
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group" style="display: none">
-                          <label class="control-label" for="tramitacion-{{ $index }}">Costo tramitación:</label>
-                          <input id="tramitacion-{{ $index }}" class="form-control field-internacional-{{ $index }}{{ $errors->has('repuesto.'.$index.'.tramitacion') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][tramitacion]" maxlength="50" value="{{ old('repuesto.'.$index.'.tramitacion', ($clone ? $clone->extra->tramitacion : '')) }}" placeholder="Costo tramitación">
+                          <label class="control-label" for="tramitacion-internacional-{{ $index }}">Costo tramitación:</label>
+                          <input id="tramitacion-internacional-{{ $index }}" class="form-control field-internacional-{{ $index }}{{ $errors->has('repuesto.'.$index.'.tramitacion') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][tramitacion]" maxlength="50" value="{{ old('repuesto.'.$index.'.tramitacion', ($clone ? $clone->extra->tramitacion : '')) }}" placeholder="Costo tramitación">
                         </div>
                       </div>
                     </div>
@@ -220,17 +220,28 @@
                         <div class="form-group">
                           <label class="control-label" for="venta-{{ $index }}">Precio de venta: *</label>
                           <input id="venta-{{ $index }}" class="form-control{{ $errors->has('repuesto.'.$index.'.venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][venta]" maxlength="50" value="{{ old('repuesto.'.$index.'.venta', optional($clone)->venta) }}" placeholder="Venta" required>
+                          <button class="btn btn-simple btn-link btn-sm btn-sugerir" type="button" role="button" data-index="{{ $index }}">
+                            <i class="fa fa-calculator" aria-hidden="true"></i> Sugerir precio
+                          </button>
                         </div>
                       </div>
+                    </div>
+                  </fieldset>
+
+                  <fieldset>
+                    <legend class="title-legend">Otros: <span id="otros-title-{{ $index }}"></span></legend>
+
+                    <div class="form-group">
+                      <label for="comentarios-{{ $index }}">Comentarios:</label>
+                      <textarea id="comentarios-{{ $index }}" class="form-control{{ $errors->has('repuesto.'.$index.'.comentarios') ? ' is-invalid' : '' }}" name="repuesto[{{ $index }}][comentarios]" maxlength="250">{{ old('repuesto.'.$index.'.comentarios') }}</textarea>
                     </div>
                   </fieldset>
                 </div>
               @endforeach
             </div>
 
-            @if(count($errors) > 0)
-            <div class="alert alert-danger alert-important">
-              <ul class="m-0">
+            <div class="alert alert-danger alert-important"{!! (count($errors) > 0) ? '' : 'style="display:none"' !!}>
+              <ul id="alert-repuesto" class="m-0">
                 @foreach($errors->all() as $error)
                   <li>{{ $error }}</li>
                 @endforeach
@@ -239,7 +250,6 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            @endif
 
             <div class="text-center">
               <button class="btn btn-sm btn-fill btn-primary mb-3 btn-add-repuesto" type="button"><i class="fa fa-plus"></i> Agregar otro repuesto</button>
@@ -261,6 +271,8 @@
     const BTN_REPUESTO = $('.btn-add-repuesto');
     const MARCAS = @json($marcas);
     const OLD_VALUES = @json(old('repuesto', []));
+    const PORCENTAJE_GANANCIA = @json(Auth::user()->getGlobalGanancia());
+    const CLONE = @json(!is_null($clone));
     let GLOBAL_MARCAS_OPTIONS;
 
     $(document).ready(function () {
@@ -287,6 +299,10 @@
           $(`#modelo-${index}`).html('<option value="">Seleccione...</option>');
           let oldSelected = index ? getOldValue(index, 'modelo') : '';
 
+          if(index == 1 && CLONE){
+            oldSelected = @json($clone->vehiculo_modelo_id);
+          }
+
           $.each(modelos, function(k, modelo){
             let selected = modelo.id == oldSelected ? ' selected' : '';
             $(`#modelo-${index}`).append(`<option value="${modelo.id}"${selected}>${modelo.modelo}</option>`)
@@ -310,6 +326,12 @@
         $(`.field-nacional-${index}`).prop('disabled', !(procedencia == 'nacional')).closest('.form-group').toggle(procedencia == 'nacional')
         $(`.field-internacional-${index}`).prop('disabled', !(procedencia == 'internacional')).closest('.form-group').toggle(procedencia == 'internacional')
         $(`.group-field-internacional-${index}`).toggle(procedencia == 'internacional')
+
+        if(procedencia != 'internacional'){
+          $(`#generales_total-internacional-${index}, #impuestos_total-internacional-${index}`).prop('disabled', true).closest('.form-group').toggle(false);
+        }else{
+          $(`#impuestos-internacional-${index}, #generales-internacional-${index}`).change();
+        }
       })
       $('select[id^="procedencia-"]').change()
       
@@ -320,26 +342,25 @@
         $(this).siblings(`label[for="${id}"]`).text(files[0].name);
       });
 
-      $('.box-repuestos').on('change', 'select[id^="impuestos-"]', function () {
+      $('.box-repuestos').on('change', 'select[id^="impuestos-internacional-"]', function () {
         let index = getIndex(this);
         let isZero = $(this).val() == '0';
-        $(`#impuestos-total-${index}`).prop('disabled', !isZero).closest('.form-group').toggle(isZero);
+        $(`#impuestos_total-internacional-${index}`).prop('disabled', !isZero).closest('.form-group').toggle(isZero);
       })
-      $('select[id^="impuestos-"]').change();
+      $('select[id^="impuestos-internacional-"]').change();
 
       $('.box-repuestos').on('change', 'select[id^="generales-internacional-"]', function () {
         let index = getIndex(this);
         let isZero = $(this).val() == '0';
-        $(`#generales-total-${index}`).prop('disabled', !isZero).closest('.form-group').toggle(isZero);
+        $(`#generales_total-internacional-${index}`).prop('disabled', !isZero).closest('.form-group').toggle(isZero);
       })
       $('select[id^="generales-internacional-"]').change();
 
       $('.box-repuestos').on('change', 'select[id^="moneda-"]', function () {
         let index = getIndex(this);
         let isPeso = $(this).val() == 'peso';
-        let input = $(this).data('input-valor');
 
-        $(`#moneda-valor-${index}`).prop('disabled', isPeso).closest('.form-group').toggle(!isPeso);
+        $(`#moneda-valor-${index}`).prop({'disabled': isPeso, 'required': !isPeso}).closest('.form-group').toggle(!isPeso);
       })
       $('select[id^="moneda-"]').change();
 
@@ -348,6 +369,9 @@
 
       /* evento para eliminar repuestos */
       $('.box-repuestos').on('click', '.btn-delete-repuesto', deleteRepuesto);
+
+      /* Sugerir precio de venta*/
+      $('.box-repuestos').on('click', '.btn-sugerir', precioSugerido);
 
       /* inicializar los select de Marca */
       (function () {
@@ -364,12 +388,16 @@
       (function () {
         GLOBAL_MARCAS_OPTIONS = buildMarcaOptions();
       })();
-    }) /* DOM Ready */
+    }); /* DOM Ready */
 
     /* Construir los options del select de marcas */
     function buildMarcaOptions(index = null){
       let marcasOptions = '<option value="">Seleccione...</option>';
       let oldSelected = index ? getOldValue(index, 'marca') : '';
+
+      if(index == 1 && CLONE){
+        oldSelected = @json($clone->vehiculo_marca_id);
+      }
 
       $.each(MARCAS, function (value, marca){
         let selected = oldSelected == value ? ' selected' : '';
@@ -426,12 +454,78 @@
       })
     }
 
+    /* Sugerir precio de venta */
+    function precioSugerido() {
+      let index = $(this).data('index');
+      let moneda = $(`#moneda-${index}`).val();
+      let valorMoneda = moneda == 'peso' ? 1 : +$(`#moneda-valor-${index}`).val();
+
+      if(moneda != 'peso' && !valorMoneda){
+        showAlert('Debe completar el valor de la moneda seleccionada');
+        return;
+      }
+
+      let type = $(`#procedencia-${index}`).val();
+      let field = $(`#venta-${index}`);
+      let costo = (+$(`#costo-${index}`).val() * valorMoneda);
+      let generales = +$(`#generales-${index}`).val();
+      let subtotal = 0;
+
+      if(type == 'local'){
+        subtotal = (costo + (generales * valorMoneda));
+      }else if(type == 'nacional'){
+        let envio = +$(`#envio-${index}`).val();
+        subtotal += costo + (generales * valorMoneda) + (envio * valorMoneda);
+      }else{
+        let envio1 = (+$(`#envio1-internacional-${index}`).val() * valorMoneda);
+        let envio2 = (+$(`#envio2-internacional-${index}`).val() * valorMoneda);
+        let casilla = +$(`#casilla-internacional-${index}`).val();
+        let impuestos = +$(`#impuestos-internacional-${index}`).val();
+        let impuestosTotal = (+$(`#impuestos_total-internacional-${index}`).val() * valorMoneda);
+        let generalesTotal = (+$(`#generales_total-internacional-${index}`).val() * valorMoneda);
+        let tramitacion = +$(`#tramitacion-internacional-${index}`).val();
+        let generalesInternacional = +$(`#generales-internacional-${index}`).val();
+
+        subtotal += costo + envio1 + envio2;
+        impuestosTotal = (impuestos > 0) ? calculateImpuestosTotal(subtotal, impuestos) : impuestosTotal;
+        subtotal += impuestosTotal + casilla;
+        generalesTotal = (generalesInternacional > 0) ? calculateGeneralesTotal(subtotal, generalesInternacional) : generalesTotal;
+        subtotal += generalesTotal + tramitacion;
+      }
+
+      let total = subtotal + ((subtotal * PORCENTAJE_GANANCIA) / 100);
+      field.val(total.toFixed(2));
+    }
+
+    // Solo internacional
+    function calculateImpuestosTotal(costoBase, impuestos) {
+      return (costoBase * impuestos) / 100;
+    }
+
+    // Solo internacional
+    function calculateGeneralesTotal(costoBase, generales) {
+      return (costoBase * generales) / 100;
+    }
+
+    // Mostrar mensaje de error
+    function showAlert(error = 'Ha ocurrido un error.'){
+      $('#alert-repuesto').empty().append(`<li>${error}</li>`);
+      $('#alert-repuesto').closest('.alert').show().delay(5000).hide('slow');
+      scrollToError();
+    }
+
+    function scrollToError(){
+      $('.main-panel').animate({
+        scrollTop: $('#alert-repuesto').offset().top
+      }, 500);
+    }
+
     /* Plantilla de los campos para agregar un Repuesto */
     let repuestoTemplate = function (index, count){
       return `<div id="repuesto-${index}" class="repuesto-container" data-index="${index}">
                 <h4><button class="btn btn-xs btn-danger btn-delete-repuesto" type="button" data-index="${index}"><i class="fa fa-times"></i></button> | Agregar Repuesto: <span class="repuesto-title-count">${count}</span></h4>
                 <fieldset>
-                  <legend class="title-legend">Datos del repuesto</legend>
+                  <legend class="title-legend">Datos del repuesto:</legend>
                   <div class="row">
                     <div class="col-md-3">
                       <div class="form-group">
@@ -539,7 +633,7 @@
                         </select>
                       </div>
                       <div class="form-group m-0" style="display: none">
-                        <label class="control-label" for="moneda-valor-${index}">Especificar valor:</label>
+                        <label class="control-label" for="moneda-valor-${index}">Especificar valor: *</label>
                         <input id="moneda-valor-${index}" class="form-control" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][moneda_valor]" value="" placeholder="Especificar valor">
                       </div>
                     </div>
@@ -566,8 +660,8 @@
                         </select>
                       </div>
                       <div class="form-group m-0" style="display: none">
-                        <label class="control-label" for="generales-total-${index}">Especificar gastos generales:</label>
-                        <input id="generales-total-${index}" class="form-control" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][generales_total]" value="" placeholder="Especificar">
+                        <label class="control-label" for="generales_total-internacional-${index}">Especificar gastos generales:</label>
+                        <input id="generales_total-internacional-${index}" class="form-control" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][generales_total]" value="" placeholder="Especificar">
                       </div>
                     </div>
                     <div class="col-md-3">
@@ -576,8 +670,8 @@
                         <input id="envio-${index}" class="form-control field-nacional-${index}" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][envio]" value="" placeholder="Envio">
                       </div>
                       <div class="form-group" style="display: none">
-                        <label class="control-label" for="impuestos-${index}">Impuestos:</label>
-                        <select id="impuestos-${index}" class="custom-select field-internacional-${index}" name="repuesto[${index}][impuestos]">
+                        <label class="control-label" for="impuestos-internacional-${index}">Impuestos:</label>
+                        <select id="impuestos-internacional-${index}" class="custom-select field-internacional-${index}" name="repuesto[${index}][impuestos]">
                           <option value="">Seleccione...</option>
                           <option value="0">Monto específico</option>
                           <option value="19">19% del FOB</option>
@@ -585,34 +679,34 @@
                         </select>
                       </div>
                       <div class="form-group m-0" style="display: none">
-                        <label class="control-label" for="impuestos-total-${index}">Especificar impuestos:</label>
-                        <input id="impuestos-total-${index}" class="form-control" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][impuestos_total]" value="" placeholder="Especificar">
+                        <label class="control-label" for="impuestos_total-internacional-${index}">Especificar impuestos:</label>
+                        <input id="impuestos_total-internacional-${index}" class="form-control" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][impuestos_total]" value="" placeholder="Especificar">
                       </div>
                     </div>
                   </div>
                   <div class="row group-field-internacional-${index}" style="display:none">
                     <div class="col-md-3">
                       <div class="form-group" style="display: none">
-                        <label class="control-label" for="envio1-${index}">Envio 1:</label>
-                        <input id="envio1-${index}" class="form-control field-internacional-${index}" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][envio1]" value="" placeholder="Envio 1">
+                        <label class="control-label" for="envio1-internacional-${index}">Envio 1:</label>
+                        <input id="envio1-internacional-${index}" class="form-control field-internacional-${index}" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][envio1]" value="" placeholder="Envio 1">
                       </div>
                     </div>
                     <div class="col-md-3">
                       <div class="form-group" style="display: none">
-                        <label class="control-label" for="envio2">Envio 2:</label>
-                        <input id="envio2" class="form-control field-internacional-${index}" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][envio2]" value="" placeholder="Envio 2">
+                        <label class="control-label" for="envio2-internacional-${index}">Envio 2:</label>
+                        <input id="envio2-internacional-${index}" class="form-control field-internacional-${index}" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][envio2]" value="" placeholder="Envio 2">
                       </div>
                     </div>
                     <div class="col-md-3">
                       <div class="form-group" style="display: none">
-                        <label class="control-label" for="casilla-${index}">Gastos casilla:</label>
-                        <input id="casilla-${index}" class="form-control field-internacional-${index}" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][casilla]" value="" placeholder="Gastos casilla">
+                        <label class="control-label" for="casilla-internacional-${index}">Gastos casilla:</label>
+                        <input id="casilla-internacional-${index}" class="form-control field-internacional-${index}" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][casilla]" value="" placeholder="Gastos casilla">
                       </div>
                     </div>
                     <div class="col-md-3">
                       <div class="form-group" style="display: none">
-                        <label class="control-label" for="tramitacion-${index}">Costo tramitación:</label>
-                        <input id="tramitacion-${index}" class="form-control field-internacional-${index}" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][tramitacion]" maxlength="50" value="" placeholder="Costo tramitación">
+                        <label class="control-label" for="tramitacion-internacional-${index}">Costo tramitación:</label>
+                        <input id="tramitacion-internacional-${index}" class="form-control field-internacional-${index}" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][tramitacion]" maxlength="50" value="" placeholder="Costo tramitación">
                       </div>
                     </div>
                   </div>
@@ -621,8 +715,18 @@
                       <div class="form-group">
                         <label class="control-label" for="venta-${index}">Precio de venta: *</label>
                         <input id="venta-${index}" class="form-control" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][venta]" maxlength="50" value="" placeholder="Venta" required>
+                        <button class="btn btn-simple btn-link btn-sm btn-sugerir" type="button" role="button" data-index="${index}">
+                          <i class="fa fa-calculator" aria-hidden="true"></i> Sugerir precio
+                        </button>
                       </div>
                     </div>
+                  </div>
+                </fieldset>
+                <fieldset>
+                  <legend class="title-legend">Otros: <span id="otros-title-${index}"></span></legend>
+                  <div class="form-group">
+                    <label for="comentarios-${index}">Comentarios:</label>
+                    <textarea id="comentarios-${index}" class="form-control" name="repuesto[${index}][comentarios]" maxlength="250"></textarea>
                   </div>
                 </fieldset>
               </div>`;

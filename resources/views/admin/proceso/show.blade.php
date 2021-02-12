@@ -543,7 +543,7 @@
                     <th class="text-center">Total</th>
                     <th class="text-center">Pagado</th>
                     <th class="text-center">Utilidad</th>
-                    <th class="text-center">Fecha</th>
+                    <th class="text-center">Entrega</th>
                     <th class="text-center">Status</th>
                   </tr>
                 </thead>
@@ -561,7 +561,7 @@
                       <td class="text-right">{{ $cotizacion->total(false) }}</td>
                       <td class="text-right">{{ $cotizacion->pagado(false) }}</td>
                       <td class="text-right">{{ $cotizacion->utilidad(false) }}</td>
-                      <td class="text-center">{{ $cotizacion->created_at->format('d-m-Y H:i:s') }}</td>
+                      <td class="text-center">{{ $cotizacion->entrega() ?? 'N/A' }}</td>
                       <td class="text-center">{!! $cotizacion->status() !!}</td>
                     </tr>
                   @endforeach
@@ -625,19 +625,21 @@
                   </div>
                 @endforeach
               </div>
+
+              <p class="text-muted m-0">
+                <strong class="text-dark">Combustible:</strong> {{ $proceso->inspeccion->combustible }} {{ $proceso->inspeccion->combustibleIsOtro() ? '('.$proceso->inspeccion->otro.')' : '' }}
+              </p>
+              <p class="text-muted m-0">
+                <strong class="text-dark">Observación:</strong> {{ $proceso->inspeccion->observacion }}
+              </p>
+              <p class="m-0">
+                <strong class="text-dark">Estatus:</strong> {!! $proceso->inspeccion->status() !!}
+              </p>
+              <p class="text-muted m-0">
+                <strong class="text-dark">Comentarios del cliente:</strong> {{ $proceso->inspeccion->comentarios ?? 'N/A' }}
+              </p>
+
               <div class="mt-2 table-responsive">
-                <p class="text-muted m-0">
-                  <strong class="text-dark">Combustible:</strong> {{ $proceso->inspeccion->combustible }} {{ $proceso->inspeccion->combustibleIsOtro() ? '('.$proceso->inspeccion->otro.')' : '' }}
-                </p>
-                <p class="text-muted m-0">
-                  <strong class="text-dark">Observación:</strong> {{ $proceso->inspeccion->observacion }}
-                </p>
-                <p class="m-0">
-                  <strong class="text-dark">Estatus:</strong> {!! $proceso->inspeccion->status() !!}
-                </p>
-                <p class="text-muted m-0">
-                  <strong class="text-dark">Comentarios del cliente:</strong> {{ $proceso->inspeccion->comentarios ?? 'N/A' }}
-                </p>
                 <table class="table table-sm mt-2" style="width: 100%">
                   <tbody>
                     <tr>

@@ -46,11 +46,43 @@
     <div class="col-md-4">
       <div class="card">
         <div class="card-body">
+          <form action="{{ route('admin.configurations.update.ganancia') }}" method="POST">
+            @csrf
+            @method('PATCH')
+
+            <h4>Porcentaje de ganancia</h4>
+
+            <div class="form-group">
+              <label class="control-label" for="ganancia">Ganancia:</label>
+              <input id="ganancia" class="form-control{{ $errors->has('ganancia') ? ' is-invalid' : '' }}" type="number" name="ganancia" step=".01" min="0" max="100" value="{{ old('ganancia', $configuracion->ganancia) }}" placeholder="Ganancia">
+            </div>
+
+            @if(count($errors) > 0 && $errors->has('ganancia'))
+            <div class="alert alert-danger alert-important">
+              <ul class="m-0">
+                @foreach($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+            @endif
+
+            <div class="form-group text-right">
+              <a class="btn btn-default" href="{{ route('dashboard') }}"><i class="fa fa-reply"></i> Atras</a>
+              <button class="btn btn-primary" type="submit"><i class="fa fa-send"></i> Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
           <form action="{{ route('admin.configurations.update.timbre') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
 
-            <h4>Editar Timbre</h4>
+            <h4>Timbre</h4>
 
             <div class="form-group">
               <label for="imagen">Imagen: *</label>

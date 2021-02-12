@@ -18,7 +18,7 @@ class ProcesoController extends Controller
     {
       $this->authorize('index', Proceso::class);
 
-      $procesos = Proceso::all();
+      $procesos = Proceso::latest()->get();
 
       return view('admin.proceso.index', compact('procesos'));
     }

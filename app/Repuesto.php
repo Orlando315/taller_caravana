@@ -35,6 +35,7 @@ class Repuesto extends Model
       'procedencia',
       'venta',
       'envio',
+      'comentarios',
     ];
 
     /**
@@ -81,7 +82,7 @@ class Repuesto extends Model
     }
 
     /**
-     * Verificar si el Repuesto es de ua procedencia especifica
+     * Verificar si el Repuesto es de una procedencia especifica
      */
     public function isNacional()
     {
@@ -89,11 +90,37 @@ class Repuesto extends Model
     }
 
     /**
-     * Verificar si el Repuesto es de ua procedencia especifica
+     * Verificar si el Repuesto es de una procedencia especifica
      */
     public function isInternacional()
     {
       return $this->procedencia == 'internacional';
+    }
+
+    /**
+     * Verificar si el Repuesto es en pesos
+     */
+    public function isPesos()
+    {
+      return $this->extra->moneda == 'pesos';
+    }
+
+    /**
+     * Verificar si el Repuesto no esta en pesos
+     */
+    public function isNotPesos()
+    {
+      return !$this->isPesos();
+    }
+
+    /**
+     * Evaluar si la hoja de situacion tiene comentarios
+     * 
+     * @return bool
+     */
+    public function hasComentarios()
+    {
+      return !is_null($this->comentarios);
     }
 
     /**
@@ -122,10 +149,14 @@ class Repuesto extends Model
 
     /**
      * Obtener el atributo formateado
+     *
+     * @param  bool $convert
      */
-    public function envio()
+    public function envio($convert = false)
     {
-      return $this->envio ? number_format($this->envio, 2, ',', '.') : null;
+      $value = $convert ? ($this->envio * ($this->extra->moneda_valor ?? 1)) : $this->envio;
+
+      return $this->envio ? number_format($value, 2, ',', '.') : null;
     }
 
     /**
@@ -171,13 +202,15 @@ class Repuesto extends Model
         $this->calculateGeneralesTotal();
       }
 
-      $total = $this->extra->costo;
+      $convertValue = $this->isPesos() ? 1 : ($this->extra->moneda_valor ?? 1);
+      $total = ($this->extra->costo * $convertValue);
 
       if($this->isInternacional()){
-        $total += $this->extra->envio1 + $this->extra->envio2 + $this->extra->casilla + $this->extra->impuestos_total + $this->extra->generales_total + $this->extra->tramitacion;
+        $total += (($this->extra->envio1 + $this->extra->envio2) * $convertValue);
+        $total += ($this->extra->casilla + $this->extra->impuestos_total + $this->extra->generales_total + $this->extra->tramitacion);
       }else{
         // A los repuestos nacionales se les suma el envio
-        $total += $this->extra->generales + ($this->isNacional() ? $this->envio : 0);
+        $total += ($this->extra->generales * $convertValue) + ($this->isNacional() ? ($this->envio * $convertValue) : 0);
       }
 
       $this->extra->costo_total = $total;
@@ -188,9 +221,11 @@ class Repuesto extends Model
      */
     protected function calculateImpuestosTotal()
     {
-      if($this->impuestos > 0){
-        $costoBase = $this->extra->costo + $this->extra->envio1 + $this->extra->envio2;
+      if($this->extra->impuestos > 0){
+        $convertValue = $this->isPesos() ? 1 : ($this->extra->moneda_valor ?? 1);
+        $costoBase = ($this->extra->costo + $this->extra->envio1 + $this->extra->envio2) * $convertValue;
         $total = ($costoBase * $this->extra->impuestos) / 100;
+
         $this->extra->impuestos_total = $total;
       }
     }
@@ -200,9 +235,12 @@ class Repuesto extends Model
      */
     protected function calculateGeneralesTotal()
     {
-      if($this->generales > 0){
-        $costoGeneral = $this->extra->costo + $this->extra->envio1 + $this->extra->envio2 + $this->extra->casilla + $this->extra->impuestos_total;
-        $total = ($costoGeneral * $this->extra->generales) / 100;
+      if($this->extra->generales > 0){
+        $convertValue = $this->isPesos() ? 1 : ($this->extra->moneda_valor ?? 1);
+        $costoBase = ($this->extra->costo + $this->extra->envio1 + $this->extra->envio2) * $convertValue;
+        $costoBase += ($this->extra->casilla + $this->extra->impuestos_total);
+        $total = ($costoBase * $this->extra->generales) / 100;
+
         $this->extra->generales_total = $total;
       }
     }

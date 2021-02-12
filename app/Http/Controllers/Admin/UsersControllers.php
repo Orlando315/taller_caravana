@@ -20,7 +20,7 @@ class UsersControllers extends Controller
 
       $users = Auth::user()->isAdmin() ? Auth::user()->users : Auth::user()->taller->users;
 
-      return view('admin.users.index', compact('admins', 'users'));
+      return view('admin.users.index', compact('users'));
     }
 
     /**

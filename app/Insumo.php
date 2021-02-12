@@ -130,4 +130,20 @@ class Insumo extends Model
     {
       return $this->nombre.' ('.$this->formato->formato.')';
     }
+
+    /**
+     * Obtener las marcas de los Insumos registrados
+     */
+    public static function marcas()
+    {
+      return self::distinct('marcas');
+    }
+
+    /**
+     * Obtener los grados de los Insumos registrados
+     */
+    public static function grados()
+    {
+      return self::distinct('grados');
+    }
 }

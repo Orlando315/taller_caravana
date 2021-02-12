@@ -54,6 +54,10 @@ class RepuestoController extends Controller
     {
       $this->authorize('create', Repuesto::class);
 
+      if(!is_array($request->producto)){
+        $request->replace($request->only('_token', '_method') + ['repuesto' => [$request->all()]]); 
+      }
+
       $this->validate($request, [
         'repuesto' => 'required|min:1|max:10',
         'repuesto.*.modelo' => 'required',
@@ -80,14 +84,13 @@ class RepuestoController extends Controller
         'repuesto.*.impuestos' => 'nullable|numeric|min:0|max:99999999',
         'repuesto.*.impuestos_total' => 'nullable|numeric|min:0|max:99999999',
         'repuesto.*.tramitacion' => 'nullable|numeric|min:0|max:99999999',
+        'repuesto.*.comentarios' => 'nullable|string|max:250',
       ]);
 
       $total = count($request->repuesto);
       $lastRepueto = null;
 
-      $repuestos = is_array($request->repuesto) ? $request->repuesto : [$request->repuesto];
-
-      foreach ($repuestos as $key => $requestRepuesto){
+      foreach ($request->repuesto as $key => $requestRepuesto){
         $repuesto = new Repuesto([
           'vehiculo_marca_id' => $requestRepuesto['marca'],
           'vehiculo_modelo_id' => $requestRepuesto['modelo'],
@@ -102,6 +105,7 @@ class RepuestoController extends Controller
           'procedencia' => $requestRepuesto['procedencia'],
           'venta' => $requestRepuesto['venta'],
           'envio' => $requestRepuesto['envio'] ?? null,
+          'comentarios' => $requestRepuesto['comentarios'],
         ]);
         
         $extra = new RepuestoExtra([
@@ -224,6 +228,7 @@ class RepuestoController extends Controller
         'impuestos' => 'nullable|numeric|min:0|max:99999999',
         'impuestos_total' => 'nullable|numeric|min:0|max:99999999',
         'tramitacion' => 'nullable|numeric|min:0|max:99999999',
+        'comentarios' => 'nullable|string|max:250',
       ]);
 
       $modelo = VehiculosModelo::findOrFail($request->modelo);
@@ -301,21 +306,28 @@ class RepuestoController extends Controller
     public function search(Request $request)
     {
       $repuestos = Repuesto::when($request->marca, function ($query, $marca){
-                              return $query->where('vehiculo_marca_id', $marca);
-                            })
-                          ->when($request->modelo, function ($query, $modelo){
-                            return $query->where('vehiculo_modelo_id', $modelo);
-                          })
-                          ->get()
-                          ->map(function ($repuesto, $key) {
-                            return [
-                                    'id' => $repuesto->id,
-                                    'descripcion' => $repuesto->descripcion(),
-                                    'venta' => $repuesto->venta,
-                                    'costo' => $repuesto->extra->costo_total,
-                                    'stock' => $repuesto->stock,
-                                  ];
-                          });
+        return $query->where('vehiculo_marca_id', $marca);
+      })
+      ->when($request->modelo, function ($query, $modelo){
+        return $query->where('vehiculo_modelo_id', $modelo);
+      })
+      ->when($request->anio, function ($query, $anio){
+        return $query->where('anio', $anio);
+      })
+      ->when($request->motor, function ($query, $motor){
+        return $query->where('motor', $motor);
+      })
+      ->with('extra')
+      ->get()
+      ->map(function ($repuesto, $key) {
+        return [
+                'id' => $repuesto->id,
+                'descripcion' => $repuesto->descripcion(),
+                'venta' => $repuesto->venta,
+                'costo' => $repuesto->extra->costo_total,
+                'stock' => $repuesto->stock,
+              ];
+      });
 
       return response()->json($repuestos);
     }
@@ -446,5 +458,30 @@ class RepuestoController extends Controller
               'flash_class' => 'alert-danger',
               'flash_important' => true
             ]);
+    }
+
+    /**
+     * Obtener los anios segun el modelo procporcionado
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function anios(Request $request)
+    {
+      $anios = Repuesto::select('anio')->where('vehiculo_modelo_id', $request->modelo)->distinct('anio')->orderByDesc('anio')->get();
+      return response()->json($anios);
+    }
+
+
+    /**
+     * Obtener los motores segun el modelo procporcionado
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function motores(Request $request)
+    {
+      $motores = Repuesto::select('motor')->where('vehiculo_modelo_id', $request->modelo)->distinct('motor')->orderByDesc('motor')->get();
+      return response()->json($motores);
     }
 }

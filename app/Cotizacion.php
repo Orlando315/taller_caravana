@@ -23,7 +23,17 @@ class Cotizacion extends Model
       'user_id',
       'descripcion',
       'descuento',
-      'status'
+      'status',
+      'entrega',
+    ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+      'entrega',
     ];
 
     /**
@@ -293,5 +303,15 @@ class Cotizacion extends Model
       }
 
       return implode('-', $parts);
+    }
+
+    /**
+     * Obtener la fecha formateada
+     * 
+     * @return string
+     */
+    public function entrega()
+    {
+      return $this->entrega ? $this->entrega->format('d-m-Y') : null;
     }
 }

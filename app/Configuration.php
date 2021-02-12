@@ -25,7 +25,8 @@ class Configuration extends Model
      * @var array
      */
     protected $fillable = [
-      'dollar'
+      'dollar',
+      'ganancia',
     ];
 
     /**

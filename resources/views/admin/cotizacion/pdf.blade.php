@@ -12,6 +12,10 @@
         <td class="border-0"><strong>CÓDIGO:</strong> {{ $cotizacion->codigo() }}</td>
       </tr>
       <tr>
+        <td class="border-0"><strong>ENTREGA:</strong> {{ $cotizacion->entrega() ?? 'N/A' }}</td>
+        <td class="border-0"></td>
+      </tr>
+      <tr>
         <td class="border-0"><strong>MARCA Y MODELO:</strong> {{ $cotizacion->situacion->proceso->vehiculo->vehiculo() }}</td>
         <td class="border-0"></td>
       </tr>

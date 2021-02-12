@@ -43,10 +43,14 @@ class RepuestoExtra extends Model
 
     /**
      * Obtener el atributo formateado
+     * 
+     * @param  bool  $convert
      */
-    public function costo()
+    public function costo($convert = false)
     {
-      return $this->costo ? number_format($this->costo, 2, ',', '.') : null;
+      $value = $convert ? ($this->costo * ($this->moneda_valor ?? 1)) : $this->costo;
+
+      return $this->costo ? number_format($value, 2, ',', '.') : null;
     }
 
     /**
@@ -59,18 +63,26 @@ class RepuestoExtra extends Model
 
     /**
      * Obtener el atributo formateado
+     *
+     * @param  bool  $convert
      */
-    public function envio1()
+    public function envio1($convert = false)
     {
-      return $this->envio1 ? number_format($this->envio1, 2, ',', '.') : null;
+      $value = $convert ? ($this->envio1 * ($this->moneda_valor ?? 1)) : $this->envio1;
+
+      return $this->envio1 ? number_format($value, 2, ',', '.') : null;
     }
 
     /**
      * Obtener el atributo formateado
+     *
+     * @param  bool  $convert
      */
-    public function envio2()
+    public function envio2($convert = false)
     {
-      return $this->envio2 ? number_format($this->envio2, 2, ',', '.') : null;
+      $value = $convert ? ($this->envio2 * ($this->moneda_valor ?? 1)) : $this->envio2;
+
+      return $this->envio2 ? number_format($value, 2, ',', '.') : null;
     }
 
     /**
@@ -95,14 +107,17 @@ class RepuestoExtra extends Model
 
     /**
      * Obtener el atributo formateado
+     *
+     * @param  bool  $convert
      */
-    public function impuestos()
+    public function impuestos($convert = false)
     {
       if($this->impuestos == 0){
         return $this->impuestos_total ? number_format($this->impuestos_total, 2, ',', '.') : null;
       }
 
-      $costoBase = $this->costo + $this->envio1 + $this->envio2;
+      $convertValue = $this->repuesto->isPesos() ? 1 : ($this->moneda_valor ?? 1);
+      $costoBase = ($this->costo + $this->envio1 + $this->envio2) * $convertValue;
       $fob = ($costoBase * $this->impuestos) / 100;
       return $this->impuestos ? number_format($fob, 2, ',', '.') : null;
     }

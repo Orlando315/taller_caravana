@@ -52,21 +52,66 @@
                   </select>
                 </div>
               </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="search-anio">Año: *</label>
+                  <select id="search-anio" class="form-control" disabled style="width: 100%">
+                    <option value="">Seleccione...</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="search-motor">Motor: *</label>
+                  <select id="search-motor" class="form-control" disabled style="width: 100%">
+                    <option value="">Seleccione...</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row set-insumo">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="search-insumo-marca">Marca:</label>
+                  <select id="search-insumo-marca" class="form-control" style="width: 100%">
+                    <option value="">Seleccione...</option>
+                    @foreach($insumoMarcas as $insumoMarca)
+                      <option value="{{ $insumoMarca->marca }}">{{ $insumoMarca->marca }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="search-insumo-grado">Grado:</label>
+                  <select id="search-insumo-grado" class="form-control" style="width: 100%">
+                    <option value="">Seleccione...</option>
+                    @foreach($insumoGrados as $insumoGrado)
+                      <option value="{{ $insumoGrado->grado }}">{{ $insumoGrado->grado }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label" for="search-insumo-formato">Formato:</label>
+                  <select id="search-insumo-formato" class="form-control" style="width: 100%">
+                    <option value="">Seleccione...</option>
+                    @foreach($insumoFormatos as $insumoFormato)
+                      <option value="{{ $insumoFormato->id }}">{{ $insumoFormato->formato }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
             </div>
 
             <div class="row">
               <div class="col-md-5">
                 <div class="form-group set-insumo">
                   <label for="insumo">Insumo:</label>
-                  <select id="insumo" class="form-control" name="">
+                  <select id="insumo" class="form-control">
                     <option value="">Seleccione...</option>
-                    @foreach($insumos as $insumo)
-                      <option value="{{ $insumo->id }}"
-                        data-titulo="{{ $insumo->descripcion() }}"
-                        data-venta="{{ $insumo->stockEnUso->venta }}"
-                        data-stock="{{ $insumo->getStock() }}"
-                        data-costo="{{ $insumo->stockEnUso->coste }}">{{ $insumo->tipo->tipo }} | {{ $insumo->marca }} | {{ $insumo->nombre }} | {{ $insumo->grado }} | ({{ $insumo->formato->formato }})</option>
-                    @endforeach
                   </select>
                 </div>
 
@@ -74,13 +119,6 @@
                   <label for="repuesto">Repuesto:</label>
                   <select id="repuesto" class="form-control" style="width: 100%">
                     <option value="">Seleccione...</option>
-                    @foreach($repuestos as $repuesto)
-                      <option value="{{ $repuesto->id }}"
-                        data-titulo="{{ $repuesto->descripcion() }}"
-                        data-venta="{{ $repuesto->venta }}"
-                        data-stock="{{ $repuesto->stock }}"
-                        data-costo="{{ $repuesto->extra->costo_total }}">{{ $repuesto->descripcion() }}</option>
-                    @endforeach
                   </select>
                   <button class="btn btn-simple btn-link btn-sm" type="button" data-toggle="modal" data-target="#addRepuestoModal">
                     <i class="fa fa-plus" aria-hidden="true"></i> Agregar repuesto
@@ -139,7 +177,7 @@
 
 
             <div class="alert alert-danger alert-important" style="display: none">
-              <ul class="m-0 form-errors-search-repuesto">
+              <ul class="m-0 form-errors-search-items">
               </ul>
             </div>
 
@@ -442,7 +480,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form id="repuesto-form" action="{{ route('admin.repuesto.store') }}" method="POST">
+          <form id="repuesto-form" class="card border-0" action="{{ route('admin.repuesto.store') }}" method="POST">
             <input id="cliente-vehiculo" type="hidden" name="cliente">
             @csrf
           
@@ -451,8 +489,8 @@
               <div class="row">
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="marca">Marca: *</label>
-                    <select id="marca" class="form-control" name="marca" required style="width: 100%">
+                    <label class="control-label" for="repuesto-marca">Marca: *</label>
+                    <select id="repuesto-marca" class="form-control" name="marca" required style="width: 100%">
                       <option value="">Seleccione...</option>
                       @foreach($marcas as $marca)
                         <option value="{{ $marca->id }}"{{ $proceso->vehiculo->vehiculo_marca_id == $marca->id ? ' selected' : '' }}>{{ $marca->marca }}</option>
@@ -462,22 +500,22 @@
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="modelo">Modelo: *</label>
-                    <select id="modelo" class="form-control" name="modelo" required disabled style="width: 100%">  
+                    <label class="control-label" for="repuesto-modelo">Modelo: *</label>
+                    <select id="repuesto-modelo" class="form-control" name="modelo" required disabled style="width: 100%">  
                       <option value="">Seleccione...</option>
                     </select>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="año">Año: *</label>
-                    <input id="año" class="form-control{{ $errors->has('año') ? ' is-invalid' : '' }}" type="number" name="año" min="0" step="1" max="9999" value="{{ old('año') }}" placeholder="Año" required>
+                    <label class="control-label" for="repuesto-año">Año: *</label>
+                    <input id="repuesto-año" class="form-control" type="number" name="año" min="0" step="1" max="9999" placeholder="Año" required>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="motor">Motor (cc): *</label>
-                    <input id="motor" class="form-control{{ $errors->has('motor') ? ' is-invalid' : '' }}" type="number" min="0" max="9999" name="motor" value="{{ old('motor') }}" placeholder="Motor" required>
+                    <label class="control-label" for="repuesto-motor">Motor (cc): *</label>
+                    <input id="repuesto-motor" class="form-control" type="number" min="0" max="9999" name="motor" placeholder="Motor" required>
                     <small class="text-muted">Solo números</small>
                   </div>
                 </div>
@@ -486,26 +524,26 @@
               <div class="row">
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="sistema">Sistema: *</label>
-                    <input id="sistema" class="form-control{{ $errors->has('sistema') ? ' is-invalid' : '' }}" type="text" name="sistema" maxlength="50" value="{{ old('sistema') }}" placeholder="Sistema" required>
+                    <label class="control-label" for="repuesto-sistema">Sistema: *</label>
+                    <input id="repuesto-sistema" class="form-control" type="text" name="sistema" maxlength="50" placeholder="Sistema" required>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="componente">Componente: *</label>
-                    <input id="componente" class="form-control{{ $errors->has('componente') ? ' is-invalid' : '' }}" type="text" name="componente" maxlength="50" value="{{ old('componente') }}" placeholder="Componente" required>
+                    <label class="control-label" for="repuesto-componente">Componente: *</label>
+                    <input id="repuesto-componente" class="form-control" type="text" name="componente" maxlength="50" placeholder="Componente" required>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="nro_parte">N° parte:</label>
-                    <input id="nro_parte" class="form-control{{ $errors->has('nro_parte') ? ' is-invalid' : '' }}" type="text" name="nro_parte" maxlength="50" value="{{ old('nro_parte') }}" placeholder="N° parte">
+                    <label class="control-label" for="repuesto-nro_parte">N° parte:</label>
+                    <input id="repuesto-nro_parte" class="form-control" type="text" name="nro_parte" maxlength="50" placeholder="N° parte">
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="nro_oem">N° OEM:</label>
-                    <input id="nro_oem" class="form-control{{ $errors->has('nro_oem') ? ' is-invalid' : '' }}" type="text" name="nro_oem" maxlength="50" value="{{ old('nro_oem') }}" placeholder="N° OEM">
+                    <label class="control-label" for="repuesto-nro_oem">N° OEM:</label>
+                    <input id="repuesto-nro_oem" class="form-control" type="text" name="nro_oem" maxlength="50" placeholder="N° OEM">
                   </div>
                 </div>
               </div>
@@ -513,183 +551,144 @@
               <div class="row">
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="marca_oem">Marca OEM: *</label>
-                    <input id="marca_oem" class="form-control{{ $errors->has('marca_oem') ? ' is-invalid' : '' }}" type="text" name="marca_oem" maxlength="50" value="{{ old('marca_oem') }}" placeholder="Marca OEM" required>
+                    <label class="control-label" for="repuesto-marca_oem">Marca OEM: *</label>
+                    <input id="repuesto-marca_oem" class="form-control" type="text" name="marca_oem" maxlength="50" placeholder="Marca OEM" required>
                   </div>
                 </div>
 
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="procedencia">Procedencia: *</label>
-                    <select id="procedencia" class="form-control" name="procedencia" required style="width: 100%">
+                    <label class="control-label" for="repuesto-stock">Stock:</label>
+                    <input id="repuesto-stock" class="form-control" type="number" name="stock" min="0" max="9999" placeholder="Stock">
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="repuesto-procedencia">Procedencia: *</label>
+                    <select id="repuesto-procedencia" class="form-control" name="procedencia" required style="width: 100%">
                       <option>Seleccione...</option>
-                      <option value="local" {{ old('procedencia') == 'local' ? 'selected' : '' }}>Local</option>
-                      <option value="nacional" {{ old('procedencia') == 'nacional' ? 'selected' : '' }}>Nacional</option>
-                      <option value="internacional" {{ old('procedencia') == 'internacional' ? 'selected' : '' }}>Internacional</option>
+                      <option value="local">Local</option>
+                      <option value="nacional">Nacional</option>
+                      <option value="internacional">Internacional</option>
                     </select>
                   </div>
                 </div>
               </div>
             </fieldset>
 
-            <fieldset id="field-local" style="display: none">
-              <legend>Local</legend>
+            <fieldset>
+              <legend class="title-legend">Procedencia: <span id="procedencia-title"></span></legend>
               <div class="row">
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="moneda-local">Moneda: *</label>
-                    <select id="moneda-local" class="custom-select" name="moneda" required style="width: 100%">
+                    <label class="control-label" for="repuesto-moneda">Moneda: *</label>
+                    <select id="repuesto-moneda" class="custom-select" name="moneda" required>
                       <option value="">Seleccione...</option>
-                      <option value="peso" {{ old('moneda', 'peso') == 'peso' ? 'selected' : '' }}>Peso chileno</option>
-                      <option value="dolar" {{ old('moneda', 'peso') == 'dolar' ? 'selected' : '' }}>Dólar</option>
-                      <option value="euro" {{ old('moneda', 'peso') == 'euro' ? 'selected' : '' }}>Euro</option>
+                      <option value="peso">Peso chileno</option>
+                      <option value="dolar">Dólar</option>
+                      <option value="euro">Euro</option>
                     </select>
                   </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="costo">Costo:</label>
-                    <input id="costo" class="form-control{{ $errors->has('costo') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="costo" maxlength="50" value="{{ old('costo') }}" placeholder="Costo">
+                  <div class="form-group m-0" style="display: none">
+                    <label class="control-label" for="repuesto-moneda-valor">Especificar valor: *</label>
+                    <input id="repuesto-moneda-valor" class="form-control" type="number" step="0.01" min="0" max="99999999" name="moneda_valor" placeholder="Especificar valor">
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="generales">Gastos generales:</label>
-                    <input id="generales" class="form-control{{ $errors->has('generales') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="generales" maxlength="50" value="{{ old('generales') }}" placeholder="Gastos generales">
+                    <label class="control-label" for="repuesto-costo">Costo:</label>
+                    <input id="repuesto-costo" class="form-control" type="number" step="0.01" min="0" max="99999999" name="costo" maxlength="50" placeholder="Costo">
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
-                    <label class="control-label" for="venta">Precio de venta: *</label>
-                    <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="venta" maxlength="50" value="{{ old('venta') }}" placeholder="Venta" required>
+                    <label class="control-label" for="repuesto-generales">Gastos generales:</label>
+                    <input id="repuesto-generales" class="form-control" type="number" step="0.01" min="0" max="99999999" name="generales" maxlength="50" placeholder="Gastos generales">
+                  </div>
+                  <div class="form-group" style="display: none">
+                    <label class="control-label" for="repuesto-generales-internacional">Gastos generales:</label>
+                    <select id="repuesto-generales-internacional" class="custom-select field-internacional" name="generales" disabled>
+                      <option value="">Seleccione...</option>
+                      <option value="0">Monto específico</option>
+                      <option value="15">15%</option>
+                      <option value="20">20%</option>
+                      <option value="25">25%</option>
+                      <option value="30">30%</option>
+                    </select>
+                  </div>
+                  <div class="form-group m-0" style="display: none">
+                    <label class="control-label" for="repuesto-generales_total-internacional">Especificar gastos generales:</label>
+                    <input id="repuesto-generales_total-internacional" class="form-control" type="number" step="0.01" min="0" max="99999999" name="generales_total" placeholder="Especificar">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group" style="display: none">
+                    <label class="control-label" for="repuesto-envio">Envio:</label>
+                    <input id="repuesto-envio" class="form-control field-nacional" type="number" step="0.01" min="0" max="99999999" name="envio" placeholder="Envio">
+                  </div>
+                  <div class="form-group" style="display: none">
+                    <label class="control-label" for="repuesto-impuestos-internacional">Impuestos:</label>
+                    <select id="repuesto-impuestos-internacional" class="custom-select field-internacional" name="impuestos">
+                      <option value="">Seleccione...</option>
+                      <option value="0">Monto específico</option>
+                      <option value="19">19% del FOB</option>
+                      <option value="25">25% del FOB</option>
+                    </select>
+                  </div>
+                  <div class="form-group m-0" style="display: none">
+                    <label class="control-label" for="repuesto-impuestos_total-internacional">Especificar impuestos:</label>
+                    <input id="repuesto-impuestos_total-internacional" class="form-control" type="number" step="0.01" min="0" max="99999999" name="impuestos_total" placeholder="Especificar">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row group-field-internacional" style="display:none">
+                <div class="col-md-3">
+                  <div class="form-group" style="display: none">
+                    <label class="control-label" for="repuesto-envio1-internacional">Envio 1:</label>
+                    <input id="repuesto-envio1-internacional" class="form-control field-internacional" type="number" step="0.01" min="0" max="99999999" name="envio1" placeholder="Envio 1">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group" style="display: none">
+                    <label class="control-label" for="repuesto-envio2-internacional">Envio 2:</label>
+                    <input id="repuesto-envio2-internacional" class="form-control field-internacional" type="number" step="0.01" min="0" max="99999999" name="envio2" placeholder="Envio 2">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group" style="display: none">
+                    <label class="control-label" for="repuesto-casilla-internacional">Gastos casilla:</label>
+                    <input id="repuesto-casilla-internacional" class="form-control field-internacional" type="number" step="0.01" min="0" max="99999999" name="casilla" placeholder="Gastos casilla">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group" style="display: none">
+                    <label class="control-label" for="repuesto-tramitacion-internacional">Costo tramitación:</label>
+                    <input id="repuesto-tramitacion-internacional" class="form-control field-internacional" type="number" step="0.01" min="0" max="99999999" name="tramitacion" maxlength="50" placeholder="Costo tramitación">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="repuesto-venta">Precio de venta: *</label>
+                    <input id="repuesto-venta" class="form-control" type="number" step="0.01" min="0" max="99999999" name="venta" maxlength="50" placeholder="Venta" required>
+                    <button class="btn btn-simple btn-link btn-sm btn-sugerir" type="button" role="button">
+                      <i class="fa fa-calculator" aria-hidden="true"></i> Sugerir precio
+                    </button>
                   </div>
                 </div>
               </div>
             </fieldset>
 
-            <fieldset id="field-nacional" style="display: none">
-              <legend>Nacional</legend>
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="moneda-nacional">Moneda: *</label>
-                    <select id="moneda-nacional" class="custom-select" name="moneda" required>
-                      <option value="">Seleccione...</option>
-                      <option value="peso" {{ old('moneda', 'peso') == 'peso' ? 'selected' : '' }}>Peso chileno</option>
-                      <option value="dolar" {{ old('moneda', 'peso') == 'dolar' ? 'selected' : '' }}>Dólar</option>
-                      <option value="euro" {{ old('moneda', 'peso') == 'euro' ? 'selected' : '' }}>Euro</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="costo">Costo:</label>
-                    <input id="costo" class="form-control{{ $errors->has('costo') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="costo" value="{{ old('costo') }}" placeholder="Costo">
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="generales">Gastos generales:</label>
-                    <input id="generales" class="form-control{{ $errors->has('generales') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="generales" value="{{ old('generales') }}" placeholder="Gastos generales">
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="envio">Envio:</label>
-                    <input id="envio" class="form-control{{ $errors->has('envio') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio" value="{{ old('envio') }}" placeholder="Envio">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="venta">Precio de venta: *</label>
-                    <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="venta" value="{{ old('venta') }}" placeholder="Venta" required>
-                  </div>
-                </div>
-              </div>
-            </fieldset>
+            <fieldset>
+              <legend class="title-legend">Otros:</legend>
 
-            <fieldset id="field-internacional" style="display: none">
-              <legend>Internacional</legend>
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="moneda-internacional">Moneda: *</label>
-                    <select id="moneda-internacional" class="custom-select" name="moneda" required style="width: 100%">
-                      <option value="">Seleccione...</option>
-                      <option value="peso" {{ old('moneda', 'dolar') == 'peso' ? 'selected' : '' }}>Peso chileno</option>
-                      <option value="dolar" {{ old('moneda', 'dolar') == 'dolar' ? 'selected' : '' }}>Dólar</option>
-                      <option value="euro" {{ old('moneda', 'dolar') == 'euro' ? 'selected' : '' }}>Euro</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="costo">Costo:</label>
-                    <input id="costo" class="form-control{{ $errors->has('costo') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="costo" value="{{ old('costo') }}" placeholder="Costo">
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="envio1">Envio 1:</label>
-                    <input id="envio1" class="form-control{{ $errors->has('envio1') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio1" value="{{ old('envio1') }}" placeholder="Envio 1">
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="envio2">Envio 2:</label>
-                    <input id="envio2" class="form-control{{ $errors->has('envio2') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio2" value="{{ old('envio2') }}" placeholder="Envio 2">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="casilla">Gastos casilla:</label>
-                    <input id="casilla" class="form-control{{ $errors->has('casilla') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="casilla" value="{{ old('casilla') }}" placeholder="Gastos casilla">
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label">Impuestos:</label>
-                    <div class="custom-control custom-radio">
-                      <input type="radio" id="impuestos-25" name="impuestos" class="custom-control-input" value="25">
-                      <label class="custom-control-label" for="impuestos-25">25% del FOB</label>
-                    </div>
-                    <div class="custom-control custom-radio">
-                      <input type="radio" id="impuestos-19" name="impuestos" class="custom-control-input" value="19">
-                      <label class="custom-control-label" for="impuestos-19">19% del FOB</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="gasto-general-internacional">Gastos generales:</label>
-                    <select id="gasto-general-internacional" class="custom-select" name="generales">
-                      <option value="">Seleccione...</option>
-                      <option value="0" {{ old('generales') == '0' ? 'selected' : '' }}>0%</option>
-                      <option value="15" {{ old('generales') == '15' ? 'selected' : '' }}>15%</option>
-                      <option value="20" {{ old('generales') == '20' ? 'selected' : '' }}>20%</option>
-                      <option value="25" {{ old('generales') == '25' ? 'selected' : '' }}>25%</option>
-                      <option value="30" {{ old('generales') == '30' ? 'selected' : '' }}>30%</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="tramitacion">Costo tramitación:</label>
-                    <input id="tramitacion" class="form-control{{ $errors->has('tramitacion') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="tramitacion" maxlength="50" value="{{ old('tramitacion') }}" placeholder="Costo tramitación">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="venta">Precio de venta: *</label>
-                    <input id="venta" class="form-control{{ $errors->has('venta') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="venta" value="{{ old('venta') }}" placeholder="Venta" required>
-                  </div>
-                </div>
+              <div class="form-group">
+                <label for="repuesto-comentarios">Comentarios:</label>
+                <textarea id="repuesto-comentarios" class="form-control" name="comentarios" maxlength="250"></textarea>
               </div>
             </fieldset>
 
@@ -711,6 +710,8 @@
 
 @section('scripts')
   <script type="text/javascript">
+    const PORCENTAJE_GANANCIA = @json(Auth::user()->getGlobalGanancia());
+
     $(document).ready(function () {
       $('#insumo, #repuesto').select2({
         placeholder: 'Seleccione...',
@@ -764,7 +765,7 @@
         venta = typeof venta == 'number' ? venta : +(venta.replace(',', '.'));
 
         if(useSelect && checkStock(tipo, cantidad, option)){
-          showErrors(['La cantidad ingresada supera el stock disponible actualmente'], '.form-errors-search-repuesto');
+          showErrors(['La cantidad ingresada supera el stock disponible actualmente'], '.form-errors-search-items');
           return false;
         }
 
@@ -830,30 +831,57 @@
       })
 
       // Repuestos
-      $('#marca, #modelo, #procedencia').select2({
+      $('#repuesto-marca, #repuesto-modelo, #repuesto-procedencia').select2({
         placeholder: 'Seleccione...',
       });
 
       // Buscar modelos por Marca
-      $('#marca').on('change',function () {
+      $('#repuesto-marca').on('change',function () {
         let marca = $(this).val()
 
         if(!marca){ return false }
 
-        searchModelos(marca, '#modelo', '.form-errors-repuesto');
+        searchModelos(marca, '#repuesto-modelo', '.form-errors-repuesto');
       })
+      $('#repuesto-marca').change()
 
-      $('#marca').change()
+      $('#repuesto-procedencia').change(function () {
+        let procedencia = $(this).val();
 
-      $('#procedencia').change(function () {
-        let procedencia = $(this).val()
+        $('#procedencia-title').text(procedencia.charAt(0).toUpperCase() + procedencia.slice(1));
 
-        $('#field-local').toggle(procedencia == 'local').prop('disabled', !(procedencia == 'local'))
-        $('#field-nacional').toggle(procedencia == 'nacional').prop('disabled', !(procedencia == 'nacional'))
-        $('#field-internacional').toggle(procedencia == 'internacional').prop('disabled', !(procedencia == 'internacional'))
+        $('#repuesto-generales').prop('disabled', (procedencia == 'internacional')).closest('.form-group').toggle(!(procedencia == 'internacional'));
+        $('.field-local').prop('disabled', !(procedencia == 'local')).closest('.form-group').toggle(procedencia == 'local');
+        $('.field-nacional').prop('disabled', !(procedencia == 'nacional')).closest('.form-group').toggle(procedencia == 'nacional');
+        $('.field-internacional').prop('disabled', !(procedencia == 'internacional')).closest('.form-group').toggle(procedencia == 'internacional');
+        $('.group-field-internacional').toggle(procedencia == 'internacional');
+
+        if(procedencia != 'internacional'){
+          $('#repuesto-generales_total-internacional, #repuesto-impuestos_total-internacional').prop('disabled', true).closest('.form-group').toggle(false);
+        }else{
+          $('#repuesto-impuestos-internacional, #repuesto-generales-internacional').change();
+        }
+      });
+      $('#repuesto-procedencia').change();
+
+      $('#repuesto-impuestos-internacional').change(function () {
+        let isZero = $(this).val() == '0';
+        $('#repuesto-impuestos_total-internacional').prop('disabled', !isZero).closest('.form-group').toggle(isZero);
       })
+      $('#repuesto-impuestos-internacional').change();
 
-      $('#procedencia').change()
+      $('#repuesto-generales-internacional').change(function () {
+        let isZero = $(this).val() == '0';
+        $('#repuesto-generales_total-internacional').prop('disabled', !isZero).closest('.form-group').toggle(isZero);
+      })
+      $('#repuesto-generales-internacional').change();
+
+      $('#repuesto-moneda').change(function () {
+        let isPeso = $(this).val() == 'peso';
+
+        $('#repuesto-moneda-valor').prop({'disabled': isPeso, 'required': !isPeso}).closest('.form-group').toggle(!isPeso);
+      })
+      $('#repuesto-moneda').change();
 
       $('#repuesto-form').on('submit', function (e) {
         e.preventDefault();
@@ -899,35 +927,60 @@
       })
 
       // Filtrar repuestos
-      $('#search-marca, #search-modelo').select2({
+      $('#search-marca, #search-modelo, #search-anio, #search-motor, #search-insumo-formato, #search-insumo-grado, #search-insumo-marca').select2({
         placeholder: 'Seleccione...',
         allowClear: true,
       });
 
       $('#search-marca').on('change',function () {
-        let marca = $(this).val()
+        let marca = $(this).val() ? $(this).val() : null;
 
         // Buscar Modelos de la Marca
         if(marca){
-          searchModelos(marca, '#search-modelo', '.form-errors-search-repuesto');
+          searchModelos(marca, '#search-modelo', '.form-errors-search-items');
         }else{
-          $('#search-modelo').empty()
-          $('#search-modelo').prop('disabled', true)
+          $('#search-modelo, #search-anio, #search-motor').empty()
+          $('#search-modelo, #search-anio, #search-motor').prop('disabled', true)
+
+          // Buscar repuestos
+          searchRepuestos(marca);
         }
-
-        // Buscar repuestos
-        searchRepuestos(marca ? marca : null)
-      })
-
-      $('#search-marca').change()
+      });
+      $('#search-marca').change();
 
       $('#search-modelo').on('change',function () {
         let marca = $('#search-marca').val(),
-            modelo = $(this).val();
+            modelo = $(this).val() ? $(this).val() : null;
+
+        // Buscar Año y Motor del Modelo
+        if(modelo){
+          searchAnios(modelo, '#search-anio', '.form-errors-search-items');
+          searchMotores(modelo, '#search-motor', '.form-errors-search-items');
+        }else{
+          $('#search-anio, #search-motor').empty();
+          $('#search-anio, #search-motor').prop('disabled', true);
+        }
 
         // Buscar repuestos
-        searchRepuestos((marca ? marca : null), (modelo ? modelo : null))
-      })// Filtrar repuestos
+        searchRepuestos(marca, modelo);
+      });
+      $('#search-modelo').change();
+
+      $('#search-anio, #search-motor').on('change', function () {
+        let marca = $('#search-marca').val(),
+            modelo = $('#search-modelo').val(),
+            anio = $('#search-anio').val() ? $('#search-anio').val() : null,
+            motor = $('#search-motor').val() ? $('#search-motor').val() : null;
+
+        // Buscar repuestos
+        searchRepuestos(marca, modelo, anio, motor);
+      });
+
+      $('#search-insumo-formato, #search-insumo-grado, #search-insumo-marca').change(searchInsumo);
+      searchInsumo();
+
+      /* Sugerir precio de venta */
+      $('.btn-sugerir').click(precioSugerido);
     }) // DOM Ready
   
     // Stock de los repuestos
@@ -1057,11 +1110,58 @@
       $(ul).parent().show().delay(7000).hide('slow');
     }
 
-    // Buscar los Modelos por la marca especificada
-    function searchModelos(marca, field, list)
-    {
+    // Buscar los Años por el modelo especificado
+    function searchMotores(modelo, field, list){
       let data = {
-        '_token': '{{ csrf_token() }}'
+        modelo: modelo,
+      };
+
+      let done = function (motores) {
+        $(field).html('<option value="">Seleccione...</option>');
+
+        $.each(motores, function(k, motor){
+          $(field).append(`<option value="${motor.motor}">${motor.motor}</option>`);
+        });
+
+        $(field).prop('disabled', false);
+      };
+
+      let fail = function (response) {
+        $(field).prop('disabled', true);
+        showErrors(response.responseJSON.errors, list);
+      };
+
+      sendRequest(`{{ route("admin.repuesto.motores") }}`, data, done, fail, null, 'GET');
+    }
+
+    // Buscar los Años por el modelo especificado
+    function searchAnios(modelo, field, list){
+      let data = {
+        modelo: modelo,
+      };
+
+      let done = function (anios) {
+        $(field).html('<option value="">Seleccione...</option>');
+
+        $.each(anios, function(k, anio){
+          $(field).append(`<option value="${anio.anio}">${anio.anio}</option>`);
+        });
+
+        $(field).prop('disabled', false);
+      };
+
+      let fail = function (response) {
+        $(field).prop('disabled', true);
+        showErrors(response.responseJSON.errors, list);
+      };
+      
+      sendRequest(`{{ route("admin.repuesto.anios") }}`, data, done, fail, null, 'GET');
+    }
+
+    // Buscar los Modelos por la marca especificada
+    function searchModelos(marca, field, list){
+      let data = {
+        _token: '{{ csrf_token() }}'
       };
 
       let done = function (modelos) {
@@ -1070,10 +1170,7 @@
           let found = modelo.id == @json($proceso->vehiculo->vehiculo_modelo_id);
           let selected = found ? 'selected' : '';
           $(field).append(`<option value="${modelo.id}" ${selected}>${modelo.modelo}</option>`);
-
-          if(found){
-            $(field).change()
-          }
+          $(field).change();
         })
 
         $(field).prop('disabled', false)
@@ -1088,14 +1185,16 @@
     }
 
     // Buscar repuestos
-    function searchRepuestos(marca = null, modelo = null){
+    function searchRepuestos(marca = null, modelo = null, anio = null, motor = null){
       let repuestoField = $('#repuesto');
       repuestoField.prop('disabled', true)
 
       let data = {
-            '_token': '{{ csrf_token() }}',
-            'marca': marca,
-            'modelo': modelo,
+            _token: '{{ csrf_token() }}',
+            marca: marca,
+            modelo: modelo,
+            anio: anio,
+            motor: motor,
           };
 
       let done = function (repuestos) {
@@ -1115,16 +1214,105 @@
       };
 
       let fail = function (response) {
-        showErrors(response.responseJSON.errors, '.form-errors-search-repuesto')
+        showErrors(response.responseJSON.errors, '.form-errors-search-items');
       };
 
       sendRequest('{{ route("admin.repuesto.search") }}', data, done, fail)
     }
 
+    // Buscar repuestos
+    function searchInsumo(){
+      let marca = $('#search-insumo-marca').val() ? $('#search-insumo-marca').val() : null,
+          grado = $('#search-insumo-grado').val() ? $('#search-insumo-grado').val() : null,
+          formato = $('#search-insumo-formato').val() ? $('#search-insumo-formato').val() : null;
+
+      let insumoField = $('#insumo');
+      insumoField.prop('disabled', true);
+
+      let data = {
+            marca: marca,
+            grado: grado,
+            formato: formato,
+          };
+
+      let done = function (insumos) {
+        insumoField.html('<option value="">Seleccione...</option>');
+
+        $.each(insumos, function(k, insumo){
+          let option = `<option value="${insumo.id}"
+                data-titulo="${insumo.descripcion}"
+                data-venta="${insumo.venta}"
+                data-stock="${insumo.venta}"
+                data-costo="${insumo.costo}">${insumo.tipo} | ${insumo.marca} | ${insumo.nombre} | ${insumo.grado} | (${insumo.formato})</option>`;
+
+          insumoField.append(option);
+        })
+        insumoField.prop('disabled', false);
+      };
+
+      let fail = function (response) {
+        showErrors(response.responseJSON.errors, '.form-errors-search-items');
+      };
+
+      sendRequest('{{ route("admin.insumo.search") }}', data, done, fail);
+    }
+
+    /* Sugerir precio de venta */
+    function precioSugerido() {
+      let moneda = $('#repuesto-moneda').val();
+      let valorMoneda = moneda == 'peso' ? 1 : +$('#repuesto-moneda-valor').val();
+
+      if(moneda != 'peso' && !valorMoneda){
+        showErrors(['Debe completar el valor de la moneda seleccionada'], '.form-errors-repuesto');
+        return;
+      }
+
+      let type = $('#repuesto-procedencia').val();
+      let field = $('#repuesto-venta');
+      let costo = (+$('#repuesto-costo').val() * valorMoneda);
+      let generales = +$('#repuesto-generales').val();
+      let subtotal = 0;
+
+      if(type == 'local'){
+        subtotal = (costo + (generales * valorMoneda));
+      }else if(type == 'nacional'){
+        let envio = +$('#repuesto-envio').val();
+        subtotal += costo + (generales * valorMoneda) + (envio * valorMoneda);
+      }else{
+        let envio1 = (+$('#repuesto-envio1-internacional').val() * valorMoneda);
+        let envio2 = (+$('#repuesto-envio2-internacional').val() * valorMoneda);
+        let casilla = +$('#repuesto-casilla-internacional').val();
+        let impuestos = +$('#repuesto-impuestos-internacional').val();
+        let impuestosTotal = (+$('#repuesto-impuestos_total-internacional').val() * valorMoneda);
+        let generalesTotal = (+$('#repuesto-generales_total-internacional').val() * valorMoneda);
+        let tramitacion = +$('#repuesto-tramitacion-internacional').val();
+        let generalesInternacional = +$('#repuesto-generales-internacional').val();
+
+        subtotal += costo + envio1 + envio2;
+        impuestosTotal = (impuestos > 0) ? calculateImpuestosTotal(subtotal, impuestos) : impuestosTotal;
+        subtotal += impuestosTotal + casilla;
+        generalesTotal = (generalesInternacional > 0) ? calculateGeneralesTotal(subtotal, generalesInternacional) : generalesTotal;
+        subtotal += generalesTotal + tramitacion;
+      }
+
+      let total = subtotal + ((subtotal * PORCENTAJE_GANANCIA) / 100);
+      field.val(total.toFixed(2));
+    }
+
+    // Solo internacional
+    function calculateImpuestosTotal(costoBase, impuestos) {
+      return (costoBase * impuestos) / 100;
+    }
+
+    // Solo internacional
+    function calculateGeneralesTotal(costoBase, generales) {
+      return (costoBase * generales) / 100;
+    }
+
     // Relizar peticiones por ajax
-    function sendRequest(action, data, done, fail, always = null){
+    function sendRequest(action, data, done, fail, always = null, type = 'POST'){
       $.ajax({
-        type: 'POST',
+        type: type,
         url: action,
         data: data,
         cache: false,

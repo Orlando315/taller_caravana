@@ -55,6 +55,12 @@
           </p>
           <hr>
 
+          <strong>Entrega</strong>
+          <p class="text-muted">
+            {{ $cotizacion->entrega() ?? 'N/A' }}
+          </p>
+          <hr>
+
           <strong>Total Neto</strong>
           <p class="text-muted">
             {{ $cotizacion->total(false) }}
