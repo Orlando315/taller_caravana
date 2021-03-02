@@ -35,36 +35,45 @@
             <div class="row set-repuesto">
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="control-label" for="search-marca">Marca: *</label>
-                  <select id="search-marca" class="form-control" style="width: 100%">
+                  <label class="control-label" for="search-sistema">Sistema:</label>
+                  <select id="search-sistema" class="form-control" style="width: 100%">
                     <option value="">Seleccione...</option>
-                    @foreach($marcas as $marca)
-                      <option value="{{ $marca->id }}"{{ $proceso->vehiculo->vehiculo_marca_id == $marca->id ? ' selected' : '' }}>{{ $marca->marca }}</option>
+                    @foreach($repuestoSistemas as $sistema)
+                      <option value="{{ $sistema->sistema }}">{{ $sistema->sistema }}</option>
                     @endforeach
                   </select>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="control-label" for="search-modelo">Modelo: *</label>
-                  <select id="search-modelo" class="form-control" disabled style="width: 100%">
+                  <label class="control-label" for="search-componente">Componente:</label>
+                  <select id="search-componente" class="form-control" style="width: 100%">
                     <option value="">Seleccione...</option>
+                    @foreach($repuestoComponentes as $componente)
+                      <option value="{{ $componente->componente }}">{{ $componente->componente }}</option>
+                    @endforeach
                   </select>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="control-label" for="search-anio">Año: *</label>
-                  <select id="search-anio" class="form-control" disabled style="width: 100%">
+                  <label class="control-label" for="search-anio">Año:</label>
+                  <select id="search-anio" class="form-control" style="width: 100%">
                     <option value="">Seleccione...</option>
+                    @foreach($repuestoAnios as $anio)
+                      <option value="{{ $anio->anio }}">{{ $anio->anio }}</option>
+                    @endforeach
                   </select>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label class="control-label" for="search-motor">Motor: *</label>
-                  <select id="search-motor" class="form-control" disabled style="width: 100%">
+                  <label class="control-label" for="search-motor">Motor:</label>
+                  <select id="search-motor" class="form-control" style="width: 100%">
                     <option value="">Seleccione...</option>
+                    @foreach($repuestoMotores as $motor)
+                      <option value="{{ $motor->motor }}">{{ $motor->motor }}</option>
+                    @endforeach
                   </select>
                 </div>
               </div>
@@ -481,31 +490,13 @@
         </div>
         <div class="modal-body">
           <form id="repuesto-form" class="card border-0" action="{{ route('admin.repuesto.store') }}" method="POST">
-            <input id="cliente-vehiculo" type="hidden" name="cliente">
+            <input type="hidden" name="marca" value="{{ $proceso->vehiculo->vehiculo_marca_id }}">
+            <input type="hidden" name="modelo" value="{{ $proceso->vehiculo->vehiculo_modelo_id }}">
             @csrf
           
             <fieldset>
               <legend>Datos del Repuesto</legend>
               <div class="row">
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="repuesto-marca">Marca: *</label>
-                    <select id="repuesto-marca" class="form-control" name="marca" required style="width: 100%">
-                      <option value="">Seleccione...</option>
-                      @foreach($marcas as $marca)
-                        <option value="{{ $marca->id }}"{{ $proceso->vehiculo->vehiculo_marca_id == $marca->id ? ' selected' : '' }}>{{ $marca->marca }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label class="control-label" for="repuesto-modelo">Modelo: *</label>
-                    <select id="repuesto-modelo" class="form-control" name="modelo" required disabled style="width: 100%">  
-                      <option value="">Seleccione...</option>
-                    </select>
-                  </div>
-                </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="repuesto-año">Año: *</label>
@@ -831,19 +822,9 @@
       })
 
       // Repuestos
-      $('#repuesto-marca, #repuesto-modelo, #repuesto-procedencia').select2({
+      $('#repuesto-procedencia').select2({
         placeholder: 'Seleccione...',
       });
-
-      // Buscar modelos por Marca
-      $('#repuesto-marca').on('change',function () {
-        let marca = $(this).val()
-
-        if(!marca){ return false }
-
-        searchModelos(marca, '#repuesto-modelo', '.form-errors-repuesto');
-      })
-      $('#repuesto-marca').change()
 
       $('#repuesto-procedencia').change(function () {
         let procedencia = $(this).val();
@@ -903,7 +884,7 @@
                             data-venta="${data.repuesto.venta}"
                             data-stock="${data.repuesto.stock}"
                             data-costo="${data.repuesto.costo}"
-                          >${data.repuesto.descripcion}</option>
+                          >${data.repuesto.anio} | ${data.repuesto.sistema} - ${data.repuesto.componente}</option>
                           `;
             $(`#repuesto`).append(option)
             $(`#repuesto`).val(data.repuesto.id)
@@ -927,54 +908,13 @@
       })
 
       // Filtrar repuestos
-      $('#search-marca, #search-modelo, #search-anio, #search-motor, #search-insumo-formato, #search-insumo-grado, #search-insumo-marca').select2({
+      $('#search-sistema, #search-componente, #search-anio, #search-motor, #search-insumo-formato, #search-insumo-grado, #search-insumo-marca').select2({
         placeholder: 'Seleccione...',
         allowClear: true,
       });
 
-      $('#search-marca').on('change',function () {
-        let marca = $(this).val() ? $(this).val() : null;
-
-        // Buscar Modelos de la Marca
-        if(marca){
-          searchModelos(marca, '#search-modelo', '.form-errors-search-items');
-        }else{
-          $('#search-modelo, #search-anio, #search-motor').empty()
-          $('#search-modelo, #search-anio, #search-motor').prop('disabled', true)
-
-          // Buscar repuestos
-          searchRepuestos(marca);
-        }
-      });
-      $('#search-marca').change();
-
-      $('#search-modelo').on('change',function () {
-        let marca = $('#search-marca').val(),
-            modelo = $(this).val() ? $(this).val() : null;
-
-        // Buscar Año y Motor del Modelo
-        if(modelo){
-          searchAnios(modelo, '#search-anio', '.form-errors-search-items');
-          searchMotores(modelo, '#search-motor', '.form-errors-search-items');
-        }else{
-          $('#search-anio, #search-motor').empty();
-          $('#search-anio, #search-motor').prop('disabled', true);
-        }
-
-        // Buscar repuestos
-        searchRepuestos(marca, modelo);
-      });
-      $('#search-modelo').change();
-
-      $('#search-anio, #search-motor').on('change', function () {
-        let marca = $('#search-marca').val(),
-            modelo = $('#search-modelo').val(),
-            anio = $('#search-anio').val() ? $('#search-anio').val() : null,
-            motor = $('#search-motor').val() ? $('#search-motor').val() : null;
-
-        // Buscar repuestos
-        searchRepuestos(marca, modelo, anio, motor);
-      });
+      $('#search-sistema, #search-componente, #search-anio, #search-motor').change(searchRepuestos);
+      searchRepuestos();
 
       $('#search-insumo-formato, #search-insumo-grado, #search-insumo-marca').change(searchInsumo);
       searchInsumo();
@@ -989,7 +929,7 @@
       insumo: {},
     };
 
-    // Informacion del Item que sera agregado a la hija de situacion
+    // Informacion del Item que sera agregado a la hoja de situacion
     let dato = function(index, dato) {
       return `<tr id="tr-${index}" class="tr-dato" data-type="${dato.type}" data-item="${dato.item}" data-cantidad="${dato.cantidad}">
                 <td>
@@ -1110,89 +1050,21 @@
       $(ul).parent().show().delay(7000).hide('slow');
     }
 
-    // Buscar los Años por el modelo especificado
-    function searchMotores(modelo, field, list){
-      let data = {
-        modelo: modelo,
-      };
-
-      let done = function (motores) {
-        $(field).html('<option value="">Seleccione...</option>');
-
-        $.each(motores, function(k, motor){
-          $(field).append(`<option value="${motor.motor}">${motor.motor}</option>`);
-        });
-
-        $(field).prop('disabled', false);
-      };
-
-      let fail = function (response) {
-        $(field).prop('disabled', true);
-        showErrors(response.responseJSON.errors, list);
-      };
-
-      sendRequest(`{{ route("admin.repuesto.motores") }}`, data, done, fail, null, 'GET');
-    }
-
-    // Buscar los Años por el modelo especificado
-    function searchAnios(modelo, field, list){
-      let data = {
-        modelo: modelo,
-      };
-
-      let done = function (anios) {
-        $(field).html('<option value="">Seleccione...</option>');
-
-        $.each(anios, function(k, anio){
-          $(field).append(`<option value="${anio.anio}">${anio.anio}</option>`);
-        });
-
-        $(field).prop('disabled', false);
-      };
-
-      let fail = function (response) {
-        $(field).prop('disabled', true);
-        showErrors(response.responseJSON.errors, list);
-      };
-      
-      sendRequest(`{{ route("admin.repuesto.anios") }}`, data, done, fail, null, 'GET');
-    }
-
-    // Buscar los Modelos por la marca especificada
-    function searchModelos(marca, field, list){
-      let data = {
-        _token: '{{ csrf_token() }}'
-      };
-
-      let done = function (modelos) {
-        $(field).html('<option value="">Seleccione...</option>');
-        $.each(modelos, function(k, modelo){
-          let found = modelo.id == @json($proceso->vehiculo->vehiculo_modelo_id);
-          let selected = found ? 'selected' : '';
-          $(field).append(`<option value="${modelo.id}" ${selected}>${modelo.modelo}</option>`);
-          $(field).change();
-        })
-
-        $(field).prop('disabled', false)
-      };
-
-      let fail = function (response) {
-        $(field).prop('disabled', true)
-        showErrors(response.responseJSON.errors, list)
-      };
-
-      sendRequest(`{{ route("vehiculo.marca.modelos") }}/${marca}/modelos`, data, done, fail);
-    }
-
     // Buscar repuestos
-    function searchRepuestos(marca = null, modelo = null, anio = null, motor = null){
+    function searchRepuestos(){
       let repuestoField = $('#repuesto');
-      repuestoField.prop('disabled', true)
+      repuestoField.prop('disabled', true);
+
+      let sistema = $('#search-sistema').val() ? $('#search-sistema').val() : null,
+          componente = $('#search-componente').val() ? $('#search-componente').val() : null,
+          anio = $('#search-anio').val() ? $('#search-anio').val() : null,
+          motor = $('#search-motor').val() ? $('#search-motor').val() : null;
 
       let data = {
             _token: '{{ csrf_token() }}',
-            marca: marca,
-            modelo: modelo,
+            modelo: '{{ $proceso->vehiculo->vehiculo_modelo_id }}',
+            sistema: sistema,
+            componente: componente,
             anio: anio,
             motor: motor,
           };
@@ -1206,7 +1078,7 @@
                           data-venta="${repuesto.venta}"
                           data-stock="${repuesto.stock}"
                           data-costo="${repuesto.costo ?? 0}"
-                        >${repuesto.descripcion}</option>`;
+                        >${repuesto.anio} | ${repuesto.sistema} - ${repuesto.componente}</option>`;
 
           repuestoField.append(option)
         })

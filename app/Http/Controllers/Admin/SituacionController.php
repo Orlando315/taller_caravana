@@ -29,12 +29,24 @@ class SituacionController extends Controller
     {
       $this->authorize('create', [Situacion::class, $proceso]);
 
-      $marcas = VehiculosMarca::has('modelos')->get();
+      $repuestoSistemas = Repuesto::select('sistema')->where('vehiculo_modelo_id', $proceso->vehiculo->vehiculo_modelo_id)->distinct('sistema')->get();
+      $repuestoComponentes = Repuesto::select('componente')->where('vehiculo_modelo_id', $proceso->vehiculo->vehiculo_modelo_id)->distinct('componente')->get();
+      $repuestoAnios = Repuesto::select('anio')->where('vehiculo_modelo_id', $proceso->vehiculo->vehiculo_modelo_id)->distinct('anio')->orderByDesc('anio')->get();
+      $repuestoMotores = Repuesto::select('motor')->where('vehiculo_modelo_id', $proceso->vehiculo->vehiculo_modelo_id)->distinct('motor')->orderByDesc('motor')->get();
       $insumoMarcas = Insumo::marcas()->get();
       $insumoGrados = Insumo::grados()->get();
       $insumoFormatos = InsumoFormato::all();
 
-      return view('admin.situacion.create', compact('proceso', 'marcas', 'insumoMarcas', 'insumoGrados', 'insumoFormatos'));
+      return view('admin.situacion.create', compact(
+        'proceso',
+        'repuestoSistemas',
+        'repuestoComponentes',
+        'repuestoAnios',
+        'repuestoMotores',
+        'insumoMarcas',
+        'insumoGrados',
+        'insumoFormatos'
+      ));
     }
 
     /**
@@ -117,17 +129,38 @@ class SituacionController extends Controller
     {
       $this->authorize('update', $situacion);
 
-      $marcas = VehiculosMarca::has('modelos')->get();
-      $insumoMarcas = Insumo::marcas()->get();
-      $insumoGrados = Insumo::grados()->get();
-      $insumoFormatos = InsumoFormato::all();
-
+      $situacion->load([
+        'proceso.vehiculo',
+        'proceso.cliente',
+      ]);
+      
       $situacionRepuestos = $situacion->getItemsByType('repuesto')->get();
       $situacionInsumos = $situacion->getItemsByType('insumo')->get();
       $situacionHoras = $situacion->getItemsByType()->get();
       $situacionOtros = $situacion->getItemsByType('otros')->get();
 
-      return view('admin.situacion.edit', compact('situacion', 'marcas', 'insumoMarcas', 'insumoGrados', 'insumoFormatos', 'situacionRepuestos', 'situacionInsumos', 'situacionHoras', 'situacionOtros'));
+      $repuestoSistemas = Repuesto::select('sistema')->where('vehiculo_modelo_id', $situacion->proceso->vehiculo->vehiculo_modelo_id)->distinct('sistema')->get();
+      $repuestoComponentes = Repuesto::select('componente')->where('vehiculo_modelo_id', $situacion->proceso->vehiculo->vehiculo_modelo_id)->distinct('componente')->get();
+      $repuestoAnios = Repuesto::select('anio')->where('vehiculo_modelo_id', $situacion->proceso->vehiculo->vehiculo_modelo_id)->distinct('anio')->orderByDesc('anio')->get();
+      $repuestoMotores = Repuesto::select('motor')->where('vehiculo_modelo_id', $situacion->proceso->vehiculo->vehiculo_modelo_id)->distinct('motor')->orderByDesc('motor')->get();
+      $insumoMarcas = Insumo::marcas()->get();
+      $insumoGrados = Insumo::grados()->get();
+      $insumoFormatos = InsumoFormato::all();
+
+      return view('admin.situacion.edit', compact(
+        'situacion',
+        'situacionRepuestos',
+        'situacionInsumos',
+        'situacionHoras',
+        'situacionOtros',
+        'repuestoSistemas',
+        'repuestoComponentes',
+        'repuestoAnios',
+        'repuestoMotores',
+        'insumoMarcas',
+        'insumoGrados',
+        'insumoFormatos'
+      ));
     }
 
     /**

@@ -150,10 +150,12 @@ class RepuestoController extends Controller
                     'venta' => $lastRepuesto->venta,
                     'costo' => $lastRepuesto->extra->costo_total,
                     'stock' => $lastRepuesto->stock,
+                    'anio' => $lastRepuesto->anio,
+                    'sistema' => $lastRepuesto->sistema,
+                    'componente' => $lastRepuesto->componente,
                   ]
                 ]);
       }
-
 
       $route = $total == 1 ? route('admin.repuesto.show', ['repuesto' => $lastRepuesto->id]) : route('admin.repuesto.index');
       $message = $total == 1 ? 'Repuesto agregado exitosamente.' : 'Repuestos agregados exitosamente.';
@@ -305,11 +307,12 @@ class RepuestoController extends Controller
      */
     public function search(Request $request)
     {
-      $repuestos = Repuesto::when($request->marca, function ($query, $marca){
-        return $query->where('vehiculo_marca_id', $marca);
+      $repuestos = Repuesto::where('vehiculo_modelo_id', $request->modelo)
+      ->when($request->sistema, function ($query, $sistema){
+        return $query->where('sistema', $sistema);
       })
-      ->when($request->modelo, function ($query, $modelo){
-        return $query->where('vehiculo_modelo_id', $modelo);
+      ->when($request->componente, function ($query, $componente){
+        return $query->where('componente', $componente);
       })
       ->when($request->anio, function ($query, $anio){
         return $query->where('anio', $anio);
@@ -326,6 +329,9 @@ class RepuestoController extends Controller
                 'venta' => $repuesto->venta,
                 'costo' => $repuesto->extra->costo_total,
                 'stock' => $repuesto->stock,
+                'anio' => $repuesto->anio,
+                'sistema' => $repuesto->sistema,
+                'componente' => $repuesto->componente,
               ];
       });
 
@@ -458,30 +464,5 @@ class RepuestoController extends Controller
               'flash_class' => 'alert-danger',
               'flash_important' => true
             ]);
-    }
-
-    /**
-     * Obtener los anios segun el modelo procporcionado
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function anios(Request $request)
-    {
-      $anios = Repuesto::select('anio')->where('vehiculo_modelo_id', $request->modelo)->distinct('anio')->orderByDesc('anio')->get();
-      return response()->json($anios);
-    }
-
-
-    /**
-     * Obtener los motores segun el modelo procporcionado
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function motores(Request $request)
-    {
-      $motores = Repuesto::select('motor')->where('vehiculo_modelo_id', $request->modelo)->distinct('motor')->orderByDesc('motor')->get();
-      return response()->json($motores);
     }
 }

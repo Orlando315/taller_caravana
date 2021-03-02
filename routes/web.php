@@ -98,11 +98,6 @@ Route::group(['middleware' => 'auth'], function (){
           ->only(['destroy']);
     Route::post('proveedor/vehiculo/modelos','ProveedorVehiculoController@search_modelo')->name('proveedor.vehiculo.search.modelo');
 
-    /* --- Obtener los Años de los repuestos registrados --- */
-    Route::get('repuesto/anios', 'RepuestoController@anios')->name('repuesto.anios');
-    /* --- Obtener los Motore de los repuestos registrados --- */
-    Route::get('respuesto/motores', 'RepuestoController@motores')->name('repuesto.motores');
-
     /* --- Repuestos --- */
     Route::post('repuesto/search', 'RepuestoController@search')->name('repuesto.search');
     Route::get('repuesto/create/masivo', 'RepuestoController@masivo')->name('repuesto.create.masivo');
