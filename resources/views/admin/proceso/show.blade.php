@@ -351,18 +351,18 @@
                 <table class="table table-striped table-bordered table-hover table-sm font-small m-0" style="width: 100%">
                   <tbody>
                     <tr>
-                      <td colspan="{{ Auth::user()->isAdmin() ? '8' : '7' }}">REPUESTOS</td>
+                      <th colspan="{{ Auth::user()->isAdmin() ? '8' : '7' }}">REPUESTOS</th>
                     </tr>
                     <tr>
-                      <th>DETALLE</th>
-                      <th>PRECIO COSTO</th>
-                      <th>UTILIDAD</th>
-                      <th>DESCUENTO</th>
-                      <th>CANT</th>
-                      <th>PRECIO</th>
+                      <td>DETALLE</td>
+                      <td>PRECIO COSTO</td>
+                      <td>UTILIDAD</td>
+                      <td>DESCUENTO</td>
+                      <td>CANT</td>
+                      <td>PRECIO</td>
                       <th>TOTAL</th>
                       @if(Auth::user()->isAdmin())
-                      <th class="text-center">ACCIÓN</th>
+                      <td class="text-center">ACCIÓN</td>
                       @endif
                     </tr>
                     @foreach($situacionRepuestos as $repuesto)
@@ -394,18 +394,18 @@
                       @endif
                     </tr>
                     <tr>
-                      <td colspan="{{ Auth::user()->isAdmin() ? '8' : '7' }}">LIBRICANTES E INSUMOS</td>
+                      <th colspan="{{ Auth::user()->isAdmin() ? '8' : '7' }}">LIBRICANTES E INSUMOS</th>
                     </tr>
                     <tr>
-                      <th>DETALLE</th>
-                      <th>PRECIO COSTO</th>
-                      <th>UTILIDAD</th>
-                      <th>DESCUENTO</th>
-                      <th>CANT</th>
-                      <th>PRECIO</th>
+                      <td>DETALLE</td>
+                      <td>PRECIO COSTO</td>
+                      <td>UTILIDAD</td>
+                      <td>DESCUENTO</td>
+                      <td>CANT</td>
+                      <td>PRECIO</td>
                       <th>TOTAL</th>
                       @if(Auth::user()->isAdmin())
-                      <th class="text-center">ACCIÓN</th>
+                      <td class="text-center">ACCIÓN</td>
                       @endif
                     </tr>
                     @foreach($situacionInsumos as $insumo)
@@ -437,18 +437,18 @@
                       @endif
                     </tr>
                     <tr>
-                      <td colspan="{{ Auth::user()->isAdmin() ? '8' : '7' }}">MANO DE OBRA</td>
+                      <th colspan="{{ Auth::user()->isAdmin() ? '8' : '7' }}">MANO DE OBRA</th>
                     </tr>
                     <tr>
-                      <th>DETALLE</th>
-                      <th>PRECIO COSTO</th>
-                      <th>UTILIDAD</th>
-                      <th>DESCUENTO</th>
-                      <th>CANT</th>
-                      <th>PRECIO</th>
+                      <td>DETALLE</td>
+                      <td>PRECIO COSTO</td>
+                      <td>UTILIDAD</td>
+                      <td>DESCUENTO</td>
+                      <td>CANT</td>
+                      <td>PRECIO</td>
                       <th>TOTAL</th>
                       @if(Auth::user()->isAdmin())
-                      <th class="text-center">ACCIÓN</th>
+                      <td class="text-center">ACCIÓN</td>
                       @endif
                     </tr>
                     @foreach($situacionHoras as $hora)
@@ -457,7 +457,7 @@
                         <td class="text-right">{{ $hora->costo() }}</td>
                         <td class="text-right">{{ $hora->utilidad() }}</td>
                         <td class="text-right">{{ $hora->descuentoText() }}</td>
-                        <td class="text-center">{{ $hora->cantidad() }}</td>
+                        <td class="text-center">{{ $hora->cantidad(1) }}</td>
                         <td class="text-right">{{ $hora->valorVenta() }}</td>
                         <td class="text-right">{{ $hora->total() }}</td>
                         @if(Auth::user()->isAdmin())
@@ -480,18 +480,18 @@
                       @endif
                     </tr>
                     <tr>
-                      <td colspan="{{ Auth::user()->isAdmin() ? '8' : '7' }}">OTROS</td>
+                      <th colspan="{{ Auth::user()->isAdmin() ? '8' : '7' }}">OTROS</th>
                     </tr>
                     <tr>
-                      <th>DETALLE</th>
-                      <th>PRECIO COSTO</th>
-                      <th>UTILIDAD</th>
-                      <th>DESCUENTO</th>
-                      <th>CANT</th>
-                      <th>PRECIO</th>
+                      <td>DETALLE</td>
+                      <td>PRECIO COSTO</td>
+                      <td>UTILIDAD</td>
+                      <td>DESCUENTO</td>
+                      <td>CANT</td>
+                      <td>PRECIO</td>
                       <th>TOTAL</th>
                       @if(Auth::user()->isAdmin())
-                      <th class="text-center">ACCIÓN</th>
+                      <td class="text-center">ACCIÓN</td>
                       @endif
                     </tr>
                     @foreach($situacionOtros as $otro)

@@ -23,6 +23,7 @@ class Proceso extends Model
     protected $fillable = [
       'cliente_id',
       'vehiculo_id',
+      'etapa',
     ];
 
     /**

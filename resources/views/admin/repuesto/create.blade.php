@@ -136,8 +136,8 @@
                           </select>
                         </div>
                         <div class="form-group m-0" style="display: none">
-                          <label class="control-label" for="moneda-valor-{{ $index }}">Especificar valor: *</label>
-                          <input id="moneda-valor-{{ $index }}" class="form-control{{ $errors->has('repuesto.'.$index.'.moneda_valor') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][moneda_valor]" value="{{ old('repuesto.'.$index.'.moneda_valor', ($clone ? $clone->extra->moneda_valor : '')) }}" placeholder="Especificar valor">
+                          <label class="control-label" for="moneda-valor-{{ $index }}">Valor Dolar/Euro: *</label>
+                          <input id="moneda-valor-{{ $index }}" class="form-control{{ $errors->has('repuesto.'.$index.'.moneda_valor') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="repuesto[{{ $index }}][moneda_valor]" value="{{ old('repuesto.'.$index.'.moneda_valor', ($clone ? $clone->extra->moneda_valor : '')) }}" placeholder="Valor Dolar/Euro">
                         </div>
                       </div>
                       <div class="col-md-3">
@@ -300,7 +300,7 @@
           let oldSelected = index ? getOldValue(index, 'modelo') : '';
 
           if(index == 1 && CLONE){
-            oldSelected = @json($clone->vehiculo_modelo_id);
+            oldSelected = @json(optional($clone)->vehiculo_modelo_id);
           }
 
           $.each(modelos, function(k, modelo){
@@ -396,7 +396,7 @@
       let oldSelected = index ? getOldValue(index, 'marca') : '';
 
       if(index == 1 && CLONE){
-        oldSelected = @json($clone->vehiculo_marca_id);
+        oldSelected = @json(optional($clone)->vehiculo_marca_id);
       }
 
       $.each(MARCAS, function (value, marca){
@@ -633,8 +633,8 @@
                         </select>
                       </div>
                       <div class="form-group m-0" style="display: none">
-                        <label class="control-label" for="moneda-valor-${index}">Especificar valor: *</label>
-                        <input id="moneda-valor-${index}" class="form-control" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][moneda_valor]" value="" placeholder="Especificar valor">
+                        <label class="control-label" for="moneda-valor-${index}">Valor Dolar/Euro: *</label>
+                        <input id="moneda-valor-${index}" class="form-control" type="number" step="0.01" min="0" max="99999999" name="repuesto[${index}][moneda_valor]" value="" placeholder="Valor Dolar/Euro">
                       </div>
                     </div>
                     <div class="col-md-3">

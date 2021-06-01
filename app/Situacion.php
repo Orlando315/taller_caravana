@@ -141,10 +141,24 @@ class Situacion extends Model
       }
 
       if(count($items['insumo']) > 0){
-        foreach ($items['insumo'] as $insumo) {
-          Insumo::find($insumo['id'])
-                ->stockEnUso
-                ->$function('stock', $insumo['cantidad']);
+        foreach($items['insumo'] as $dataInsumo){
+          $cantidad = $dataInsumo['cantidad'];
+          $insumo = Insumo::find($dataInsumo['id']);
+          $stockEnUso = $insumo->stockEnUso;
+
+          if($function == 'decrement' && $stockEnUso->stock < $cantidad){
+            foreach($insumo->stocks as $stock){
+              $aRestar = ($stock->stock < $cantidad) ? $stock->stock : $cantidad;
+              $cantidad -= $aRestar;
+              $stock->decrement('stock', $aRestar);
+
+              if($cantidad <= 0){
+                break;
+              }
+            }
+          }else{
+            $stockEnUso->$function('stock', $cantidad);
+          }
         }
       }
     }

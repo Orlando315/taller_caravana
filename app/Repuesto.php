@@ -180,7 +180,7 @@ class Repuesto extends Model
      */
     public function descripcion()
     {
-      return $this->nro_oem.' | '.$this->marcaModeloAnio();
+      return $this->componente.' - '.$this->sistema.' - '.$this->modelo->modelo;
     }
 
     /**

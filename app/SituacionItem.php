@@ -110,10 +110,12 @@ class SituacionItem extends Model
 
     /**
      * Obtener el atributo formateado
+     *
+     * @param  int  $decimals
      */
-    public function cantidad()
+    public function cantidad($decimals = 0)
     {
-      return number_format($this->cantidad, 0, ',', '.');
+      return number_format($this->cantidad, $decimals, ',', '.');
     }
 
     /**

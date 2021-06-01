@@ -165,15 +165,15 @@
                     <table class="table table-striped table-bordered table-hover table-sm font-small m-0" style="width: 100%">
                       <tbody>
                         <tr>
-                          <td colspan="7">REPUESTOS</td>
+                          <th colspan="7">REPUESTOS</th>
                         </tr>
                         <tr>
-                          <th>DETALLE</th>
-                          <th>PRECIO COSTO</th>
-                          <th>UTILIDAD</th>
-                          <th>DESCUENTO</th>
-                          <th>CANT</th>
-                          <th>PRECIO</th>
+                          <td>DETALLE</td>
+                          <td>PRECIO COSTO</td>
+                          <td>UTILIDAD</td>
+                          <td>DESCUENTO</td>
+                          <td>CANT</td>
+                          <td>PRECIO</td>
                           <th>TOTAL</th>
                         </tr>
                         @foreach($repuestos as $repuesto)
@@ -193,15 +193,15 @@
                           <td class="text-right">{{ $cotizacion->sumValue('total', false, 2, 'repuesto') }}</td>
                         </tr>
                         <tr>
-                          <td colspan="7">LIBRICANTES E INSUMOS</td>
+                          <th colspan="7">LIBRICANTES E INSUMOS</th>
                         </tr>
                         <tr>
-                          <th>DETALLE</th>
-                          <th>PRECIO COSTO</th>
-                          <th>UTILIDAD</th>
-                          <th>DESCUENTO</th>
-                          <th>CANT</th>
-                          <th>PRECIO</th>
+                          <td>DETALLE</td>
+                          <td>PRECIO COSTO</td>
+                          <td>UTILIDAD</td>
+                          <td>DESCUENTO</td>
+                          <td>CANT</td>
+                          <td>PRECIO</td>
                           <th>TOTAL</th>
                         </tr>
                         @foreach($insumos as $insumo)
@@ -221,15 +221,15 @@
                           <td class="text-right">{{ $cotizacion->sumValue('total', false, 2, 'insumo') }}</td>
                         </tr>
                         <tr>
-                          <td colspan="7">MANO DE OBRA</td>
+                          <th colspan="7">MANO DE OBRA</th>
                         </tr>
                         <tr>
-                          <th>DETALLE</th>
-                          <th>PRECIO COSTO</th>
-                          <th>UTILIDAD</th>
-                          <th>DESCUENTO</th>
-                          <th>CANT</th>
-                          <th>PRECIO</th>
+                          <td>DETALLE</td>
+                          <td>PRECIO COSTO</td>
+                          <td>UTILIDAD</td>
+                          <td>DESCUENTO</td>
+                          <td>CANT</td>
+                          <td>PRECIO</td>
                           <th>TOTAL</th>
                         </tr>
                         @foreach($horas as $hora)
@@ -249,15 +249,15 @@
                           <td class="text-right">{{ $cotizacion->sumValue('total', false, 2, 'horas') }}</td>
                         </tr>
                         <tr>
-                          <td colspan="7">OTROS</td>
+                          <th colspan="7">OTROS</th>
                         </tr>
                         <tr>
-                          <th>DETALLE</th>
-                          <th>PRECIO COSTO</th>
-                          <th>UTILIDAD</th>
-                          <th>DESCUENTO</th>
-                          <th>CANT</th>
-                          <th>PRECIO</th>
+                          <td>DETALLE</td>
+                          <td>PRECIO COSTO</td>
+                          <td>UTILIDAD</td>
+                          <td>DESCUENTO</td>
+                          <td>CANT</td>
+                          <td>PRECIO</td>
                           <th>TOTAL</th>
                         </tr>
                         @foreach($otros as $otro)
@@ -278,15 +278,15 @@
                         </tr>
                         @if($imprevistosCliente->count() > 0)
                           <tr>
-                            <td colspan="7">COSTOS EXTRA</td>
+                            <th colspan="7">COSTOS EXTRA</th>
                           </tr>
                           <tr>
-                            <th>DETALLE</th>
-                            <th>PRECIO COSTO</th>
-                            <th>UTILIDAD</th>
-                            <th>DESCUENTO</th>
-                            <th>CANT</th>
-                            <th>PRECIO</th>
+                            <td>DETALLE</td>
+                            <td>PRECIO COSTO</td>
+                            <td>UTILIDAD</td>
+                            <td>DESCUENTO</td>
+                            <td>CANT</td>
+                            <td>PRECIO</td>
                             <th>TOTAL</th>
                           </tr>
                           @foreach($imprevistosCliente as $imprevistoCliente)

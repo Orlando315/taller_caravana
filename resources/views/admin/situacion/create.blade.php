@@ -143,7 +143,7 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label for="cantidad">Cantidad:</label>
-                  <input id="cantidad" class="form-control" type="number" min="1" max="9999" required>
+                  <input id="cantidad" class="form-control" type="number" min="1" max="9999" step="0.1" required>
                 </div>
               </div><!-- .col-md-3 -->
 
@@ -1078,7 +1078,7 @@
                           data-venta="${repuesto.venta}"
                           data-stock="${repuesto.stock}"
                           data-costo="${repuesto.costo ?? 0}"
-                        >${repuesto.anio} | ${repuesto.sistema} - ${repuesto.componente}</option>`;
+                        >${repuesto.descripcion}</option>`;
 
           repuestoField.append(option)
         })
@@ -1114,7 +1114,7 @@
           let option = `<option value="${insumo.id}"
                 data-titulo="${insumo.descripcion}"
                 data-venta="${insumo.venta}"
-                data-stock="${insumo.venta}"
+                data-stock="${insumo.stock}"
                 data-costo="${insumo.costo}">${insumo.tipo} | ${insumo.marca} | ${insumo.nombre} | ${insumo.grado} | (${insumo.formato})</option>`;
 
           insumoField.append(option);
