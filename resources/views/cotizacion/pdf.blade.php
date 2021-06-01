@@ -24,12 +24,12 @@
   <table class="table table-bordered table-sm" style="width: 100%;">
     <tbody>
       <tr>
-        <td colspan="4">REPUESTOS</td>
+        <td colspan="4"><strong>REPUESTOS</strong></td>
       </tr>
       <tr>
-        <td class="border-top-0 border-left-0"><strong>DETALLE</strong></td>
-        <td class="border-top-0 border-left-0"><strong>CANT</strong></td>
-        <td class="border-top-0 border-left-0"><strong>PRECIO</strong></td>
+        <td class="border-top-0 border-left-0">DETALLE</td>
+        <td class="border-top-0 border-left-0">CANT</td>
+        <td class="border-top-0 border-left-0">PRECIO</td>
         <td class="border-0"><strong>TOTAL</strong></td>
       </tr>
       @foreach($repuestos as $repuesto)
@@ -46,12 +46,12 @@
         <td class="text-right border-bottom-0">{{ $cotizacion->sumValue('total', false, 2, 'repuesto') }}</td>
       </tr>
       <tr>
-        <td colspan="4">LIBRICANTES E INSUMOS</td>
+        <td colspan="4"><strong>LIBRICANTES E INSUMOS</strong></td>
       </tr>
       <tr>
-        <td class="border-top-0 border-left-0"><strong>DETALLE</strong></td>
-        <td class="border-top-0 border-left-0"><strong>CANT</strong></td>
-        <td class="border-top-0 border-left-0"><strong>PRECIO</strong></td>
+        <td class="border-top-0 border-left-0">DETALLE</td>
+        <td class="border-top-0 border-left-0">CANT</td>
+        <td class="border-top-0 border-left-0">PRECIO</td>
         <td class="border-0"><strong>TOTAL</strong></td>
       </tr>
       @foreach($insumos as $insumo)
@@ -68,12 +68,12 @@
         <td class="text-right border-bottom-0">{{ $cotizacion->sumValue('total', false, 2, 'insumo') }}</td>
       </tr>
       <tr>
-        <td colspan="4">MANO DE OBRA</td>
+        <td colspan="4"><strong>MANO DE OBRA</strong></td>
       </tr>
       <tr>
-        <td class="border-top-0 border-left-0"><strong>DETALLE</strong></td>
-        <td class="border-top-0 border-left-0"><strong>CANT</strong></td>
-        <td class="border-top-0 border-left-0"><strong>PRECIO</strong></td>
+        <td class="border-top-0 border-left-0">DETALLE</td>
+        <td class="border-top-0 border-left-0">CANT</td>
+        <td class="border-top-0 border-left-0">PRECIO</td>
         <td class="border-0"><strong>TOTAL</strong></td>
       </tr>
       @foreach($horas as $hora)
@@ -91,12 +91,12 @@
       </tr>
       @if($imprevistosCliente->count() > 0)
         <tr>
-          <td colspan="4">COSTOS EXTRAS</td>
+          <td colspan="4"><strong>COSTOS EXTRAS</strong></td>
         </tr>
         <tr>
-          <td class="border-top-0 border-left-0"><strong>DETALLE</strong></td>
-          <td class="border-top-0 border-left-0"><strong>CANT</strong></td>
-          <td class="border-top-0 border-left-0"><strong>PRECIO</strong></td>
+          <td class="border-top-0 border-left-0">DETALLE</td>
+          <td class="border-top-0 border-left-0">CANT</td>
+          <td class="border-top-0 border-left-0">PRECIO</td>
           <td class="border-0"><strong>TOTAL</strong></td>
         </tr>
         @foreach($imprevistosCliente as $imprevisto)

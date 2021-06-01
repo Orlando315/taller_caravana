@@ -52,15 +52,15 @@
               <table class="table table-striped table-bordered table-hover table-sm font-small" style="width: 100%">
                 <tbody>
                   <tr>
-                    <td colspan="8">REPUESTOS</td>
+                    <td colspan="8"><strong>REPUESTOS</strong></td>
                   </tr>
                   <tr>
-                    <th>DETALLE</th>
-                    <th>PRECIO COSTO</th>
-                    <th>UTILIDAD</th>
-                    <th>DESCUENTO</th>
-                    <th>CANT</th>
-                    <th>PRECIO</th>
+                    <td>DETALLE</td>
+                    <td>PRECIO COSTO</td>
+                    <td>UTILIDAD</td>
+                    <td>DESCUENTO</td>
+                    <td>CANT</td>
+                    <td>PRECIO</td>
                     <th>TOTAL</th>
                     <td class="text-center">
                       <div class="form-group m-0">
@@ -99,17 +99,17 @@
                     </tr>
                   @endforeach
                   <tr>
-                    <td colspan="8">LIBRICANTES E INSUMOS</td>
+                    <td colspan="8"><strong>LIBRICANTES E INSUMOS</strong></td>
                   </tr>
                   <tr>
-                    <th>DETALLE</th>
-                    <th>PRECIO COSTO</th>
-                    <th>UTILIDAD</th>
-                    <th>DESCUENTO</th>
-                    <th>CANT</th>
-                    <th>PRECIO</th>
+                    <td>DETALLE</td>
+                    <td>PRECIO COSTO</td>
+                    <td>UTILIDAD</td>
+                    <td>DESCUENTO</td>
+                    <td>CANT</td>
+                    <td>PRECIO</td>
                     <th>TOTAL</th>
-                    <th></th>
+                    <td></td>
                   </tr>
                   @foreach($insumos as $insumo)
                     <tr>
@@ -137,17 +137,17 @@
                     </tr>
                   @endforeach
                   <tr>
-                    <td colspan="8">MANO DE OBRA</td>
+                    <td colspan="8"><strong>MANO DE OBRA</strong></td>
                   </tr>
                   <tr>
-                    <th>DETALLE</th>
-                    <th>PRECIO COSTO</th>
-                    <th>UTILIDAD</th>
-                    <th>DESCUENTO</th>
-                    <th>CANT</th>
-                    <th>PRECIO</th>
+                    <td>DETALLE</td>
+                    <td>PRECIO COSTO</td>
+                    <td>UTILIDAD</td>
+                    <td>DESCUENTO</td>
+                    <td>CANT</td>
+                    <td>PRECIO</td>
                     <th>TOTAL</th>
-                    <th></th>
+                    <td></td>
                   </tr>
                   @foreach($horas as $hora)
                     <tr>
@@ -175,17 +175,17 @@
                     </tr>
                   @endforeach
                   <tr>
-                    <td colspan="8">OTROS</td>
+                    <td colspan="8"><strong>OTROS</strong></td>
                   </tr>
                   <tr>
-                    <th>DETALLE</th>
-                    <th>PRECIO COSTO</th>
-                    <th>UTILIDAD</th>
-                    <th>DESCUENTO</th>
-                    <th>CANT</th>
-                    <th>PRECIO</th>
+                    <td>DETALLE</td>
+                    <td>PRECIO COSTO</td>
+                    <td>UTILIDAD</td>
+                    <td>DESCUENTO</td>
+                    <td>CANT</td>
+                    <td>PRECIO</td>
                     <th>TOTAL</th>
-                    <th></th>
+                    <td></td>
                   </tr>
                   @foreach($otros as $otro)
                     <tr>
