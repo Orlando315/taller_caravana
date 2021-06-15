@@ -664,22 +664,7 @@
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="control-label" for="repuesto-generales">Gastos generales:</label>
-                    <input id="repuesto-generales" class="form-control" type="number" step="0.01" min="0" max="99999999" name="generales" maxlength="50" placeholder="Gastos generales">
-                  </div>
-                  <div class="form-group" style="display: none">
-                    <label class="control-label" for="repuesto-generales-internacional">Gastos generales:</label>
-                    <select id="repuesto-generales-internacional" class="custom-select field-internacional" name="generales" disabled>
-                      <option value="">Seleccione...</option>
-                      <option value="0">Monto específico</option>
-                      <option value="15">15%</option>
-                      <option value="20">20%</option>
-                      <option value="25">25%</option>
-                      <option value="30">30%</option>
-                    </select>
-                  </div>
-                  <div class="form-group m-0" style="display: none">
-                    <label class="control-label" for="repuesto-generales_total-internacional">Especificar gastos generales:</label>
-                    <input id="repuesto-generales_total-internacional" class="form-control" type="number" step="0.01" min="0" max="99999999" name="generales_total" placeholder="Especificar">
+                    <input id="repuesto-generales" class="form-control" type="number" step="0.01" min="0" max="99999999" name="generales" value="1.3" maxlength="50" placeholder="Gastos generales">
                   </div>
                 </div>
                 <div class="col-md-3">
@@ -687,18 +672,9 @@
                     <label class="control-label" for="repuesto-envio">Envio:</label>
                     <input id="repuesto-envio" class="form-control field-nacional" type="number" step="0.01" min="0" max="99999999" name="envio" placeholder="Envio">
                   </div>
-                  <div class="form-group" style="display: none">
-                    <label class="control-label" for="repuesto-impuestos-internacional">Impuestos:</label>
-                    <select id="repuesto-impuestos-internacional" class="custom-select field-internacional" name="impuestos">
-                      <option value="">Seleccione...</option>
-                      <option value="0">Monto específico</option>
-                      <option value="19">19% del FOB</option>
-                      <option value="25">25% del FOB</option>
-                    </select>
-                  </div>
                   <div class="form-group m-0" style="display: none">
-                    <label class="control-label" for="repuesto-impuestos_total-internacional">Especificar impuestos:</label>
-                    <input id="repuesto-impuestos_total-internacional" class="form-control" type="number" step="0.01" min="0" max="99999999" name="impuestos_total" placeholder="Especificar">
+                    <label class="control-label" for="repuesto-impuestos-internacional">Impuestos:</label>
+                    <input id="repuesto-impuestos-internacional" class="form-control field-internacional" type="number" step="0.01" min="0" max="99999999" name="impuestos" value="1.25" placeholder="Especificar">
                   </div>
                 </div>
               </div>
@@ -720,12 +696,6 @@
                   <div class="form-group" style="display: none">
                     <label class="control-label" for="repuesto-casilla-internacional">Gastos casilla:</label>
                     <input id="repuesto-casilla-internacional" class="form-control field-internacional" type="number" step="0.01" min="0" max="99999999" name="casilla" placeholder="Gastos casilla">
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group" style="display: none">
-                    <label class="control-label" for="repuesto-tramitacion-internacional">Costo tramitación:</label>
-                    <input id="repuesto-tramitacion-internacional" class="form-control field-internacional" type="number" step="0.01" min="0" max="99999999" name="tramitacion" maxlength="50" placeholder="Costo tramitación">
                   </div>
                 </div>
               </div>
@@ -897,34 +867,16 @@
 
       $('#repuesto-procedencia').change(function () {
         let procedencia = $(this).val();
+        let isInternacional = procedencia == 'internacional';
 
         $('#procedencia-title').text(procedencia.charAt(0).toUpperCase() + procedencia.slice(1));
 
-        $('#repuesto-generales').prop('disabled', (procedencia == 'internacional')).closest('.form-group').toggle(!(procedencia == 'internacional'));
         $('.field-local').prop('disabled', !(procedencia == 'local')).closest('.form-group').toggle(procedencia == 'local');
         $('.field-nacional').prop('disabled', !(procedencia == 'nacional')).closest('.form-group').toggle(procedencia == 'nacional');
-        $('.field-internacional').prop('disabled', !(procedencia == 'internacional')).closest('.form-group').toggle(procedencia == 'internacional');
-        $('.group-field-internacional').toggle(procedencia == 'internacional');
-
-        if(procedencia != 'internacional'){
-          $('#repuesto-generales_total-internacional, #repuesto-impuestos_total-internacional').prop('disabled', true).closest('.form-group').toggle(false);
-        }else{
-          $('#repuesto-impuestos-internacional, #repuesto-generales-internacional').change();
-        }
+        $('.field-internacional').prop('disabled', !isInternacional).closest('.form-group').toggle(isInternacional);
+        $('.group-field-internacional').toggle(isInternacional);
+        $('#impuestos-internacional').prop('disabled', !isInternacional).closest('.form-group').toggle(isInternacional);
       });
-      $('#repuesto-procedencia').change();
-
-      $('#repuesto-impuestos-internacional').change(function () {
-        let isZero = $(this).val() == '0';
-        $('#repuesto-impuestos_total-internacional').prop('disabled', !isZero).closest('.form-group').toggle(isZero);
-      })
-      $('#repuesto-impuestos-internacional').change();
-
-      $('#repuesto-generales-internacional').change(function () {
-        let isZero = $(this).val() == '0';
-        $('#repuesto-generales_total-internacional').prop('disabled', !isZero).closest('.form-group').toggle(isZero);
-      })
-      $('#repuesto-generales-internacional').change();
 
       $('#repuesto-moneda').change(function () {
         let isPeso = $(this).val() == 'peso';
@@ -1202,52 +1154,52 @@
     function precioSugerido() {
       let moneda = $('#repuesto-moneda').val();
       let valorMoneda = moneda == 'peso' ? 1 : +$('#repuesto-moneda-valor').val();
+      let cantidad = +$('#repuesto-stock').val();
+      let costoRepuesto = +$('#repuesto-costo').val();
 
       if(moneda != 'peso' && !valorMoneda){
         showErrors(['Debe completar el valor de la moneda seleccionada'], '.form-errors-repuesto');
         return;
       }
 
-      let type = $('#repuesto-procedencia').val();
-      let field = $('#repuesto-venta');
-      let costo = (+$('#repuesto-costo').val() * valorMoneda);
-      let generales = +$('#repuesto-generales').val();
-      let subtotal = 0;
-
-      if(type == 'local'){
-        subtotal = (costo + (generales * valorMoneda));
-      }else if(type == 'nacional'){
-        let envio = +$('#repuesto-envio').val();
-        subtotal += costo + (generales * valorMoneda) + (envio * valorMoneda);
-      }else{
-        let envio1 = (+$('#repuesto-envio1-internacional').val() * valorMoneda);
-        let envio2 = (+$('#repuesto-envio2-internacional').val() * valorMoneda);
-        let casilla = +$('#repuesto-casilla-internacional').val();
-        let impuestos = +$('#repuesto-impuestos-internacional').val();
-        let impuestosTotal = (+$('#repuesto-impuestos_total-internacional').val() * valorMoneda);
-        let generalesTotal = (+$('#repuesto-generales_total-internacional').val() * valorMoneda);
-        let tramitacion = +$('#repuesto-tramitacion-internacional').val();
-        let generalesInternacional = +$('#repuesto-generales-internacional').val();
-
-        subtotal += costo + envio1 + envio2;
-        impuestosTotal = (impuestos > 0) ? calculateImpuestosTotal(subtotal, impuestos) : impuestosTotal;
-        subtotal += impuestosTotal + casilla;
-        generalesTotal = (generalesInternacional > 0) ? calculateGeneralesTotal(subtotal, generalesInternacional) : generalesTotal;
-        subtotal += generalesTotal + tramitacion;
+      if(!cantidad){
+        showAlert('Debe introducir una cantidad en Stock');
+        return;
       }
 
-      let total = subtotal + ((subtotal * PORCENTAJE_GANANCIA) / 100);
-      field.val(total.toFixed(2));
-    }
+      let type = $('#repuesto-procedencia').val();
+      let fieldVenta = $('#repuesto-venta');
+      let gastosGenerales = +$('#repuesto-generales').val();
 
-    // Solo internacional
-    function calculateImpuestosTotal(costoBase, impuestos) {
-      return (costoBase * impuestos) / 100;
-    }
+      let costo = costoRepuesto * cantidad;
+      let porc = costo / (costoRepuesto * cantidad);
+      let costoTotal = 0;
 
-    // Solo internacional
-    function calculateGeneralesTotal(costoBase, generales) {
-      return (costoBase * generales) / 100;
+
+      if(type == 'local'){
+        costoTotal = costo;
+      }else if(type == 'nacional'){
+        let flete = +$('#repuesto-envio').val();
+        let envio = flete * porc;
+
+        costoTotal = costo + envio;
+      }else{
+        let impuestos = +$('#repuesto-impuestos-internacional').val();
+        let flete1 = +$('#repuesto-envio1-internacional').val();
+        let flete2 = +$('#repuesto-envio2-internacional').val();
+        let comisionCasilla = +$('#repuesto-casilla-internacional').val();
+        let envio1 = flete1 * porc;
+        let envio2 = flete2 * porc;
+        let costoEnvioTotal = costo + envio1 + envio2;
+
+        let impuestoTotal = impuestos * costoEnvioTotal;
+        costoTotal = impuestoTotal + ((comisionCasilla * porc) / valorMoneda);
+      }
+
+      let gastosGeneralesTotal = costoTotal * gastosGenerales;
+      let sugerido = ((gastosGeneralesTotal * valorMoneda) / cantidad);
+
+      fieldVenta.val(sugerido.toFixed(2));
     }
 
     // Relizar peticiones por ajax

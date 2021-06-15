@@ -157,39 +157,15 @@
                     <label class="control-label" for="generales">Gastos generales:</label>
                     <input id="generales" class="form-control{{ $errors->has('generales') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="generales" maxlength="50" value="{{ old('generales', $repuesto->extra->generales) }}" placeholder="Gastos generales">
                   </div>
-                  <div class="form-group" style="display: none">
-                    <label class="control-label" for="generales-internacional">Gastos generales:</label>
-                    <select id="generales-internacional" class="custom-select field-internacional" name="generales" disabled>
-                      <option value="">Seleccione...</option>
-                      <option value="0"{{ old('generales', $repuesto->extra->generales) == '0' ? ' selected' : '' }}>Monto específico</option>
-                      <option value="15"{{ old('generales', $repuesto->extra->generales) == '15' ? ' selected' : '' }}>15%</option>
-                      <option value="20"{{ old('generales', $repuesto->extra->generales) == '20' ? ' selected' : '' }}>20%</option>
-                      <option value="25"{{ old('generales', $repuesto->extra->generales) == '25' ? ' selected' : '' }}>25%</option>
-                      <option value="30"{{ old('generales', $repuesto->extra->generales) == '30' ? ' selected' : '' }}>30%</option>
-                    </select>
-                  </div>
-                  <div class="form-group m-0" style="display: none">
-                    <label class="control-label" for="generales_total-internacional">Especificar gastos generales:</label>
-                    <input id="generales_total-internacional" class="form-control{{ $errors->has('generales_total') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="generales_total" value="{{ old('generales_total', $repuesto->extra->generales_total) }}" placeholder="Especificar">
-                  </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group" style="display: none">
                     <label class="control-label" for="envio">Envio:</label>
                     <input id="envio" class="form-control field-nacional{{ $errors->has('envio') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="envio" value="{{ old('envio', $repuesto->envio) }}" placeholder="Envio">
                   </div>
-                  <div class="form-group" style="display: none">
-                    <label class="control-label" for="impuestos-internacional">Impuestos:</label>
-                    <select id="impuestos-internacional" class="custom-select field-internacional" name="impuestos">
-                      <option value="">Seleccione...</option>
-                      <option value="0"{{ old('impuestos', $repuesto->extra->impuestos) == '0' ? ' selected' : '' }}>Monto específico</option>
-                      <option value="19"{{ old('impuestos', $repuesto->extra->impuestos) == '19' ? ' selected' : '' }}>19% del FOB</option>
-                      <option value="25"{{ old('impuestos', $repuesto->extra->impuestos) == '25' ? ' selected' : '' }}>25% del FOB</option>
-                    </select>
-                  </div>
                   <div class="form-group m-0" style="display: none">
-                    <label class="control-label" for="impuestos_total-internacional">Especificar impuestos:</label>
-                    <input id="impuestos_total-internacional" class="form-control{{ $errors->has('impuestos_total') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="impuestos_total" value="{{ old('impuestos_total', $repuesto->extra->impuestos_total) }}" placeholder="Especificar">
+                    <label class="control-label" for="impuestos-internacional">Impuestos:</label>
+                    <input id="impuestos-internacional" class="form-control{{ $errors->has('impuestos') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="impuestos" value="{{ old('impuestos', $repuesto->extra->impuestos) }}" placeholder="Especificar">
                   </div>
                 </div>
               </div>
@@ -211,12 +187,6 @@
                   <div class="form-group" style="display: none">
                     <label class="control-label" for="casilla-internacional">Gastos casilla:</label>
                     <input id="casilla-internacional" class="form-control field-internacional{{ $errors->has('casilla') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="casilla" value="{{ old('casilla', $repuesto->extra->casilla) }}" placeholder="Gastos casilla">
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group" style="display: none">
-                    <label class="control-label" for="tramitacion-internacional">Costo tramitación:</label>
-                    <input id="tramitacion-internacional" class="form-control field-internacional{{ $errors->has('tramitacion') ? ' is-invalid' : '' }}" type="number" step="0.01" min="0" max="99999999" name="tramitacion" maxlength="50" value="{{ old('tramitacion', $repuesto->extra->tramitacion) }}" placeholder="Costo tramitación">
                   </div>
                 </div>
               </div>
@@ -298,8 +268,21 @@
           $('#modelo').prop('disabled', true)
         })
       })
-
       $('#marca').change();
+
+      $('#procedencia').change(function () {
+        let procedencia = $(this).val();
+        let isInternacional = procedencia == 'internacional';
+
+        $('#procedencia-title').text(procedencia.charAt(0).toUpperCase() + procedencia.slice(1));
+
+        $('.field-local').prop('disabled', !(procedencia == 'local')).closest('.form-group').toggle(procedencia == 'local');
+        $('.field-nacional').prop('disabled', !(procedencia == 'nacional')).closest('.form-group').toggle(procedencia == 'nacional');
+        $('.field-internacional').prop('disabled', !isInternacional).closest('.form-group').toggle(isInternacional);
+        $('.group-field-internacional').toggle(isInternacional);
+        $('#impuestos-internacional').prop('disabled', !isInternacional).closest('.form-group').toggle(isInternacional);
+      });
+      $('#procedencia').change();
 
       $('.custom-file-input').change(function(e){
         let files = e.target.files;
@@ -307,37 +290,6 @@
 
         $(this).siblings(`label[for="${id}"]`).text(files[0].name);
       });
-
-      $('#procedencia').change(function () {
-        let procedencia = $(this).val();
-
-        $('#procedencia-title').text(procedencia.charAt(0).toUpperCase() + procedencia.slice(1));
-
-        $('#generales').prop('disabled', (procedencia == 'internacional')).closest('.form-group').toggle(!(procedencia == 'internacional'));
-        $('.field-local').prop('disabled', !(procedencia == 'local')).closest('.form-group').toggle(procedencia == 'local');
-        $('.field-nacional').prop('disabled', !(procedencia == 'nacional')).closest('.form-group').toggle(procedencia == 'nacional');
-        $('.field-internacional').prop('disabled', !(procedencia == 'internacional')).closest('.form-group').toggle(procedencia == 'internacional');
-        $('.group-field-internacional').toggle(procedencia == 'internacional');
-
-        if(procedencia != 'internacional'){
-          $('#generales_total-internacional, #impuestos_total-internacional').prop('disabled', true).closest('.form-group').toggle(false);
-        }else{
-          $('#impuestos-internacional, #generales-internacional').change();
-        }
-      });
-      $('#procedencia').change();
-
-      $('#impuestos-internacional').change(function () {
-        let isZero = $(this).val() == '0';
-        $('#impuestos_total-internacional').prop('disabled', !isZero).closest('.form-group').toggle(isZero);
-      })
-      $('#impuestos-internacional').change();
-
-      $('#generales-internacional').change(function () {
-        let isZero = $(this).val() == '0';
-        $('#generales_total-internacional').prop('disabled', !isZero).closest('.form-group').toggle(isZero);
-      })
-      $('#generales-internacional').change();
 
       $('#moneda').change(function () {
         let isPeso = $(this).val() == 'peso';
@@ -354,52 +306,51 @@
     function precioSugerido() {
       let moneda = $('#moneda').val();
       let valorMoneda = moneda == 'peso' ? 1 : +$('#moneda-valor').val();
+      let cantidad = +$('#stock').val();
+      let costoRepuesto = +$('#costo').val();
 
       if(moneda != 'peso' && !valorMoneda){
         showAlert('Debe completar el valor de la moneda seleccionada');
         return;
       }
 
-      let type = $('#procedencia').val();
-      let field = $('#venta');
-      let costo = (+$('#costo').val() * valorMoneda);
-      let generales = +$('#generales').val();
-      let subtotal = 0;
-
-      if(type == 'local'){
-        subtotal = (costo + (generales * valorMoneda));
-      }else if(type == 'nacional'){
-        let envio = +$('#envio').val();
-        subtotal += costo + (generales * valorMoneda) + (envio * valorMoneda);
-      }else{
-        let envio1 = (+$('#envio1-internacional').val() * valorMoneda);
-        let envio2 = (+$('#envio2-internacional').val() * valorMoneda);
-        let casilla = +$('#casilla-internacional').val();
-        let impuestos = +$('#impuestos-internacional').val();
-        let impuestosTotal = (+$('#impuestos_total-internacional').val() * valorMoneda);
-        let generalesTotal = (+$('#generales_total-internacional').val() * valorMoneda);
-        let tramitacion = +$('#tramitacion-internacional').val();
-        let generalesInternacional = +$('#generales-internacional').val();
-
-        subtotal += costo + envio1 + envio2;
-        impuestosTotal = (impuestos > 0) ? calculateImpuestosTotal(subtotal, impuestos) : impuestosTotal;
-        subtotal += impuestosTotal + casilla;
-        generalesTotal = (generalesInternacional > 0) ? calculateGeneralesTotal(subtotal, generalesInternacional) : generalesTotal;
-        subtotal += generalesTotal + tramitacion;
+      if(!cantidad){
+        showAlert('Debe introducir una cantidad en Stock');
+        return;
       }
 
-      let total = subtotal + ((subtotal * PORCENTAJE_GANANCIA) / 100);
-      field.val(total.toFixed(2));
-    }
+      let type = $('#procedencia').val();
+      let fieldVenta = $('#venta');
+      let gastosGenerales = +$('#generales').val();
 
-    // Solo internacional
-    function calculateImpuestosTotal(costoBase, impuestos) {
-      return (costoBase * impuestos) / 100;
-    }
+      let costo = costoRepuesto * cantidad;
+      let porc = costo / (costoRepuesto * cantidad);
+      let costoTotal = 0;
 
-    // Solo internacional
-    function calculateGeneralesTotal(costoBase, generales) {
-      return (costoBase * generales) / 100;
+      if(type == 'local'){
+        costoTotal = costo;
+      }else if(type == 'nacional'){
+        let flete = +$('#envio').val();
+        let envio = flete * porc;
+
+        costoTotal = costo + envio;
+      }else{
+        let impuestos = +$('#impuestos-internacional').val();
+        let flete1 = +$('#envio1-internacional').val();
+        let flete2 = +$('#envio2-internacional').val();
+        let comisionCasilla = +$('#casilla-internacional').val();
+        let envio1 = flete1 * porc;
+        let envio2 = flete2 * porc;
+        let costoEnvioTotal = costo + envio1 + envio2;
+
+        let impuestoTotal = impuestos * costoEnvioTotal;
+        costoTotal = impuestoTotal + ((comisionCasilla * porc) / valorMoneda);
+      }
+
+      let gastosGeneralesTotal = costoTotal * gastosGenerales;
+      let sugerido = ((gastosGeneralesTotal * valorMoneda) / cantidad);
+
+      fieldVenta.val(sugerido.toFixed(2));
     }
 
     // Mostrar mensaje de error
@@ -407,6 +358,12 @@
       $('#alert-repuesto').empty().append(`<li>${error}</li>`);
       $('#alert-repuesto').closest('.alert').show().delay(5000).hide('slow');
       scrollToError();
+    }
+
+    function scrollToError(){
+      $('.main-panel').animate({
+        scrollTop: $('#alert-repuesto').offset().top
+      }, 500);
     }
   </script>
 @endsection

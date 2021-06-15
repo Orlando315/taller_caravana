@@ -111,7 +111,7 @@
                       <tr>
                         <th>Costo:</th>
                         <td class="text-right">
-                          {{ $repuesto->extra->costo($repuesto->isNotPesos()) ?? 'N/A' }}{!! ($repuesto->isNotPesos() && $repuesto->extra->costo) ? ' <small>('.$repuesto->extra->costo().')</small>' : '' !!}
+                          {{ $repuesto->extra->costo() ?? 'N/A' }}
                         </td>
                       </tr>
                       @if($repuesto->isNacional())
@@ -126,13 +126,13 @@
                         <tr>
                           <th>Envio 1:</th>
                           <td class="text-right">
-                            {{ $repuesto->extra->envio1($repuesto->isNotPesos()) ?? 'N/A' }}{!! ($repuesto->isNotPesos() && $repuesto->extra->envio1) ? ' <small>('.$repuesto->extra->envio1().')</small>' : '' !!}
+                            {{ $repuesto->extra->envio1() ?? 'N/A' }}
                           </td>
                         </tr>
                         <tr>
                           <th>Envio 2:</th>
                           <td class="text-right">
-                            {{ $repuesto->extra->envio2($repuesto->isNotPesos()) ?? 'N/A' }}{!! ($repuesto->isNotPesos() && $repuesto->extra->envio2) ? ' <small>('.$repuesto->extra->envio2().')</small>' : '' !!}
+                            {{ $repuesto->extra->envio2() ?? 'N/A' }}
                           </td>
                         </tr>
                         <tr>
@@ -141,21 +141,13 @@
                         </tr>
 
                         <tr>
-                          <th>Impuestos{!! $repuesto->isInternacional() ? ' <small>'.$repuesto->extra->impuestosTipo().'</small>' : '' !!}:</th>
-                          <td class="text-right">{{ $repuesto->extra->impuestos($repuesto->isNotPesos()) ?? 'N/A' }}</td>
-                        </tr>
-                        <tr>
-                          <th>Costo tramitación:</th>
-                          <td class="text-right">{{ $repuesto->extra->tramitacion() ?? 'N/A' }}</td>
+                          <th>Impuestos:</th>
+                          <td class="text-right">{{ $repuesto->extra->impuestos() ?? 'N/A' }}</td>
                         </tr>
                       @endif
                       <tr>
-                        <th>Gastos generales{!! $repuesto->isInternacional() ? ' <small>('.$repuesto->extra->generales().'%)</small>' : '' !!}:</th>
-                        <td class="text-right">{{ $repuesto->isInternacional() ? ($repuesto->extra->generalesTotal() ?? 'N/A') : ($repuesto->extra->generales() ?? 'N/A') }}</td>
-                      </tr>
-                      <tr>
-                        <th>Costo total:</th>
-                        <td class="text-right">{{ $repuesto->extra->costoTotal() }}</td>
+                        <th>Gastos generales:</th>
+                        <td class="text-right">{{ $repuesto->extra->generales() ?? 'N/A' }}</td>
                       </tr>
                       <tr>
                         <th>Venta:</th>

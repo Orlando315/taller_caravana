@@ -54,10 +54,6 @@ class RepuestoController extends Controller
     {
       $this->authorize('create', Repuesto::class);
 
-      if(!is_array($request->producto)){
-        $request->replace($request->only('_token', '_method') + ['repuesto' => [$request->all()]]); 
-      }
-
       $this->validate($request, [
         'repuesto' => 'required|min:1|max:10',
         'repuesto.*.modelo' => 'required',
@@ -75,15 +71,12 @@ class RepuestoController extends Controller
         'repuesto.*.moneda_valor' => 'nullable|numeric|min:0|max:99999999',
         'repuesto.*.costo' => 'nullable|numeric|min:0|max:99999999',
         'repuesto.*.generales' => 'nullable|numeric|min:0|max:99999999',
-        'repuesto.*.generales_total' => 'nullable|numeric|min:0|max:99999999',
         'repuesto.*.venta' => 'required|numeric|min:0|max:99999999',
         'repuesto.*.envio' => 'nullable|numeric|min:0|max:99999999',
         'repuesto.*.envio1' => 'nullable|numeric|min:0|max:99999999',
         'repuesto.*.envio2' => 'nullable|numeric|min:0|max:99999999',
         'repuesto.*.casilla' => 'nullable|numeric|min:0|max:99999999',
         'repuesto.*.impuestos' => 'nullable|numeric|min:0|max:99999999',
-        'repuesto.*.impuestos_total' => 'nullable|numeric|min:0|max:99999999',
-        'repuesto.*.tramitacion' => 'nullable|numeric|min:0|max:99999999',
         'repuesto.*.comentarios' => 'nullable|string|max:250',
       ]);
 
@@ -114,10 +107,7 @@ class RepuestoController extends Controller
           'envio2' => $requestRepuesto['envio2'] ?? null,
           'casilla' => $requestRepuesto['casilla'] ?? null,
           'impuestos' => $requestRepuesto['impuestos'] ?? null,
-          'impuestos_total' => $requestRepuesto['impuestos_total'] ?? null,
           'generales' => $requestRepuesto['generales'],
-          'generales_total' => $requestRepuesto['generales_total'] ?? null,
-          'tramitacion' => $requestRepuesto['tramitacion'] ?? null,
           'moneda' => $requestRepuesto['moneda'],
           'moneda_valor' => $requestRepuesto['moneda_valor'] ?? null,
         ]);
@@ -135,8 +125,6 @@ class RepuestoController extends Controller
 
           // Guardar extras
           $repuesto->extra()->save($extra);
-          $repuesto->calculateCostoTotal();
-          $repuesto->push();
         }
       }
 
@@ -221,15 +209,12 @@ class RepuestoController extends Controller
         'moneda_valor' => 'nullable|numeric|min:0|max:99999999',
         'costo' => 'nullable|numeric|min:0|max:99999999',
         'generales' => 'nullable|numeric|min:0|max:99999999',
-        'generales_total' => 'nullable|numeric|min:0|max:99999999',
         'venta' => 'required|numeric|min:0|max:99999999',
         'envio' => 'nullable|numeric|min:0|max:99999999',
         'envio1' => 'nullable|numeric|min:0|max:99999999',
         'envio2' => 'nullable|numeric|min:0|max:99999999',
         'casilla' => 'nullable|numeric|min:0|max:99999999',
         'impuestos' => 'nullable|numeric|min:0|max:99999999',
-        'impuestos_total' => 'nullable|numeric|min:0|max:99999999',
-        'tramitacion' => 'nullable|numeric|min:0|max:99999999',
         'comentarios' => 'nullable|string|max:250',
       ]);
 
@@ -255,9 +240,6 @@ class RepuestoController extends Controller
             Storage::delete($foto);
           }
         }
-
-        $repuesto->calculateCostoTotal();
-        $repuesto->push();
 
         return redirect()->route('admin.repuesto.show', ['repuesto' => $repuesto->id])->with([
                 'flash_message' => 'Repuesto modificado exitosamente.',
@@ -327,7 +309,7 @@ class RepuestoController extends Controller
                 'id' => $repuesto->id,
                 'descripcion' => $repuesto->descripcion(),
                 'venta' => $repuesto->venta,
-                'costo' => $repuesto->extra->costo_total,
+                'costo' => $repuesto->extra->costo,
                 'stock' => $repuesto->stock,
                 'anio' => $repuesto->anio,
                 'sistema' => $repuesto->sistema,
@@ -390,15 +372,11 @@ class RepuestoController extends Controller
         
         $extra = new RepuestoExtra([
           'costo' => $dataRepuesto['precio'],
-          'costo_total' => $dataRepuesto['costo_total'],
-          'envio1' => $dataRepuesto['envio1'],
-          'envio2' => $dataRepuesto['envio2'],
-          'casilla' => 0,
-          'impuestos' => 0,
-          'impuestos_total' => $dataRepuesto['impuestos'],
-          'generales' => 0,
-          'generales_total' => $dataRepuesto['gasto_general'],
-          'tramitacion' => 0,
+          'envio1' => $importConst['envio1'],
+          'envio2' => $importConst['envio2'],
+          'casilla' => $importConst['comision'],
+          'impuestos' => $importConst['impuestos'],
+          'generales' => $importConst['gasto_general'],
           'moneda' => 'dolar',
           'moneda_valor' => $importConst['dolar'],
         ]);
